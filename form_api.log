@@ -1,0 +1,358 @@
+03:57:39 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+03:57:39 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+03:57:39 PM: INFO [_internal.py:97]  * Restarting with stat
+03:57:39 PM: WARNING [_internal.py:97]  * Debugger is active!
+03:57:39 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:10:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:10:14] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:10:42 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:10:42] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:12:18 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:12:18] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:12:58 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:12:58] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:15:39 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+04:15:39 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+04:15:39 PM: INFO [_internal.py:97]  * Restarting with stat
+04:15:39 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:15:39 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:15:52 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:15:52] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:16:51 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:16:51 PM: INFO [_internal.py:97]  * Restarting with stat
+04:16:51 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:16:51 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:16:56 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:16:56] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:16:56 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:16:56 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:16:56] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:02 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:02] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:17:02 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:02 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:02] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:02 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:02 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:02] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:03 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:03] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:03 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:03] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:03 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:03] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:03 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:03] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:03 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:03] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:03 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:03] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:04 PM: ERROR [app.py:34] Error de validación: {'correo': ['Not a valid email address.']}
+04:17:04 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:04] "[31m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 400 -
+04:17:52 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:52] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:17:52 PM: ERROR [app.py:37] Error generando CSV: a bytes-like object is required, not 'str'
+04:17:52 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:17:52] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:24:32 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:24:32] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:24:32 PM: ERROR [app.py:37] Error generando CSV: a bytes-like object is required, not 'str'
+04:24:32 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:24:32] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:25:12 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:25:12] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:25:12 PM: ERROR [app.py:37] Error generando CSV: a bytes-like object is required, not 'str'
+04:25:12 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:25:12] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:27:11 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:27:11 PM: INFO [_internal.py:97]  * Restarting with stat
+04:27:11 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:27:11 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:27:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:27:14] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:27:14 PM: ERROR [app.py:41] Error generando CSV: a bytes-like object is required, not 'str'
+04:27:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:27:14] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:29:42 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:29:42 PM: INFO [_internal.py:97]  * Restarting with stat
+04:29:42 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:29:42 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:29:45 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:29:45] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:29:45 PM: ERROR [app.py:43] Error generando CSV: a bytes-like object is required, not 'str'
+04:29:45 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:29:45] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:35:44 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:35:44 PM: INFO [_internal.py:97]  * Restarting with stat
+04:35:45 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:35:45 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:35:47 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:35:47] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:35:47 PM: ERROR [app.py:43] Error generando CSV: a bytes-like object is required, not 'str'
+04:35:47 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:35:47] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:38:25 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:38:25 PM: INFO [_internal.py:97]  * Restarting with stat
+04:38:26 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:38:26 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:38:28 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:38:28] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:38:28 PM: ERROR [app.py:44] Error generando CSV: a bytes-like object is required, not 'str'
+04:38:28 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:38:28] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:39:22 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:39:22 PM: INFO [_internal.py:97]  * Restarting with stat
+04:39:23 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:39:23 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:39:30 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:39:30 PM: INFO [_internal.py:97]  * Restarting with stat
+04:39:30 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:39:30 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:39:34 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:39:34] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:39:34 PM: ERROR [app.py:44] Error generando CSV: Files must be opened in binary mode or use BytesIO.
+04:39:34 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:39:34] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:44:22 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:44:22 PM: INFO [_internal.py:97]  * Restarting with stat
+04:44:22 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:44:22 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:44:27 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:44:27] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:44:27 PM: ERROR [app.py:44] Error generando CSV: Files must be opened in binary mode or use BytesIO.
+04:44:27 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:44:27] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:44:58 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:44:58 PM: INFO [_internal.py:97]  * Restarting with stat
+04:44:59 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:44:59 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:45:04 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:45:04 PM: INFO [_internal.py:97]  * Restarting with stat
+04:45:04 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:45:04 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:45:08 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:45:08] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:45:08 PM: ERROR [app.py:44] Error generando CSV: a bytes-like object is required, not 'str'
+04:45:08 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:45:08] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:46:55 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:46:55 PM: INFO [_internal.py:97]  * Restarting with stat
+04:46:55 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:46:55 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:46:57 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:46:57] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:46:57 PM: ERROR [app.py:44] Error generando CSV: a bytes-like object is required, not 'str'
+04:46:57 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:46:57] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:48:09 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:48:09 PM: INFO [_internal.py:97]  * Restarting with stat
+04:48:09 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:48:09 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:49:00 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:49:00 PM: INFO [_internal.py:97]  * Restarting with stat
+04:49:00 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:49:00 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:49:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:49:03] "OPTIONS /api/v1/generar-csv HTTP/1.1" 200 -
+04:49:03 PM: ERROR [app.py:45] Error generando CSV: a bytes-like object is required, not 'str'
+04:49:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:49:03] "[35m[1mPOST /api/v1/generar-csv HTTP/1.1[0m" 500 -
+04:51:33 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/rutas old.py', reloading
+04:51:33 PM: INFO [_internal.py:97]  * Restarting with stat
+04:51:33 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:51:33 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:52:23 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:52:23 PM: INFO [_internal.py:97]  * Restarting with stat
+04:52:23 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:52:23 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:52:42 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+04:52:42 PM: INFO [_internal.py:97]  * Restarting with stat
+04:52:43 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:52:43 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:53:24 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:53:24] "[33mOPTIONS /api/v1/generar-csv HTTP/1.1[0m" 404 -
+04:54:33 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:54:33] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:54:33 PM: ERROR [app.py:36] Error de validación: {'nombre': ['Shorter than minimum length 1.'], 'correo': ['Not a valid email address.'], 'puesto': ['Shorter than minimum length 1.'], 'id': ['Shorter than minimum length 1.'], 'extension': ['Shorter than minimum length 1.']}
+04:54:33 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:54:33] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:55:04 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:55:04] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:55:04 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 16:55:04] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:00:37 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+05:00:37 PM: INFO [_internal.py:97]  * Restarting with stat
+05:00:37 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:00:37 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+05:03:33 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:03:33] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:03:33 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:03:33] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:18:37 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+05:18:37 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+05:18:37 PM: INFO [_internal.py:97]  * Restarting with stat
+05:18:37 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:18:37 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+05:19:24 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+05:19:24 PM: INFO [_internal.py:97]  * Restarting with stat
+05:19:34 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:19:34 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+05:21:27 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+05:21:27 PM: INFO [_internal.py:97]  * Restarting with stat
+05:21:27 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:21:27 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+05:21:33 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:21:33] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:21:33 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:21:33] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:22:42 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:22:42] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:22:42 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:22:42] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:23:49 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+05:23:49 PM: INFO [_internal.py:97]  * Restarting with stat
+05:23:49 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:23:49 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+05:24:11 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:24:11] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:24:11 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:24:11] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:25:13 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:25:13] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:25:13 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:25:13] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:32:40 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+05:32:40 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+05:32:40 PM: INFO [_internal.py:97]  * Restarting with stat
+05:32:40 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:32:40 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+05:33:07 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:33:07] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:33:07 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:33:07] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+05:35:00 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:35:00] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+05:35:00 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 17:35:00] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+07:48:51 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+07:48:51 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+07:48:51 PM: INFO [_internal.py:97]  * Restarting with stat
+07:48:51 PM: WARNING [_internal.py:97]  * Debugger is active!
+07:48:51 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+07:49:49 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 19:49:49] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+07:49:49 PM: INFO [_internal.py:97] 127.0.0.1 - - [07/Mar/2025 19:49:49] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+02:33:37 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+02:33:37 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+02:33:37 PM: INFO [_internal.py:97]  * Restarting with stat
+02:33:37 PM: WARNING [_internal.py:97]  * Debugger is active!
+02:33:37 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+02:35:28 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 14:35:28] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+02:35:28 PM: ERROR [app.py:59] Error generando PDF: '_io.TextIOWrapper' object has no attribute 'wirte'
+02:35:28 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 14:35:28] "[35m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 500 -
+02:36:26 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+02:36:27 PM: INFO [_internal.py:97]  * Restarting with stat
+02:36:27 PM: WARNING [_internal.py:97]  * Debugger is active!
+02:36:27 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+02:36:53 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+02:36:53 PM: INFO [_internal.py:97]  * Restarting with stat
+02:36:53 PM: WARNING [_internal.py:97]  * Debugger is active!
+02:36:53 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+02:37:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 14:37:14] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+02:37:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 14:37:14] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+03:09:45 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+03:09:45 PM: INFO [_internal.py:97]  * Restarting with stat
+03:26:32 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+03:26:32 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+03:26:32 PM: INFO [_internal.py:97]  * Restarting with stat
+03:26:32 PM: WARNING [_internal.py:97]  * Debugger is active!
+03:26:32 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+03:27:28 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 15:27:28] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+03:27:28 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 15:27:28] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+03:42:38 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/app.py', reloading
+03:42:38 PM: INFO [_internal.py:97]  * Restarting with stat
+03:42:39 PM: WARNING [_internal.py:97]  * Debugger is active!
+03:42:39 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:52:25 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+04:52:25 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+04:52:25 PM: INFO [_internal.py:97]  * Restarting with stat
+04:52:25 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:52:25 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+04:56:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 16:56:14] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:56:14 PM: ERROR [route.py:80] Error de validación: {'servicios': ['Shorter than minimum length 1.'], 'justificacion': ['Shorter than minimum length 1.']}
+04:56:14 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 16:56:14] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:56:15 PM: ERROR [route.py:80] Error de validación: {'servicios': ['Shorter than minimum length 1.'], 'justificacion': ['Shorter than minimum length 1.']}
+04:56:15 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 16:56:15] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:56:15 PM: ERROR [route.py:80] Error de validación: {'servicios': ['Shorter than minimum length 1.'], 'justificacion': ['Shorter than minimum length 1.']}
+04:56:15 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 16:56:15] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:57:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 16:57:03] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:57:03 PM: INFO [_internal.py:97] 127.0.0.1 - - [10/Mar/2025 16:57:03] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+04:15:47 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+04:15:47 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+04:15:47 PM: INFO [_internal.py:97]  * Restarting with stat
+04:15:47 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:15:47 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:16:22 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:16:22 PM: INFO [_internal.py:97]  * Restarting with stat
+04:16:22 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:16:22 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:16:40 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:16:40] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:16:40 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:16:40] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:16:40 PM: ERROR [route.py:81] Error de validación: {'nombre': ['Shorter than minimum length 1.'], 'puesto': ['Shorter than minimum length 1.'], 'ua': ['Shorter than minimum length 1.'], 'id': ['Shorter than minimum length 1.'], 'extension': ['Shorter than minimum length 1.'], 'correo': ['Not a valid email address.'], 'marca': ['Shorter than minimum length 1.'], 'modelo': ['Shorter than minimum length 1.'], 'serie': ['Shorter than minimum length 1.'], 'macadress': ['Shorter than minimum length 1.'], 'jefe': ['Shorter than minimum length 1.'], 'puestojefe': ['Shorter than minimum length 1.'], 'servicios': ['Shorter than minimum length 1.'], 'justificacion': ['Shorter than minimum length 1.'], 'movimiento': ['Missing data for required field.'], 'malware': ['Missing data for required field.'], 'vigencia': ['Missing data for required field.'], 'so': ['Missing data for required field.'], 'licencia': ['Missing data for required field.']}
+04:16:40 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:16:40] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:16:40 PM: ERROR [route.py:81] Error de validación: {'nombre': ['Shorter than minimum length 1.'], 'puesto': ['Shorter than minimum length 1.'], 'ua': ['Shorter than minimum length 1.'], 'id': ['Shorter than minimum length 1.'], 'extension': ['Shorter than minimum length 1.'], 'correo': ['Not a valid email address.'], 'marca': ['Shorter than minimum length 1.'], 'modelo': ['Shorter than minimum length 1.'], 'serie': ['Shorter than minimum length 1.'], 'macadress': ['Shorter than minimum length 1.'], 'jefe': ['Shorter than minimum length 1.'], 'puestojefe': ['Shorter than minimum length 1.'], 'servicios': ['Shorter than minimum length 1.'], 'justificacion': ['Shorter than minimum length 1.'], 'movimiento': ['Missing data for required field.'], 'malware': ['Missing data for required field.'], 'vigencia': ['Missing data for required field.'], 'so': ['Missing data for required field.'], 'licencia': ['Missing data for required field.']}
+04:16:40 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:16:40] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:17:13 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:17:13] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:17:13 PM: ERROR [route.py:81] Error de validación: {'movimiento': ['Missing data for required field.'], 'malware': ['Missing data for required field.'], 'vigencia': ['Missing data for required field.'], 'so': ['Missing data for required field.'], 'licencia': ['Missing data for required field.']}
+04:17:13 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:17:13] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:18:55 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:18:55 PM: INFO [_internal.py:97]  * Restarting with stat
+04:18:56 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:18:56 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:18:59 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:18:59] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:18:59 PM: ERROR [route.py:81] Error de validación: {'mov': ['Missing data for required field.'], 'malware': ['Missing data for required field.']}
+04:18:59 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:18:59] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:20:16 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:20:16] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:20:16 PM: ERROR [route.py:81] Error de validación: {'mov': ['Missing data for required field.'], 'malware': ['Missing data for required field.']}
+04:20:16 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:20:16] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:22:10 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:22:10 PM: INFO [_internal.py:97]  * Restarting with stat
+04:22:11 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:22:11 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:22:13 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:22:13] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:22:13 PM: ERROR [route.py:81] Error de validación: {'movimiento': ['Missing data for required field.'], 'malware': ['Missing data for required field.']}
+04:22:13 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:22:13] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:22:48 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:22:48 PM: INFO [_internal.py:97]  * Restarting with stat
+04:22:48 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:22:48 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:22:53 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:22:53] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:22:53 PM: ERROR [route.py:84] Error generando PDF: can only concatenate str (not "NoneType") to str
+04:22:53 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:22:53] "[35m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 500 -
+04:23:40 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:23:40 PM: INFO [_internal.py:97]  * Restarting with stat
+04:23:40 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:23:40 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:23:43 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:23:43] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:23:43 PM: ERROR [route.py:84] Error generando PDF: can only concatenate str (not "NoneType") to str
+04:23:43 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:23:43] "[35m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 500 -
+04:23:55 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:23:55 PM: INFO [_internal.py:97]  * Restarting with stat
+04:23:55 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:23:55 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:23:56 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:23:56] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:23:56 PM: ERROR [route.py:84] Error generando PDF: can only concatenate str (not "NoneType") to str
+04:23:56 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:23:56] "[35m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 500 -
+04:26:57 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:26:57 PM: INFO [_internal.py:97]  * Restarting with stat
+04:26:57 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:26:57 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:27:01 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:27:01] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:27:01 PM: ERROR [route.py:84] Error generando PDF: can only concatenate str (not "NoneType") to str
+04:27:01 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:27:01] "[35m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 500 -
+04:27:19 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:27:19 PM: INFO [_internal.py:97]  * Restarting with stat
+04:27:20 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:27:20 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:27:22 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:27:22] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:27:22 PM: ERROR [route.py:81] Error de validación: {'movimiento': ['Missing data for required field.']}
+04:27:22 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:27:22] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:27:49 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:27:49 PM: INFO [_internal.py:97]  * Restarting with stat
+04:27:49 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:27:49 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:27:54 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:27:54] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:27:54 PM: ERROR [route.py:81] Error de validación: {'movimiento': ['Missing data for required field.']}
+04:27:54 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:27:54] "[31m[1mPOST /api/v1/generar-pdf HTTP/1.1[0m" 400 -
+04:28:18 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:28:18] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:28:18 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:28:18] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+04:30:06 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:30:06 PM: INFO [_internal.py:97]  * Restarting with stat
+04:30:07 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:30:07 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:30:12 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:30:12] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:30:12 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:30:12] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+04:30:24 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+04:30:24 PM: INFO [_internal.py:97]  * Restarting with stat
+04:30:25 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:30:25 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:30:31 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:30:31 PM: INFO [_internal.py:97]  * Restarting with stat
+04:30:31 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:30:31 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:30:35 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:30:35] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:30:35 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:30:35] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+04:34:00 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/schemas/schema.py', reloading
+04:34:00 PM: INFO [_internal.py:97]  * Restarting with stat
+04:34:01 PM: WARNING [_internal.py:97]  * Debugger is active!
+04:34:01 PM: INFO [_internal.py:97]  * Debugger PIN: 123-121-616
+04:47:25 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:47:25] "OPTIONS /api/v1/generar-pdf HTTP/1.1" 200 -
+04:47:25 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:47:25] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+04:47:25 PM: INFO [_internal.py:97] 127.0.0.1 - - [11/Mar/2025 16:47:25] "POST /api/v1/generar-pdf HTTP/1.1" 200 -
+02:05:16 PM: INFO [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:3001
+02:05:16 PM: INFO [_internal.py:97] [33mPress CTRL+C to quit[0m
+02:05:16 PM: INFO [_internal.py:97]  * Restarting with stat
+02:05:16 PM: WARNING [_internal.py:97]  * Debugger is active!
+02:05:16 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137
+02:05:20 PM: INFO [_internal.py:97] 127.0.0.1 - - [12/Mar/2025 14:05:20] "[33mGET / HTTP/1.1[0m" 404 -
+02:05:20 PM: INFO [_internal.py:97] 127.0.0.1 - - [12/Mar/2025 14:05:20] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+05:08:33 PM: INFO [_internal.py:97]  * Detected change in '/Users/bhs/Documents/Servicio Social/PROGRAMA/API/routes/route.py', reloading
+05:08:33 PM: INFO [_internal.py:97]  * Restarting with stat
+05:08:34 PM: WARNING [_internal.py:97]  * Debugger is active!
+05:08:34 PM: INFO [_internal.py:97]  * Debugger PIN: 854-676-137

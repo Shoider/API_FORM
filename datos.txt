@@ -1,0 +1,15 @@
+\newcommand{\NOMBRE}{asdasd}
+\newcommand{\PUESTO}{asdasd}
+\newcommand{\UA}{asdas}
+\newcommand{\ID}{asdas}
+\newcommand{\EXT}{asd}
+\newcommand{\CORREO}{werwerw@dfsdfs.com}
+\newcommand{\MARCA}{werwer}
+\newcommand{\MODELO}{ewrwer}
+\newcommand{\SERIE}{werwer}
+\newcommand{\MACADDRESS}{EE:EE:EE:3F:7A:AA}
+\newcommand{\NOMBREJEFE}{werw}
+\newcommand{\PUESTOJEFE}{erwerwer}
+\newcommand{\SERVICIOS}{erwer}
+\newcommand{\JUSTIFICACION}{werwer}
+\newcommand{\PRUEBA}{NO}
