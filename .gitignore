@@ -4,3 +4,4 @@ form_api.log
 datos.txt
 app old.txt
 out.csv
+__pycache__

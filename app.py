@@ -22,5 +22,5 @@ form_routes = FileGeneratorRoute(form_schema)
 #Blueprint
 app.register_blueprint(form_routes)
 
-if __name__ == "__main__":
-    app.run(debug=True, port=3001)
+#if __name__ == "__main__":
+#    app.run(debug=True, port=3000)
