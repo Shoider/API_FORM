@@ -42,7 +42,7 @@ class FileGeneratorRoute(Blueprint):
 
             validated_data = self.forms_schema.load(data)
 
-            with open('datos.txt','w') as file: 
+            with open('/app/data/datos.txt','w') as file: 
                 file.write("\\newcommand{\\NOMBRE}{"+ validated_data.get('nombre')+"}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
                 file.write("\\newcommand{\\UA}{" + validated_data.get('ua') + "}"+ os.linesep)
@@ -60,7 +60,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\PRUEBA}{" + validated_data.get('malware') + "}"+ os.linesep)
 
             df = pd.DataFrame([validated_data])
-            df.to_csv('out.csv', index=False, mode='a')
+            df.to_csv('/app/data/out.csv', index=False, mode='a')
 
             pdf = FPDF()
             pdf.add_page()

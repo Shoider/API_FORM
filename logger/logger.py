@@ -2,7 +2,7 @@ import logging as log
 
 class Logger:
 
-    def __init__(self, log_file="form_api.log", level=log.INFO):
+    def __init__(self, log_file="/app/logs/form_api.log", level=log.INFO):
         log.basicConfig(
             level=level,
             format='%(asctime)s: %(levelname)s [%(filename)s:%(lineno)s] %(message)s',
