@@ -21,7 +21,7 @@ RUN apk update &&\
 
 EXPOSE 8000 
 
-HEALTHCHECK CMD curl --fail http://localhost:8000/healthcheck || exit 1
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8000/healthcheck || exit 1
 
 USER app
 
