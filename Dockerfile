@@ -6,6 +6,14 @@ RUN addgroup -g 1000 app && adduser -D -u 1000 -G app app
 
 COPY --chown=app . .
 
+RUN mkdir -p /app/logs && \
+    chown -R app:app /app/logs && \
+    chmod -R 775 /app/logs
+
+RUN mkdir -p /app/data && \
+    chown -R app:app /app/data && \
+    chmod -R 775 /app/data
+
 RUN apk update &&\
     apk add --no-cache curl &&\
     pip install --no-cache-dir --upgrade pip &&\
