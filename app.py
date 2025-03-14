@@ -10,7 +10,9 @@ from marshmallow import ValidationError
 import os
 
 app = Flask(__name__)
-CORS(app)
+
+#CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+
 logger = Logger()
 
 # Schema
@@ -22,5 +24,5 @@ form_routes = FileGeneratorRoute(form_schema)
 #Blueprint
 app.register_blueprint(form_routes)
 
-#if __name__ == "__main__":
-#    app.run(debug=True, port=3000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=False)
