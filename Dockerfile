@@ -14,10 +14,14 @@ RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 775 /app/data
 
+RUN mv /app/Formato_VPN_241105.tex /app/data/Formato_VPN_241105.tex
+
 RUN apk update &&\
     apk add --no-cache curl &&\
     pip install --no-cache-dir --upgrade pip &&\
     pip install -r requirements.txt
+
+RUN apk add --no-cache texlive
 
 EXPOSE 8000 
 
