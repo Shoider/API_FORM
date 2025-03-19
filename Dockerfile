@@ -1,4 +1,4 @@
-FROM python:3.13.2-slim-bullseye
+FROM python:3.13.2-slim-bookworm
 
 WORKDIR /app
 
@@ -15,9 +15,11 @@ RUN mkdir -p /app/data && \
     chmod -R 775 /app/data
 
 RUN mv /app/Formato_VPN_241105.tex /app/data/Formato_VPN_241105.tex
+RUN mv /app/imagenes /app/data/imagenes
 
 RUN apt-get update && \
-    apt-get install -y curl texlive texlive-lang-spanish && \
+    apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra texlive-tabularray && \
+    texhash && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt

@@ -10,3 +10,6 @@ __pycache__
 Dockerfile
 venv
 .git
+.dockerignore
+.gitignore
+readme
