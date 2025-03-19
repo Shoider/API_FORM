@@ -12,13 +12,14 @@ RUN mkdir -p /app/logs && \
 
 RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
-    chmod -R 775 /app/data
+    chmod -R 777 /app/data
 
-RUN mv /app/Formato_VPN_241105.tex /app/data/Formato_VPN_241105.tex
-RUN mv /app/imagenes /app/data/imagenes
+RUN mv Formato_VPN_241105.tex data
+RUN mv imagenes data
+RUN mv tabularray data
 
 RUN apt-get update && \
-    apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra texlive-tabularray && \
+    apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra && \
     texhash && \
     rm -rf /var/lib/apt/lists/*
 
