@@ -1,8 +1,8 @@
-FROM python:3.13.2-alpine3.21
+FROM python:3.13.2-slim-bullseye
 
 WORKDIR /app
 
-RUN addgroup -g 1000 app && adduser -D -u 1000 -G app app 
+RUN groupadd -g 1000 app && useradd -m -u 1000 -g app app
 
 COPY --chown=app . .
 
@@ -16,12 +16,11 @@ RUN mkdir -p /app/data && \
 
 RUN mv /app/Formato_VPN_241105.tex /app/data/Formato_VPN_241105.tex
 
-RUN apk update &&\
-    apk add --no-cache curl &&\
-    pip install --no-cache-dir --upgrade pip &&\
-    pip install -r requirements.txt
+RUN apt-get update && \
+    apt-get install -y curl texlive texlive-lang-spanish && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apk add --no-cache texlive
+RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
 
 EXPOSE 8000 
 

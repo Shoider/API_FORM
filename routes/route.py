@@ -63,7 +63,7 @@ class FileGeneratorRoute(Blueprint):
             baja = "x" if validated_data.get('movimiento') == "BAJA" else ""
             cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else ""
 
-            with open('/app/data/datos.txt','w') as file: 
+            with open('/app/data/Datos.txt','w') as file: 
                 file.write("\\newcommand{\\NOMBRE}{"+ validated_data.get('nombre')+"}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
                 file.write("\\newcommand{\\UA}{" + validated_data.get('ua') + "}"+ os.linesep)
