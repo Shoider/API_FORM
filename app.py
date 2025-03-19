@@ -1,13 +1,7 @@
 from flask import Flask, request, jsonify, send_file
-from flask_cors import CORS
-from io import BytesIO
-import pandas as pd
-from fpdf import FPDF
 from logger.logger import Logger
 from schemas.schema import RegistroSchema 
 from routes.route import FileGeneratorRoute  
-from marshmallow import ValidationError
-import os
 
 app = Flask(__name__)
 
