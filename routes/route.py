@@ -47,21 +47,21 @@ class FileGeneratorRoute(Blueprint):
             validated_data = self.forms_schema.load(data)
 
             # Transformar valores "SI" y "NO"
-            sianti = "x" if validated_data.get('malware') == "SI" else ""
-            noanti = "x" if validated_data.get('malware') == "NO" else ""
+            sianti = "x" if validated_data.get('malware') == "SI" else " "
+            noanti = "x" if validated_data.get('malware') == "NO" else " "
 
-            sivige = "x" if validated_data.get('vigencia') == "SI" else ""
-            novige = "x" if validated_data.get('vigencia') == "NO" else ""
+            sivige = "x" if validated_data.get('vigencia') == "SI" else " "
+            novige = "x" if validated_data.get('vigencia') == "NO" else " "
 
-            siso = "x" if validated_data.get('so') == "SI" else ""
-            noso = "x" if validated_data.get('so') == "NO" else ""
+            siso = "x" if validated_data.get('so') == "SI" else " "
+            noso = "x" if validated_data.get('so') == "NO" else " "
 
-            silic = "x" if validated_data.get('licencia') == "SI" else ""
-            nolic = "x" if validated_data.get('licencia') == "NO" else ""
+            silic = "x" if validated_data.get('licencia') == "SI" else " "
+            nolic = "x" if validated_data.get('licencia') == "NO" else " "
 
-            alta = "x" if validated_data.get('movimiento') == "ALTA" else ""
-            baja = "x" if validated_data.get('movimiento') == "BAJA" else ""
-            cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else ""
+            alta = "x" if validated_data.get('movimiento') == "ALTA" else " "
+            baja = "x" if validated_data.get('movimiento') == "BAJA" else " "
+            cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else " "
 
             with open('/app/data/Datos.txt','w') as file: 
                 file.write("\\newcommand{\\NOMBRE}{"+ validated_data.get('nombre')+"}"+ os.linesep)

@@ -1,0 +1,2259 @@
+% \iffalse meta-comment
+%
+% File: lastpage.dtx
+% Version: 2025-01-27 v2.1e
+% Info: Refers to last page's name
+%
+% Copyright © 2010 - 2025 by
+%    H.-Martin Münch <Martin dot Muench at Uni-Bonn dot de>
+% Portions of code copyrighted by other people as marked.
+%
+% This package was invented by Jeffrey P. Goldberg.
+% I thought that an enhancement was needed and therefore created the pageslts package,
+% https://ctan.org/pkg/pageslts. Nevertheless, for compatibility with existing
+% documents/packages as well as for the low amount of resources needed by the
+% lastpage package (no new counter!), I updated this package.
+% Thanks go to Jeffrey P. Goldberg for allowing me to do this.
+%
+% While this package allows for things like "Page \thepage{} of \pageref{LastPage}"
+% to get "Page 7 of 9" or "Page VII of IX",
+% the NUMBER of pages is nowadays available from the kernel
+% (\@abspage@last, \thetotalpages, \PreviousTotalPages),
+% but with pages for example I to X and then 1 to 10, the number of pages would be "20",
+% while the name of the last page is "10". Decide what you need/want!
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any later
+% version. This version of this license is in
+%    https://www.latex-project.org/lppl/lppl-1-3c.txt
+% and the latest version of this license is in
+%    https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of
+% LaTeX version 2005-12-01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work is H.-Martin Münch.
+%
+% This work consists of the main source file lastpage.dtx,
+% the README, and the derived files
+%    lastpage.sty, lastpage209.sty, lastpage2e.sty,
+%    lastpageclassic.sty, lastpagemodern.sty,
+%    lastpage.pdf, lastpage.ins, lastpage.drv,
+%    lastpage-example.tex, lastpage-example.pdf.
+%
+% "lastpage" is available on CTAN:
+% https://ctan.org/pkg/lastpage
+%
+% Also a TDS.ZIP file is provided that contains all the files
+% already sorted in a TDS tree:
+% https://mirror.ctan.org/install/macros/latex/contrib/lastpage.tds.zip
+%
+%<*ignore>
+\begingroup
+  \catcode123=1 %
+  \catcode125=2 %
+  \def\x{LaTeX2e}%
+\expandafter\endgroup
+\ifcase 0\ifx\install y1\fi\expandafter
+         \ifx\csname processbatchFile\endcsname\relax\else1\fi
+         \ifx\fmtname\x\else 1\fi\relax
+\else\csname fi\endcsname
+%</ignore>
+%<*install>
+\input docstrip.tex
+\Msg{**********************************************************************}
+\Msg{* Installation                                                       *}
+\Msg{* Package: lastpage 2025-01-27 v2.1e Refers to last page's name (HMM)*}
+\Msg{**********************************************************************}
+
+\keepsilent
+\askforoverwritefalse
+
+\let\MetaPrefix\relax
+\preamble
+
+This is a generated file.
+
+Project: lastpage
+Version: 2025-01-27 v2.1e
+Info: Refers to last page's name
+
+Copyright (C) 2010 - 2025 by
+    H.-Martin Muench <Martin dot Muench at Uni-Bonn dot de>
+Portions of code copyrighted by other people as marked.
+
+This work may be distributed and/or modified under the
+conditions of the LaTeX Project Public License, either
+version 1.3c of this license or (at your option) any later
+version. This version of this license is in
+   https://www.latex-project.org/lppl/lppl-1-3c.txt
+and the latest version of this license is in
+   https://www.latex-project.org/lppl.txt
+and version 1.3c or later is part of all distributions of
+LaTeX version 2005-12-01 or later.
+
+This work has the LPPL maintenance status "maintained".
+
+The Current Maintainer of this work is H.-Martin Muench.
+
+This package was invented by Jeffrey P. Goldberg.
+I thought that an enhancement was needed and therefore created the pageslts package,
+https://ctan.org/pkg/pageslts. Nevertheless, for compatibility with existing
+documents/packages as well as for the low amount of resources needed by the
+lastpage package (no new counter!), I updated this package.
+Thanks go to Jeffrey P. Goldberg for allowing me to do this.
+
+While this package allows for things like "Page slash thepage{} of slash pageref{LastPage}"
+to get "Page 7 of 9" or "Page VII of IX",
+the NUMBER of pages is nowadays available from the kernel
+(slash @abspage@last, slash thetotalpages, slash PreviousTotalPages),
+but with pages for example I to X and then 1 to 10, the number of pages would be "20",
+while the name of the last page is "10". Decide what you need/want!
+
+This work consists of the main source file lastpage.dtx,
+the README, and the derived files
+   lastpage.sty, lastpage209.sty, lastpage2e.sty,
+   lastpageclassic.sty, lastpagemodern.sty,
+   lastpage.pdf, lastpage.ins, lastpage.drv,
+   lastpage-example.tex, lastpage-example.pdf.
+
+In memoriam
+ Claudia Simone Barth + 1996-01-30
+ Tommy Muench         + 2014-01-02
+ Hans-Klaus Muench    + 2014-08-24
+
+\endpreamble
+\let\MetaPrefix\DoubleperCent
+
+\generate{%
+  \file{lastpage.ins}{\from{lastpage.dtx}{install}}%
+  \file{lastpage.drv}{\from{lastpage.dtx}{driver}}%
+  \usedir{tex/latex/lastpage}%
+  \file{lastpage.sty}{\from{lastpage.dtx}{package}}%
+  \file{lastpage209.sty}{\from{lastpage.dtx}{lastpage209}}%
+  \file{lastpage2e.sty}{\from{lastpage.dtx}{lastpage2e}}%
+  \file{lastpageclassic.sty}{\from{lastpage.dtx}{lastpageclassic}}%
+  \file{lastpagemodern.sty}{\from{lastpage.dtx}{lastpagemodern}}%
+  \usedir{doc/latex/lastpage}%
+  \file{lastpage-example.tex}{\from{lastpage.dtx}{example}}%
+}
+
+\catcode32=13\relax% active space
+\let =\space%
+\Msg{************************************************************************}
+\Msg{*}
+\Msg{* To finish the installation you have to move the following}
+\Msg{* file into a directory searched by TeX:}
+\Msg{*}
+\Msg{*  lastpage.sty, lastpage209.sty, lastpage2e.sty,}
+\Msg{*  lastpageclassic.sty, and lastpagemodern.sty}
+\Msg{*}
+\Msg{* To produce the documentation run the file `lastpage.drv'}
+\Msg{* through (pdf)LaTeX, e.g.}
+\Msg{*  pdflatex lastpage.drv}
+\Msg{*  makeindex -s gind.ist lastpage.idx}
+\Msg{*  pdflatex lastpage.drv}
+\Msg{*  makeindex -s gind.ist lastpage.idx}
+\Msg{*  pdflatex lastpage.drv}
+\Msg{*}
+\Msg{* At least three runs are necessary e.g. to get the}
+\Msg{*  references right!}
+\Msg{*}
+\Msg{* Happy TeXing!}
+\Msg{*}
+\Msg{************************************************************************}
+
+\endbatchfile
+%</install>
+%<*ignore>
+\fi
+%</ignore>
+%
+% \section{The documentation driver file}
+%
+% The next bit of code contains the documentation driver file for
+% \TeX , i.\,e., the file that will produce the documentation you
+% are currently reading. It will be extracted from this file by the
+% \texttt{docstrip} programme. That is, run \LaTeX{} on \texttt{docstrip}
+% and specify the \texttt{driver} option when \texttt{docstrip}
+% asks for options.
+%
+%    \begin{macrocode}
+%<*driver>
+\NeedsTeXFormat{LaTeX2e}[2024-11-01]
+\ProvidesFile{lastpage.drv}[2025-01-27 v2.1e Refers to last page's name (HMM)]
+\documentclass{ltxdoc}[2024/02/08]% v2.1j Standard LaTeX documentation class
+\usepackage{holtxdoc}[2019/12/09]%  v0.30 Private additional ltxdoc support (HO)
+\hypersetup{%
+ pdfsubject={Refers to last page's name (HMM; JPG)},%
+ pdfkeywords={LaTeX, lastpage, last page, page number, page name},%
+ pdfencoding=auto,%
+ pdflang={en},%
+ breaklinks=true,%
+ linktoc=all,%
+ pdfstartview=FitH,%
+ pdfpagelayout=OneColumn,%
+ bookmarksnumbered=true,%
+ bookmarksopen=true,%
+ bookmarksopenlevel=2,%
+ pdfmenubar=true,%
+ pdftoolbar=true,%
+ pdfwindowui=true,%
+ pdfnewwindow=true%
+}
+\CodelineIndex
+\hyphenation{every-thing}
+\begin{document}
+  \DocInput{lastpage.dtx}%
+\end{document}
+%</driver>
+%    \end{macrocode}
+% \fi
+%
+% \GetFileInfo{lastpage.drv}
+%
+% \begingroup
+%   \def\x{\#,\$,\^,\_,\~,\ ,\&,\{,\},\%}%
+%   \makeatletter
+%   \@onelevel@sanitize\x
+% \expandafter\endgroup
+% \expandafter\DoNotIndex\expandafter{\x}
+% \expandafter\DoNotIndex\expandafter{\string\ }
+% \begingroup
+%   \makeatletter
+%     \lccode`9=32\relax
+%     \lowercase{%^^A
+%       \edef\x{\noexpand\DoNotIndex{\@backslashchar9}}%^^A
+%     }%^^A
+%   \expandafter\endgroup\x
+%
+% \DoNotIndex{\@auxout,\@evenfoot,\@firstofone,\@firstoftwo,\@ifl@t@r,\@ifpackagelater,\@ifpackageloaded,%
+% \IfPackageAtLeastF,\IfPackageLoadedT,\IfPackageLoadedTF,%
+% \@ifundefined,\@kernel@reserved@label@data,\@mainaux,\@number,\@oddfoot,%
+% \addtocounter,\AddToHook,\arabic,\begin,%
+% \bigskip,\clearpage,\csname,\detokenize,\documentclass,\EdefUnescapeString,\empty,\end,%
+% \endcsname,\enddocument,\expanded,\ExplSyntaxOff,\ExplSyntaxOn,\fmtversion,%
+% \g,\gdef,\here,\hfil,\Hy@temp,\Hy@unicodefalse,\Hy@EveryPageAnchor,%
+% \hypersetup,\if,\if@filesw,\if@nobreak,\ifHy@hypertexnames,\ifHy@pageanchor,\ifHy@plainpages,%
+% \ifdim,\ifnum,\ifvmode,\ifx,\immediate,\input,%
+% \label,\lastpage,\lastpage-example.tex,\lastpage.dtx,\lastpage.sty,\lastpagee.sty,%
+% \lastpageclassic.sty,\lastpagemodern.sty,\LaTeX,\LaTeX-kernel,\listfiles,%
+% \makeatletter,\makeatother,\markboth,\meaning,\mbox,\message,\MessageBreak,%
+% \NeedsTeXFormat,\newcommand,\newcounter,\newline,\newpage,\nobreak,%
+% \noindent,\normalsize,\numexpr,\origenddocument,\PackageError,\PackageNoteNoLine,\PackageWarning,%
+% \PackageWarningNoLine,\pagenumbering,\pageref,\pdfstringdef,\protect,\ProvidesPackage,%
+% \qquad,\renewcommand,\RequirePackage,\section,\ShowHook,\slshape,\smallskip,\space,\test,\textbf,%
+% \textit,\textquotedblleft,\textquotedblright,\textsf,\texttt,\the,\thepage,%
+% \today,\upshape,\url,\usepackage,\value,\verb,\wd,\write,\xlastpage@rmpage,\xxlastpage@rmpage}
+%
+% \title{The \xpackage{lastpage} package}
+% \author{H.-Martin Münch\\\xemail{Martin.Muench at Uni-Bonn.de}\\
+%   invented by Jeffrey P. Goldberg\\\xemail{jeffrey+news at goldmark.org}}
+% \date{2025-01-27 v2.1e}
+% \maketitle
+%
+% \begin{abstract}
+% \noindent This \LaTeX{} package puts the label \texttt{LastPage}
+% at the end of the document into the \xfile{.aux} file,
+% allowing the user to refer to the last page of a document.
+% This might be particularly useful in places like headers or footers.~--\newline
+% While this package allows for things like\newline
+% \hbox{\textquotedblleft Page} \hbox{|\thepage{}|} of |\pageref{LastPage}|\textquotedblright{}
+% to get \textquotedblleft Page 7 of 9\textquotedblright{} or
+% \textquotedblleft Page VII of IX\textquotedblright,
+% the \emph{number} of pages is nowadays available from the kernel
+% (|\@abspage@last|, |\thetotalpages|, |\PreviousTotalPages|),
+% but when more than one page numbering scheme is used
+% (for example pages I~to X and then 1~to 10,
+% thus number of pages \hbox{\textquotedblleft 20\textquotedblright ,}
+% but name of the last page \hbox{\textquotedblleft 10\textquotedblright ),}
+% or another package has output after this package,
+% or the page numbers exceed a certain range,
+% there might be problems, which can be solved by using the
+% \xpackage{pageslts} package instead.
+% \end{abstract}
+%
+% \bigskip
+%
+% \noindent Disclaimer for web links: The author is not responsible for any contents
+% referred to in this work unless having full knowledge of illegal contents.
+% If any damage occurs by the use of information presented there,
+% only the author of the respective pages might be liable,
+% not the one who has referred to those pages.
+% \newpage
+% \tableofcontents
+%
+% \section{Introduction}
+% \indent This \LaTeX{} package puts the label \texttt{LastPage}
+% (at end of the document via hook |enddocument/afterlastpage|,
+% for older formats via |\AtEndDocument|, for \LaTeX2.09{} via
+% redefining |\enddocument|) into the \xfile{aux} file,
+% allowing the user to refer to the last page of a document via
+% |\pageref{LastPage}|. This might be particularly useful
+% in places like headers or footers.
+%
+% \bigskip
+%
+% This package was invented by \textbf{Jeffrey P. Goldberg},
+% and is now maintained by \textsc{H.-Martin Münch}. A~big
+% \textquotedblleft Thank you!\textquotedblright{} to
+% \textsc{Jeffrey P. Goldberg} for granting this.
+%
+% \bigskip
+%
+% If you are more ambitious in respect to your aims with this package,
+% you might want to have a look at the \xpackage{pageslts} package
+% (see section~\ref{sec:Alternatives}: Alternatives).
+%
+% \section{Usage}
+% \indent Just load the package placing
+% \begin{quote}
+%   |\usepackage{lastpage}|
+% \end{quote}
+% \noindent in the preamble of your source file
+% (or |\input{lastpage.sty}| if |\usepackage| is unknown).
+%
+% \indent For example for various draft forms it is desirable to have a
+% page reference to the last page, so that e.\,g.\ page footers can
+% contain something like \textquotedblleft page $N$ of $K$\textquotedblright,
+% where $N$ is the current page and $K$ is the last page. Once the package
+% is loaded, anywhere in the text references can be made to the label
+% \texttt{LastPage}. In particular one can use the \xpackage{fancyhdr}
+% or \xpackage{nccfancyhdr} package, or redefinitions of the page headings
+% and footings to get a reference to the last page.
+%
+% \noindent In your document the code
+% \begin{verbatim}
+% \makeatletter
+% \renewcommand{\@evenfoot}{%
+%  \normalsize\slshape DRAFT \today\hfil \upshape %
+%  page \thepage{} of \pageref{LastPage}}
+% \renewcommand{\@oddfoot}{\@evenfoot}
+% \makeatother
+%\end{verbatim}
+% \noindent creates footers like\smallbreak
+% \textquotedblleft\mbox{\textsl{DRAFT \today}\hspace{1cm}page 7 of 9}\textquotedblright\smallbreak
+% \noindent in the compiled document (cf.~the \texttt{lastpage-example} file).\newline
+% If the \xpackage{hyperref} package is used, the references are hyperlinked
+% to their aims. If these hyperlinks shall be suppressed, |\pageref*{...}|
+% instead of |\pageref{...}| can be used.\bigbreak
+%
+% The \xpackage{lastpage} package does not provide the words
+% \textquotedblleft page\textquotedblright{} or \textquotedblleft of\textquotedblright{},
+% but e.\,g.\ the \xclass{handout} class uses \textquotedblleft of\textquotedblright{} in
+% the definition of the footer. (In the \texttt{lastpage-example} also
+% |\@evenfoot| is redefined, but it is not the \xpackage{lastpage} \emph{package}
+% redefining this.) If you want to change \textquotedblleft page\textquotedblright{} or
+% \textquotedblleft of\textquotedblright{} (e.\,g.\ to another language), you therefore
+% have got to look in the used class/package(s)/preamble instead of in the
+% \xpackage{lastpage} package.\bigbreak
+%
+% If the total \emph{number} of pages of a document is needed,
+% the kernel already gives this by |\makeatletter\@abspage@last\makeatother|,
+% |\thetotalpages|, and |\PreviousTotalPages| (needing at least two compiler runs).
+%
+% \section{Some \textsc{Warnings}\label{sec:warn}}
+% \subsection{\texttt{\textbackslash AtEndDocument}\label{ssec:aed}}
+% \indent {\bfseries |\AtEndDocument| is not used by the \pkg{lastpagemodern.sty}
+% version of the lastpage package, requiring \LaTeX -format 2024-11-01
+% or newer. Instead |\AddToHook{enddocument/afterlastpage}| is used
+% and the problem does not arise.}
+% \bigskip
+%
+% \pkg{lastpageclassic.sty} uses |\AtEndDocument| and
+% \pkg{lastpage209.sty} redefines \linebreak |\enddocument|.
+% The last two cases are problematic:\newline
+% The output of a \LaTeXe{} run is not independent of the order
+% in which the packages are loaded. It is often the case that the same
+% formats for which one must put tables and figure at the end,
+% are the ones in which endnotes are also required.
+% If one wants to use |\AtEndDocument| here as well (as done for
+% |\pageref{LastPage}|), then it is easy to get to three separate
+% uses of |\AtEndDocument| (assuming one uses this for the endnotes
+% as well). Clearly it is not safe for any package writer or user
+% to assume that no material will follow what they put into
+% |\AtEndDocument|. Therefore a message, which begins with
+% \texttt{AED}, is included in every usage of |\AtEndDocument|.
+% \xpackage{lastpage} uses |\AtEndDocument{|\ldots|\clearpage|\ldots|}|, thus\newline
+%|\usepackage{lastpage}|\ldots|\AtEndDocument{|\textit{something}|}|
+% will place \textit{something} after the |\clearpage|. To place it earlier, use\newline
+% |\AtEndDocument{|\textit{something}|}|\ldots|\usepackage{lastpage}|.
+% If the \textit{something} is not known before |\usepackage{lastpage}|,
+% you can use for example
+% \begin{verbatim}
+% ...
+% \def\beforeLastpageClearpage{\relax}
+% \AtEndDocument{\beforeLastpageClearpage}
+% \usepackage{lastpage}
+% \begin{document}
+% ...
+% \def\beforeLastpageClearpage{\textit{something}}%
+% ...
+% \end{document}
+% \end{verbatim}
+% (might need a protected and/or expanded |\def|). When |\clearpage| leads
+% to some output, |\clearpage\textit{something}| instead of |\textit{something}|
+% might be wanted.
+%
+% \subsection{Interaction with ancient versions of the \xpackage{endfloat} package\label{sec:endfloat}}
+%
+% \indent {\bfseries |\AtEndDocument| is not used by the \pkg{lastpagemodern.sty}
+% version of the lastpage package, requiring \LaTeX -format 2024-11-01
+% or newer. Instead |\AddToHook{enddocument/afterlastpage}| is used
+% and the problem does not arise.}
+%
+% \bigskip
+% The \emph{ancient} version~2.0 (and earlier; 2.0~from 1992;
+% current version at the time of updating this documentation: 2.7~from 2019)
+% of the \xpackage{endfloat} package actually redefined the |\enddocument| command,
+% and so interfered drastically with the \LaTeXe{} commands which make use of
+% |\AtEndDocument|.
+% If you want your \texttt{LastPage} to label the last page of these end floats,
+% you need to load \xpackage{lastpage} after loading \xpackage{endfloat}
+% (or use \texttt{VeryLastPage} from the \xpackage{pageslts} package instead).
+% If, on the other hand, you \emph{want} \texttt{LastPage} to refer
+% to the (not so) last page, exclusive of the floats at the end,
+% then load in the reverse order. Independent from the order of
+% \xpackage{lastpage} and \xpackage{endfloat}, you will still need
+% a version of \xpackage{endfloat} later than 2.0 from 1992.
+%
+% Other \LaTeX2.09{} (!) packages also seem to like to redefine
+% |\enddocument|. In addition to the old \xpackage{endfloat},
+% \xpackage{harvard} comes to mind. All of these will need to be
+% modified swiftly.
+%
+% \subsection{Page name instead of page number}
+% When any page numbering scheme other than \texttt{arabic} is used
+% at the page, which |\pageref{LastPage}| refers to, the \textit{name}
+% and not the \textit{number} of the page is given. For example,
+% \texttt{Alph} page numbering scheme and $10$ pages will give \texttt{J} instead of 10,
+% \texttt{Roman} page numbering scheme and $10$ pages will give \texttt{X} instead of 10,
+% and so on.\newline
+% \indent (The \xpackage{pageslts} package puts |\lastpageref{LastPages}|
+% (with \textbf{s} at the end) at your disposal for remediation.)
+%
+% \subsection{No write access to the \xfile{aux} file}
+% Some packages (e.\,g.\ \xpackage{tikz} and \xpackage{selectp}) sometimes prevent
+% the output to the \xfile{aux} file. In that case a warning is issued. This is
+% no problem as long as there is another compilation run where the label to the
+% last page can be placed via the \xfile{aux} file.
+%
+% \subsection[Wrong last page number with \textgreater 1 page numbering scheme]{%
+%  Wrong last page number with more than one page numbering scheme}
+% When more than one page numbering scheme is used,
+% \texttt{LastPage} does not give the total \textbf{number} of pages
+% (even if \texttt{arabic} is the page numbering scheme of that page).
+% For example, for a document with VI+36 pages, it gives
+% \textquotedblleft 36\textquotedblright{} as reference to the last page.
+% While this is correct, the total number of pages is $42$.\newline
+% If the total \emph{number} of pages of a document is needed,
+% the kernel already gives this by |\makeatletter\@abspage@last\makeatother|,
+% |\thetotalpages|, and |\PreviousTotalPages|.
+% The \xpackage{pageslts} package puts |\lastpageref{LastPages}|
+% (with \textbf{s} at the end) at your disposal for remediation,
+% giving the number of pages and linking to the last page, if linking is provided
+% for examaple by the \xpackage{hyperref} package.
+%
+% \subsection{\texttt{\textbackslash addtocounter\{page\}\{\ldots\} and %
+%  \texttt{\textbackslash setcounter\{page\}\{\ldots\}}}}
+% When the page number was manipulated by |\addtocounter{page}{...}| or
+% |\setcounter{page}{...}|, \texttt{LastPage} does not give the total
+% \textbf{number} of pages (even if \texttt{arabic} is the page numbering
+% scheme of that page).\newline
+% The \xpackage{pageslts} package puts |\lastpageref{LastPages}|
+% (with \textbf{s} at the end) at your disposal for remediation:
+% \texttt{LastPages} ignores page number manipulation. Also |\@abspage@last|,
+% |\thetotalpages|, and |\PreviousTotalPages| from the kernel
+% are not influenced by page number manipulation.
+%
+% \subsection{Page number reset by \texttt{\textbackslash pagenumbering\{\ldots\}}}
+% At a page numbering change the page number is reset to one.
+% Therefore \texttt{LastPage} does not give the total \textbf{number} of pages
+% (even if \texttt{arabic} is the page numbering scheme of that page).
+% Furthermore, now two pages have the same name.\newline
+% The \xpackage{pageslts} package does not only put
+% |\lastpageref{LastPages}| (with \textbf{s} at the end) at your disposal
+% for remediation: \texttt{LastPages} also ignores page number manipulation.
+% It furthermore offers the option |pagecontinue| to continue the
+% page numbering, when |\pagenumbering{...}| is used.
+%
+% \subsection{Last pages of different page numbering schemes}
+% |\pageref{LastPage}| refers to the (maybe not so) last page of the last
+% page numbering scheme. References to the respective last page of the other
+% page numbering schemes are not provided.\newline
+% The \xpackage{pageslts} package does this with labels
+% \texttt{pagesLTS.<numbering scheme>}, where \texttt{<numbering scheme>} is
+% e.\,g.\ arabic, roman, Roman, alph, or Alph.\linebreak
+% For fnsymbol please use |\lastpageref{pagesLTS.fnsymbol}| instead of\newline
+% |\pageref{pagesLTS.fnsymbol}|.
+%
+% \subsection{Current page}
+% The command |\thepage| gives the \textbf{name} of the current page
+% in the current page numbering scheme, which is different from the
+% current total/absolute page number e.\,g.\ with a second
+% page numbering scheme, |\addtocounter{page}{...}|, or |\setcounter{page}{...}|,
+% and it will not be an arabic number at all,
+% if the current page numbering scheme is not arabic.\newline
+% The \xpackage{pageslts} package provides the command
+% |\theCurrentPage| and for the current number of pages in the current
+% page numbering scheme\newline
+% |\theCurrentPageLocal|. The kernel already provides the
+% number of pages, which have been shipped out, as |\the\ReadonlyShipoutCounter|.
+% The current page is always |ReadonlyShipoutCounter +1|.
+%
+% \subsection{First page}
+% There is no special label at the first page.
+% (This is the \textbf{last}\textsf{page} package, after all.)\newline
+% The \xpackage{pageslts} package creates a label \texttt{pagesLTS.0}
+% at the first page of the document.
+%
+% \subsection{Page counter overflow\label{ss:overflow}}
+% \indent \textquotedblleft The ranges of supported counter values are more or less
+% restricted. Only \cs{arabic} can be used with any counter value \TeX{} supports.
+% \begin{quote}
+% \catcode`\|=12 %
+% \begin{tabular}{@{}l|l|l|l@{}}
+% Presentation & Supported & Ignored & Error message\\
+% command      & domain    & values  & `Counter too large'\\
+% \hline
+% \cs{arabic}
+%   & \ttfamily -MAX..MAX & &\\
+% \cs{roman}, \cs{Roman}
+%   & \ttfamily 1..MAX & \ttfamily -MAX..0 &\\
+% \cs{alph}, \cs{Alph}
+%   & \ttfamily 1..26 & 0 & \ttfamily -MAX..-1, 27..MAX\\
+% \cs{fnsymbol}
+%   & \ttfamily 1..9 & 0 & \ttfamily -MAX..-1, 10..MAX\\
+% \hline
+% \end{tabular}\\[1ex]
+% \texttt{MAX} = \texttt{2147483647}
+% \end{quote}
+% \textquotedblright\ (\xpackage{alphalph} package manual, 2019/12/09, v2.6,
+% first table, p.~2).
+%
+% \noindent When \textit{any} page is out of that range, there will be a counter overflow.\newline
+% \xpackage{lastpage} probably is not the right package to be asked
+% to correct this anyway, but the \xpackage{pageslts} package
+% (with appropriate options) can do this.
+%
+% When MAX is exceeded via
+% |\setcounter{<name>}{| something greater than MAX (or smaller then $-$MAX) |}|,
+% then the error
+% \begin{quote}
+% \begin{verbatim}
+% ! Number too big.
+% I can only go up to 2147483647='17777777777="7FFFFFFF,
+% so I'm using that number instead of yours.
+% \end{verbatim}
+% \end{quote}
+% \vspace{-\baselineskip}
+% will arise. But if the counter has a value of $2\,147\,483\,647 = {}$MAX,
+% and |\addtocounter{<name>}{+1}| is tried, no error is issued, but
+% |\arabic{<name>}| prints $-2147483648$, and further |\addtocounter{<name>}{+1}|s
+% give $-2147483647$, $-2147483646$ and so on.\newline
+% For a counter value of $-2\,147\,483\,647 = -$MAX and |\addtocounter{<name>}{-1}|s
+% after $-2147483647$ it is printed $-2147483648$, $2147483647$, $2147483646$ and so on
+% (without any message in the \xfile{log} file about any possible issue).
+%
+% \subsection{Other packages manipulating \texttt{\textbackslash lastpage@putlabel}}
+% The \xpackage{revtex4} class redefines the |\lastpage@putlabel| command
+% to place a label |LastPage|.\newline
+% |\lastpage@putlabel| in the \xpackage{lastpage} package was replaced by |\lastpage@putl@bel|,
+% but the |LastPage| label could become defined more than once.
+%
+% \subsection{\texttt{\textbackslash pagenumbering\{fnsymbol\}}\label{subsec:fnsymbol}}
+% When using the foot-note-symbols as page numbers,
+% it can be necessary to declare in the document's preamble:
+% \begin{verbatim}
+% \ProvideTextCommand{\textasteriskcentered}{PD1}{*}
+% \ProvideTextCommand{\textdagger}{PD1}{†}
+% %\ProvideTextCommand{\textdaggerdbl}{PD1}{‡)% seems to neither work nor be necessary
+% \ProvideTextCommand{\textsection}{PD1}{§}
+% \ProvideTextCommand{\textparagraph}{PD1}{¶}
+% \ProvideTextCommand{\textbardbl}{PD1}{‖}
+% \end{verbatim}
+%
+% \section{Alternatives\label{sec:Alternatives}}
+% There are similar packages, which do (or do not) similar things (or even more).
+% As I neither know what exactly you want to accomplish when using this package
+% (e.\,g.~page number vs. page name, hyperlinks or not), nor what resources
+% your system has (e.\,g.~\TeX, \LaTeX2e, $\varepsilon$-\TeX{}, \LaTeX-format as recent
+% as 2024-11-01 or newer), here is a list of some possible alternatives:
+% \begin{description}
+% \item[-]\DescribeMacro{pageslts}
+%  The \xpackage{pageslts} package first started as a revision of this
+%  \xpackage{lastpage} package, but I~thought that an enhancement was needed
+%  to accomplish what the \xpackage{pageslts} package does. For backward
+%  compatibility, a label named |LastPage| is provided.
+%  Thus |\usepackage{lastpage}| can be replaced by\newline
+%  |\usepackage[pagecontinue=false,alphMult=0,AlphMulti=0,|\newline
+%  | fnsymbolmult=false,romanMult=false,RomanMulti=false]{pageslts}|,\newline
+%  if the behaviour of the \xpackage{lastpage} package should be simulated.
+%  The default options are\newline
+%  |\usepackage[pagecontinue=true,alphMult=ab,AlphMulti=AB,|\newline
+%  |fnsymbolmult=true,romanMult=true,RomanMulti=true]{pageslts}|.\newline
+%  Benefits of \xpackage{pageslts} package (with appropriate options) are:
+%  \begin{description}
+%  \item[+] Labels \texttt{LastPage} (|\AddToHook{enddocument/afterlastpage}|,
+%   formerly |\AtEndDocument|; same as the \xpackage{LastPage} package) and
+%   \texttt{VeryLastPage} (also |\AddToHook{enddocument/afterlastpage}|,
+%   but formerly\newline%
+%   |\AfterLastShipout|), allowing the user to refer to the
+%   (very) last page of a document.
+%  \item[+] For example, when more than one page numbering scheme is used,
+%    the label \mbox{\texttt{LastPage}\textbf{s}} gives the total \textit{number} of pages.
+%  \item[+] At the last page of each page numbering scheme a label\newline
+%   \texttt{pagesLTS.<numbering scheme>} is placed, where
+%   \texttt{<numbering scheme>} is e.\,g.\ arabic, roman, Roman, alph, or Alph.
+%   For fnsymbol please use |\lastpageref{pagesLTS.fnsymbol}| instead of\newline
+%   |\pageref{pagesLTS.fnsymbol}|.
+%  \item[+] When the same numbering scheme is used twice, the page numbers
+%   are either reset to one or continued automatically, depending on the option
+%   given when the package is called.
+%  \item[+] The command |\theCurrentPage| prints the current total/absolute
+%   page number -- in contrast to |\thepage|, which gives only the page
+%   \textit{name} in the current page numbering scheme.
+%   |\theCurrentPageLocal| gives the current number of pages in the current
+%   page numbering scheme. |\thepage| and |\theCurrentPageLocal| are different
+%   e.\,g.\ when |\addtocounter{page}{...}| or |\setcounter{page}{...}| were used.
+%  \item[+] At the first page of the document a label \texttt{pagesLTS.0} is created.
+%  \item[+] The \xpackage{alphalph} package is supported, i.\,e.\ %
+%   page numbers alph or Alph $>26$ and fnsymbol $>9$ can be used
+%   (with according options set). Even zero and negative page numbers can be used
+%   with \texttt{arabic}, \texttt{alph}, \texttt{Alph}, \texttt{roman}, \texttt{Roman},
+%   and \texttt{fnsymbol} page numbering (with \xpackage{alphalph} package and
+%   according options).
+%  \end{description}
+%  Further labels are provided for special cases.\newline
+%  \url{https://ctan.org/pkg/pageslts}
+%
+% \item[-]\DescribeMacro{LaTeX-kernel}
+%  The number of pages is nowadays available via |\@abspage@last|,\linebreak
+%  |\thetotalpages|, and |\PreviousTotalPages| from the kernel,
+%  but when more than one page numbering scheme is used
+%  (for example pages I~to X and then 1~to 10, thus number of pages
+%  \hbox{\textquotedblleft 20\textquotedblright ,} but name of the last page
+%  \hbox{\textquotedblleft 10\textquotedblright ),}
+%  or when or the fnsymbol page numbering scheme is used, or another package
+%  has output after this package, or the page numbers exceed a certain range,
+%  there might be issues. (Is the total number of pages wanted? Or is the name
+%  of the last page sought?)\newline
+%  |\the\ReadonlyShipoutCounter| contains the number of currently shipped out pages,
+%  i.\,e.\ current page minus one.
+%
+% \item[-]\DescribeMacro{totpages}
+%  The \xpackage{totpages} package provides a \texttt{totpages} label similar to
+%  \texttt{LastPages}, but |\AtEndDocument| instead of hook |enddocument/afterlastpage|
+%  of the \pkg{pageslts} package.
+%  The \xpackage{totpages} package additionally computes the number of paper sheets
+%  needed to (double) print the document (with one, two, three,\ldots{} pages on
+%  one sheet of paper) (which can be achieved also with the \xpackage{papermas} package,
+%  an extension of the \xpackage{pageslts} package, which further allows to compute
+%  the mass of that printed version of the document, useful e.\,g.\ when sending it
+%  by mail to determine the postage).\newline
+%  \url{https://ctan.org/pkg/totpages}
+%
+% \item[-]\DescribeMacro{totalcount}
+%  The \xpackage{totalcount} package provides |\totalpages|.
+%  If there are only arabic page numbers consecutively running from 1 to the last page,
+%  this works. But for example
+%
+% \begin{quote}
+%\begin{verbatim}
+%\documentclass{article}
+%\usepackage[page]{totalcount}
+%\pagenumbering{Roman}
+%\begin{document}
+%\addtocounter{page}{49}
+%Page \thepage{} of \totalpages
+%\end{document}
+%\end{verbatim}
+% \end{quote}
+%
+%  prints \textquotedblleft Page L of 50\textquotedblright,
+%  where the number of pages is one (and no hyperlink is provided to the
+%  last page even if \xpackage{hyperref} is used).\newline
+%  \url{https://ctan.org/pkg/totalcount}
+%
+% \item[-]\DescribeMacro{totcount}
+%  The \xpackage{totcount} package provides the last value of a counter, thus also the value
+%  of the \texttt{page} counter. You do not get a hyperlink to the last page, only the numerical
+%  value of the last page name is given \mbox{(i.\,e.~X+72} pages gives 72 instead of 82
+%  as total number of pages), and the number of pages can be changed for example
+%  by |\addtocounter|.\newline
+%  \url{https://ctan.org/pkg/totcount}
+% \pagebreak
+%
+% \item[-]\DescribeMacro{nofm}
+%  \textquotedblleft There is a package \xpackage{nofm.sty} available, but some versions
+%  of it are defective, and most don't work with \xpackage{fancyhdr} because they take over
+%  the complete page layout.\textquotedblright{} (\textsc{Piet van Oostrum}:
+%  Page layout in \LaTeX , March~2, 2004, section~16; fancyhdr.pdf)\newline
+%  \xpackage{nofm} as of 1991/02/25 (without version number), available at\newline
+%  \url{https://mirror.ctan.org/obsolete/macros/latex209/contrib/misc/nofm.sty},\newline
+%  does not work with e.\,g.\ \xpackage{hyperref}, redefines |\enddocument|
+%  as well as |\@oddhead|, |\@evenhead|, |\@oddfoot|, and |\@evenfoot|.\newline
+%  If you know the (\url{https://CTAN.org}) location of a
+%  \textbf{working}~(!) version, please send me an e-mail, thanks!
+%
+% \item[-]\DescribeMacro{count1to}
+%  The \xpackage{count1to} package \textquotedblleft sets |\count1| to |\count8|
+%  with the values of page to subparagraph. |\count9| is used to flag odd
+%  pages. \ldots\ [T]he code for the TotalPages
+%  label\textquotedblright\ (package manual, 2024-06-13) has been removed
+%  from the current package version.\newline
+%  \url{https://ctan.org/pkg/count1to}
+%
+% \item[-]\DescribeMacro{zref}
+%  The \xpackage{zref} package \textquotedblleft implements an extensible referencing
+%  system\textquotedblright\ (package manual, 2023-09-14).\newline
+%  \url{https://ctan.org/pkg/zref}
+%
+% \item[-]\DescribeMacro{memoir}
+%  The \xpackage{memoir} \emph{class} provides |\thelastpage| (page number printed
+%  on last page) and |\thelastsheet| (number of pages).\newline
+%  \url{https://ctan.org/pkg/memoir}
+% \end{description}
+%
+% \bigskip
+%
+% \noindent (You programmed or found another alternative,
+%  which is available at\newline
+%  \url{https://CTAN.org}?
+%  OK, send an e-mail to me with the name, location at CTAN,
+%  and a short notice, and I will probably include it in the list above.)
+% \newpage
+%
+% \section{Example}
+%    \begin{macrocode}
+%<*example>
+\documentclass[british]{article}[2024/06/29]% v1.4n Standard LaTeX document class
+\makeatletter
+\usepackage[draft]{showkeys}[2024/05/23]% v3.21 Show cite and label keys (DPC, MH)
+%%      Use final instead of draft to hide the keys. %%
+\usepackage[pdfpagelabels=true,hyperindex=false]{hyperref}[2024-10-30]% v7.01k
+\@ifpackageloaded{hyperref}{% Hypertext links for LaTeX
+\hypersetup{extension=pdf,%
+ plainpages=false,%
+ pdflang={en},%
+ pdftitle={lastpage package example},%
+ pdfauthor={H.-Martin Muench},%
+ pdfsubject={Example for the lastpage package},%
+ pdfkeywords={LaTeX, lastpage},%
+ pdfview=Fit,%
+ pdfstartview=Fit,%
+ pdfpagelayout=SinglePage%
+}}{\usepackage{url}[2013/09/16]}%  v3.4  Verb mode for urls, etc.
+\usepackage{lastpage}[2025/01/27]% v2.1e Refers to last page's name (HMM; JPG)]
+\renewcommand{\@evenfoot}{{%
+ \normalsize\slshape \today\hfil \upshape %
+ page \thepage{} of \pageref{LastPage}}}
+\renewcommand{\@oddfoot}{\@evenfoot}
+\makeatother
+\listfiles
+\begin{document}
+\pagenumbering{Roman}
+\section*{Example for lastpage}
+\markboth{Example for lastpage}{Example for lastpage}
+This example demonstrates the use of package\newline
+\textsf{lastpage}, v2.1e as of 2025-01-27 (HMM; JPG).\newline
+The package takes no options.\newline
+For more details please see the documentation!\newline
+
+\noindent \label{keys} To hide the \pageref{keys}{\qquad } use option
+\texttt{final} instead of \texttt{draft} with the \textsf{showkeys}
+package (or remove the package call from the preamble of
+this document).\newline
+
+\textbf{Hyperlinks or not:} If the \textsf{hyperref} package is loaded,
+the references are also hyperlinked:\newline
+\smallskip
+Last page's name (LastPage): \pageref{LastPage}\newline
+\noindent If the \textsf{hyperref} package is loaded, but the hyperlinks
+of the references shall be suppressed, \verb|\pageref*{...}|
+can be used:\newline
+\smallskip
+Last page's name (LastPage): \pageref*{LastPage}\newline
+
+\textbf{Trademarks} appear throughout this example without any
+trademark symbol; they are the property of their respective
+trademark owner. There is no intention of infringement; the
+usage is to the benefit of the trademark owner.\newline
+
+\textbf{Tip}: Use \textit{logical page numbers}
+for the display of the pdf (in Adobe Acrobat Reader 2024.005.20392:
+Edit $>$ Preferences $>$ Page Display $>$
+Page Content and Information: Use logical page numbers)!\newline
+
+If you are more ambitious in respect to your aims with this package,
+you might want to have a look at the \textsf{pageslts} package:\newline
+\url{https://ctan.org/pkg/pageslts}.
+\bigskip
+
+\noindent The page (\verb|\thepage|): \thepage \newline
+Last page's name (LastPage): \pageref{LastPage}
+\newpage
+
+\noindent The page (\verb|\thepage|): \thepage \newline
+Last page's name (LastPage): \pageref{LastPage}
+
+\bigskip
+
+\noindent There was the question:
+
+\begin{quote}
+\begin{verbatim}
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\begin{document}
+\ifnum\thepage=\pageref{LastPage} foo \else bar \fi
+\end{document}
+\end{verbatim}
+
+producing the error
+\textquotedblleft missing number, treated as zero\textquotedblright.
+\end{quote}
+
+\noindent \verb|\pageref| inserts a hyperlink, \verb|\pageref{LastPage}|
+is not expandable and the code breaks.\newline
+The code does not generally work even without hyperref.
+
+\begin{quote}
+\begin{verbatim}
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\pagenumbering{Roman}
+\begin{document}
+\addtocounter{page}{8}
+\edef\here{\thepage}
+\makeatletter
+\ifx\here\lastpage@lastpage\relax foo\else bar\fi
+\makeatother
+\end{document}
+\end{verbatim}
+\end{quote}
+
+\noindent does work (two compilations needed), because \verb|\lastpage@lastpage|
+contains the name of the page, \mbox{example:}
+\begin{verbatim}
+Page \thepage{} is (not) page
+\makeatletter\lastpage@lastpage\makeatother.
+\end{verbatim}
+prints:\newline
+Page \thepage{} is (not) page
+\makeatletter\lastpage@lastpage\makeatother.
+\newline
+This can be broken for example by \verb|\pagenumbering{fnsymbol}|
+(because then \verb|\edef\here{\thepage}| does not work).
+\newpage
+
+\noindent The page (\verb|\thepage|): \thepage\newline
+Last page's name (LastPage): \pageref{LastPage}
+\bigskip
+
+With modern \LaTeX{} it is possible to say:
+\begin{quote}
+\begin{verbatim}
+\NeedsTeXFormat{LaTeX2e}[2024-11-01]
+\documentclass{article}
+\pagenumbering{fnsymbol}
+\begin{document}
+\addtocounter{page}{8}%
+\ExplSyntaxOn%
+\xdef\test{\numexpr\the\g_shipout_readonly_int +1\relax}%
+\ExplSyntaxOff%
+\ifnum\PreviousTotalPages=\test\relax%
+This is the last page.%
+\else%
+This is not the last page
+(or it is but \LaTeX{} needs another compilation run
+to detect this).
+\fi
+\end{document}
+\end{verbatim}
+\end{quote}
+
+\newpage
+\section*{The End}
+\noindent The page (\verb|\thepage|): \thepage \newline
+Last page's name (LastPage): \pageref{LastPage}
+\bigskip
+
+To see the content of the \texttt{enddocument/afterlastpage}-hook
+(for a recent \LaTeX-format!) use % without the \verb||, of course!
+\verb|\ShowHook{enddocument/afterlastpage}|.
+\end{document}
+%</example>
+%    \end{macrocode}
+% \StopEventually{}
+% \newpage
+%
+% \section{The implementation}
+% \DescribeMacro{lastpage.sty}
+% We first need to determine whether we are on \TeX~2.09 or \LaTeX2e.\newline
+% (That line, which is too long for the documentation, reads:\newline
+% |\def\loadlastpage{\ProvidesPackage{lastpage}[2025/01/27 v2.1e lastpage:|\linebreak
+% | 2.09 or 2e? (HMM)]\relax\RequirePackage{lastpage2e}}|.)
+%
+%    \begin{macrocode}
+%<*package>
+%% Part of the "lastpage" package
+%% loads either lastpage2.09.sty for TeX 2.09 or lastpage2e.sty for LaTeX 2e
+%% with code from https://groups.google.com/g/comp.text.tex/c/-Qmhj1ZI4xM
+\def\loadlastpage{\ProvidesPackage{lastpage}[2025/01/27 v2.1e lastpage: 2.09 or 2e? (HMM)]\relax\RequirePackage{lastpage2e}}
+\begingroup \expandafter \ifx \csname documentclass\endcsname\relax
+\endgroup \expandafter \input{lastpage209.sty}
+\else \endgroup \expandafter \loadlastpage
+\fi
+%</package>
+%    \end{macrocode}
+%
+% \DescribeMacro{lastpage209.sty}
+% If we are on \TeX~2.09 (really?!), we load the 2.09 version \pkg{lastpage209.sty}:
+%
+%    \begin{macrocode}
+%<*lastpage209>
+%% Part of the "lastpage" package
+%% FOR LaTeX 2.09 ONLY - FOR LaTeX 2e USE lastpage2e.sty
+%% This is lastpage209.sty invented by Jeffrey P. Goldberg,
+%% after Piet van Oostrum: Page layout in LaTeX, March 2, 2004, section 16;
+%% fancyhdr.pdf; lastpage209.sty maintained by H.-Martin Muench.
+\let\origenddocument=\enddocument%
+\def\enddocument{\clearpage%
+  {\addtocounter{page}{-1}%
+   \immediate\write\@mainaux{\string\newlabel{LastPage}{{}{\thepage}}}%
+  }%
+  \addtocounter{page}{+1}%
+  \origenddocument%
+ }
+%</lastpage209>
+%    \end{macrocode}
+%
+% \DescribeMacro{lastpage2e.sty}
+% If |\documentclass| is known, we are in \LaTeXe{} -- but which one?
+% For modern versions with \eTeX{} and hook management etc.
+% we load version \pkg{lastpagemodern.sty}, otherwise
+% \pkg{lastpageclassic.sty}. We start off by checking that we are
+% loading into \LaTeXe{} and announcing the name and version of this package.
+%
+%    \begin{macrocode}
+%<*lastpage2e>
+%% Part of the "lastpage" package
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{lastpage2e}[2025/01/27 v2.1e %
+ Decide which 2e lastpage version to use (HMM)]
+\@ifl@t@r\fmtversion{2024/06/01}{\RequirePackage{lastpagemodern}}{%
+                                 \RequirePackage{lastpageclassic}}
+\message{^^J}
+%</lastpage2e>
+%    \end{macrocode}
+% \newpage
+%
+% \DescribeMacro{lastpageclassic.sty}
+% In case of older \LaTeX-formats \pkg{lastpageclassic.sty} is loaded:
+%
+%    \begin{macrocode}
+%<*lastpageclassic>
+%% Part of the "lastpage" package
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{lastpageclassic}[2025/01/27 v2.1e %
+  Refers to last page's name (HMM; JPG)]
+%% allows for things like "Page \thepage{} of \pageref{LastPage}"
+%% to get "Page 7 of 9"
+
+%    \end{macrocode}
+%
+% \indent For comparisons, \textquotedblleft one\textquotedblright{} is defined
+% (|\@ne| does not work for this).
+%
+%    \begin{macrocode}
+\gdef\lastpage@one{1}
+%    \end{macrocode}
+%
+% We define |\lastpage@hyper|, |\lastpage@nameref|, |\lastpage@french|, and
+% |\lastpage@LTS| to be \textquotedblleft \texttt{0}\textquotedblright{}.
+%
+%    \begin{macrocode}
+\gdef\lastpage@hyper{0}
+\gdef\lastpage@nameref{0}
+\gdef\lastpage@french{0}
+\gdef\lastpage@LTS{0}
+%    \end{macrocode}
+%
+% We define |\lastpage@firstpage| to be \textquotedblleft \texttt{1}\textquotedblright{},
+% and before re-definition via the \xfile{.aux} file,
+% |\lastpage@lastpage| and |\lastpage@lastpageHy| are unknown.
+%
+%    \begin{macrocode}
+\gdef\lastpage@firstpage{1}
+\gdef\lastpage@lastpage{??}
+\gdef\lastpage@lastpageHy{??}
+
+%    \end{macrocode}
+%
+% \begin{macro}{\AtBeginDocument}
+% \indent |\AtBeginDocument| we give a warning about ancient versions of the \pkg{endfloat} package.
+% Then it is checked whether various packages are loaded.
+% (|\@ifpackageloaded| cannot be used later than |\AtBeginDocument|.)
+% If this is the case,\newline
+% |\lastpage@<package abbreviation>| is defined as \texttt{1}
+% (otherwise it stays~\texttt{0}).
+%
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \@ifpackageloaded{endfloat}{%
+    \@ifpackagelater{endfloat}{1993/04/30}{\relax}{%
+      \PackageError{lastpage}{%
+        Incompatibility with outdated version of endfloat package}{%
+        lastpage is not fully compatible with a version\MessageBreak%
+        before 2.1 of the endfloat package,\MessageBreak%
+        because those versions redefined\MessageBreak%
+        the \string\enddocument\space command.}%
+    }}{}%
+  \@ifpackageloaded{tikz}{\gdef\lastpage@tikz{1}}{}%
+  \@ifpackageloaded{hyperref}{\gdef\lastpage@hyper{1}}{}%
+  \@ifpackageloaded{nameref}{\gdef\lastpage@nameref{1}}{}%
+  \@ifpackageloaded{french}{\gdef\lastpage@french{1}}{}%
+  \@ifpackageloaded{frenchle}{\gdef\lastpage@french{1}}{}%
+  \@ifpackageloaded{pagesLTS}{\gdef\lastpage@LTS{1}}{}%
+  \@ifpackageloaded{pageslts}{\gdef\lastpage@LTS{1}}{}%
+%    \end{macrocode}
+%
+% |\lastpage@putlabel|, used by older versions of this package,
+% is redefined e.\,g.\ by \xpackage{revtex}, \xpackage{frenchle},
+% \xpackage{PPRcorners}, and old versions of \xpackage{hyperref}.
+% While now |\lastpage@putl@bel| is used instead, \xpackage{revtex}
+% could also define a label \texttt{LastPage},
+% which then would be multiply defined. (Which is no big issue,
+% if it is associated with the same page.) Therefore we define
+%
+%    \begin{macrocode}
+  \gdef\lastpage@putlabel{\relax}%
+  }
+
+%    \end{macrocode}
+%
+% \noindent Because |\lastpage@putlabel| might be (re)defined later,
+% depending on the order in which the packages are loaded,
+% we will do this again |\AtEndDocument|.
+% \end{macro}
+%
+% \begin{macro}{\lastpage@putl@bel}
+% \indent This command does the writing of the label:
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@putl@bel}{%
+%    \end{macrocode}
+%
+% |\AtBeginDocument| it is checked whether the \xpackage{hyperref} package is loaded,\newline
+% |\@ifpackageloaded{hyperref}{\gdef\lastpage@hyper{1}}{}|.\newline
+% |\@ifpackageloaded| cannot be used later than |\AtBeginDocument|.\newline
+% User \textsc{Sebastian Bank} found and reported (Thanks!) a~case, when this check is not
+% sufficient. Using a class with\newline
+% |\usepackage{lastpage}|\newline
+% |\AtBeginDocument{\usepackage{hyperref}}|\newline
+% leads to failed detection of the \xpackage{hyperref} package, because
+% |\AtBeginDocument| \textit{first} the check for \xpackage{hyperref} is performed,
+% and \textit{then} \xpackage{hyperref} is loaded. As mentioned above,
+% |\@ifpackageloaded| cannot be used later, so here we do not check for the
+% \xpackage{hyperref} package again, but for its |\Hy@Warning| command.
+% In version~1.2c of the \xpackage{lastpage} package, it was checked for
+% the |\hyperref| command, but as it turned out, \xpackage{tcilatex} \textit{is}
+% defining that. If some other package or user is defining |\Hy@Warning|,
+% \xpackage{lastpage} will falsely assume, that \xpackage{hyperref} has been loaded,
+% but in my humble opinion, defining |\Hy@Warning| does not make sense and
+% is bad style (except definition by the \xpackage{hyperref} package itself,
+% of course).
+%
+%    \begin{macrocode}
+  \@ifundefined{Hy@Warning}{%  hyperref not loaded
+    }{\gdef\lastpage@hyper{1}% hyperref loaded
+     }%
+%    \end{macrocode}
+%
+% If the \xpackage{pageslts} package is used, this \xpackage{lastpage} package is
+% not needed at all. The \xpackage{LastPage} label would even be defined twice.
+% Thus, if \xpackage{pageslts} is used, here nothing is done:
+%
+%    \begin{macrocode}
+  \ifx\lastpage@LTS\lastpage@one%
+  \else%
+%    \end{macrocode}
+%
+% Otherwise the label is set:\newline
+% We have got to distinguish whether \xpackage{hyperref} has been loaded or not:
+%
+%    \begin{macrocode}
+    \ifx\lastpage@hyper\lastpage@one%
+      \lastpage@putlabelhyper%
+    \else%
+%    \end{macrocode}
+%
+% and also need to treat documents with \xpackage{nameref} differently:
+%
+%    \begin{macrocode}
+      \ifx\lastpage@nameref\lastpage@one%
+        \lastpage@putlabelNR%
+      \else%
+%    \end{macrocode}
+%
+% When those packages have not been loaded, we just write the
+% simple label into the \xfile{aux} file (and store the value of the page):
+%
+%    \begin{macrocode}
+        \begingroup%
+          \addtocounter{page}{-1}%
+          \immediate\write\@auxout{\string\newlabel{LastPage}{{}{\thepage}}}%
+          \immediate\write\@auxout{\string\xdef\string\lastpage@lastpage{\thepage}}%
+          \immediate\write\@auxout{\string\gdef\string\lastpage@lastpageHy{}}%
+          \addtocounter{page}{+1}%
+        \endgroup%
+      \fi%
+    \fi%
+  \fi%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+% \newpage
+%
+% \begin{macro}{\lastpage@putlabelhyper}%
+% \indent When \xpackage{hyperref} has been loaded, the label is set with the
+% |\lastpage@putlabelhyper| command. If the \xpackage{hyperref} package is used,
+% but page-anchors are disabled, the hyperlinking will not work. (The warning will
+% also be shown, when only |\pageref*{LastPage}| is used (or neither one),
+% but without messing with |\pageref| we cannot detect this.)
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@putlabelhyper}{%
+  \ifHy@pageanchor%
+  \else%
+    \PackageWarningNoLine{lastpage}{%
+      The \string\pageref{LastPage} link does not work\MessageBreak%
+      using hyperref with disabled option `pageanchor'.\MessageBreak%
+      Better enable `pageanchor' or use\MessageBreak%
+      \string\pageref*{LastPage} (not generating a link)%
+      }%
+  \fi%
+%    \end{macrocode}
+%
+% Since the page has been put out, we are on the page \textit{after} that page.
+% We therefore subtract one from the page counter. (For the compiler,
+% this is equal to |\advance\c@page\m@ne|, but for human readers of the code
+% it is probably easier to understand.)
+%
+%    \begin{macrocode}
+  \begingroup%
+    \addtocounter{page}{-1}%
+%    \end{macrocode}
+%
+% Simply using |\label| for \texttt{LastPage} would not work,
+% because labels wait for the output routines to work, and there
+% may be no more invocations of the output routines. To force
+% the write out, we need to do an |\immediate| write into the \xfile{aux} file.
+%
+%    \begin{macrocode}
+%% with code from \Hy@EveryPageAnchor of the hyperref package,
+%% 2010/04/17 v6.80x; newer versions are available
+    \let\@number\@firstofone%
+    \ifHy@pageanchor%
+      \ifHy@hypertexnames%
+        \ifHy@plainpages%
+          \def\Hy@temp{\arabic{page}}%
+        \else%
+          \Hy@unicodefalse%
+          \ifnum \value{page}=1\relax%
+%    \end{macrocode}
+%
+% We do not count the pages ourselves, and so they could have been changed by
+% e.\,g.\ |\pagenumbering{...}|, |\addtocounter{page}{...}|,\newline
+% |\setcounter{page}{...}|. Thus the page might have the number one
+% while not being the first page at all. Using the \xpackage{everyshi}
+% package would help, but this package should not require other packages.
+% The \xpackage{pageslts} package does a better handling.\newline
+% We will make a mistake here at most once:
+%
+%    \begin{macrocode}
+            \ifx \lastpage@firstpage\lastpage@one\relax%
+              \def\Hy@temp{\thepage}%
+              \gdef\lastpage@firstpage{0}%
+            \else%
+                \pdfstringdef\Hy@temp{\thepage}%
+          \fi%
+          \else%
+            \pdfstringdef\Hy@temp{\thepage}%
+          \fi%
+        \fi%
+      \else%
+        \def\Hy@temp{\the\Hy@pagecounter}%
+      \fi%
+    \fi%
+    \immediate\write\@auxout{%
+      \string\newlabel{LastPage}{{}{\thepage}{}{%
+          \ifHy@pageanchor page.\Hy@temp\fi}{}}%
+    }%
+%    \end{macrocode}
+%
+% We also save the values, so that we can later (next rerun) check,
+% whether they have been saved in the \xfile{aux} file.
+%
+%    \begin{macrocode}
+    \immediate\write\@auxout{\string\xdef\string\lastpage@lastpage{\thepage}}%
+    \ifHy@pageanchor%
+      \immediate\write\@auxout{\string\xdef\string\lastpage@lastpageHy{\Hy@temp}}%
+    \else%
+      \immediate\write\@auxout{\string\gdef\string\lastpage@lastpageHy{}}%
+    \fi%
+%    \end{macrocode}
+%
+% After the writeout we restore the page number again,
+% since there might be other things still to be done.
+%
+%    \begin{macrocode}
+    \addtocounter{page}{+1}%
+  \endgroup%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lastpage@putlabelNR}
+% \indent The \xpackage{nameref} package redefines |\label| to have five arguments
+% instead of two, therefore\newline
+% |\newlabel{LastPage}{{}{\thepage}{}{}{}}|
+% instead of\newline
+% |\newlabel{LastPage}{{}{\thepage}}| must be used:
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@putlabelNR}{%
+  \begingroup%
+    \addtocounter{page}{-1}%
+    \immediate\write\@auxout{\string\newlabel{LastPage}{{}{\thepage}{}{}{}}}%
+    \immediate\write\@auxout{\string\xdef\string\lastpage@lastpage{\thepage}}%
+    \immediate\write\@auxout{\string\gdef\string\lastpage@lastpageHy{}}%
+    \addtocounter{page}{+1}%
+  \endgroup%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lastpage@fileswtest}
+% \indent Later it will be determined whether it is allowed to write
+% to the \xfile{aux} file. If it was \emph{not} allowed, it is checked
+% whether the label was already set via the \xfile{aux} file in some
+% earlier compilation run. (There are packages where the document
+% is compiled with access to the \xfile{aux} file, and then there is
+% an additional compiler run, where the \xfile{aux} file cannot be changed,
+% but in that run there is also no need to change it.) The \xpackage{tikz}
+% package is somewhat different, therefore we only give a warning instead
+% of an error (and hope that there is another compiler run where the
+% \xfile{aux} file can be written).
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@fileswtest}[2]{%
+  \edef\lastpage@testa{#1}%
+  \edef\lastpage@testb{#2}%
+  \ifx\lastpage@testa\lastpage@testb%
+  \else%
+    \ifx\lastpage@tikz\lastpage@one\relax%
+      \PackageWarning{lastpage}%
+       {The lastpage package was not allowed to write to an\MessageBreak%
+        .aux file. This package does not work without access\MessageBreak%
+        to an .aux file.\MessageBreak%
+        It is OK if the .aux file was already updated\MessageBreak%
+        by a previous compiler run\MessageBreak%
+        and would not have changed anyway.\MessageBreak%
+       }%
+    \else%
+      \PackageError{lastpage}{No auxiliary file allowed}%
+       {The lastpage package was not allowed to write to an .aux file.\MessageBreak%
+        This package does not work without access to an .aux file.\MessageBreak%
+        Press Ctrl+Z to exit.\MessageBreak%
+        But it is OK if the .aux file was already updated\MessageBreak%
+        by a previous compiler run\MessageBreak%
+        and would not have changed anyway.}%
+    \fi%
+  \fi%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lastpage@fileswtestHy}
+% \indent When the \xpackage{hyperref} package has been loaded,
+% |\lastpage@lastpageHy| must be tested additionally. (And a
+% |\newcommand| is needed, because |\ifHy@pageanchor| is not even
+% defined when \xpackage{hyperref} has not been loaded.)
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@fileswtestHy}{%
+  \ifHy@pageanchor%
+    \lastpage@fileswtest{\Hy@temp}{\lastpage@lastpageHy}%
+  \else%
+    \lastpage@fileswtest{\empty}{\lastpage@lastpageHy}%
+  \fi%
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\AtEndDocument}
+% \indent |\AtEndDocument| we again (re)define |\lastpage@putlabel|
+% to do nothing and check |\lastpage@lastpage|,
+% whether it is still unchanged, which is OK for the first run only.
+%
+%    \begin{macrocode}
+
+\AtEndDocument{%
+  \ifx\lastpage@LTS\lastpage@one%
+  \else%
+    \gdef\lastpage@putlabel{??}%
+    \ifx\lastpage@lastpage\lastpage@putlabel\relax%
+      \PackageWarning{lastpage}{Rerun to get the references right}%
+    \fi%
+  \fi%
+  \gdef\lastpage@putlabel{\relax}%
+%    \end{macrocode}
+%
+% It is checked whether writing to files is allowed
+% (otherwise, only an error message is issued and nothing is done).
+%
+%    \begin{macrocode}
+  \if@filesw%
+%    \end{macrocode}
+%
+% We put in a |\message| to show, in what order things (which were called)
+% are done (see subsection~\ref{ssec:aed}).
+%
+%    \begin{macrocode}
+    \message{^^JAED: lastpage setting LastPage^^J}%
+%    \end{macrocode}
+%
+% After this we issue a |\clearpage| to put out all floats,
+% which are still floating, and place the \texttt{LastPage} label.
+% Sometimes |\clearpage| might be undefined.
+%
+%    \begin{macrocode}
+    \@ifundefined{clearpage}{\relax}{\clearpage}%
+    \ifx\lastpage@french\lastpage@one% french or frenchle loaded
+      \addtocounter{page}{+1}\lastpage@putl@bel\addtocounter{page}{-1}%
+    \else% neither one loaded
+      \lastpage@putl@bel%
+    \fi%
+%    \end{macrocode}
+%
+% When writing to files is not allowed, nothing can be done. But when
+% the label was already set via the \xfile{aux} file, nothing needs
+% to be done. We check for this with |\lastpage@fileswtest| and
+% (if \xpackage{hyperref} has been loaded) |\lastpage@fileswtestHy|.
+%
+%    \begin{macrocode}
+  \else%
+    \ifx\lastpage@LTS\lastpage@one%
+    \else%
+      \lastpage@fileswtest{\thepage}{\lastpage@lastpage}%
+      \ifx\lastpage@hyper\lastpage@one%
+        \lastpage@fileswtestHy%
+      \fi%
+    \fi%
+  \fi%
+  }
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+%</lastpageclassic>
+%    \end{macrocode}
+% \newpage
+%
+% \DescribeMacro{lastpagemodern.sty}
+% In case of a recent \LaTeX-format, \pkg{lastpagemodern.sty} is loaded:
+%
+%    \begin{macrocode}
+%<*lastpagemodern>
+%% Part of the "lastpage" package
+\NeedsTeXFormat{LaTeX2e}[2024-11-01]
+\ProvidesPackage{lastpagemodern}[2025-01-27 v2.1e %
+  Refers to last page's name (HMM; JPG)]
+%% allows for things like "Page \thepage{} of \pageref{LastPage}"
+%% to get "Page 7 of 9" or "Page VII of IX";
+%% the NUMBER of pages is available via \@abspage@last, but with pages
+%% for example I to X and then 1 to 10, the number of pages would be "20",
+%% while the name of the last page is "10". Decide what you need/want!
+
+%    \end{macrocode}
+%
+% \indent For comparisons, \textquotedblleft one\textquotedblright{} is defined
+% (|\@ne| does not work for this).
+%
+%    \begin{macrocode}
+\gdef\lastpage@one{1}
+%    \end{macrocode}
+%
+% We define |\lastpage@firstpage| to be \textquotedblleft \texttt{1}\textquotedblright{},
+% and before re-definition via the \xfile{.aux} file,
+% |\lastpage@lastpage| and |\lastpage@lastpageHy| are unknown.
+%
+%    \begin{macrocode}
+\gdef\lastpage@firstpage{1}
+\gdef\lastpage@lastpage{??}
+\gdef\lastpage@lastpageHy{??}
+
+%    \end{macrocode}
+%
+% \begin{macro}{\lastpage@IfNumericTF}
+% |\lastpage@IfNumericTF| was needed to determine whether a page number was numeric or not.
+% Although it is no longer used, I am reluctant to remove it because it may have been used
+% in other places in documents.
+%
+%    \begin{macrocode}
+\newcommand\lastpage@gobbleminus[1]{\ifx-#1\else#1\fi}
+%    \end{macrocode}
+% which is from \url{https://texfaq.org/FAQ-isitanum},
+%    \begin{macrocode}
+\newcounter{lastpagecount}
+%    \end{macrocode}
+% and similar to \url{https://tex.stackexchange.com/a/12811/17119}
+%    \begin{macrocode}
+\newcommand{\lastpage@IfNumericTF}[3]{%
+\sbox\z@{\c@lastpagecount=0\lastpage@gobbleminus{#1}\relax}%
+\ifdim\wd0>\z@\relax#3% is not numeric
+\else#2% is numeric
+\fi}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \DescribeMacro{\AddToHook\{begindocument/end\}}
+% \indent |\lastpage@putlabel|, used by older versions of this package,
+% is/was redefined by other packages.
+% While now |\lastpage@putl@bel| is used instead, other packages
+% could also define a label \texttt{LastPage},
+% which then would be multiply defined. (Which is no big issue,
+% if it is associated with the same page.) Therefore we define
+%
+%    \begin{macrocode}
+\AddToHook{begindocument/end}{%
+  \IfPackageLoadedT{pageslts}{%
+    \PackageNoteNoLine{lastpage}{Packages pageslts and lastpage used.\MessageBreak%
+      lastpage is not necessary when loading pageslts}%
+  }%
+  \gdef\lastpage@putlabel{\relax}%
+  }
+
+%    \end{macrocode}
+%
+% \begin{macro}{\protected@iwrite}
+% \indent We need an |\immediate\protected@write|. Just |\immediate\write| had led to errors,
+% for example when packages like \pkg{babel-greek} re-defined |\roman|\ %
+% (thanks to \textsc{Ulrike Fischer} for the report).
+%
+%    \begin{macrocode}
+%% Code provided by Prof. Enrico Gregorio at https://tex.stackexchange.com/a/542425
+\long\def\protected@iwrite#1#2#3{%
+  \begingroup%
+  #2%
+  \let\protect\@unexpandable@protect%
+  \edef\reserved@a{\immediate\write#1{#3}}%
+  \reserved@a%
+  \endgroup%
+  \if@nobreak\ifvmode\nobreak\fi\fi%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lastpage@makeHy}
+% Just once we need the page from |\@currentHpage| without any \mbox{\textquotedblleft |page.|\textquotedblright :}
+%    \begin{macrocode}
+\newcommand{\lastpage@makeHy}{%
+%    \end{macrocode}
+% |\gdef\lastpage@Hy{}|, but that was already done before this command.
+%    \begin{macrocode}
+  \def\lastpage@Hptest{Doc-Start}%
+  \ifx\lastpage@Hptest\@currentHpage\relax%
+    \gdef\lastpage@Hy{\@currentHpage}%
+  \else%
+    \edef\lastpage@Hptest{\@currentHpage}%
+    \ifx\lastpage@Hptest\empty\relax%
+%    \end{macrocode}
+% |\gdef\lastpage@Hy{}|, but that was already done before this command.
+%    \begin{macrocode}
+    \else%
+      \def\lastpage@Hptest{page.}%
+      \ifx\lastpage@Hptest\@currentHpage\relax
+        \def\lastpage@Hptest{\csname @fnsymbol\endcsname \c@page }%
+        \ifx\lastpage@Hptest\thepage\relax%
+          \ifnum\value{page}=3\else%
+            \PackageWarningNoLine{lastpage}{You should add a\MessageBreak
+              \string\ProvideTextCommand{...}{PD1}{...}\MessageBreak%
+              (see the lastpage package manual, 3.13 %
+              \string\pagenumbering{fnsymbol})\MessageBreak%
+              to your document's preamble}%
+%    \end{macrocode}
+% See \autoref{subsec:fnsymbol}: \nameref{subsec:fnsymbol}, page~\pageref{subsec:fnsymbol}.
+%    \begin{macrocode}
+          \fi%
+        \fi%
+        \PackageWarningNoLine{lastpage}{%
+          \string\@currentHpage\space is\MessageBreak%
+          just "page." without number,\MessageBreak%
+          \string\lastpage@lastpageHy\space is now let empty}%
+%    \end{macrocode}
+% |\gdef\lastpage@Hy{}|, but that was already done before this command.
+%    \begin{macrocode}
+      \else%
+%    \end{macrocode}
+% |\@currentHpage| should be |page.<some number>|, |\lastpage@rmpage| removes the
+% \mbox{\textquotedblleft |page.|\textquotedblright .} Next compilation run,
+% |\lastpage@lastpageHy| gets defined via the \xfile{aux} file.
+% If we arrived at this place, but the definition is still empty,
+% then |\@currentHpage| has some unexpected content.
+%    \begin{macrocode}
+        \gdef\lastpage@Hy{\lastpage@rmpage{\@currentHpage}}%
+        \ifx\lastpage@lastpageHy\empty\relax%
+          \PackageWarningNoLine{lastpage}{%
+            \string\@currentHpage\space is\MessageBreak%
+            \meaning\@currentHpage\MessageBreak%
+            not beginning with "page.",\MessageBreak%
+            \string\lastpage@lastpageHy\space is now let empty}%
+  \fi\fi\fi\fi%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\lastpage@rmpage}
+% |\lastpage@rmpage| removes the \mbox{\textquotedblleft |page.|\textquotedblright.}
+%
+%    \begin{macrocode}
+%% Code provided by David Carlisle at https://tex.stackexchange.com/a/721877
+\def\lastpage@rmpage#1{%
+  \expandafter\xlastpage@rmpage\expanded{#1}\xlastpage@rmpage page.%
+  \xlastpage@rmpage\xxlastpage@rmpage{#1}}
+\def\xlastpage@rmpage #1page.#2\xlastpage@rmpage#3\xxlastpage@rmpage#4{%
+  \if$\detokenize{#1}$#2%\else#4
+  \fi}
+
+%    \end{macrocode}
+% |\else#4| means, that it did not start with |page.|, and whatever it is,
+% we cannot use this |#4| for |\lastpage@Hy|.
+% \end{macro}
+%
+% \begin{macro}{\lastpage@putl@bel}
+% \indent This command does the writing of the label.
+% If the \xpackage{hyperref} package is used, but page-anchors are disabled,
+% the hyperlinking will not work. (The warning will also be shown, when only
+% |\pageref*{LastPage}| is used (or neither |\pageref{LastPage}| nor |\pageref*{LastPage}|),
+% but without messing with |\pageref| we cannot detect this.)
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@putl@bel}{%
+  \IfPackageLoadedT{hyperref}{%
+    \IfPackageAtLeastF{hyperref}{2024-10-30}{%
+      \PackageError{lastpage}{hyperref package version too old}{%
+        required version: 2024-10-30 or newer, found version:\MessageBreak%
+        \csname ver@hyperref.sty\endcsname\MessageBreak%
+        Update hyperref or use lastpageclassic.sty instead of\MessageBreak%
+        lastpagemodern.sty!}}%
+    \ifHy@pageanchor\else%
+      \PackageWarningNoLine{lastpage}{%
+        The \string\pageref{LastPage} link does not work\MessageBreak%
+        using hyperref with disabled option `pageanchor'.\MessageBreak%
+        Better enable `pageanchor' or use\MessageBreak%
+        \string\pageref*{LastPage} (not generating a link)}%
+    \fi%
+   }%
+  \begingroup%
+%    \end{macrocode}
+%
+% \noindent Since the page has been put out, we are on the page \textit{after} that page.
+% We therefore subtract one from the page counter. (For the compiler,
+% this is equal to |\advance\c@page\m@ne|, but for human readers of the code
+% it is probably easier to understand.)
+%
+%    \begin{macrocode}
+    \addtocounter{page}{-1}%
+%    \end{macrocode}
+%
+% If the \xpackage{pageslts} package is used, this \xpackage{lastpage} package
+% is not needed at all. The \xpackage{LastPage} label would even be defined twice.
+% Thus, if \xpackage{pageslts} is used, here nothing is done.
+%
+%    \begin{macrocode}
+    \IfPackageLoadedTF{pageslts}{% then pageslts writes the label for  "LastPage".
+%    \end{macrocode}
+%
+% \noindent Simply using |\label| for \texttt{LastPage} would not work,
+% because labels wait for the output routines to work, and there
+% may be no more invocations of the output routines.
+% To force the write out, we need to do an |\immediate| protected write
+% into the \xfile{aux} file.
+%
+%    \begin{macrocode}
+     }{\protected@iwrite\@auxout{}{\string\newlabel{LastPage}{%
+         {\@currentlabel}{\thepage}{\@currentlabelname}%
+         {\IfPackageLoadedTF{hyperref}{\ifHy@pageanchor\@currentHpage\fi%
+                                      }{\@currentHref}}%
+         {\@kernel@reserved@label@data}}%
+       }%
+      }%
+%    \end{macrocode}
+% \noindent We also save the values, so that we can later (next rerun) check,
+% whether they have been saved in the \xfile{aux} file.
+%
+%    \begin{macrocode}
+    \protected@iwrite\@auxout{}{%
+      \string\gdef\string\lastpage@lastpage{\thepage}}%
+    \gdef\lastpage@Hy{}%
+    \IfPackageLoadedT{hyperref}{\ifHy@pageanchor\lastpage@makeHy\fi}%
+    \protected@iwrite\@auxout{}{%
+      \string\gdef\string\lastpage@lastpageHy{\lastpage@Hy}}%
+%    \end{macrocode}
+%
+% \noindent After the write-out we restore the page number again,
+% since there might be other things still to be done.
+%
+%    \begin{macrocode}
+    \addtocounter{page}{+1}%
+  \endgroup%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lastpage@fileswtest}
+% \indent \hspace*{2em}Later it will be determined whether it is allowed to write
+% to the \xfile{aux} file. If it was \emph{not} allowed, it is checked
+% whether the label was already set via the \xfile{aux} file in some
+% earlier compilation run. (There are packages where the document
+% is compiled with access to the \xfile{aux} file, and then there is
+% an additional compiler run, where the \xfile{aux} file cannot be changed,
+% but in that run there is also no need to change it.) The \xpackage{tikz}
+% package is somewhat different, therefore we only give a warning instead
+% of an error (and hope that there is another compiler run where the
+% \xfile{aux} file can be written).
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@fileswtest}[2]{%
+  \edef\lastpage@testa{#1}%
+  \edef\lastpage@testb{#2}%
+  \ifx\lastpage@testa\lastpage@testb%
+  \else%
+    \IfPackageLoadedTF{tikz}{%
+      \PackageWarning{lastpage}%
+       {The lastpage package was not allowed to write to an\MessageBreak%
+        .aux file. This package does not work without access\MessageBreak%
+        to an .aux file.\MessageBreak%
+        It is OK if the .aux file was already updated\MessageBreak%
+        by a previous compiler run\MessageBreak%
+        and would not have changed anyway.\MessageBreak%
+       }%
+    }{\PackageError{lastpage}{No auxiliary file allowed}%
+       {The lastpage package was not allowed to write to an .aux file.\MessageBreak%
+        This package does not work without access to an .aux file.\MessageBreak%
+        Press Ctrl+Z to exit.\MessageBreak%
+        But it is OK if the .aux file was already updated\MessageBreak%
+        by a previous compiler run\MessageBreak%
+        and would not have changed anyway.\MessageBreak%
+       }%
+     }%
+  \fi%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lastpage@fileswtestHy}
+% \indent \hspace*{2em}When the \xpackage{hyperref} package has been loaded,
+% |\lastpage@lastpageHy| must be tested additionally. (And a
+% |\newcommand| is needed, because |\ifHy@pageanchor| is not even
+% defined when \xpackage{hyperref} has not been loaded.)
+%
+%    \begin{macrocode}
+\newcommand{\lastpage@fileswtestHy}{%
+  \ifHy@pageanchor%
+    \lastpage@fileswtest{\@currentHpage}{\@the@H@page}%
+  \else%
+    \lastpage@fileswtest{\empty}{\lastpage@lastpageHy}%
+  \fi%
+  }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \DescribeMacro{enddocument/afterlastpage}
+% \indent |enddocument/afterlastpage| we again (re)define |\lastpage@putlabel|
+% to do nothing, but first use it to check whether |\lastpage@lastpage|
+% is still unchanged, which is OK for the first run only.
+%
+%    \begin{macrocode}
+\AddToHook{enddocument/afterlastpage}{%
+  \gdef\lastpage@putlabel{??}%
+  \ifx\lastpage@lastpage\lastpage@putlabel\relax%
+    \AddToHook{enddocument/info}{%
+      \PackageWarning{lastpage}{Rerun to get the references right}%
+      }%
+  \fi%
+  \gdef\lastpage@putlabel{\relax}%
+%    \end{macrocode}
+%
+% It is checked whether writing to files is allowed
+% (otherwise, only an error message is issued and nothing is done).
+%
+%    \begin{macrocode}
+  \if@filesw%
+%    \end{macrocode}
+%
+% We put in a |\message| to show, in what order things (which were called) are done.
+%
+%    \begin{macrocode}
+    \message{^^Jenddocument/afterlastpage (AED): lastpage setting LastPage.^^J}%
+    \IfPackageLoadedTF{french}{%
+         \addtocounter{page}{+1}\lastpage@putl@bel\addtocounter{page}{-1}%
+     }{\IfPackageLoadedTF{frenchle}{%
+         \addtocounter{page}{+1}\lastpage@putl@bel\addtocounter{page}{-1}%
+       }{\lastpage@putl@bel%
+        }%
+      }%
+  \else%
+%    \end{macrocode}
+%
+% When writing to files is not allowed, nothing can be done. But when
+% the label was already set via the \xfile{aux} file, nothing needs
+% to be done. We check for this with |\lastpage@fileswtest| and
+% (if \xpackage{hyperref} has been loaded) |\lastpage@fileswtestHy|.
+%
+%    \begin{macrocode}
+    \lastpage@fileswtest{\thepage}{\lastpage@lastpage}%
+    \IfPackageLoadedT{hyperref}{\lastpage@fileswtestHy}%
+  \fi%
+  }
+%</lastpagemodern>
+%    \end{macrocode}
+% \newpage
+%
+% \section{Installation}
+% \subsection{Downloads\label{ss:Downloads}}
+% Everything is available at \url{https://www.ctan.org},
+% but may need additional packages themselves.
+%
+% \DescribeMacro{lastpage.dtx}
+% For unpacking the |lastpage.dtx| file and constructing the documentation it is required:
+% \begin{description}
+% \item[-] \TeX Format \LaTeXe{}: \url{https://www.CTAN.org}
+%
+% \item[-] document class \xclass{ltxdoc}, 2024/02/08, v2.1j,
+%   \url{https://ctan.org/pkg/ltxdoc}
+%
+% \item[-] package \xpackage{holtxdoc}, 2019/12/09, v0.30,
+%   \url{https://ctan.org/pkg/holtxdoc}
+% \end{description}
+%
+% \DescribeMacro{lastpage.sty}
+% The |lastpage.sty| (i.\,e.\ each document using the \xpackage{lastpage} package)
+% requires:
+% \begin{description}
+% \item[-] \TeX, \url{https://www.CTAN.org}
+%
+% \item[-] package \xpackage{lastpage}, 2025-01-27, v2.1e,
+%   \url{https://ctan.org/pkg/lastpage}
+% \end{description}
+%
+% \DescribeMacro{lastpage209.sty}
+% The |lastpage209.sty| for \LaTeX2.09{} (i.\,e.\ each document using
+% the \xpackage{lastpage209} package) requires:
+% \begin{description}
+% \item[-] \TeX-format \LaTeX{}, v2.09
+%
+% \item[-] package \xpackage{lastpage209}, 2025-01-27, v2.1e,
+%   \url{https://ctan.org/pkg/lastpage}
+% \end{description}
+% and does not work with \xpackage{hyperref}, which needs \LaTeX2e{}.\smallskip
+%
+% \DescribeMacro{lastpage2e.sty}
+% The |lastpage2e.sty| for \LaTeXe{} (i.\,e.\ each document using
+% the \xpackage{lastpage2e} package) requires:
+% \begin{description}
+% \item[-] \TeX-format \LaTeXe{} 1994/12/01 or newer,
+%   \url{https://www.CTAN.org}
+%
+% \item[-] package \xpackage{lastpage}, 2025-01-27, v2.1e,
+%   \url{https://ctan.org/pkg/lastpage}
+% \end{description}
+%
+% \DescribeMacro{lastpageclassic.sty}
+% The |lastpageclassic.sty| for \LaTeXe{} (i.\,e.\ each document using
+% the \xpackage{lastpageclassic} package) requires:
+% \begin{description}
+% \item[-] \TeX-format \LaTeXe{} between 1994/12/01 and 2024-05-31,\newline
+%   \url{https://www.CTAN.org}
+%
+% \item[-] package \xpackage{lastpage}, 2025-01-27, v2.1e,
+%   \url{https://ctan.org/pkg/lastpage}
+% \end{description}
+% and can use
+% \begin{description}
+% \item[-] package \xpackage{hyperref}, 2023-07-08, v7.01b,
+%   \url{https://ctan.org/pkg/hyperref}\newline
+%   (probably also some older and newer versions)
+% \end{description}
+%
+% \DescribeMacro{lastpagemodern.sty}
+% The |lastpagemodern.sty| for \LaTeXe{} (i.\,e.\ each document using
+% the \xpackage{lastpagemodern} package) requires:
+% \begin{description}
+% \item[-] \TeX-format \LaTeXe{} 2024-11-01 or newer,\newline
+%   \url{https://www.CTAN.org}
+%
+% \item[-] package \xpackage{lastpage}, 2025-01-27, v2.1e,
+%   \url{https://ctan.org/pkg/lastpage}
+% \end{description}
+% and can use
+% \begin{description}
+% \item[-] package \xpackage{hyperref}, probably 2023-11-07 and newer
+%   (tested with: 2024-11-05 v7.01l),
+%   \url{https://ctan.org/pkg/hyperref}
+% \end{description}
+% \pagebreak
+%
+% \DescribeMacro{lastpage-example.tex}
+% The |lastpage-example.tex| requires the same file as all
+% documents using the \xpackage{lastpage} package, i.\,e.
+% \begin{description}
+% \item[-] package \xpackage{lastpage}, 2025-01-27, v2.1e,
+%   \url{https://ctan.org/pkg/lastpage}\newline
+%   (Well, it is the example file for this package, and because you are reading the
+%    documentation for the \xpackage{lastpage} package, it can be assumed that you already
+%    have some version of it -- is it the current one?)
+% \end{description}
+% and additionally:
+% \begin{description}
+% \item[-] class \xpackage{article}, 2024/06/29, v1.4n, from \xpackage{classes}:
+%           \url{https://ctan.org/pkg/classes}
+%
+% \item[-] package \xpackage{showkeys}, 2024-05-23, v3.21,
+%   \url{https://ctan.org/pkg/showkeys}
+%
+% \item[-] package \xpackage{hyperref}, 2024-11-05, v7.01l,
+%   \url{https://ctan.org/pkg/hyperref}
+% \end{description}
+%
+% \DescribeMacro{Münch}
+% A hyperlinked list of my (other) packages can be found at\newline
+% \url{https://ctan.org/author/muench-hm}.
+%
+% \subsection{Package, unpacking TDS}
+% \paragraph{Package.} This package is available on \url{https://www.CTAN.org}.
+% \begin{description}
+% \item[\url{https://mirror.ctan.org/macros/latex/contrib/lastpage/lastpage.dtx}]\hspace*{0.1cm} \newline
+%       The source file.
+% \item[\url{https://mirror.ctan.org/macros/latex/contrib/lastpage/lastpage.pdf}]\hspace*{0.1cm} \newline
+%       The documentation.
+% \item[\url{https://mirror.ctan.org/macros/latex/contrib/lastpage/lastpage-example.pdf}]\hspace*{0.1cm}
+%       The compiled example file, as it should look like.
+% \item[\url{https://mirror.ctan.org/macros/latex/contrib/lastpage/README}]\hspace*{0.1cm} \newline
+%       The README file.
+% \end{description}
+% There is also a |lastpage.tds.zip| available:
+% \begin{description}
+% \item[\url{https://mirror.ctan.org/install/macros/latex/contrib/lastpage.tds.zip}]\hspace*{0.1cm}
+%       Everything in TDS compliant, compiled format.
+% \end{description}
+% which additionally contains\newline
+% \begin{tabular}{ll}
+% lastpage.ins         & The \texttt{ins}tallation file.\\
+% lastpage.drv         & The \mbox{\texttt{dr}i\texttt{v}er} to generate the documentation.\\
+% lastpage.sty         & The \texttt{sty}le file.\\
+% lastpage209.sty      & The \texttt{sty}le file for \LaTeX2.09{} \textbf{only}.\\
+% lastpage2e.sty       & The \texttt{sty}le file to determine which 2e-style to use.\\
+% lastpageclassic.sty  & The \texttt{sty}le file for older \LaTeX-formats.\\
+% lastpagemodern.sty   & The \texttt{sty}le file for the recent \LaTeX-format.\\
+% lastpage-example.tex & The example file.
+% \end{tabular}
+%
+% \bigskip
+%
+% \noindent For required other packages please see the preceding subsection.
+%
+% \paragraph{Unpacking.} The \xfile{.dtx} file is a self-extracting
+% \docstrip{} archive. The files are extracted by running the
+% \xext{.dtx} through \plainTeX :
+% \begin{quote}
+%   \verb|tex lastpage.dtx|
+% \end{quote}
+%
+% \noindent About generating the documentation see paragraph~\ref{GenDoc} below.\par
+%
+% \paragraph{TDS.} Now the different files must be moved into
+% the different directories in your installation TDS tree
+% (also known as \xfile{texmf} tree):
+% \begin{quote}
+% \def\t{^^A
+% \begin{tabular}{@{}>{\ttfamily}l@{ $\rightarrow$ }>{\ttfamily}l@{}}
+%   lastpage.sty & tex/latex/lastpage.sty\\
+%   lastpage209.sty & tex/latex/lastpage.sty\\
+%   lastpage2e.sty & tex/latex/lastpage.sty\\
+%   lastpageclassic.sty & tex/latex/lastpage.sty\\
+%   lastpagemodern.sty & tex/latex/lastpage.sty\\
+%   lastpage.pdf & doc/latex/lastpage.pdf\\
+%   lastpage-example.tex & doc/latex/lastpage-example.tex\\
+%   lastpage-example.pdf & doc/latex/lastpage-example.pdf\\
+%   lastpage.dtx & source/latex/lastpage.dtx
+% \end{tabular}^^A
+% }^^A
+% \sbox0{\t}^^A
+% \ifdim\wd0>\linewidth
+%   \begingroup
+%     \advance\linewidth by\leftmargin
+%     \advance\linewidth by\rightmargin
+%   \edef\x{\endgroup
+%     \def\noexpand\lw{\the\linewidth}^^A
+%   }\x
+%   \def\lwbox{^^A
+%     \leavevmode
+%     \hbox to \linewidth{^^A
+%       \kern-\leftmargin\relax
+%       \hss
+%       \usebox0
+%       \hss
+%       \kern-\rightmargin\relax
+%     }^^A
+%   }^^A
+%   \ifdim\wd0>\lw
+%     \sbox0{\small\t}^^A
+%     \ifdim\wd0>\linewidth
+%       \ifdim\wd0>\lw
+%         \sbox0{\footnotesize\t}^^A
+%         \ifdim\wd0>\linewidth
+%           \ifdim\wd0>\lw
+%             \sbox0{\scriptsize\t}^^A
+%             \ifdim\wd0>\linewidth
+%               \ifdim\wd0>\lw
+%                 \sbox0{\tiny\t}^^A
+%                 \ifdim\wd0>\linewidth
+%                   \lwbox
+%                 \else
+%                   \usebox0
+%                 \fi
+%               \else
+%                 \lwbox
+%               \fi
+%             \else
+%               \usebox0
+%             \fi
+%           \else
+%             \lwbox
+%           \fi
+%         \else
+%           \usebox0
+%         \fi
+%       \else
+%         \lwbox
+%       \fi
+%     \else
+%       \usebox0
+%     \fi
+%   \else
+%     \lwbox
+%   \fi
+% \else
+%   \usebox0
+% \fi
+% \end{quote}
+% If you have a \xfile{docstrip.cfg} that configures and enables \docstrip's
+% TDS installing feature, then some files can already be in the right
+% place, see the documentation of \docstrip.
+%
+% \subsection{Refresh file name databases}
+% If your \TeX~distribution (\TeX\,Live, \mikTeX, \dots) relies on
+% file name databases, you must refresh these. For example, \TeX\,Live\ users
+% run \verb|texhash| or \verb|mktexlsr|.
+%
+% \subsection{Some details for the interested}
+% \paragraph{Unpacking with \LaTeX.}
+% The \xfile{.dtx} chooses its action depending on the format:
+% \begin{description}
+% \item[\plainTeX:] Run \docstrip\ and extract the files.
+% \item[\LaTeX:] Generate the documentation.
+% \end{description}
+% If you insist on using \LaTeX\ for \docstrip\ (really,
+% \docstrip\ does not need \LaTeX ), then inform the autodetect routine
+% about your intention:
+% \begin{quote}
+%   \verb|latex \let\install=y\input{lastpage.dtx}|
+% \end{quote}
+% Do not forget to quote the argument according to the demands
+% of your shell.
+%
+% \paragraph{Generating the documentation.\label{GenDoc}}
+% You can use both the \xfile{.dtx} or the \xfile{.drv} to generate
+% the documentation. The process can be configured by a
+% configuration file \xfile{ltxdoc.cfg}. For instance, put the following
+% line into this file, if you want to have A4 as paper format:
+% \begin{quote}
+%   \verb|\PassOptionsToClass{a4paper}{article}|
+% \end{quote}
+%
+% \noindent An example follows how to generate the
+% documentation with \pdfLaTeX :
+%
+% \begin{quote}
+%\begin{verbatim}
+%pdflatex lastpage.dtx
+%makeindex -s gind.ist lastpage.idx
+%pdflatex lastpage.dtx
+%makeindex -s gind.ist lastpage.idx
+%pdflatex lastpage.dtx
+%\end{verbatim}
+% \end{quote}
+%
+% \subsection{Compiling the example}
+% The example file, \textsf{lastpage-example.tex}, can be compiled via\newline
+% \indent |latex lastpage-example.tex|\newline
+% or (recommended)\newline
+% \indent |pdflatex lastpage-example.tex|\newline
+% and will need at least two compiler runs to get all references right.
+%
+% \section{Acknowledgements}
+%
+% I (\textsc{H.-Martin Münch}) would like to thank
+% \textsc{Jeffrey P. Goldberg} \mbox{(jeffrey+}\allowbreak news at goldmark dot org) for
+% inventing the \xpackage{lastpage} package as well as for allowing me
+% to update it. Further I would like to thank \textsc{Heiko Oberdiek}
+% for providing a~lot~(!) of useful packages (from which I also learned everything
+% I know about creating a file in \xfile{dtx} format, OK, say it: copying).
+% Thanks to \textsc{David Carlisle} for the new code for |\lastpage@rmpage|.
+% Thanks for bug reports go to \textsc{Ulrike Fischer} (several times),
+% \textsc{Sebastian Bank}, \textsc{James Hedges}, \textsc{Mikhail Titov},
+% \textsc{Micha\l{} Herman}, \textsc{Matteo Gamboz}, and \textsc{James Small}.
+% Thanks to \textsc{Sven Siegmund} for pointing out a necessary further
+% explanation in the documentation.
+%
+% \phantomsection
+% \begin{History}\label{History}
+%   \begin{Version}{1994/06/17 v0.99a}
+%     \item First shot by \textsc{Jeffrey P. Goldberg}.
+%   \end{Version}
+%   \begin{Version}{1994/06/25 v0.1b}
+%     \item Last version number created by \textsc{Jeffrey P. Goldberg}.
+%   \end{Version}
+%   \begin{Version}{1994/07/20 v0.1b (again)}
+%     \item Documentation updated by \textsc{Jeffrey P. Goldberg}.\newline
+%             The main source code of the \xpackage{lastpage} package 1994/07/20,
+%             v0.1b, was:
+%             \begin{verbatim}
+%              \NeedsTeXFormat{LaTeX2e}[1994/06/01]
+%              \ProvidesPackage{lastpage}[1994/07/20 v0.1b
+%                LaTeX2e package for refs to last page number (JPG)]
+%              \def\lastpage@putlabel{\addtocounter{page}{-1}%
+%                \immediate\write\@auxout{\string
+%                \newlabel{LastPage}{{}{\thepage}}}%
+%                \addtocounter{page}{1}}
+%              \AtEndDocument{%
+%                \message{AED: lastpage setting LastPage}%
+%                \clearpage\lastpage@putlabel}%
+%              \endinput
+%             \end{verbatim}
+%             and then the \xpackage{hyperref} package (2012/11/06, v6.83m)
+%             even redefined |\lastpage@putlabel|; the \xpackage{REV\TeX{}4}
+%             class 2022-06-05, v4.2f, still does this.
+%   \end{Version}
+%   \begin{Version}{2010/02/18 v1.1}
+%     \item Proposed |LastPages| label by \textsc{H.-Martin Münch}
+%             on \Newsgroup{comp.text.tex}, see e.\,g.\ %
+%             \url{https://groups.google.com/g/comp.text.tex/c/Ad8pO2Rw_HY/m/8EfHqT1JB0QJ};
+%             now available in the \xpackage{pageslts} package.
+%   \end{Version}
+%   \begin{Version}{2010/07/29 v1.2a}
+%     \item Complete rewriting of the package; upgrade from \xpackage{fancyheadings}
+%             to \xpackage{fancyhdr} package, then removed the need for the
+%             \xpackage{fancyhdr} package at all.
+%     \item Included \textsf{lastpage209.sty} for \LaTeX2.09{}.
+%     \item Replacement of |\filedate|, |-version|, |-name|,\ldots{} because
+%             of \LaTeX{}~bug 2705:\newline
+%             Synopsis: Possible problem with |\fileversion| and |\filedate|\newline
+%             \url{https://www.latex-project.org/cgi-bin/ltxbugs2html?category=LaTeX&responsible=anyone&state=anything&keyword=lastpage&pr=latex/2705}
+%     \item Example |lastpage-example.tex|.
+%     \item Alternatives listing (section \ref{sec:Alternatives}).
+%     \item Listing of \TeX{} sources (subsection \ref{ss:Downloads}).
+%     \item Really a lot of details.
+%     \item Complete rewriting of the documentation.
+%     \item Everything in \texttt{DTX} framework.
+%     \item Included a |\CheckSum|. [Removed in v2.0a.]
+%     \item Complete rewriting of the README file.
+%   \end{Version}
+%   \begin{Version}{2010/08/12 v1.2b}
+%     \item Bug fix: |\@PackageInfoNoLine| is only available,
+%             if the \xpackage{hyperref} package is loaded.
+%             (Bug reported by \textsc{Ulrike Fischer}, thanks!)
+%     \item Bug fix: |\ifHy@pageanchor| etc. do not work without
+%             \xpackage{hyperref}, and |\else| related to |\ifHy@pageanchor| was
+%             wrongly associated with a preceding |\if|, and everything went wrong.
+%             Now everything should work again also without \xpackage{hyperref}.
+%     \item Renamed |\lastpage@putlabel| to |\lastpage@putl@bel| to get rid of
+%             the conflicts with other classes and packages and resulting
+%             multiple definitions of the \texttt{lastpage} label.
+%   \end{Version}
+%   \begin{Version}{2010/08/23 v1.2c}
+%     \item Bug fix: Additionally to checking for the \xpackage{hyperref} package
+%             |\AtBeginDocument|, when placing the \texttt{lastpage} label it is also
+%             checked for the |\hyperref| command, in case \xpackage{hyperref} was not
+%             loaded at |\begin{document}| yet. (Bug reported by \textsc{Sebastian Bank},
+%             thanks!)\newline
+%             [\pkg{lastpagemodern.sty} just uses |\IfPackageLoadedT{hyperref}| and
+%              |\IfPackageLoadedTF{hyperref}|.]
+%     \item Changed the |\unit| definition (got rid of an old |\rm|). [Removed in v2.0a.]
+%     \item Changed |\lastpage@puthyperlabel| to |\lastpage@putlabelhyper| analogous to
+%             |\pagesLTS@putlabelhyper| of the \xpackage{pageslts} package.
+%     \item Updated version number and date of \xpackage{pagesLTS} package (especially
+%             for the check for outdated versions). [Removed in v2.0a.]
+%     \item Removed wrong \%\ from the driver file.
+%   \end{Version}
+%   \begin{Version}{2010/08/25 v1.2d}
+%     \item Bug fix: also \xpackage{tcilatex} defines the |\hyperref| command,
+%             therefore for \xpackage{hyperref} package detection this had to be
+%             changed to |\Hy@Warning|.\newline
+%             [\pkg{lastpagemodern.sty} just uses |\IfPackageLoadedTF{hyperref}|.]
+%   \end{Version}
+%   \begin{Version}{2010/09/12 v1.2e}
+%     \item \textsc{James Hedges} pointed out, that there was no instruction in the
+%             documentation about suppressing hyperlinks: added (also to the example).
+%     \item Diverse small changes.
+%   \end{Version}
+%   \begin{Version}{2010/09/24 v1.2f}
+%     \item Updated to version 2010/09/13 v6.81n of the \xpackage{hyperref} package.
+%     \item New version of REV\TeX{}4\ 2010/07/25, v4.1r, old problem.
+%     \item New version of \xpackage{pagesLTS} package, 2010/09/22, v1.1k.
+%     \item Moved the package from \texttt{.../latex/muench/lastpage/...} to\newline
+%             \texttt{.../latex/lastpage/...}.
+%   \end{Version}
+%   \begin{Version}{2011/02/01 v1.2g}
+%     \item Updated to version 2010/04/24 v0.19 of the \xpackage{holtxdoc} package.
+%     \item New version of \xpackage{pagesLTS} package, 2011/02/01, v1.1m.
+%     \item Updated to version 2010/12/16 v6.81z of the \xpackage{hyperref} package.
+%     \item Minor details.
+%   \end{Version}
+%   \begin{Version}{2011/07/03 v1.2h}
+%     \item The \xpackage{holtxdoc} package was fixed, therefore the warning
+%             in \xfile{drv} could be removed.~-- Adapted the style of this documentation
+%             to new \textsc{Oberdiek} \xfile{dtx} style.
+%     \item New versions of \xpackage{pagesLTS}, \xpackage{ulem}, \xpackage{hyperref},
+%             \xpackage{papermas} packages.
+%     \item Corrected references in the README and manual.
+%   \end{Version}
+%   \begin{Version}{2011/08/08 v1.2i}
+%     \item The \xpackage{pagesLTS} package has been renamed to \xpackage{pageslts}:
+%             2011/08/08, v1.2a.
+%     \item Some details.
+%   \end{Version}
+%   \begin{Version}{2011/08/31 v1.2j}
+%     \item Updated to \TeX{} Live 2011 (for compiling the documentation and example).
+%     \item New version of \xpackage{papermas} package, 2011/08/22, v1.0h.
+%     \item Adapted for the use together with packages, which sometimes prevent writing
+%             to the \xfile{aux} file. (Bug reported by \textsc{Mikhail Titov}.)
+%   \end{Version}
+%   \begin{Version}{2011/09/01 v1.2k}
+%     \item Fixed |\thepage{}| to \mbox{|\thepage{}|\textvisiblespace,}
+%             where there should be a space.
+%     \item New version of the \xpackage{hyperref} package, 2011/08/19, v6.82h,
+%             but still problem with links to pages with
+%             page-\textquotedblleft number\textquotedblright{} in \texttt{fnsymbol}
+%             pagenumbering scheme. [Fixed since v6.83m as of 2012/11/06.]
+%     \item Documentation update about \textquotedblleft No write access to the
+%             \xfile{aux} file\textquotedblright .
+%   \end{Version}
+%   \begin{Version}{2013/01/28 v1.2l}
+%     \item Updated to \TeX{} Live 2012 (for compiling the documentation and example).
+%     \item New versions of the packages
+%             \xpackage{endfloat}, \xpackage{holtxdoc}, \xpackage{hypdoc},
+%             \xpackage{hyperref}, \xpackage{pageslts}, \xpackage{regstats},
+%             \xpackage{ulem}, and \xpackage{zref} have become available.
+%     \item The \xpackage{nameref} package redefines |\label| to have five arguments
+%           instead of two, therefore |\newlabel{LastPage}{{}{\thepage}{}{}{}}| instead of
+%           |\newlabel{LastPage}{{}{\thepage}}| must be used.
+%           (Bug reported at \url{https://tex.stackexchange.com/q/95541},
+%           thanks to \textsc{Micha\l{} Herman}!) Fixed.\newline
+%           [Since \LaTeX{} release 2023-06-01 five arguments are standard.]
+%   \end{Version}
+%   \begin{Version}{2015/03/29 v1.2m}
+%     \item Updated to \TeX{} Live 2014 (for compiling the documentation and example).
+%     \item Updates to really a lot of details in the documentation (manual \& README).
+%   \end{Version}
+%   \begin{Version}{2021/09/03 v1.2n}
+%     \item Updates to the documentation (manual \& README), to the example, and
+%             several small changes in code.
+%   \end{Version}
+%   \begin{Version}{2023-03-07 v2.0a}
+%     \item Removed use of \pkg{ulem}.
+%     \item Removed |\unit|.
+%     \item \pkg{lastpage} should now determine automatically, whether to load
+%             its \TeX~2.09 version, classic \LaTeX2e-version, or modern version
+%             with \eTeX, hook{-}man\-age\-ment etc.
+%     \item Converted to UTF-8.
+%     \item Updated to [then] current \LaTeX{} format 2022-11-01.
+%     \item Extensive updates to the documentation (manual \& README) and to the example.
+%   \end{Version}
+%   \begin{Version}{2023-04-12 v2.0b}
+%     \item Bug fix: What should have been |}}{}| was |}{}}|.
+%             Thanks to \textsc{Matteo Gamboz} for the bug report!
+%   \end{Version}
+%   \begin{Version}{2023-07-24 v2.0c}
+%     \item Since \LaTeX{} release 2023-06-01 labels have always five arguments.
+%     \item Removed the incompatibility warning regarding \pkg{endfloat}
+%             before 1994-06-01~(!) from \pkg{lastpagemodern.sty}.
+%     \item Replaced |\immediate\write| by a form of (pseudo-code!) |\immediate\protected@write|.
+%             (Thanks to \textsc{Ulrike Fischer} for the error report and solution!)
+%     \item Update of the |\lastpage@putl@bel| code to \pkg{hyperref} 2023-07-08, v7.01b,
+%             which now allows fnsymbol as page numbering scheme.
+%   \end{Version}
+%   \begin{Version}{2023-10-06 v2.0d}
+%     \item For plain arabic page numbers only, \pkg{lastpage} again writes the page number
+%             in a plain format in the label in the \xfile{aux} file, so that it can be extracted
+%             to perform calculations with it.
+%   \end{Version}
+%   \begin{Version}{2023-10-14 v2.0e}
+%     \item Replaced a |\PackageError| by |\PackageWarningNoLine| as suggested by \textsc{Ulrike Fischer}.
+%   \end{Version}
+%   \begin{Version}{2024-04-27 v2.1a}
+%     \item Utilizes the new |\@currentHpage| provided by the \LaTeX -kernel.
+%     \item The issue with |\thepage| (former |\lastpage@nonnumeric| command) has has been fixed
+%             at 2023-11-07, \url{https://github.com/latex3/hyperref/issues/303}.
+%     \item |\lastpage@IfNumericTF| is no longer needed, but has not been removed
+%             so as not to break older documents that use it in a different context.
+%   \end{Version}
+%   \begin{Version}{2024-07-03 v2.1b}
+%     \item The \xclass{beamer} class loads \xpackage{hyperref} partially,
+%             so that \xpackage{hyperref} is incorrectly detected as having been loaded.
+%             The defining operation for |\lastpage@Hy| has been changed to catch this
+%             and other different cases.
+%   \end{Version}
+%   \begin{Version}{2024-07-07 v2.1c}
+%     \item With help from \textsc{David Carlisle} |\lastpage@rmpage| no longer assumes
+%             |\@currentHpage| to begin with \mbox{\textquotedblleft |page.|\textquotedblright .}
+%   \end{Version}
+%   \begin{Version}{2024-11-24 v2.1d}
+%     \item The \xpackage{pageslts} package has been repaired, thus here the warnings have been removed.
+%     \item Several small changes in documentation and |lastpagemodern.sty| because of the updates
+%             of \LaTeX-format (to~2024-06-01), \xpackage{hyperref} package (to~2024-10-30, v7.01k),
+%             and \xpackage{pageslts} package (to~2024-11-20, v2.0a).
+%     \item Added a warning message about missing\newline
+%             |\ProvideTextCommand{...}{PD1}{...}|\newline
+%             (cf.~\autoref{subsec:fnsymbol}: \nameref{subsec:fnsymbol}, page~\pageref{subsec:fnsymbol}).
+%     \item Documentation section about alternatives rewritten.
+%   \end{Version}
+%   \begin{Version}{2025-01-27 v2.1e}
+%     \item Reorganized beginning of |\lastpage@makeHy|.
+%     \item Documentation update.
+%   \end{Version}
+% \end{History}
+% \bigskip
+%
+% When you find a mistake or have a suggestion for an improvement of this package,
+% please send an e-mail to the maintainer, thanks! (Please see BUG REPORTS in the README.)
+% \newpage
+% \PrintIndex
+% \Finale
+\endinput

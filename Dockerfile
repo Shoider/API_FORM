@@ -17,6 +17,7 @@ RUN mkdir -p /app/data && \
 RUN mv Formato_VPN_241105.tex data
 RUN mv imagenes data
 RUN mv tabularray data
+RUN mv lastpage data
 
 RUN apt-get update && \
     apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra && \
