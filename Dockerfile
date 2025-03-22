@@ -14,10 +14,10 @@ RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 777 /app/data
 
-RUN mv Formato_VPN_241105.tex data
-RUN mv imagenes data
-RUN mv tabularray data
-RUN mv lastpage data
+#RUN mv Formato_VPN_241105.tex data
+#RUN mv imagenes data
+#RUN mv tabularray data
+#RUN mv lastpage data
 
 RUN apt-get update && \
     apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra && \
@@ -25,6 +25,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
+
+ENV TEXINPUTS=".:/app/latex/imagenes/:/app/latex/:/texmf//:"
 
 EXPOSE 8000 
 

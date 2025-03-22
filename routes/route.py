@@ -1,11 +1,12 @@
 import subprocess
+import pandas as pd
+import tempfile
+import shutil
+import os
+
 from flask import Blueprint, request, jsonify, send_file
 from io import BytesIO
-from csv import writer
-from fpdf import FPDF
-import pandas as pd
 from logger.logger import Logger
-import os
 from marshmallow import ValidationError
 
 class FileGeneratorRoute(Blueprint):
@@ -32,12 +33,12 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
-
     
     def generar_pdf(self):
         try:
-            # Crea el directorio /app/data si no existe
-            output_dir = "/app/data"
+
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
 
             data = request.get_json()
 
@@ -63,7 +64,9 @@ class FileGeneratorRoute(Blueprint):
             baja = "x" if validated_data.get('movimiento') == "BAJA" else " "
             cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else " "
 
-            with open('/app/data/Datos.txt','w') as file: 
+            # Crear Datos.txt en el directorio temporal
+            datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+            with open(datos_txt_path, 'w') as file: 
                 file.write("\\newcommand{\\NOMBRE}{"+ validated_data.get('nombre')+"}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
                 file.write("\\newcommand{\\UA}{" + validated_data.get('ua') + "}"+ os.linesep)
@@ -91,20 +94,24 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
                 file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
 
+            # Crear out.csv en el directorio temporal
+            out_csv_path = os.path.join(temp_dir, "out.csv")
             df = pd.DataFrame([validated_data])
-            df.to_csv('/app/data/out.csv', index=False, mode='a')
+            df.to_csv(out_csv_path, index=False, mode='a')
 
-            #pdf = FPDF()
-            #pdf.add_page()
-            #pdf.set_font("Arial", size=12)
-            #text = f"Nombre: {validated_data.get('nombre')}\nCorreo: {validated_data.get('correo')}\nPuesto: {validated_data.get('puesto')}\nID: {validated_data.get('id')}\nExtensión: {validated_data.get('extension')}"
-            #pdf.multi_cell(0, 10, text)
+            # Compilar / Generar pdf en el directorio temporal
+            archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
+            nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
 
-            #Compilar / Generar pdf
-            archivo_tex = os.path.join(output_dir, "Formato_VPN_241105.tex")
-            nombre_pdf = os.path.join(output_dir, "Formato_VPN_241105.pdf")
+            # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+            shutil.copy("/app/data/Formato_VPN_241105.tex", archivo_tex)
+
+            # Copiar imágenes al directorio temporal
+            imagenes_dir = os.path.join(temp_dir, "imagenes")
+            shutil.copytree("/app/imagenes", imagenes_dir)
+
             try:
-                subprocess.run(["pdflatex", "-output-directory", output_dir, archivo_tex], check=True)
+                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
             except:
                 self.logger.error(f"Error generando PDF: {e}")
                 return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
@@ -115,7 +122,7 @@ class FileGeneratorRoute(Blueprint):
                 output.write(pdf_file.read())
             output.seek(0)
 
-            #Enviar archivo
+            # Enviar archivo
             return send_file(
                 output,
                 mimetype="application/pdf",
@@ -128,6 +135,9 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
 
 
     def healthcheck(self):
