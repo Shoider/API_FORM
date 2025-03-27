@@ -20,7 +20,8 @@ class FileGeneratorRoute(Blueprint):
 
     def register_routes(self):
         """Function to register the routes for file generation"""
-        self.route("/api/v1/generar-pdf", methods=["POST"])(self.generar_pdf)
+        self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
+        self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -34,9 +35,8 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
     
-    def generar_pdf(self):
+    def vpn(self):
         try:
-
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
@@ -99,7 +99,7 @@ class FileGeneratorRoute(Blueprint):
             df = pd.DataFrame([validated_data])
             df.to_csv(out_csv_path, index=False, mode='a')
 
-            # Compilar / Generar pdf en el directorio temporal
+            # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
 
@@ -110,6 +110,7 @@ class FileGeneratorRoute(Blueprint):
             imagenes_dir = os.path.join(temp_dir, "imagenes")
             shutil.copytree("/app/imagenes", imagenes_dir)
 
+            # Compilar latex
             try:
                 subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
             except:
@@ -138,6 +139,113 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
+
+    def rfc(self):
+        try:
+
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+
+            # CHECAR COMO USAR SCHEMA 2
+            validated_data = self.forms_schema.load(data)
+
+            # Transformar valores "X" y " " para Movimiento
+            inter = "X" if validated_data.get('movimiento') == "INTER" else " "
+            admin = "X" if validated_data.get('movimiento') == "ADMIN" else " "
+            des = "X" if validated_data.get('movimiento') == "DES" else " "
+            usua = "X" if validated_data.get('movimiento') == "USUA" else " "
+            otro = "X" if validated_data.get('movimiento') == "OTRO" else " "
+
+            # Crear Datos.txt en el directorio temporal
+            datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+            with open(datos_txt_path, 'w') as file: 
+                file.write("\\newcommand{\\TEMPO}{"+ validated_data.get('tempo')+"}"+ os.linesep)
+                file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DESCBREVE}{" + validated_data.get('descbreve') + "}"+ os.linesep)
+                
+                # PENDIENTE DE TEST
+                file.write("\\newcommand{\\INTER}{" + inter + "}" + os.linesep)
+                file.write("\\newcommand{\\ADMIN}{" + admin + "}" + os.linesep)
+                file.write("\\newcommand{\\DES}{" + des + "}" + os.linesep)
+                file.write("\\newcommand{\\USUA}{" + usua + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRO}{" + otro + "}" + os.linesep)
+
+                file.write("\\newcommand{\\DESOTRO}{"+ validated_data.get('desotro') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\NOMEI}{"+ validated_data.get('nomei') + "}"+ os.linesep)
+                file.write("\\newcommand{\\EXTEI}{"+ validated_data.get('extei') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMS}{"+ validated_data.get('noms') + "}"+ os.linesep)
+                file.write("\\newcommand{\\EXTS}{" + validated_data.get('exts') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOS}{" + validated_data.get('puestos') + "}"+ os.linesep)
+                file.write("\\newcommand{\\AREAS}{" + validated_data.get('areas') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DESDET}{" + validated_data.get('desdet') + "}"+ os.linesep)
+                
+                # REVISAR
+                file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica') + "}"+ os.linesep)
+
+                # PENDIENTE, Revisar si retorna mayusculas o minusculas o otra cosa, se requiere "true" o "false"
+                file.write("\\newcommand{\\ALTAS}{" + validated_data.get('ALTA') + "}" + os.linesep)
+                file.write("\\newcommand{\\CAMBIOS}{" + validated_data.get('CAMBIO') + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJAS}{" + validated_data.get('BAJA') + "}" + os.linesep)
+
+                file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOEI}{" + validated_data.get('puestoei') + "}"+ os.linesep)
+
+            # Crear out.csv en el directorio temporal 3 veces para cada tabla
+            out_csv_path = os.path.join(temp_dir, "out.csv") #ALTA.CSV BAJAS.CSV CAMBIOS.CSV
+            df = pd.DataFrame([validated_data]) #Validate Data es la info para el csv
+            df.to_csv(out_csv_path, index=False, mode='a')
+
+            # PENDIENTE A PARTIR DE AQUI
+
+            # Preparar archivos en el directorio temporal
+            archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
+            nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
+
+            # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+            shutil.copy("/app/data/Formato_VPN_241105.tex", archivo_tex)
+
+            # Copiar imágenes al directorio temporal
+            imagenes_dir = os.path.join(temp_dir, "imagenes")
+            shutil.copytree("/app/imagenes", imagenes_dir)
+
+            # Compilar latex
+            try:
+                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+            except:
+                self.logger.error(f"Error generando PDF: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+            
+            # Cargar pdf
+            output = BytesIO()
+            with open(nombre_pdf, "rb") as pdf_file:
+                output.write(pdf_file.read())
+            output.seek(0)
+
+            # Enviar archivo
+            return send_file(
+                output,
+                mimetype="application/pdf",
+                download_name="registro.pdf",
+                as_attachment=True,
+            )
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            # PARA LOS TEST NO SE ELIMINA
+            # shutil.rmtree(temp_dir)
+            self.logger.info(f"info: Registro Finalizado")
 
 
     def healthcheck(self):
