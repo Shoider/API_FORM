@@ -1,4 +1,3 @@
-%\textbf{\emph{ejemplo}}
 \input{Datos.txt}
 \documentclass[letterpaper,9pt]{article}
 
@@ -29,7 +28,7 @@
 \geometry{
 left = 25mm,
 right = 25mm,
-top = 50mm,
+top = 60mm,
 bottom = 20mm,
 headheight = 35mm
 }
@@ -44,7 +43,7 @@ headheight = 35mm
 
 % *** Fecha ***
 \usepackage[useregional]{datetime2}
-%\DTMsetdatestyle{ddmmyyyy}
+
 
 %No cortar palabras
 \usepackage[none]{hyphenat}
@@ -107,7 +106,7 @@ headheight = 35mm
 		hlines,
 		vlines,
 	}
-	Numero de reporte:  &          & Fecha:   & \today          \\
+	Numero de reporte:  &          & Fecha:   & \today       \\
 	Tipo de Movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) 
 \end{longtblr}
 
@@ -118,6 +117,7 @@ headheight = 35mm
 		width = \linewidth,
 		colspec = {Q[200]Q[300]Q[90]Q[90]},
 		row{1} = {c},
+                     row{1}={dorado},
                      cell{5}{3}={r},
                      cell{2}{2}={j},
                      cell{3}{2}={j},
@@ -147,14 +147,8 @@ Correo Institucional:         &  \CORREO
 		width = \linewidth,
 		colspec = {Q[120]Q[160]Q[300]Q[100]},
 		row{1} = {c},
-		%column{even} = {c},
-		%column{4} = {r},
-                     	cell{1}{1} = {c=4}{0.874\linewidth},
-		%cell{2}{2} = {c=3}{0.249\linewidth},
-		%cell{3}{2} = {c=3}{0.249\linewidth},
-		%cell{4}{2} = {c=3}{0.249\linewidth},
-		%cell{5}{2} = {c=3}{0.249\linewidth},
-		%cell{6}{2} = {c=3}{0.249\linewidth},
+                     row{1}={dorado},
+                    cell{1}{1} = {c=4}{0.874\linewidth},		
 		hlines,
 		vlines,
 	}
@@ -172,7 +166,7 @@ Correo Institucional:         &  \CORREO
                     	width = \linewidth,
 		colspec = {Q[935]},
 		cells = {c},
-		row{2} = {},
+                     row{1}={dorado},
 		hlines,
 		vlines,
 	}
@@ -185,6 +179,7 @@ Correo Institucional:         &  \CORREO
 	]{
 		width = \linewidth,
 		colspec = {Q[935]},
+                     row{1}={dorado},
 		cells = {c},
 		row{2} = {},
 		hlines,

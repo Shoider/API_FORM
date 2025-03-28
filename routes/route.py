@@ -12,9 +12,10 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schema):
+    def __init__(self,forms_schema, forms_schemaRFC):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
+        self.forms_schemaRFC = forms_schemaRFC
         self.forms_schema = forms_schema
         self.register_routes()
 
@@ -46,7 +47,7 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify({"error": "Invalid data"}), 400
 
             validated_data = self.forms_schema.load(data)
-
+            
             # Transformar valores "SI" y "NO"
             sianti = "x" if validated_data.get('malware') == "SI" else " "
             noanti = "x" if validated_data.get('malware') == "NO" else " "
@@ -104,11 +105,11 @@ class FileGeneratorRoute(Blueprint):
             nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
 
             # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
-            shutil.copy("/app/data/Formato_VPN_241105.tex", archivo_tex)
+            shutil.copy("/app/latex/Formato_VPN_241105.tex", archivo_tex)
 
             # Copiar imágenes al directorio temporal
             imagenes_dir = os.path.join(temp_dir, "imagenes")
-            shutil.copytree("/app/imagenes", imagenes_dir)
+            shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
             # Compilar latex
             try:
@@ -152,9 +153,12 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify({"error": "Invalid data"}), 400
 
             # CHECAR COMO USAR SCHEMA 2
-            validated_data = self.forms_schema.load(data)
+            #LISTO!
+            validated_data = self.forms_schemaRFC.load(data) 
+            
 
             # Transformar valores "X" y " " para Movimiento
+            # EJEM sianti = "x" if validated_data.get('malware') == "SI" else " "
             inter = "X" if validated_data.get('movimiento') == "INTER" else " "
             admin = "X" if validated_data.get('movimiento') == "ADMIN" else " "
             des = "X" if validated_data.get('movimiento') == "DES" else " "
@@ -186,9 +190,13 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\DESDET}{" + validated_data.get('desdet') + "}"+ os.linesep)
                 
                 # REVISAR
-                file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica') + "}"+ os.linesep)
+                #file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica, justifica2, justifica3') + "}"+ os.linesep)
 
                 # PENDIENTE, Revisar si retorna mayusculas o minusculas o otra cosa, se requiere "true" o "false"
+                ##retorna en minusculas
+                ##SEGUN YO RETORNA MINUSCULAS {true}, {false} !
+
                 file.write("\\newcommand{\\ALTAS}{" + validated_data.get('ALTA') + "}" + os.linesep)
                 file.write("\\newcommand{\\CAMBIOS}{" + validated_data.get('CAMBIO') + "}" + os.linesep)
                 file.write("\\newcommand{\\BAJAS}{" + validated_data.get('BAJA') + "}" + os.linesep)
@@ -205,28 +213,30 @@ class FileGeneratorRoute(Blueprint):
             # PENDIENTE A PARTIR DE AQUI
 
             # Preparar archivos en el directorio temporal
-            archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
-            nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
+            #archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
+            #nombre_pdf = os.path.join(temp_dir, "Formato_RFC_LT.pdf")
 
-            # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
-            shutil.copy("/app/data/Formato_VPN_241105.tex", archivo_tex)
+            # Copia Formato_RFC_LT.tex del directorio /app/data al directorio temporal
+           # shutil.copy("/app/latex/Formato_RFC_LT.tex", archivo_tex)
 
             # Copiar imágenes al directorio temporal
-            imagenes_dir = os.path.join(temp_dir, "imagenes")
-            shutil.copytree("/app/imagenes", imagenes_dir)
+            #imagenes_dir = os.path.join(temp_dir, "imagenes")
+            #shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
             # Compilar latex
-            try:
-                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
-            except:
-                self.logger.error(f"Error generando PDF: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+            #try:
+             #   subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+            #except:
+             #   self.logger.error(f"Error generando PDF: {e}")
+              #  return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
             
+
+
             # Cargar pdf
-            output = BytesIO()
-            with open(nombre_pdf, "rb") as pdf_file:
-                output.write(pdf_file.read())
-            output.seek(0)
+            #output = BytesIO()
+            #with open(nombre_pdf, "rb") as pdf_file:
+             #   output.write(pdf_file.read())
+            #output.seek(0)
 
             # Enviar archivo
             return send_file(
