@@ -1,5 +1,7 @@
 from marshmallow import Schema, fields, validate
 
+from schemas.schemaTablas import TablasSchema
+
 class RegistroSchema2(Schema):
     tempo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     memo = fields.String(required=True, validate=validate.Length(min=1, max=256))
@@ -24,20 +26,15 @@ class RegistroSchema2(Schema):
     justifica2 = fields.String(required=True, validate=validate.Length(min=1, max=256))
     justifica3 = fields.String(required=True, validate=validate.Length(min=1, max=256)) 
 
-   # VALIDACIONES DE TIPO PENDIENTES
-    INTER = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
-    ADMIN = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
-    DES = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
-    USUA = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
-    OTRO = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
-
     movimiento = fields.String(required=True, validate=validate.OneOf(["INTER", "ADMIN", "DES", "USUA", "OTRO"]))
     desotro = fields.String(required=False, validate=validate.Length(min=1, max=32))
 
     # Checar si se puede fields.Boolean()
-    ALTA = fields.Boolean(required=True, validate=validate.OneOf(["true", "false"]))
-    BAJA = fields.Boolean(required=True, validate=validate.OneOf(["true", "false"]))
-    CAMBIO = fields.Boolean(required=True, validate=validate.OneOf(["true", "false"]))
+    ALTA = fields.Boolean(required=True)
+    BAJA = fields.Boolean(required=True)
+    CAMBIO = fields.Boolean(required=True)
 
-
-    #validadores para los csv de ALTAS, BAJAS, CAMBIOS 
+    registrosAltas = fields.List(fields.Nested(TablasSchema))
+    registrosCambios = fields.List(fields.Nested(TablasSchema))
+    registrosBajas = fields.List(fields.Nested(TablasSchema))
+    registros = fields.List(fields.Nested(TablasSchema))
