@@ -1,0 +1,223 @@
+\input{Datos.txt}
+\documentclass[letterpaper,9pt]{article}
+
+% *** Idioma ***
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+
+% *** Fuente ***
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+
+% *** Colores ***
+\usepackage{xcolor}
+\definecolor{azul}{RGB}{47,125,188} 
+\definecolor{dorado}{RGB}{190,150,91} 
+\definecolor{gris}{rgb}{0.752,0.752,0.752}
+\definecolor{morado}{RGB}{28,28,129}
+\definecolor{gristabla}{rgb}{0.85,0.85,0.85}
+\definecolor{BarleyWhite}{rgb}{1,0.949,0.8}
+\definecolor{Spindle}{rgb}{0.741,0.843,0.933}
+\definecolor{Zanah}{rgb}{0.886,0.941,0.85}
+\definecolor{black}{rgb}{0,0,0}
+
+
+% *** Margenes y Tamaño de Hoja
+\usepackage{geometry}
+\geometry{
+left = 25mm,
+right = 25mm,
+top = 60mm,
+bottom = 20mm,
+headheight = 35mm
+}
+
+% *** Imagenes ***
+\usepackage{graphicx}
+\graphicspath{./imagenes}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+% *** Fecha ***
+\usepackage[useregional]{datetime2}
+
+
+%No cortar palabras
+\usepackage[none]{hyphenat}
+
+
+% *** Encabezado ***
+\usepackage{lastpage} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\lhead{
+		\begin{tblr}{
+		width = \linewidth,
+		colspec = {Q[230]Q[507]Q[100]Q[100]},
+		row{2} = {c},
+		row{3} = {c},
+		column{2} = {c},
+		cell{1}{1} = {r=4}{c},
+		cell{1}{2} = {r=3}{},
+		cell{1}{3} = {c},
+		cell{1}{4} = {c},
+		cell{4}{3} = {c=2}{c},
+		vlines,
+		hline{1,5} = {-}{},
+		hline{2-3} = {3-4}{},
+		hline{4} = {2-4}{},
+	}
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua\\Gerencia de Tecnologías de Información \\y Comunicaciones} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \tiny Proyecto   & \tiny VPN \\
+	&                                                                                       & \tiny Documento & {\tiny Formato }    \\
+	& { Solicitud del Servicio de VPN}                                       &  \includegraphics[width=0.07\textwidth]{imagenes/Logo_Octubre_2024}       &           
+\end{tblr}
+}
+\chead{
+
+}
+\rhead{}
+
+% *** Pie de Pagina
+%\renewcommand{\footrulewidth}{0.5pt}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\begin{document}
+\sloppy
+
+
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[203]Q[200]Q[200]Q[200]},
+		column{2} = {c},
+		cell{1}{3} = {r},
+                     cell{2}{3} = {c},
+		cell{2}{4} = {c},
+		hlines,
+		vlines,
+	}
+	Numero de reporte:  &          & Fecha:   & \today       \\
+	Tipo de Movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) 
+\end{longtblr}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]Q[90]Q[90]},
+		row{1} = {c},
+                     row{1}={dorado},
+                     cell{5}{3}={r},
+                     cell{2}{2}={j},
+                     cell{3}{2}={j},
+		cell{1}{1} = {c=4}{0.874\linewidth},
+		cell{2}{2} = {c=3}{0.649\linewidth},
+		cell{3}{2} = {c=3}{0.649\linewidth},
+		cell{4}{2} = {c=3}{0.649\linewidth},
+                      %cell{5}{2} = {c=3}{0.249\linewidth},
+		cell{6}{2} = {c=3}{0.249\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Datos de Usuario (a)} &  &      &  \\
+%SetCell{c=2}{puesto o cargo} & \NOMBRE\\
+Nombre:                     &  \NOMBRE \\
+Puesto o cargo: &   \PUESTO  \\
+Unidad Administrativa:   &     \UA  \\
+ID de Empleado:              & \ID  & Ext: &\EXT \\
+Correo Institucional:         &  \CORREO  
+\end{longtblr}
+
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[120]Q[160]Q[300]Q[100]},
+		row{1} = {c},
+                     row{1}={dorado},
+                    cell{1}{1} = {c=4}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Caracteristicas del equipo}         \\
+\textbf{Marca:}       &  \MARCA & \textbf{\textbf{Cuenta con Anti-Malware:}}                           & Si (\SIANTI )~ No(\NOANTI ) \\
+	\textbf{Modelo:}      &  \MODELO & {\textbf{Se encuentra vigente y actualizado:}\\\textbf{(Anti-Malware)}}    & Si (\SIVIGE )~ No(\NOVIGE ) \\
+	\textbf{Serie:}       & \SERIE  & \textbf{Cuenta con S.O.:}                                  & Si (\SISO )~ No(\NOSO ) \\
+	\textbf{Mac Address:} & \MACADDRESS  & {\textbf{Se encuentra licenciado y actualizado:}\\\textbf{(S.O.)}} & Si (\SILIC )~ No(\NOLIC ) 
+\end{longtblr}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+                    	width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		hlines,
+		vlines,
+	}
+	\textbf{Servicios que necesita acceder} \\\SERVICIOS  
+\end{longtblr}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+                     row{1}={dorado},
+		cells = {c},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Justificación} \\\JUSTIFICACION
+\end{longtblr}
+\clearpage
+
+La CONAGUA únicamente proveerá la habilitación del usuario dentro del concentrador VPN  proporcionando manual  para instalación y configuración del software necesario. Cualquier costo que se genere para hacer uso de este servicio, como la contratación de un servicio de Internet  o el uso de datos móviles, será de exclusiva responsabilidad del usuario.
+
+\section*{Políticas de uso VPN}
+{\small \begin{enumerate}
+	\item Sólo los usuarios previamente autorizados podrán utilizar el servicio VPN y serán responsables del correcto uso del servicio de acceso remoto.
+	\item Es responsabilidad del usuario asegurarse que ninguna otra persona utilice su cuenta de acceso, entendiendo que es de uso exclusivo para quienes se les ha asignado dichos privilegios.
+	\item El uso del sistema VPN debe ser controlado utilizando una contraseña de autenticación fuerte  manteniéndola siempre en secreto. 
+	\item El sistema VPN permitirá el tráfico de acuerdo con el perfil del usuario hacia y desde el equipo computacional a través del túnel VPN, el resto del tráfico pasará por la conexión respectiva.
+	\item Solo se permite una sesión por usuario, por lo que no será posible conectarse simultáneamente en 2 o más dispositivos de computo.
+	\item Todas los computadoras provistas por la institución conectados a las redes internas de la CONAGUA mediante VPN o cualquier otra tecnología deberán utilizar el software antivirus actualizado, provisto por el área de soporte del respectivo organismo. Para los equipos personales es responsabilidad del usuario proveer este software antivirus a sus equipos.
+	\item La sesión será automáticamente desconectados de la sesión, una vez transcurrido 10 minutos de inactividad. El usuario deberá “loguearse” nuevamente para conectarse a la red CONAGUA. Procesos artificiales informáticos no deben ser utilizados para mantener la sesión abierta.
+	\item Los usuarios de equipos computacionales que no son de la CONAGUA, deberán cumplir todas las disposiciones establecidas en las políticas  y además firmar un acuerdo de confidencialidad de la información.
+	\item Al hacer uso de la tecnología VPN, los usuarios declaran conocer que sus computadoras, ya sea institucionales o personales son una extensión de las redes de la CONAGUA y como tales, están sujetos a las mismas normas y reglamentos que se aplican a los equipos dentro de esta institución.
+\end{enumerate}}
+
+\begin{table}[h]
+	\centering
+	\begin{tblr}{
+			width = \linewidth,
+			colspec = {Q[400]Q[400]},
+			row{1} = {gris},
+			row{2} = {c},
+			cell{1}{1} = {c=2}{0.942\linewidth},
+			hlines,
+			vlines,
+		}
+		Fecha: \today                      &                                                                                                       \\
+		{Solicitó\\[1cm] \rule{6cm}{0.5mm}\\\NOMBRE\\\PUESTO} & {Autorizó\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} 
+	\end{tblr}
+\end{table}
+
+\end{document}

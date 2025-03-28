@@ -5,3 +5,4 @@ datos.txt
 app old.txt
 out.csv
 __pycache__
+.DS_Store

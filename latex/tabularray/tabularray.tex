@@ -1,0 +1,3761 @@
+% -*- coding: utf-8 -*-
+% !TEX program = lualatex
+\documentclass[oneside]{book}
+\newcommand*{\myversion}{2025A}
+\newcommand*{\mylpad}[1]{\ifnum#1<10 0\the#1\else\the#1\fi}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt plus 1pt minus 1pt}
+
+\makeatletter
+\ExplSyntaxOn
+\NewDocumentCommand\MyDebugSingle{m}{
+  \@ifpackageloaded{docmute}{#1}{
+    \str_if_eq:onTF{\jobname}{tabularray}{#1}{
+      \sys_ensure_backend:
+      \debug_on:n{check-declarations}
+      #1
+      \debug_off:n{check-declarations}
+    }
+  }
+}
+\ExplSyntaxOff
+\makeatother
+\MyDebugSingle{\usepackage{tabularray}}
+
+\usepackage{codehigh} % https://ctan.org/pkg/codehigh
+\usepackage{array,multirow,amsmath}
+\usepackage{chemmacros,environ}
+\usepackage{enumitem}
+
+\usepackage[firstpage=true]{background}
+\backgroundsetup{contents={}}
+
+\UseTblrLibrary{
+  amsmath,booktabs,counter,diagbox,functional,siunitx,tikz,varwidth
+}
+\usetikzlibrary{patterns}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=blue3,
+  linkcolor=blue3,
+}
+
+\usepackage{tcolorbox}
+\tcbset{sharp corners, boxrule=0.5pt, colback=red9}
+
+\usepackage{float}
+%\usepackage{enumerate}
+
+\setcounter{tocdepth}{1}
+
+\NewDocumentCommand\None{}{{\boldmath$\times$}}
+\NewDocumentCommand\K{m}{\texttt{#1}} % key
+\NewDocumentCommand\V{m}{\texttt{#1}} % value
+\NewDocumentCommand\Q{m}{\texttt{#1}} % column/row type
+
+\NewDocumentCommand\KK{m}{\texttt{\fakeverb{#1}}} % key
+\NewDocumentCommand\VV{m}{\texttt{\fakeverb{#1}}} % value
+\NewDocumentCommand\KV{m}{\texttt{\fakeverb{#1}}} % key and value
+\NewDocumentCommand\CC{m}{\texttt{\fakeverb{#1}}} % command
+\NewDocumentCommand\EE{m}{\texttt{\fakeverb{#1}}} % environment
+\NewDocumentCommand\LL{m}{\texttt{\fakeverb{#1}}} % library
+\NewDocumentCommand\PP{m}{\texttt{\fakeverb{#1}}} % package
+\NewDocumentCommand\FF{m}{\texttt{\fakeverb{#1}}} % file
+\NewDocumentCommand\NN{m}{\texttt{\fakeverb{#1}}} % tikz node
+\NewDocumentCommand\KP{m}{\texttt{\fakeverb{#1}}} % key path
+\NewDocumentCommand\HP{m}{\texttt{\fakeverb{#1}}} % hook path
+\NewDocumentCommand\CI{m}{\texttt{\fakeverb{#1}}} % child indexer
+\NewDocumentCommand\CS{m}{\texttt{\fakeverb{#1}}} % child selector
+\NewDocumentCommand\CO{m}{\texttt{\fakeverb{#1}}} % counter
+\NewDocumentCommand\EN{m}{\texttt{\fakeverb{#1}}} % element name
+\NewDocumentCommand\TN{m}{\texttt{\fakeverb{#1}}} % template name
+\NewDocumentCommand\TT{m}{\texttt{\fakeverb{#1}}} % text
+
+\NewTblrEnviron{newtblr}
+\SetTblrOuter[newtblr]{long}
+\SetTblrInner[newtblr]{
+  hlines = {gray3}, column{1,2} = {co=1}, colsep = 5pt,
+  row{2-Z} = {brown8},
+  row{1} = {fg=white, bg=purple2, font=\bfseries\sffamily},
+}
+
+\NewTblrEnviron{spectblr}
+\SetTblrOuter[spectblr]{long}
+\SetTblrInner[spectblr]{
+  hlines = {gray3}, column{2} = {co=1}, colsep = 5pt,
+  row{2-Z} = {brown8},
+  row{1} = {fg=white, bg=purple2, font=\bfseries\sffamily},
+  rowhead = 1,
+}
+
+\renewcommand\emph[1]{\textit{\color{red3}#1}}
+
+\newcommand{\mywarning}[1]{%
+  \begin{tcolorbox}
+  #1
+  \end{tcolorbox}%
+}
+
+%\renewcommand*{\thefootnote}{*}
+
+\colorlet{highback}{azure9}
+\CodeHigh{language=latex/table,style/main=highback,style/code=highback}
+\NewCodeHighEnv{code}{style/main=gray9,style/code=gray9}
+\NewCodeHighEnv{demo}{style/main=gray9,style/code=gray9,demo}
+
+%\CodeHigh{lite}
+
+\begin{document}
+
+\savegeometry{standard}
+\newgeometry{left=0pt,right=0pt}
+
+\begin{titlepage}
+
+\backgroundsetup{
+  scale = 1,
+  angle = 0,
+  opacity = 1,
+  %color = black,
+  contents = {
+    \begin{tblr}{
+      width = \paperwidth, columns = {1}, rows= {4em, gray9},
+      hlines = {2.8pt,white}, vlines = {2.8pt,white},
+    }
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+      & & & & & & & & & & & & & & \\
+    \end{tblr}
+  }
+}
+
+\noindent
+\begin{tblr}{
+  colspec = {rX}, colsep = 8mm, hlines = {2pt, white},
+  row{odd} = {azure8}, row{even} = {gray8},
+  row{1} = {6em,azure2,fg=white,font=\LARGE\bfseries\sffamily},
+  row{2-Z} = {3em,font=\Large},
+}
+  Tabularray & Typeset Tabulars and Arrays with \LaTeX3 \\
+  Author     & Jianrui Lyu (tolvjr@163.com) \\
+  Version    & \myversion\ (\the\year-\mylpad\month-\mylpad\day) \\
+  Code       & \url{https://github.com/lvjr/tabularray} \\
+  Code       & \url{https://bitbucket.org/lvjr/tabularray} \\
+  Support    & \url{https://github.com/lvjr/tabularray/discussions} \\
+  Support    & \url{https://topanswers.xyz/tex} \\
+  Issue      & \url{https://github.com/lvjr/tabularray/issues} \\
+\end{tblr}
+
+\begin{codehigh}[boxsep=4mm]
+\begin{tblr}{
+  colspec = {rX}, colsep = 8mm, hlines = {2pt, white},
+  row{odd} = {azure8}, row{even} = {gray8},
+  row{1} = {6em,azure2,fg=white,font=\LARGE\bfseries\sffamily},
+  row{2-Z} = {3em,font=\Large},
+}
+  Tabularray & Typeset Tabulars and Arrays with \LaTeX3 \\
+  Author     & Jianrui Lyu (tolvjr@163.com) \\
+  Version    & \myversion\ (\the\year-\mylpad\month-\mylpad\day) \\
+  Code       & \url{https://github.com/lvjr/tabularray} \\
+  Code       & \url{https://bitbucket.org/lvjr/tabularray} \\
+  Support    & \url{https://github.com/lvjr/tabularray/discussions} \\
+  Support    & \url{https://topanswers.xyz/tex} \\
+  Issue      & \url{https://github.com/lvjr/tabularray/issues} \\
+\end{tblr}
+\end{codehigh}
+
+\end{titlepage}
+
+\loadgeometry{standard}
+
+\tableofcontents
+
+\chapter{Overview of Features}
+
+Before using \PP{tabularray} package, it is better to know how to typeset simple text and
+math tables with traditional \EE{tabular}, \EE{tabularx} and \EE{array} environments,
+because we will compare \EE{tblr} environment from \PP{tabularray} package with these
+environments. You may read web pages on LaTeX tables on
+\href{https://www.learnlatex.org/en/lesson-08}{LearnLaTeX} and
+\href{https://www.overleaf.com/learn/latex/Tables}{Overleaf} first.
+
+\section{Vertical space}
+
+After loading \PP{tabularray} package in the preamble,
+we can use \EE{tblr} environments to typeset tabulars and arrays.
+The name \EE{tblr} is short for \PP{tabularray} or \VV{top-bottom-left-right}.
+The following is our first example:
+
+\begin{demo}
+\begin{tabular}{lccr}
+\hline
+ Alpha   & Beta  & Gamma  & Delta \\
+\hline
+ Epsilon & Zeta  & Eta    & Theta \\
+\hline
+ Iota    & Kappa & Lambda & Mu    \\
+\hline
+\end{tabular}
+\end{demo}
+
+\begin{demohigh}
+\begin{tblr}{lccr}
+\hline
+ Alpha   & Beta  & Gamma  & Delta \\
+\hline
+ Epsilon & Zeta  & Eta    & Theta \\
+\hline
+ Iota    & Kappa & Lambda & Mu    \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+You may notice that there is extra space above and below the table rows with \EE{tblr} environment.
+This space makes the table look better.
+If you don't like it, you could use \CC{\SetTblrInner} command:
+
+\begin{demohigh}
+\SetTblrInner{rowsep=0pt}
+\begin{tblr}{lccr}
+\hline
+ Alpha   & Beta  & Gamma  & Delta \\
+\hline
+ Epsilon & Zeta  & Eta    & Theta \\
+\hline
+ Iota    & Kappa & Lambda & Mu    \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+But in many cases, this \KK{rowsep} is useful:
+
+\begin{demo}
+$\begin{array}{rrr}
+\hline
+ \dfrac{2}{3} &  \dfrac{2}{3} &  \dfrac{1}{3} \\
+ \dfrac{2}{3} & -\dfrac{1}{3} & -\dfrac{2}{3} \\
+ \dfrac{1}{3} & -\dfrac{2}{3} &  \dfrac{2}{3} \\
+\hline
+\end{array}$
+\end{demo}
+
+\begin{demohigh}
+$\begin{tblr}{rrr}
+\hline
+ \dfrac{2}{3} &  \dfrac{2}{3} &  \dfrac{1}{3} \\
+ \dfrac{2}{3} & -\dfrac{1}{3} & -\dfrac{2}{3} \\
+ \dfrac{1}{3} & -\dfrac{2}{3} &  \dfrac{2}{3} \\
+\hline
+\end{tblr}$
+\end{demohigh}
+
+Note that you can use \EE{tblr} in both text and math modes.
+
+\section{Multiline cells}
+
+It's quite easy to write multiline cells without fixing the column width in \EE{tblr} environments:
+just enclose the cell text with braces and use \CC{\\\\} to break lines:
+
+\begin{demohigh}
+\begin{tblr}{|l|c|r|}
+\hline
+ Left & {Center \\ Cent \\ C} & {Right \\ R} \\
+\hline
+ {L \\ Left} & {C \\ Cent \\ Center} & R \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+\section{Cell alignment}
+
+From time to time,
+you may want to specify the horizontal and vertical alignment of cells at the same time.
+\PP{Tabularray} package provides a \Q{Q} column for this
+(In fact, \Q{Q} column is the only primitive column,
+other columns are defined as \Q{Q} columns with some options):
+
+\begin{demohigh}
+\begin{tblr}{|Q[l,t]|Q[c,m]|Q[r,b]|}
+\hline
+ {Top Baseline \\ Left Left} & Middle Center & {Right Right \\ Bottom Baseline} \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Note that you can use more meaningful \K{t} instead of \K{p} for top baseline alignment.
+For some users who are familiar with word processors,
+these \K{t} and \K{b} columns are counter-intuitive.
+In \PP{tabularray} package, there are another two column types \K{h} and \K{f},
+which will align cell text at the head and the foot, respectively:
+
+\begin{demohigh}
+\begin{tblr}{Q[h,4em]Q[t,4em]Q[m,4em]Q[b,4em]Q[f,4em]}
+\hline
+ {row\\head} & {top\\line} & {middle} & {line\\bottom} & {row\\foot} \\
+\hline
+ {row\\head} & {top\\line} & {11\\22\\mid\\44\\55} & {line\\bottom} & {row\\foot} \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+\section{Multirow cells}
+
+The above \K{h} and \K{f} alignments are necessary
+when we write multirow cells with \CC{\SetCell} command in \PP{tabularray}.
+
+\begin{demo}
+\begin{tabular}{|l|l|l|l|}
+\hline
+ \multirow[t]{4}{1.5cm}{Multirow Cell One} & Alpha &
+ \multirow[b]{4}{1.5cm}{Multirow Cell Two} & Alpha \\
+ & Beta  & & Beta \\
+ & Gamma & & Gamma \\
+ & Delta & & Delta \\
+\hline
+\end{tabular}
+\end{demo}
+
+\begin{demohigh}
+\begin{tblr}{|l|l|l|l|}
+\hline
+ \SetCell[r=4]{h,1.5cm} Multirow Cell One & Alpha &
+ \SetCell[r=4]{f,1.5cm} Multirow Cell Two & Alpha \\
+ & Beta  & & Beta \\
+ & Gamma & & Gamma \\
+ & Delta & & Delta \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Note that you don't need to load \PP{multirow} package first,
+since \PP{tabularray} doesn't depend on it.
+Furthermore, \PP{tabularray} will always typeset decent multirow cells.
+First, it will set correct vertical middle alignment,
+even though some rows have large height:
+
+\begin{demo}
+\begin{tabular}{|l|m{4em}|}
+\hline
+ \multirow[c]{4}{1.5cm}{Multirow} & Alpha  \\
+ & Beta  \\
+ & Gamma \\
+ & Delta Delta Delta \\
+\hline
+\end{tabular}
+\end{demo}
+
+\begin{demohigh}
+\begin{tblr}{|l|m{4em}|}
+\hline
+ \SetCell[r=4]{m,1.5cm} Multirow & Alpha  \\
+ & Beta  \\
+ & Gamma \\
+ & Delta Delta Delta \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Second, it will enlarge row heights if the multirow cells have large height,
+therefore it always avoids vertical overflow:
+
+\begin{demo}
+\begin{tabular}{|l|m{4em}|}
+\hline
+ \multirow[c]{2}{1cm}{Line \\ Line \\ Line \\ Line} & Alpha \\
+\cline{2-2}
+ & Beta \\
+\hline
+\end{tabular}
+\end{demo}
+
+\begin{demohigh}
+\begin{tblr}{|l|m{4em}|}
+\hline
+ \SetCell[r=2]{m,1cm} {Line \\ Line \\ Line \\ Line} & Alpha \\
+\cline{2}
+ & Beta \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+If you want to distribute extra vertical space evenly to two rows,
+you may use \K{vspan} option described in Chapter \ref{chap:extra}.
+
+\section{Multi rows and columns}
+
+It was a hard job to typeset cells with multiple rows and multiple columns. For example:
+
+\begin{demo}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ \multirow{2}{*}{2 Rows}
+     & \multicolumn{2}{c|}{2 Columns}
+                 & \multicolumn{2}{c|}{\multirow{2}{*}{2 Rows 2 Columns}} \\
+\cline{2-3}
+     & 2-2 & 2-3 & \multicolumn{2}{c|}{} \\
+\hline
+ 3-1 & 3-2 & 3-3 & 3-4 & 3-5 \\
+\hline
+\end{tabular}
+\end{demo}
+
+With \PP{tabularray} package, you can set spanned cells with \CC{\SetCell} command:
+within the optional argument of \CC{\SetCell} command,
+option \K{r} is for rowspan number, and \K{c} for colspan number;
+within the mandatory argument of it, horizontal and vertical alignment options are accepted.
+Therefore it's much simpler to typeset spanned cells:
+
+\begin{demohigh}
+\begin{tblr}{|c|c|c|c|c|}
+\hline
+ \SetCell[r=2]{c} 2 Rows
+     & \SetCell[c=2]{c} 2 Columns
+           &     & \SetCell[r=2,c=2]{c} 2 Rows 2 Columns & \\
+\hline
+     & 2-2 & 2-3 &     &     \\
+\hline
+ 3-1 & 3-2 & 3-3 & 3-4 & 3-5 \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Using \CC{\multicolumn} command, the omitted cells \emph{must} be removed.
+On the contrary,
+using \CC{\multirow} command, the omitted cells \emph{must not} be removed.
+\CC{\SetCell} command behaves the same as \CC{\multirow} command in this aspect.
+
+With \EE{tblr} environment, any \CC{\hline} segments inside a spanned cell will be ignored,
+therefore we're free to use \CC{\hline} in the above example.
+Also, any omitted cell will definitely be ignored when typesetting,
+no matter it's empty or not.
+With this feature, we could put row and column numbers into the omitted cells,
+which will help us to locate cells when the tables are rather complex:
+
+\begin{demohigh}
+\begin{tblr}{|ll|c|rr|}
+\hline
+ \SetCell[r=3,c=2]{h} r=3 c=2 & 1-2 & \SetCell[r=2,c=3]{r} r=2 c=3 & 1-4 & 1-5 \\
+ 2-1 & 2-2 & 2-3 & 2-4 & 2-5 \\
+\hline
+ 3-1 & 3-2 & MIDDLE & \SetCell[r=3,c=2]{f} r=3 c=2 & 3-5 \\
+\hline
+ \SetCell[r=2,c=3]{l} r=2 c=3 & 4-2 & 4-3 & 4-4 & 4-5 \\
+ 5-1 & 5-2 & 5-3 & 5-4 & 5-5 \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+\section{Column types}
+
+\PP{Tabularray} package supports all normal column types, as well as
+the extendable \Q{X} column type,
+which first occurred in \PP{tabularx} package and was largely improved by \PP{tabu} package:
+
+\begin{demohigh}
+\begin{tblr}{|X[2,l]|X[3,l]|X[1,r]|X[r]|}
+\hline
+ Alpha & Beta & Gamma & Delta \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Also, \Q{X} columns with negative coefficients are possible:
+
+\begin{demohigh}
+\begin{tblr}{|X[2,l]|X[3,l]|X[-1,r]|X[r]|}
+\hline
+ Alpha & Beta & Gamma & Delta \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+We need the width to typeset a table with \Q{X} columns.
+If unset, the default is \CC{\linewidth}.
+To change the width, we have to first put all column specifications into \KV{colspec={...}}:
+
+\begin{demohigh}
+\begin{tblr}{width=0.8\linewidth,colspec={|X[2,l]|X[3,l]|X[-1,r]|X[r]|}}
+\hline
+ Alpha & Beta & Gamma & Delta \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+You can define new column types with \CC{\NewTblrColumnType} command.
+For example, in \PP{tabularray} package,
+\Q{b} and \Q{X} columns are defined as special \Q{Q} columns:
+\begin{codehigh}
+\NewTblrColumnType{b}[1]{Q[b,wd=#1]}
+\NewTblrColumnType{X}[1][]{Q[co=1,#1]}
+\end{codehigh}
+
+\section{Row types}
+
+Now that we have column types and \K{colspec} option,
+you may ask for row types and \K{rowspec} option.
+Yes, they are here:
+
+\begin{demohigh}
+\begin{tblr}{colspec={Q[l]Q[c]Q[r]},rowspec={|Q[t]|Q[m]|Q[b]|}}
+ {Alpha \\ Alpha} & Beta               & Gamma \\
+ Delta            & Epsilon            & {Zeta \\ Zeta}  \\
+ Eta              & {Theta \\ Theta}   & Iota  \\
+\end{tblr}
+\end{demohigh}
+
+Same as column types, \Q{Q} is the only primitive row type,
+and other row types are defined as \Q{Q} types with different options.
+It's better to specify horizontal alignment in \K{colspec},
+and vertical alignment in \K{rowspec}, respectively.
+
+Inside \K{rowspec}, \Q{|} is the hline type.
+Therefore we need not to write \CC{\hline} command, which makes table code cleaner.
+
+\section{Hlines and vlines}
+
+Hlines and vlines have been improved too. You can specify the widths and styles of them:
+
+\begin{demohigh}
+\begin{tblr}{|l|[dotted]|[2pt]c|r|[solid]|[dashed]|}
+\hline
+One   &  Two  & Three \\
+\hline\hline[dotted]\hline
+Four  & Five  &   Six \\
+\hline[dashed]\hline[1pt]
+Seven & Eight &  Nine \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+\section{Colorful tables}
+
+To add colors to your tables, you need to load \PP{xcolor} package first.
+\PP{Tabularray} package will also load
+\href{https://ctan.org/pkg/ninecolors}{\texttt{ninecolors}} package for proper color contrast.
+First you can specify background option for \Q{Q} rows/columns inside \K{rowspec}/\K{colspec}:
+
+\begin{demohigh}
+\begin{tblr}{colspec={lcr},rowspec={|Q[cyan7]|Q[azure7]|Q[blue7]|}}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{colspec={Q[l,brown7]Q[c,yellow7]Q[r,olive7]},rowspec={|Q|Q|Q|}}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+Also you can use \CC{\SetRow} or \CC{\SetColumn} command to specify row or column colors:
+
+\begin{demohigh}
+\begin{tblr}{colspec={lcr},rowspec={|Q|Q|Q|}}
+ \SetRow{cyan7}  Alpha   & Beta  & Gamma  \\
+ \SetRow{azure7} Epsilon & Zeta  & Eta    \\
+ \SetRow{blue7}  Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{colspec={lcr},rowspec={|Q|Q|Q|}}
+ \SetColumn{brown7}
+ Alpha          & \SetColumn{yellow7}
+                  Beta            & \SetColumn{olive7}
+                                    Gamma  \\
+ Epsilon        & Zeta            & Eta    \\
+ Iota           & Kappa           & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+Hlines and vlines can also have colors:
+
+\begin{demohigh}
+\begin{tblr}{colspec={lcr},rowspec={|[2pt,green7]Q|[teal7]Q|[green7]Q|[3pt,teal7]}}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{colspec={|[2pt,violet5]l|[2pt,magenta5]c|[2pt,purple5]r|[2pt,red5]}}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\chapter{Basic Interfaces}
+\label{chap:basic}
+
+\section{Old and new interfaces}
+
+With \PP{tabularray} package, you can change the styles of tables via old interfaces or new interfaces.
+
+The old interfaces consist of some table commands inside the table contents.
+Same as \EE{tabular} and \EE{array} environments,
+all table commands \emph{must} be put at the beginning of the cell text.
+Also, new table commands \emph{must} be defined with \CC{\NewTblrTableCommand}.
+
+The new interfaces consist of some options inside the mandatory argument,
+hence totally separating the styles and the contents of tables.
+
+\begin{newtblr}[
+  caption = {Old Interfaces and New Interfaces},
+  label = {key:interface},
+]{}
+  Old Interfaces                               & New Interfaces          \\
+  \CC{\SetHlines}                              & \K{hlines}              \\
+  \CC{\SetHline}, \CC{\hline}, \CC{\hborder}, \CC{\cline}
+                                               & \K{hline}, \K{hborder}, \K{rowspec}  \\
+  \CC{\SetVlines}                              & \K{vlines}              \\
+  \CC{\SetVline}, \CC{\vline}, \CC{\vborder}, \CC{\rline}
+                                               & \K{vline}, \K{vborder}, \K{colspec}  \\
+  \CC{\SetCells}                               & \K{cells}               \\
+  \CC{\SetCell}                                & \K{cell}                \\
+  \CC{\SetRows}                                & \K{rows}                \\
+  \CC{\SetRow}                                 & \K{row}, \K{rowspec}    \\
+  \CC{\SetColumns}                             & \K{columns}             \\
+  \CC{\SetColumn}                              & \K{column}, \K{colspec} \\
+\end{newtblr}
+
+\section{Hlines and vlines}\label{sec:hlines-vlines}
+
+All available keys for hlines and vlines are described in Table \ref{key:hline} and Table \ref{key:vline}.
+
+\begin{spectblr}[
+  caption = {Keys for Hlines},
+  label = {key:hline},
+  remark{Note} = {In most cases, you can omit the underlined key names and write only their values.}
+]{}
+  Key & Description and Values & Initial Value \\
+  \underline{\K{dash}} & dash style: \V{solid}, \V{dashed} or \V{dotted} & \V{solid} \\
+  \K{text}             & replace hline with text (like \V{!} specifier in \K{rowspec}) & \None \\
+  \underline{\K{wd}}   & rule width dimension & \V{0.4pt} \\
+  \underline{\K{fg}}   & rule color name & \None \\
+  \K{leftpos}          & crossing or trimming position at the left side  & \V{1} \\
+  \K{rightpos}         & crossing or trimming position at the right side & \V{1} \\
+  \K{l}                & same as \K{leftpos}, default \V{-0.8} & \V{1} \\
+  \K{r}                & same as \K{rightpos}, default \V{-0.8} & \V{1} \\
+  \K{lr}               & crossing or trimming positions at both sides, default \V{-0.8} & \V{1} \\
+  \K{endpos}           & adjust leftpos/rightpos for only the leftmost/rightmost column & \V{false} \\
+\end{spectblr}
+\vspace{-2em}
+\begin{spectblr}[
+  caption = {Keys for Vlines},
+  label = {key:vline},
+  remark{Note} = {In most cases, you can omit the underlined key names and write only their values.}
+]{}
+  Key & Description and Values & Initial Value \\
+  \underline{\K{dash}} & dash style: \V{solid}, \V{dashed} or \V{dotted} & \V{solid} \\
+  \K{text}             & replace vline with text (like \V{!} specifier in \K{colspec}) & \None \\
+  \underline{\K{wd}}   & rule width dimension & \V{0.4pt} \\
+  \underline{\K{fg}}   & rule color name & \None \\
+  \K{abovepos}         & crossing or trimming position at the above side & \V{0} \\
+  \K{belowpos}         & crossing or trimming position at the below side & \V{0} \\
+\end{spectblr}
+
+\subsection{Hlines and vlines in new interfaces}
+
+Options \K{hlines} and \K{vlines} are for setting all hlines and vlines, respectively.
+With empty value, all hlines/vlines will be solid.
+
+\begin{demohigh}
+\begin{tblr}{hlines,vlines}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+\end{tblr}
+\end{demohigh}
+
+With values inside one pair of braces, all hlines/vlines will be styled.
+
+\begin{demohigh}
+\begin{tblr}{
+ hlines = {1pt,solid}, vlines = {red3,dashed},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+\end{tblr}
+\end{demohigh}
+
+Another pair of braces before will select segments in all hlines/vlines.
+
+\begin{demohigh}
+\begin{tblr}{
+ vlines = {1,3,5}{dashed},
+ vlines = {2,4}{solid},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+ Rho     & Sigma & Tau     & Upsilon \\
+\end{tblr}
+\end{demohigh}
+
+The above example can be simplified with \CS{odd} and \CS{even} values.
+
+\begin{demohigh}
+\begin{tblr}{
+ vlines = {odd}{dashed},
+ vlines = {even}{solid},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+ Rho     & Sigma & Tau     & Upsilon \\
+\end{tblr}
+\end{demohigh}
+
+Another pair of braces before will draw more hlines/vlines (in which \V{-} stands for all line segments).
+
+\begin{demohigh}
+\begin{tblr}{
+ hlines = {1}{-}{dashed}, hlines = {2}{-}{solid},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+\end{tblr}
+\end{demohigh}
+
+Note that you \emph{must} use indexes in order: first 1, then 2, etc.
+
+Options \KK{hline{i}} and \KK{vline{j}} are for setting some hlines and vlines, respectively.
+Their values are the same as options \K{hlines} and \K{vlines}:
+
+\begin{demohigh}
+\begin{tblr}{
+ hline{1,7} = {1pt,solid},
+ hline{3-5} = {blue3,dashed},
+ vline{1,5} = {3-4}{dotted},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+ Rho     & Sigma & Tau     & Upsilon \\
+ Phi     & Chi   & Psi     & Omega   \\
+\end{tblr}
+\end{demohigh}
+
+You can use \V{U}, \V{V}, \V{W}, \V{X}, \V{Y}, \V{Z} to
+denote the last six children, respectively.
+It is especially useful when you are writing long tables:
+
+\begin{demohigh}
+\begin{tblr}{
+ hline{1,Z} = {2pt},
+ hline{2,Y} = {1pt},
+ hline{3-X} = {dashed},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+ Rho     & Sigma & Tau     & Upsilon \\
+ Phi     & Chi   & Psi     & Omega   \\
+\end{tblr}
+\end{demohigh}
+
+Now we show the usage of \K{text} key by the following example%
+\footnote{Code from \url{https://tex.stackexchange.com/questions/603023/tabularray-and-tabularx-column-separator}.}:
+
+\begin{demohigh}
+\begin{tblr}{
+  vlines, hlines,
+  colspec = {lX[c]X[c]X[c]X[c]},
+  vline{2} = {1}{text=\clap{:}},
+  vline{3} = {1}{text=\clap{\ch{+}}},
+  vline{4} = {1}{text=\clap{\ch{->}}},
+  vline{5} = {1}{text=\clap{\ch{+}}},
+}
+  Equation & \ch{CH4} & \ch{2 O2} & \ch{CO2} & \ch{2 H2O} \\
+  Initial  & $n_1$    & $n_2$     & 0        & 0 \\
+  Final    & $n_1-x$  & $n_2-2x$  & $x$      & $2x$ \\
+\end{tblr}
+\end{demohigh}
+
+You need to load \PP{chemmacros} package for the \CC{\ch} command.
+
+The \K{leftpos} and \K{rightpos} keys specify crossing or trimming positions for hlines.
+The possible values for them are decimal numbers between \V{-1} and \V{1}.
+Their initial values are \V{1}.
+
+\begin{center}
+\begin{tblr}{width=0.5\textwidth,colspec={rX[l]},hlines}
+  -1 & the hline is trimmed by \V{colsep} \\
+   0 & the hline only touches the first vline \\
+   1 & the hline touches all the vlines \\
+\end{tblr}
+\end{center}
+
+The \K{abovepos} and \K{belowpos} keys for vlines have similar meanings.
+But their initial values are \V{0}.
+
+\begin{center}
+\begin{tblr}{width=0.5\textwidth,colspec={rX[l]},hlines}
+  -1 & the vline is trimmed by \V{rowsep} \\
+   0 & the vline only touches the first hline \\
+   1 & the vline touches all the hlines \\
+\end{tblr}
+\end{center}
+
+Here is an example for these four keys:
+
+\begin{demohigh}
+\begin{tblr}{
+  hline{1,4} = {1}{-}{},
+  hline{1,4} = {2}{-}{},
+  hline{2,3} = {1}{-}{leftpos = -1, rightpos = -1},
+  hline{2,3} = {2}{-}{leftpos = -1, rightpos = -1},
+  vline{1,4} = {abovepos = 1, belowpos = 1},
+}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+There is also an \K{endpos} option for adjusting \K{leftpos}/\K{rightpos}
+for only the leftmost/rightmost column:
+
+\begin{demohigh}
+\begin{tblr}{
+ hline{1,4} = {1}{-}{},
+ hline{1,4} = {2}{-}{},
+ hline{2,3} = {leftpos = -1, rightpos = -1, endpos},
+ vline{1,4} = {abovepos = 1, belowpos = 1},
+}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Hlines and vlines in old interfaces}
+
+The \CC{\hline} command has an optional argument which accepts key-value options.
+The available keys are described in Table \ref{key:hline}.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\hline
+ Alpha   & Beta  & Gamma  & Delta \\
+\hline[dashed]
+ Epsilon & Zeta  & Eta    & Theta \\
+\hline[dotted]
+ Iota    & Kappa & Lambda & Mu    \\
+\hline[2pt,blue5]
+\end{tblr}
+\end{demohigh}
+
+The \CC{\cline} command also has an optional argument which is the same as \CC{\hline}.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\cline{1-4}
+ Alpha   & Beta  & Gamma  & Delta \\
+\cline[dashed]{1,3}
+ Epsilon & Zeta  & Eta    & Theta \\
+\cline[dashed]{2,4}
+ Iota    & Kappa & Lambda & Mu    \\
+\cline[2pt,blue5]{-}
+\end{tblr}
+\end{demohigh}
+
+You can use child selectors in the mandatory argument of \CC{\cline}.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\cline{1-4}
+ Alpha   & Beta  & Gamma  & Delta \\
+\cline[dashed]{odd}
+ Epsilon & Zeta  & Eta    & Theta \\
+\cline[dashed]{even}
+ Iota    & Kappa & Lambda & Mu    \\
+\cline[2pt,blue5]{-}
+\end{tblr}
+\end{demohigh}
+
+Commands \CC{\SetHline} combines the usages of \CC{\hline} and \CC{\cline}:
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\SetHline{1-3}{blue5,1pt}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\SetHline{2-4}{teal5,1pt}
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\SetHline[1]{1-3}{blue5,1pt}
+\SetHline[2]{1-3}{azure5,1pt}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\SetHline[1]{2-4}{teal5,1pt}
+\SetHline[2]{2-4}{green5,1pt}
+\end{tblr}
+\end{demohigh}
+
+In fact, table command \CC{\SetHline[<index>]{<columns>}{<styles>}} at the beginning of row \V{i}
+is the same as table option \KV{hline{i}={<index>}{<columns>}{<styles>}}.
+
+Also, table command \CC{\SetHlines[<index>]{<columns>}{<styles>}} at the beginning of some row
+is the same as table option \KV{hlines={<index>}{<columns>}{<styles>}}.
+
+The usages of table commands \CC{\vline}, \CC{\rline}, \CC{\SetVline}, \CC{\SetVlines}
+are similar to those of \CC{\hline}, \CC{\cline}, \CC{\SetHline}, \CC{\SetHlines}, respectively.
+But normally you don't need to use them.
+
+\section{Hborders and vborders}
+
+Options \KK{hborder{i}} and \KK{vborder{j}} are similar to \KK{hline{i}} and \KK{vline{j}},
+respectively, but they hold border specifications not related to one specific hline and vline.
+All available keys for \KK{hborder{i}} and \KK{vborder{j}} are described in
+Table~\ref{key:hborder} and Table~\ref{key:vborder}.
+
+\begin{spectblr}[
+  caption = {Keys for Hborders},
+  label = {key:hborder},
+]{}
+  Key & Description and Values & Initial Value \\
+  \K{pagebreak}   & pagebreak at this position: \V{yes}, \V{no} or \V{auto}
+                    (See Chapter~\ref{chap:long}) & \V{auto} \\
+  \K{abovespace}  & set \V{belowsep} of previous row (see Table \ref{key:row}) & \V{2pt} \\
+  \K{belowspace}  & set \V{abovesep} of current row (see Table \ref{key:row}) & \V{2pt} \\
+  \K{abovespace+} & increase \V{belowsep} of previous row & \None \\
+  \K{belowspace+} & increase \V{abovesep} of current row  & \None \\
+\end{spectblr}
+\vspace{-2em}
+\begin{spectblr}[
+  caption = {Keys for Vborders},
+  label = {key:vborder},
+]{}
+  Key & Description and Values & Initial Value \\
+  \K{leftspace}   & set \V{rightsep} of previous column (see Table \ref{key:column}) & \V{6pt} \\
+  \K{rightspace}  & set \V{leftsep} of current column (see Table \ref{key:column}) & \V{6pt} \\
+  \K{leftspace+}  & increase \V{rightsep} of previous column & \None \\
+  \K{rightspace+} & increase \V{leftsep} of current column  & \None \\
+\end{spectblr}
+
+Furthermore, table command \CC{\hborder{<specs>}} at the beginning of row \V{i}
+is the same as table option \KV{hborder{i}={<specs>}},
+and table command \CC{\vborder{<specs>}} at the beginning of column \V{j}
+is the same as table option \KV{vborder{j}={<specs>}}.
+
+\section{Cells and spancells}
+
+All available keys for cells are described in Table \ref{key:cell} and Table \ref{key:cellspan}.
+
+\begin{spectblr}[
+  caption = {Keys for the Content of Cells},
+  label = {key:cell},
+  remark{Note} = {In most cases, you can omit the underlined key names and write only their values.}
+]{}
+  Key & Description and Values & Initial Value \\
+  \underline{\K{halign}}
+    & horizontal alignment: \V{l} (left), \V{c} (center), \V{r} (right) or \V{j} (justify)
+    & \V{j} \\
+  \underline{\K{valign}}
+    & vertical alignment: \V{t} (top), \V{m} (middle), \V{b} (bottom),
+      \V{h} (head) or \V{f} (foot)
+    & \V{t} \\
+  \underline{\K{wd}} & width dimension & \None \\
+  \underline{\K{bg}} & background color name & \None \\
+  \K{fg}    & foreground color name & \None \\
+  \K{font}  & font commands & \None \\
+  \K{mode}  & set cell mode: \V{math}, \V{imath}, \V{dmath} or \V{text} & \None \\
+  \KK{$}  & same as \V{mode=math} & \None \\
+  \KK{$$} & same as \V{mode=dmath} & \None \\
+  \K{cmd}   & execute command for the cell text & \None \\
+  \K{preto} & prepend text to the cell & \None \\
+  \K{appto} & append text to the cell & \None \\
+\end{spectblr}
+\vspace{-2em}
+\begin{spectblr}[
+  caption = {Keys for Multispan of Cells},
+  label = {key:cellspan},
+]{}
+  Key & Description and Values & Initial Value \\
+  \K{r} & number of rows the cell spans    & 1 \\
+  \K{c} & number of columns the cell spans & 1 \\
+\end{spectblr}
+
+\subsection{Cells and spancells in new interfaces}
+
+Option \K{cells} is for setting all cells.
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{hlines={white},cells={c,blue7}}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+\end{tblr}
+\end{demohigh}
+
+Option \KK{cell{i}{j}} is for setting some cells,
+where \V{i} stands for the row numbers and \V{j} stands for the column numbers.
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{
+  cell{1}{2-4} = {cmd=\fbox}
+}
+  Alpha & Beta & Gamma & Delta
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{
+ hlines = {white},
+ vlines = {white},
+ cell{1,6}{odd} = {teal7},
+ cell{1,6}{even} = {green7},
+ cell{2,4}{1,4} = {red7},
+ cell{3,5}{1,4} = {purple7},
+ cell{2}{2} = {r=4,c=2}{c,azure7},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+ Rho     & Sigma & Tau     & Upsilon \\
+ Phi     & Chi   & Psi     & Omega   \\
+\end{tblr}
+\end{demohigh}
+
+From version 2025A, you can select cells with a list of two dimensional indexes:
+\begin{demohigh}
+\begin{tblr}{
+  cell{{2}{6},{7}{3}} = {bg=blue7},
+  cell{{1}{1}-{4}{4},{5}{8}-{8}{5}} = {bg=red7}
+}
+  1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  2 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  3 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  4 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  5 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  6 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  7 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  8 & 2 & 3 & 4 & 5 & 6 & 7 & 8
+\end{tblr}
+\end{demohigh}
+In this example, \TT{-} characters are used for diagonal selection.
+
+\subsection{Cells and spancells in old interfaces}
+
+The \CC{\SetCell} command has a mandatory argument for setting the styles of current cell.
+The available keys are described in Table \ref{key:cell}.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\hline[1pt]
+ Alpha   & \SetCell{bg=teal2,fg=white} Beta & Gamma \\
+\hline
+ Epsilon & Zeta & \SetCell{r,font=\scshape} Eta \\
+\hline
+ Iota    & Kappa & Lambda \\
+\hline[1pt]
+\end{tblr}
+\end{demohigh}
+
+The \CC{\SetCell} command also has an optional argument for setting the multispan of current cell.
+The available keys are described in Table \ref{key:cellspan}.
+
+\begin{demohigh}
+\begin{tblr}{|X|X|X|X|X|X|}
+\hline
+ Alpha & Beta & Gamma & Delta & Epsilon & Zeta \\
+\hline
+ \SetCell[c=2]{c} Eta & 2-2
+              & \SetCell[c=2]{c} Iota & 2-4
+                              & \SetCell[c=2]{c} Lambda  & 2-6 \\
+\hline
+ \SetCell[c=3]{c} Nu & 3-2 & 3-3
+                      & \SetCell[c=3]{c} Pi & 3-5 & 3-6   \\
+\hline
+ \SetCell[c=6]{c} Tau & 4-2 & 4-3 & 4-4 & 4-5 & 4-6 \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{|X|X|X|X|X|X|}
+\hline
+ Alpha & Beta    & Gamma   & Delta & Epsilon & Zeta \\
+\hline
+ \SetCell[r=2]{m} Eta
+       & Theta   & Iota    & Kappa & Lambda  & \SetCell[r=2]{m} Mu  \\
+\hline
+ Nu    & Xi      & Omicron & Pi    & Rho     & Sigma \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+In fact, table command \CC{\SetCell[<span>]{<styles>}} at the beginning of cell at row \V{i}
+and column \V{j} is the same as table option \KV{cell{i}{j}={<span>}{<styles>}}.
+
+Also, table command \CC{\SetCells[<span>]{<styles>}} at the beginning of some cell
+is the same as table option \KV{cells={<span>}{<styles>}}.
+
+\section{Rows and columns}
+
+All available keys for rows and columns are described in Table \ref{key:row} and Table \ref{key:column}.
+
+\begin{spectblr}[
+  caption = {Keys for Rows},
+  label = {key:row},
+  remark{Note} = {In most cases, you can omit the underlined key names and write only their values.}
+]{}
+  Key & Description and Values & Initial Value \\
+  \underline{\K{halign}}
+    & horizontal alignment: \V{l} (left), \V{c} (center), \V{r} (right) or \V{j} (justify)
+    & \V{j} \\
+  \underline{\K{valign}}
+    & vertical alignment: \V{t} (top), \V{m} (middle), \V{b} (bottom),
+      \V{h} (head) or \V{f} (foot)
+    & \V{t} \\
+  \underline{\K{ht}} & height dimension & \None \\
+  \underline{\K{bg}} & background color name & \None \\
+  \K{fg} & foreground color name & \None \\
+  \K{font} & font commands & \None \\
+  \K{mode}  & set mode for row cells: \V{math}, \V{imath}, \V{dmath} or \V{text} & \None \\
+  \KK{$}  & same as \V{mode=math} & \None \\
+  \KK{$$} & same as \V{mode=dmath} & \None \\
+  \K{cmd}   & execute command for every cell text & \None \\
+  \K{abovesep} & set vertical space above the row & \V{2pt} \\
+  \K{abovesep+} & increase vertical space above the row & \None \\
+  \K{belowsep} & set vertical space below the row & \V{2pt} \\
+  \K{belowsep+} & increase vertical space below the row & \None \\
+  \K{rowsep} & set vertical space above and below the row & \V{2pt} \\
+  \K{rowsep+} & increase vertical space above and below the row & \None \\
+  \K{preto} & prepend text to every cell (like \V{>} specifier in \K{rowspec}) & \None \\
+  \K{appto} & append text to every cell (like \V{<} specifier in \K{rowspec}) & \None \\
+\end{spectblr}
+\vspace{-2em}
+\begin{spectblr}[
+  caption = {Keys for Columns},
+  label = {key:column},
+  remark{Note} = {In most cases, you can omit the underlined key names and write only their values.}
+]{}
+  Key & Description and Values & Initial Value \\
+  \underline{\K{halign}}
+    & horizontal alignment: \V{l} (left), \V{c} (center), \V{r} (right) or \V{j} (justify)
+    & \V{j} \\
+  \underline{\K{valign}}
+    & vertical alignment: \V{t} (top), \V{m} (middle), \V{b} (bottom),
+      \V{h} (head) or \V{f} (foot)
+    & \V{t} \\
+  \underline{\K{wd}} & width dimension & \None \\
+  \underline{\K{co}} & coefficient for the extendable column (\V{X} column) & \None \\
+  \underline{\K{bg}} & background color name & \None \\
+  \K{fg} & foreground color name & \None \\
+  \K{font} & font commands & \None \\
+  \K{mode}  & set mode for column cells: \V{math}, \V{imath}, \V{dmath} or \V{text} & \None \\
+  \KK{$}  & same as \V{mode=math} & \None \\
+  \KK{$$} & same as \V{mode=dmath} & \None \\
+  \K{cmd}   & execute command for every cell text & \None \\
+  \K{leftsep} & set horizontal space to the left of the column & \V{6pt} \\
+  \K{leftsep+} & increase horizontal space to the left of the column & \None \\
+  \K{rightsep} & set horizontal space to the right of the column & \V{6pt} \\
+  \K{rightsep+} & increase horizontal space to the right of the column & \None \\
+  \K{colsep} & set horizontal space to both sides of the column & \V{6pt} \\
+  \K{colsep+} & increase horizontal space to both sides of the column & \None \\
+  \K{preto} & prepend text to every cell (like \V{>} specifier in \K{colspec}) & \None \\
+  \K{appto} & append text to every cell (like \V{<} specifier in \K{colspec}) & \None \\
+\end{spectblr}
+
+\subsection{Rows and columns in new interfaces}
+
+Options \K{rows} and \K{columns} are for setting all rows and columns, respectively.
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{
+ hlines, vlines,
+ rows = {7mm}, columns = {15mm,c},
+}
+ Alpha   & Beta  & Gamma   & Delta \\
+ Epsilon & Zeta  & Eta     & Theta \\
+ Iota    & Kappa & Lambda  & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+Options \KK{row{i}} and \KK{column{j}} are for setting some rows and columns, respectively.
+
+\begin{demohigh}
+\begin{tblr}{
+ hlines = {1pt,white},
+ row{odd} = {blue7},
+ row{even} = {azure7},
+ column{1} = {purple7,c},
+}
+ Alpha   & Beta  & Gamma   & Delta   \\
+ Epsilon & Zeta  & Eta     & Theta   \\
+ Iota    & Kappa & Lambda  & Mu      \\
+ Nu      & Xi    & Omicron & Pi      \\
+ Rho     & Sigma & Tau     & Upsilon \\
+ Phi     & Chi   & Psi     & Omega   \\
+\end{tblr}
+\end{demohigh}
+
+The following example demonstrates the usages of \K{bg}, \K{fg} and \K{font} keys:
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{
+ row{odd} = {bg=azure8},
+ row{1}   = {bg=azure3, fg=white, font=\sffamily},
+}
+ Alpha & Beta    & Gamma \\
+ Delta & Epsilon & Zeta  \\
+ Eta   & Theta   & Iota  \\
+ Kappa & Lambda  & Mu    \\
+ Nu Xi Omicron & Pi Rho Sigma & Tau Upsilon Phi \\
+\end{tblr}
+\end{demohigh}
+
+The following example demonstrates the usages of \K{mode} key:
+\nopagebreak
+\begin{demohigh}
+$\begin{tblr}{
+  column{1} = {mode=text},
+  column{3} = {mode=dmath},
+}
+\hline
+  Alpha   & \frac12 & \frac12 \\
+  Epsilon & \frac34 & \frac34 \\
+  Iota    & \frac56 & \frac56 \\
+\hline
+\end{tblr}$
+\end{demohigh}
+Note that you \emph{can not} write multiline math directly (such as \TT{\alpha\ \\\\ \beta})
+in any math-mode cell.
+
+The following example demonstrates the usages of
+\K{abovesep}, \K{belowsep}, \K{leftsep}, \K{rightsep} keys:
+%\nopagebreak
+\begin{demohigh}
+\begin{tblr}{
+ hlines, vlines,
+ rows = {abovesep=1pt,belowsep=5pt},
+ columns = {leftsep=1pt,rightsep=5pt},
+}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+The following example shows that we can replace \CC{\\\\[dimen]} with \K{belowsep+} key.
+
+\begin{demohigh}
+\begin{tblr}{
+ hlines, row{2} = {belowsep+=5pt},
+}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Rows and columns in old interfaces}
+
+The \CC{\SetRow} command has a mandatory argument for setting the styles of current row.
+The available keys are described in Table \ref{key:row}.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\hline[1pt]
+ \SetRow{azure8} Alpha & Beta & Gamma & Delta \\
+\hline
+ \SetRow{blue8,c} Epsilon & Zeta & Eta & Theta \\
+\hline
+ \SetRow{violet8} Iota & Kappa & Lambda & Mu \\
+\hline[1pt]
+\end{tblr}
+\end{demohigh}
+
+In fact, table command \CC{\SetRow{<styles>}} at the beginning of row \V{i}
+is the same as table option \KV{row{i}={<styles>}}.
+
+Also, table command \CC{\SetRows{<styles>}} at the beginning of some row
+is the same as table option \KV{rows={<styles>}}.
+
+The usages of table commands \CC{\SetColumn} and \CC{\SetColumns}
+are similar to those of \CC{\SetRow} and \CC{\SetRows}, respectively.
+But normally you don't need to use them.
+
+\section{Colspec and rowspec}
+
+Options \K{colspec}/\K{rowspec} are for setting column/row specifications
+with column/row type specifiers.
+
+\subsection{Colspec and width}
+
+Option \K{width} is for setting the width of the table with extendable columns.
+The following example demonstrates the usage of \K{width} option.
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{width=0.8\textwidth, colspec={|l|X[2]|X[3]|X[-1]|}}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+You can omit \K{colspec} name if it is the only key you use inside the mandatory argument.
+The following example demonstrates the usages of \KK{$} and \KK{$$} keys:
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{Q[l]Q[r,$]Q[r,$$]}
+\hline
+  Alpha   & \frac12 & \frac12 \\
+  Epsilon & \frac34 & \frac34 \\
+  Iota    & \frac56 & \frac56 \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+\subsection{Column types}
+
+The \PP{tabularray} package has only one type of primitive column: the \Q{Q} column.
+Other types of columns are defined as \Q{Q} columns with some keys.
+
+\begin{codehigh}
+\NewTblrColumnType{l}{Q[l]}
+\NewTblrColumnType{c}{Q[c]}
+\NewTblrColumnType{r}{Q[r]}
+\NewTblrColumnType{t}[1]{Q[t,wd=#1]}
+\NewTblrColumnType{m}[1]{Q[m,wd=#1]}
+\NewTblrColumnType{b}[1]{Q[b,wd=#1]}
+\NewTblrColumnType{h}[1]{Q[h,wd=#1]}
+\NewTblrColumnType{f}[1]{Q[f,wd=#1]}
+\NewTblrColumnType{X}[1][]{Q[co=1,#1]}
+\end{codehigh}
+
+\begin{demohigh}
+\begin{tblr}{|t{15mm}|m{15mm}|b{20mm}|}
+ Alpha   & Beta  & {Gamma\\Gamma} \\
+ Epsilon & Zeta  & {Eta\\Eta} \\
+ Iota    & Kappa & {Lambda\\Lambda} \\
+\end{tblr}
+\end{demohigh}
+
+Any new column type must be defined with \CC{\NewTblrColumnType} command.
+It can have an optional argument when it's defined.
+
+\subsection{Row types}
+
+The \PP{tabularray} package has only one type of primitive row: the \Q{Q} row.
+Other types of rows are defined as \Q{Q} rows with some keys.
+
+\begin{codehigh}
+\NewTblrRowType{l}{Q[l]}
+\NewTblrRowType{c}{Q[c]}
+\NewTblrRowType{r}{Q[r]}
+\NewTblrRowType{t}[1]{Q[t,ht=#1]}
+\NewTblrRowType{m}[1]{Q[m,ht=#1]}
+\NewTblrRowType{b}[1]{Q[b,ht=#1]}
+\NewTblrRowType{h}[1]{Q[h,ht=#1]}
+\NewTblrRowType{f}[1]{Q[f,ht=#1]}
+\end{codehigh}
+
+\begin{demohigh}
+\begin{tblr}{rowspec={|t{12mm}|m{10mm}|b{10mm}|}}
+ Alpha   & Beta  & {Gamma\\Gamma} \\
+ Epsilon & Zeta  & {Eta\\Eta} \\
+ Iota    & Kappa & {Lambda\\Lambda} \\
+\end{tblr}
+\end{demohigh}
+
+Any new row type must be defined with \CC{\NewTblrRowType} command.
+It can have an optional argument when it's defined.
+
+\chapter{Extra Interfaces}
+\label{chap:extra}
+
+In general, \EE{tblr} environment accepts both inner and outer specifications:
+
+\begin{codehigh}
+\begin{tblr}[<outer specs>]{<inner specs>}
+  <table body>
+\end{tblr}
+\end{codehigh}
+
+\textbf{Inner specifications} are all specifications written in the \underline{mandatory} argument
+of \EE{tblr} environment, which include new interfaces described in Chapter \ref{chap:basic}.
+
+\textbf{Outer specifications} are all specifications written in the \underline{optional} argument
+of \EE{tblr} environment, most of which are used for long tables (see Chapter \ref{chap:long}).
+
+You can use \CC{\SetTblrInner} and \CC{\SetTblrOuter} commands
+to set default inner and outer specifications of tables, respectively (see Section \ref{sec:default}).
+
+\section{Inner specifications}
+
+In addition to new interfaces in Chapter \ref{chap:basic},
+there are several inner specifications which are described in Table~\ref{key:inner}.
+
+\begin{spectblr}[
+  caption = {Keys for Inner Specifications},
+  label = {key:inner},
+]{}
+  Key & Description and Values & Initial Value \\
+  \K{rulesep} & space between two hlines or vlines & \V{2pt} \\
+  \K{stretch} & stretch ratio for struts added to cell text & \V{1} \\
+  \K{abovesep} & set vertical space above every row & \V{2pt} \\
+  \K{belowsep} & set vertical space below every row & \V{2pt} \\
+  \K{rowsep} & set vertical space above and below every row & \V{2pt} \\
+  \K{leftsep} & set horizontal space to the left of every column & \V{6pt} \\
+  \K{rightsep} & set horizontal space to the right of every column & \V{6pt} \\
+  \K{colsep} & set horizontal space to both sides of every column & \V{6pt} \\
+  \K{hspan} & horizontal span algorithm: \V{default}, \V{even}, or \V{minimal} & \V{default} \\
+  \K{vspan} & vertical span algorithm: \V{default} or \V{even} & \V{default} \\
+  %\K{verb} & you need this key to use verb commands & \None \\
+  \K{baseline} & set the baseline of the table & \V{m} \\
+\end{spectblr}
+
+\subsection{Space between double rules}
+
+The following example shows that we can replace \CC{\doublerulesep} parameter with \K{rulesep} key.
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{
+ colspec={||llll||},rowspec={|QQQ|},rulesep=4pt,
+}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Minimal strut for cell text}
+
+The following example shows that we can replace \CC{\arraystretch} parameter with \K{stretch} key.
+
+\begin{demohigh}
+\begin{tblr}{hlines,stretch=1.5}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+By replacing stretch with row heights, we can get perfect vertical centering for your numerical tables.
+
+\begin{demohigh}
+\begin{tblr}{hlines, stretch=0, rows={ht=\baselineskip}}
+  2021 & 2022 & 2023 \\
+  0.4  & 0.5  & 0.6  \\
+  1.1  & 2.2  & 3.3  \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Rowseps and colseps for all}
+
+The following example uses \K{rowsep} and \K{colsep} keys to set padding for all rows and columns.
+\nopagebreak
+\begin{demohigh}
+\SetTblrInner{rowsep=2pt,colsep=2pt}
+\begin{tblr}{hlines,vlines}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Hspan and vspan algorithms}
+
+With \KV{hspan=default} or \KV{hspan=even},
+\PP{tabularray} package will compute column widths from span widths.
+But with \KV{hspan=minimal}, it will compute span widths from column widths.
+The following examples show the results from different \K{hspan} values.
+
+\begin{demohigh}
+\SetTblrInner{hlines, vlines, hspan=default}
+\begin{tblr}{cell{2}{1}={c=2}{l},cell{3}{1}={c=3}{l},cell{4}{2}={c=2}{l}}
+ 111 111 & 222 222 & 333 333 \\
+ 12 Multi Columns Multi Columns 12 & & 333 \\
+ 13 Multi Columns Multi Columns Multi Columns 13 & & \\
+ 111 & 23 Multi Columns Multi Columns 23 & \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\SetTblrInner{hlines, vlines, hspan=even}
+\begin{tblr}{cell{2}{1}={c=2}{l},cell{3}{1}={c=3}{l},cell{4}{2}={c=2}{l}}
+ 111 111 & 222 222 & 333 333 \\
+ 12 Multi Columns Multi Columns 12 & & 333 \\
+ 13 Multi Columns Multi Columns Multi Columns 13 & & \\
+ 111 & 23 Multi Columns Multi Columns 23 & \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\SetTblrInner{hlines, vlines, hspan=minimal}
+\begin{tblr}{cell{2}{1}={c=2}{l},cell{3}{1}={c=3}{l},cell{4}{2}={c=2}{l}}
+ 111 111 & 222 222 & 333 333 \\
+ 12 Multi Columns Multi Columns 12 & & 333 \\
+ 13 Multi Columns Multi Columns Multi Columns 13 & & \\
+ 111 & 23 Multi Columns Multi Columns 23 & \\
+\end{tblr}
+\end{demohigh}
+
+The following examples show the results from different \K{vspan} values.
+\nopagebreak
+\begin{demohigh}
+\SetTblrInner{hlines, vlines, vspan=default}
+\begin{tblr}{column{2}={3.25cm}, cell{2}{2}={r=3}{l}}
+  Column1 & Column2 \\
+  Row1 & Long text that needs multiple lines.
+         Long text that needs multiple lines.
+         Long text that needs multiple lines. \\
+  Row2 & \\
+  Row3 & \\
+  Row4 & Short text \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\SetTblrInner{hlines, vlines, vspan=even}
+\begin{tblr}{column{2}={3.25cm}, cell{2}{2}={r=3}{l}}
+  Column1 & Column2 \\
+  Row1 & Long text that needs multiple lines.
+         Long text that needs multiple lines.
+         Long text that needs multiple lines. \\
+  Row2 & \\
+  Row3 & \\
+  Row4 & Short text \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Set baseline for the table}
+
+With \K{baseline} key, you can set baseline for the table.
+All possible values for \K{baseline} are as follows:
+
+\begin{center}
+\begin{tblr}{width=0.6\textwidth,colspec={cX[l]},hlines}
+  \V{t}    & align the table at the top \\
+  \V{T}    & align the table at the first row \\
+  \V{m}    & align the table at the middle, initial value \\
+  \V{b}    & align the table at the bottom \\
+  \V{B}    & align the table at the last row \\
+  \V{<n>}  & align the table at row \V{<n>} (a positive integer) \\
+\end{tblr}
+\end{center}
+
+If there is no hline above the first row, you get the same result with either \V{t} or \V{T}.
+But you get different results if there are one or more hlines above the row:
+
+\begin{demohigh}
+Baseline\begin{tblr}{hlines,baseline=t}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}Baseline
+\end{demohigh}
+
+\begin{demohigh}
+Baseline\begin{tblr}{hlines,baseline=T}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}Baseline
+\end{demohigh}
+
+The differences between \V{b} and \V{B} are similar to \V{t} and \V{T}.
+In fact, these two values \V{T} and \V{B} are better replacements
+for currently obsolete \CC{\firsthline} and \CC{\lasthline} commands.
+
+\section{Outer specifications}
+
+Except for specifications to be introduced in Chapter \ref{chap:long},
+there are several other outer specifications which are described in Table~\ref{key:outer}.
+
+\begin{spectblr}[
+  caption = {Keys for Outer Specifications},
+  label = {key:outer},
+]{}
+  Key & Description and Values & Initial Value \\
+  \K{baseline} & set the baseline of the table & \V{m} \\
+  \K{long} & change the table to a long table & \None \\
+  \K{tall} & change the table to a tall table & \None \\
+  \K{expand} & you need this key to use verb commands & \None \\
+  \K{expand+} & like \K{expand} but appends to previous values & \None \\
+\end{spectblr}
+
+\subsection{Set baseline in another way}
+
+You may notice that you can write \K{baseline} option as either an inner or an outer specification.
+It is true that either way would do the job. But there is a small difference:
+when \KV{baseline=t/T/m/b/B} is an outer specification,
+you can omit the key name and write the value only.
+
+\begin{demohigh}
+Baseline\begin{tblr}[m]{hlines}
+ Alpha   & Beta  & Gamma  \\
+ Epsilon & Zeta  & Eta    \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}Baseline
+\end{demohigh}
+
+\subsection{Long and tall tables}
+
+You can change a table to long table by passing outer specification \K{long},
+or change it to tall table by passing outer specification \K{tall} (see Chapter~\ref{chap:long}).
+Therefore the following two tables are the same:
+\begin{codehigh}
+\begin{longtblr}{lcr}
+  Alpha & Beta & Gamma
+\end{longtblr}
+\begin{tblr}[long]{lcr}
+  Alpha & Beta & Gamma
+\end{tblr}
+\end{codehigh}
+
+\subsection{Expand macros first}
+
+In contrast to traditional \EE{tabular} environment, \PP{tabularray} environments
+need to see every \TT{&} and \TT{\\\\} when splitting the table body.
+And you can not put cell text inside any table command defined with \CC{\NewTblrTableCommand}.
+But you could use outer key \K{expand} to make \PP{tabularray} expand
+every occurrence of any of the specified macros \emph{once} and in the given order before splitting the table body.
+Note that you \emph{can not} expand a command defined with \CC{\NewDocumentCommand}.
+You can also use \K{expand+} if you still want to keep the macros in the current \K{expand} setting.
+
+To expand a command without optional argument, you can define it with \CC{\newcommand}.
+
+\begin{demohigh}
+\newcommand*\tblrrowa{
+  20 & 30 & 40 \\
+}
+\newcommand*\tblrrowb{
+  50 & 60 & 70 \\
+}
+\newcommand*\tblrbody{
+ \hline
+  \tblrrowa
+  \tblrrowb
+ \hline
+}
+\SetTblrOuter{expand=\tblrbody\tblrrowa}
+\begin{tblr}[expand+=\tblrrowb]{ccc}
+ \hline
+  AA & BB & CC \\
+  \tblrbody
+  DD & EE & FF \\
+  \tblrbody
+  GG & HH & II \\
+ \hline
+\end{tblr}
+\end{demohigh}
+
+To expand commands with optional arguments, you \emph{can not} define them
+with \CC{\newcommand}. But you can define them with \CC{\NewExpandableDocumentCommand},
+and use option \KV{expand=\expanded} to do exhaustive expansions.
+
+\begin{demohigh}
+\NewExpandableDocumentCommand\yes{O{Yes}m}{\SetCell{bg=green9}#1}
+\NewExpandableDocumentCommand\no{O{No}m}{\SetCell{bg=red9}#1}
+\begin{tblr}[expand=\expanded]{hlines}
+  What I get               & is below              \\
+  \expanded{\yes{}}        & \expanded{\no{}}      \\
+  \expanded{\yes[Great]{}} & \expanded{\no[Bad]{}}
+\end{tblr}
+\end{demohigh}
+
+Note that you need to protect fragile commands (if any) inside them with \CC{\unexpanded} command.
+
+\section{Default specifications}%
+\label{sec:default}
+
+\PP{Tabularray} package provides \CC{\SetTblrInner} and \CC{\SetTblrOuter} commands
+for you to change the default inner and outer specifications of tables.
+
+In general different \PP{tabularray} environments (\EE{tblr}, \EE{talltblr},
+\EE{longtblr}, etc) could have different default specifications.
+You can list the environments in the optional arguments of these two commands,
+and they only apply to \EE{tblr} environment when the optional arguments are omitted.
+
+In the following example, the first line draws all hlines and vlines for all \EE{tblr} tables
+created afterwards, while the second line makes all \EE{tblr} tables created afterwards
+vertically align at the last row.
+
+\begin{codehigh}
+\SetTblrInner{hlines,vlines}
+\SetTblrOuter{baseline=B}
+\end{codehigh}
+
+And the following example sets zero \K{rowsep} for all \EE{tblr} and \EE{longtblr} tables
+created afterwards.
+
+\begin{codehigh}
+\SetTblrInner[tblr,longtblr]{rowsep=0pt}
+\end{codehigh}
+
+\section{New tabularray environments}
+
+You can define new \PP{tabularray} environments using \CC{\NewTblrEnviron} command:
+
+\begin{demohigh}
+\NewTblrEnviron{mytblr}
+\SetTblrInner[mytblr]{hlines,vlines}
+\SetTblrOuter[mytblr]{baseline=B}
+Text \begin{mytblr}{cccc}
+ Alpha   & Beta  & Gamma  & Delta \\
+ Epsilon & Zeta  & Eta    & Theta \\
+ Iota    & Kappa & Lambda & Mu    \\
+\end{mytblr} Text
+\end{demohigh}
+
+\section{New general environments}
+
+With \V{+b} argument type of \CC{\NewDocumentEnvironment} command,
+you can also define a new general environment based on \EE{tblr} environment
+(note that there is an extra pair of curly braces at the end):
+
+\NewDocumentEnvironment{fancytblr}{+b}{
+  Before Text
+  \begin{tblr}{hlines}
+    #1
+  \end{tblr}
+  After Text
+}{}
+\begin{codehigh}
+\NewDocumentEnvironment{fancytblr}{+b}{
+  Before Text
+  \begin{tblr}{hlines}
+    #1
+  \end{tblr}
+  After Text
+}{}
+\end{codehigh}
+\begin{demohigh}
+\begin{fancytblr}
+  One   & Two   & Three \\
+  Four  & Five  & Six   \\
+  Seven & Eight & Nine  \\
+\end{fancytblr}
+\end{demohigh}
+
+\section{New table commands}
+
+All commands which change the specifications of tables \emph{must} be defined with \CC{\NewTblrTableCommand}.
+The following example demonstrates how to define a new table command:
+
+\begin{demohigh}
+\NewTblrTableCommand\myhline{\hline[0.1em,red5]}
+\begin{tblr}{llll}
+\myhline
+ Alpha   & Beta  & Gamma   & Delta \\
+ Epsilon & Zeta  & Eta     & Theta \\
+ Iota    & Kappa & Lambda  & Mu    \\
+\myhline
+\end{tblr}
+\end{demohigh}
+
+\section{Child indexers and selectors}
+
+From version 2025A, child indexer \CI{Z} accepts an optional argument for making a negative index.
+
+\begin{demohigh}
+\begin{tblr}{
+  cell{1}{2-Z[2]} = {red9},
+  cell{2}{3-Z[3]} = {green9},
+  cell{3}{Z[6]-Z[4]} = {blue9}
+}
+  A & B & C & D & E & F & G & H & I \\
+  A & B & C & D & E & F & G & H & I \\
+  A & B & C & D & E & F & G & H & I
+\end{tblr}
+\end{demohigh}
+
+From version 2022A, child selectors \CS{odd} and \CS{even} accept an optional argument,
+in which you can specify the start index of the children.
+
+\begin{demohigh}
+\begin{tblr}{
+  cell{1}{odd} = {yellow9},
+  cell{2}{odd[5]} = {purple9},
+  cell{3}{odd[4]} = {cyan9}
+}
+  A & B & C & D & E & F & G & H & I & J \\
+  A & B & C & D & E & F & G & H & I & J \\
+  A & B & C & D & E & F & G & H & I & J
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{
+  cell{1}{even} = {red9},
+  cell{2}{even[4]} = {green9},
+  cell{3}{even[3]} = {blue9}
+}
+  A & B & C & D & E & F & G & H & I & J \\
+  A & B & C & D & E & F & G & H & I & J \\
+  A & B & C & D & E & F & G & H & I & J \\
+\end{tblr}
+\end{demohigh}
+
+From version 2025A, there is a new child selector \CS{every}
+for selecting indexes in an arithmetic sequence.
+
+\begin{demohigh}
+\begin{tblr}{
+  cell{1}{every{2}{-2}} = {yellow9},
+  cell{2}{every[2]{2}{-2}} = {purple9},
+  cell{3}{every[3]{-9}{-2}} = {cyan9}
+}
+  A & B & C & D & E & F & G & H & I & J \\
+  A & B & C & D & E & F & G & H & I & J \\
+  A & B & C & D & E & F & G & H & I & J
+\end{tblr}
+\end{demohigh}
+
+The interface of \CS{every} selector is \fakeverb{every[<step>]{<start>}{<end>}},
+where \fakeverb{<start>} and \fakeverb{<end>} are postive or negative indexes.
+and they can not be child indexers such as \CI{U} or \CI{Z}.
+
+More child indexers and selectors can be defined by users (see Section~\ref{sect:newchild}).
+
+\section{Counters and lengths}
+
+Counters \CO{rownum}, \CO{colnum}, \CO{rowcount}, \CO{colcount} can be used in cell text:
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{hlines}
+ Cell[\arabic{rownum}][\arabic{colnum}] & Cell[\arabic{rownum}][\arabic{colnum}] &
+ Cell[\arabic{rownum}][\arabic{colnum}] & Cell[\arabic{rownum}][\arabic{colnum}] \\
+ Row=\arabic{rowcount}, Col=\arabic{colcount} &
+ Row=\arabic{rowcount}, Col=\arabic{colcount} &
+ Row=\arabic{rowcount}, Col=\arabic{colcount} &
+ Row=\arabic{rowcount}, Col=\arabic{colcount} \\
+ Cell[\arabic{rownum}][\arabic{colnum}] & Cell[\arabic{rownum}][\arabic{colnum}] &
+ Cell[\arabic{rownum}][\arabic{colnum}] & Cell[\arabic{rownum}][\arabic{colnum}] \\
+\end{tblr}
+\end{demohigh}
+
+Also, lengths \CC{\leftsep}, \CC{\rightsep}, \CC{\abovesep}, \CC{\belowsep} can be used in cell text.
+
+\section{Tracing tabularray}
+
+To trace internal data behind \EE{tblr} environment, you can use \CC{\SetTblrTracing} command.
+For example, \CC{\SetTblrTracing{all}} will turn on all tracings,
+and \CC{\SetTblrTracing{none}} will turn off all tracings.
+\CC{\SetTblrTracing{+row,+column}} will only tracing row and column data.
+All tracing messages will be written to the log files.
+
+\chapter{Use Long Tables}
+\label{chap:long}
+
+\section{A simple example}
+
+To make a decent long table with header and footer, it is better to separate header/footer as
+\underline{table head/foot} (which includes caption, footnotes, continuation text)
+and \underline{row head/foot} (which includes some rows of the table that should appear in every page).
+By this approach, alternating row colors work as expected.
+
+\NewTblrTheme{fancy}{
+  \SetTblrStyle{firsthead}{font=\bfseries}
+  \SetTblrStyle{firstfoot}{fg=blue2}
+  \SetTblrStyle{middlefoot}{\itshape}
+  \SetTblrStyle{caption-tag}{red2}
+}
+\begin{longtblr}[
+  theme = fancy,
+  caption = {A Long Long Long Long Long Long Long Table},
+  entry = {Short Caption},
+  label = {tblr:test},
+  note{a} = {It is the first footnote.},
+  note{$\dag$} = {It is the second long long long long long long footnote.},
+  remark{Note} = {Some general note. Some general note. Some general note.},
+  remark{Source} = {Made up by myself. Made up by myself. Made up by myself.},
+]{
+  colspec = {XXX}, width = 0.85\linewidth,
+  rowhead = 2, rowfoot = 1,
+  row{odd} = {gray9}, row{even} = {brown9},
+  row{1-2} = {purple7}, row{Z} = {blue7},
+}
+\hline
+ Head    & Head  & Head    \\
+\hline
+ Head    & Head  & Head    \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta\TblrNote{a}       & Eta    \\
+\hline
+ Iota    & Kappa\TblrNote{$\dag$} & Lambda \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Foot    & Foot  & Foot    \\
+\hline
+\end{longtblr}
+
+As you can see in the above example, the appearance of long tables of \PP{tabularray} package
+is similar to that of \PP{threeparttablex} packages.
+It supports table footnotes, but not page footnotes.
+
+\newpage
+
+The source code for the above long table is shown below. It is mainly self-explanatory.
+
+\begin{codehigh}
+\NewTblrTheme{fancy}{
+  \SetTblrStyle{firsthead}{font=\bfseries}
+  \SetTblrStyle{firstfoot}{fg=blue2}
+  \SetTblrStyle{middlefoot}{\itshape}
+  \SetTblrStyle{caption-tag}{red2}
+}
+\begin{longtblr}[
+  theme = fancy,
+  caption = {A Long Long Long Long Long Long Long Table},
+  entry = {Short Caption},
+  label = {tblr:test},
+  note{a} = {It is the first footnote.},
+  note{$\dag$} = {It is the second long long long long long long footnote.},
+  remark{Note} = {Some general note. Some general note. Some general note.},
+  remark{Source} = {Made up by myself. Made up by myself. Made up by myself.},
+]{
+  colspec = {XXX}, width = 0.85\linewidth,
+  rowhead = 2, rowfoot = 1,
+  row{odd} = {gray9}, row{even} = {brown9},
+  row{1-2} = {purple7}, row{Z} = {blue7},
+}
+\hline
+ Head    & Head  & Head    \\
+\hline
+ Head    & Head  & Head    \\
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta\TblrNote{a}       & Eta    \\
+\hline
+ Iota    & Kappa\TblrNote{$\dag$} & Lambda \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+......
+\hline
+ Alpha   & Beta  & Gamma   \\
+\hline
+ Epsilon & Zeta  & Eta     \\
+\hline
+ Iota    & Kappa & Lambda  \\
+\hline
+ Nu      & Xi    & Omicron \\
+\hline
+ Rho     & Sigma & Tau     \\
+\hline
+ Phi     & Chi   & Psi     \\
+\hline
+ Foot    & Foot  & Foot    \\
+\hline
+\end{longtblr}
+\end{codehigh}
+
+As you can see in the above code, we typeset long tables with \EE{longtblr} environment.
+And we can totally separate contents and styles of long tables with \PP{tabularray} package.
+
+Row head and row foot consist of some lines of the table and should appear in every page.
+Their options are inner specifications and should be put in the mandatory argument of the \EE{longtblr} environment.
+In the above example, We set \KV{rowhead=2} and \KV{rowfoot=1}.
+
+\begin{spectblr}[
+  caption = {Inner Specifications for Row Heads and Row Foots}
+]{}
+  Key Name    & Key Description & Initial Value \\
+  \V{rowhead} & number of the first rows of the table appear in every page & \V{0} \\
+  \V{rowfoot} & number of the last rows of the table appear in every page  & \V{0} \\
+\end{spectblr}
+
+Table head and table foot consist of the caption, continuation text, footnotes and remarks.
+Their options are outer specifications and should be put in the optional argument of the \EE{longtblr} environment.
+
+\begin{spectblr}[
+  caption = {Outer Specifications for Table Heads and Table Foots}
+]{}
+  Key Name            & Key Description & Initial Value \\
+  \K{headsep}         & vertical space between table head and table body & \V{6pt} \\
+  \K{footsep}         & vertical space between table foot and table body & \V{6pt} \\
+  \K{presep}          & vertical space between table head and the above text & \VV{1.5\bigskipamount} \\
+  \K{postsep}         & vertical space between table foot and the below text & \VV{1.5\bigskipamount} \\
+  \K{theme}           & table theme (including settings for templates and styles) & \None \\
+  \K{caption}         & table caption & \None \\
+  \K{entry}           & short table caption to be put in List of Tables & \None \\
+  \K{label}           & table label & \None \\
+  \KK{note{<name>}}   & table note with \V{<name>} as tag & \None \\
+  \KK{remark{<name>}} & table remark with \V{<name>} as tag & \None \\
+\end{spectblr}
+
+If you write \KV{entry=none}, \PP{tabularray} package will not add an entry in List of Tables.
+Therefore \KV{caption=text,entry=none} is similar to \CC{\caption[]{text}} in \PP{longtable}.
+
+If you write \KV{label=none}, \PP{tabularray} package will not step \CO{table} counter,
+and set the \EN{caption-tag} and \EN{caption-sep} elements (see below) to empty.
+Therefore \KV{caption=text,entry=none,label=none} is similar to \CC{\caption*{text}}
+in \PP{longtable}, except for the counter.
+
+\section{Customize templates}
+
+\subsection{Overview of templates}
+
+The template system for table heads and table foots in \PP{tabularray} is largely inspired
+by \PP{beamer}, \PP{caption} and \PP{longtable} packages. For elements in Table \ref{tblr:element},
+you can use \CC{\DeclareTblrTemplate} to define and modify templates,
+and use \CC{\SetTblrTemplate} to choose default templates. In defining templates,
+you can include other templates with \CC{\UseTblrTemplate} and \CC{\ExpTblrTemplate} commands.
+
+\begin{spectblr}[
+  caption = {Elements for Table Heads and Table Foots},
+  label = {tblr:element},
+]{}
+  Element Name     & Element Description and Default Template \\
+  \V{contfoot-text}& continuation text in the foot, normally ``Continued on next page'' \\
+  \V{contfoot}     & continuation paragraph in the foot, normally including \V{contfoot-text} template \\
+  \V{conthead-text}& continuation text in the head, normally ``(Continued)'' \\
+  \V{conthead}     & continuation paragraph in the head, normally including \V{conthead-text} template \\
+  \V{caption-tag}  & caption tag, normally like ``Table 4.2'' \\
+  \V{caption-sep}  & caption separator, normally like ``:\quad'' \\
+  \V{caption-text} & caption text, normally using user provided value \\
+  \V{caption}      & including \V{caption-tag} + \V{caption-sep} + \V{caption-text} \\
+  \V{note-tag}     & note tag, normally using user provided value \\
+  \V{note-sep}     & note separator, normally like ``\enskip'' \\
+  \V{note-text}    & note tag, normally using user provided value \\
+  \V{note}         & including \V{note-tag} + \V{note-sep} + \V{note-text} \\
+  \V{remark-tag}   & remark tag, normally using user provided value \\
+  \V{remark-sep}   & remark separator, normally like ``:\enskip'' \\
+  \V{remark-text}  & remark text, normally using user provided value\\
+  \V{remark}       & including \V{remark-tag} + \V{remark-sep} + \V{remark-text} \\
+  \V{firsthead}    & table head on the first page, normally including \V{caption} template \\
+  \V{middlehead}   & table head on middle pages, normally including \V{caption} and \V{conthead} templates \\
+  \V{lasthead}     & table head on the last page, normally including \V{caption} and \V{conthead} templates \\
+  \V{head}         & setting all of \V{firsthead}, \V{middlehead} and \V{lasthead} \\
+  \V{firstfoot}    & table foot on the first page, normally including \V{contfoot} template \\
+  \V{middlefoot}   & table foot on middle pages, normally including \V{contfoot} template \\
+  \V{lastfoot}     & table foot on the last page, normally including \V{note} and \V{remark} templates \\
+  \V{foot}         & setting all of \V{firstfoot}, \V{middlefoot} and \V{lastfoot} \\
+\end{spectblr}
+
+An element which only includes short text is called a \underline{sub element}.
+Normally there is one \TT{-} in the name of a sub element.
+An element which includes one or more paragraphs is called a \underline{main element}.
+Normally there isn't any \TT{-} in the name of a main element.
+
+For each of the above elements, two templates \TN{normal} and \TN{empty} are always defined.
+You can select one of them with \CC{\SetTblrTemplate} command.
+
+\subsection{Continuation templates}
+
+Let us have a look at the code for defining templates of continuation text first:%
+\footnote{To tell the truth, the default \texttt{conthead-text} and \texttt{contfoot-text}
+are actually stored in commands \texttt{\string\tblrcontheadname} and \texttt{\string\tblrcontfootname}
+respectively. And you may contribute your translations of them to \textbf{babel} package.}
+
+\begin{codehigh}
+\DeclareTblrTemplate{contfoot-text}{normal}{Continued on next page}
+\SetTblrTemplate{contfoot-text}{normal}
+\DeclareTblrTemplate{conthead-text}{normal}{(Continued)}
+\SetTblrTemplate{conthead-text}{normal}
+\end{codehigh}
+
+In the above code, command \CC{\DeclareTblrTemplate} defines the templates with name \TN{normal},
+and then command \CC{\SetTblrTemplate} sets the templates with name \TN{normal} as default.
+The \TN{normal} template is always defined and set as default for any element in \PP{tabularray}.
+Therefore you had better use another name when defining new templates.
+
+If you use \TN{default} as template name in \CC{\DeclareTblrTemplate},
+you define and set it as default at the same time.
+Therefore the above code can be written in another way:
+
+\begin{codehigh}
+\DeclareTblrTemplate{contfoot-text}{default}{Continued on next page}
+\DeclareTblrTemplate{conthead-text}{default}{(Continued)}
+\end{codehigh}
+
+You may modify the code to customize continuation text to fit your needs.
+
+The templates for \EN{contfoot} and \EN{conthead} normally
+include the templates of their sub elements with \CC{\UseTblrTemplate} commands.
+But you can also handle user settings such as horizontal alignment here.
+
+\begin{codehigh}
+\DeclareTblrTemplate{contfoot}{default}{\UseTblrTemplate{contfoot-text}{default}}
+\DeclareTblrTemplate{conthead}{default}{\UseTblrTemplate{conthead-text}{default}}
+\end{codehigh}
+
+\subsection{Caption templates}
+
+Normally a caption consists of three parts, and their templates are defined with the follow code:
+
+\begin{codehigh}
+\DeclareTblrTemplate{caption-tag}{default}{Table\hspace{0.25em}\thetable}
+\DeclareTblrTemplate{caption-sep}{default}{:\enskip}
+\DeclareTblrTemplate{caption-text}{default}{\InsertTblrText{caption}}
+\end{codehigh}
+
+The command \CC{\InsertTblrText{caption}} inserts the value of \K{caption} key,
+which you could write in the optional argument of \EE{longtblr} environment.
+
+The \EN{caption} template normally includes three sub templates with \CC{\UseTblrTemplate} commands:
+The \EN{caption} template will be used in \EN{firsthead} template.
+
+\begin{codehigh}
+\DeclareTblrTemplate{caption}{default}{
+  \UseTblrTemplate{caption-tag}{default}
+  \UseTblrTemplate{caption-sep}{default}
+  \UseTblrTemplate{caption-text}{default}
+}
+\end{codehigh}
+
+Furthermore \EN{capcont} template includes \EN{conthead} template as well.
+The \EN{capcont} template will be used in \EN{middlehead} and \EN{lasthead} templates.
+
+\begin{codehigh}
+\DeclareTblrTemplate{capcont}{default}{
+  \UseTblrTemplate{caption-tag}{default}
+  \UseTblrTemplate{caption-sep}{default}
+  \UseTblrTemplate{caption-text}{default}
+  \UseTblrTemplate{conthead-text}{default}
+}
+\end{codehigh}
+
+\subsection{Note and remark templates}
+
+The templates for table notes can be defined like this:
+
+\begin{codehigh}
+\DeclareTblrTemplate{note-tag}{default}{\textsuperscript{\InsertTblrNoteTag}}
+\DeclareTblrTemplate{note-sep}{default}{\space}
+\DeclareTblrTemplate{note-text}{default}{\InsertTblrNoteText}
+\end{codehigh}
+\begin{codehigh}
+\DeclareTblrTemplate{note}{default}{
+  \MapTblrNotes{
+    \noindent
+    \UseTblrTemplate{note-tag}{default}
+    \UseTblrTemplate{note-sep}{default}
+    \UseTblrTemplate{note-text}{default}
+    \par
+  }
+}
+\end{codehigh}
+
+The \CC{\MapTblrNotes} command loops for all table notes,
+which are written in the optional argument of \EE{longtblr} environment.
+Inside the loop, you can use \CC{\InsertTblrNoteTag} and \CC{\InsertTblrNoteText}
+commands to insert current note tag and note text, respectively.
+
+The definition of remark templates are similar to note templates.
+\nopagebreak
+\begin{codehigh}
+\DeclareTblrTemplate{remark-tag}{default}{\InsertTblrRemarkTag}
+\DeclareTblrTemplate{remark-sep}{default}{:\space}
+\DeclareTblrTemplate{remark-text}{default}{\InsertTblrRemarkText}
+\end{codehigh}
+\begin{codehigh}
+\DeclareTblrTemplate{remark}{default}{
+  \MapTblrRemarks{
+    \noindent
+    \UseTblrTemplate{remark-tag}{default}
+    \UseTblrTemplate{remark-sep}{default}
+    \UseTblrTemplate{remark-text}{default}
+    \par
+  }
+}
+\end{codehigh}
+
+\subsection{Head and foot templates}
+
+The templates for table heads and foots are defined as including other templates:
+
+\begin{codehigh}
+\DeclareTblrTemplate{firsthead}{default}{
+  \UseTblrTemplate{caption}{default}
+}
+\DeclareTblrTemplate{middlehead,lasthead}{default}{
+  \UseTblrTemplate{capcont}{default}
+}
+\DeclareTblrTemplate{firstfoot,middlefoot}{default}{
+  \UseTblrTemplate{contfoot}{default}
+}
+\DeclareTblrTemplate{lastfoot}{default}{
+  \UseTblrTemplate{note}{default}
+  \UseTblrTemplate{remark}{default}
+}
+\end{codehigh}
+
+Note that you can define the same template for multiple elements in \CC{\DeclareTblrTemplate} command.
+If you only want to show table caption in the first page, you may change the definitions of
+\EN{middlehead} and \EN{lasthead} elements:
+
+\begin{codehigh}
+\DeclareTblrTemplate{middlehead,lasthead}{default}{
+  \UseTblrTemplate{conthead}{default}
+}
+\end{codehigh}
+
+\section{Change styles}
+
+All available keys for template elements are described in Table \ref{key:element}.
+
+\begin{spectblr}[
+  caption = {Keys for the Styles of Elements},
+  label = {key:element},
+  remark{Note} = {In most cases, you can omit the underlined key names and write only their values.
+                  The keys \K{halign}, \K{indent} and \K{hang} are only for main templates.}
+]{}
+  Key Name               & Key Description  & Initial Value\\
+  \underline{\K{fg}}     & foreground color & \None \\
+  \underline{\K{font}}   & font commands    & \None \\
+  \underline{\K{halign}}
+     & horizontal alignment: \V{l} (left), \V{c} (center), \V{r} (right) or \V{j} (justify)
+                                            & \V{j} \\
+  \K{indent}             & parindent value  & \V{0pt} \\
+  \K{hang}               & hangindent value & \V{0pt} or \V{0.7em} \\
+\end{spectblr}
+
+You may change the styles of elements with \CC{\SetTblrStyle} command:
+
+\begin{codehigh}
+\SetTblrStyle{firsthead}{font=\bfseries}
+\SetTblrStyle{firstfoot}{fg=blue2}
+\SetTblrStyle{middlefoot}{\itshape}
+\SetTblrStyle{caption-tag}{red2}
+\end{codehigh}
+
+When you write \CC{\UseTblrTemplate{element}{default}} in defining a template,
+beside including template code of the \EN{element}, the foreground color and font commands
+of the \EN{element} will be set up automatically.
+In contrast, \CC{\ExpTblrTemplate{element}{default}} will only include template code.
+
+\section{Define themes}
+
+You may define your own themes for table heads and foots with \CC{\NewTblrTheme} command.
+a theme consists of some template and style settings. For example:
+\nopagebreak
+\begin{codehigh}
+\NewTblrTheme{fancy}{
+  \DeclareTblrTemplate{conthead}{default}{[Continued]}
+  \SetTblrStyle{firsthead}{font=\bfseries}
+  \SetTblrStyle{firstfoot}{fg=blue2}
+  \SetTblrStyle{middlefoot}{\itshape}
+  \SetTblrStyle{caption-tag}{red2}
+}
+\end{codehigh}
+
+After defining the theme \V{fancy}, you can use it
+by writing \KV{theme=fancy} in the optional argument of \EE{longtblr} environment.
+
+\section{Control page breaks}
+
+Just like \PP{longtable} package, inside \EE{longtblr} environment,
+you can use \CC{\\\\*} or \CC{\nopagebreak} to prohibit a page break,
+and use \CC{\pagebreak} to force a page break.
+
+\section{Floatable tall tables}
+
+There is also a \EE{talltblr} environment as an alternative to \EE{threeparttable} environment.
+It can not cross multiple pages, but it can be put inside \EE{table} environment.
+
+\begin{demohigh}
+TEXT\begin{talltblr}[
+  caption = {Long Long Long Long Tabular},
+  entry = {Short Caption},
+  label = {tblr:tall},
+  note{a} = {It is the first footnote.},
+  note{$\dag$} = {It is the second long long long long long long footnote.},
+]{
+  colspec = {XXX}, width = 0.5\linewidth, hlines,
+}
+  Alpha   & Beta  & Gamma \\
+  Epsilon & Zeta  & Eta\TblrNote{a} \\
+  Iota    & Kappa & Lambda\TblrNote{$\dag$} \\
+\end{talltblr}TEXT
+\end{demohigh}
+
+\chapter{Use Some Libraries}
+\label{chap:lib}
+
+A \PP{tabularray} library could be loaded by \CC{\UseTblrLibrary} command.
+From version 2025A, an external library \fakeverb{foo} could also be loaded
+if its filename is \FF{tblrlibfoo.sty}.
+
+\section{Library \texttt{amsmath}}
+
+With \CC{\UseTblrLibrary{amsmath}} in the preamble of the document,
+\PP{tabularray} will load \PP{amsmath} package, and define \EE{+array}, \EE{+matrix},
+\EE{+bmatrix}, \EE{+Bmatrix}, \EE{+pmatrix}, \EE{+vmatrix}, \EE{+Vmatrix} and \EE{+cases}
+environments. Each of the environments is similar to the environment without \TT{+} prefix in its name,
+but has default \KV{rowsep=2pt} just as \EE{tblr} environment. Every environment
+except \EE{+array} accepts an optional argument, where you can write inner specifications.
+
+\begin{demo}
+$\begin{pmatrix}
+ \dfrac{2}{3} &  \dfrac{2}{3} &  \dfrac{1}{3} \\
+ \dfrac{2}{3} & -\dfrac{1}{3} & -\dfrac{2}{3} \\
+ \dfrac{1}{3} & -\dfrac{2}{3} &  \dfrac{2}{3} \\
+\end{pmatrix}$
+\end{demo}
+
+\begin{demohigh}
+$\begin{+pmatrix}[cells={r},row{2}={purple8}]
+ \dfrac{2}{3} &  \dfrac{2}{3} &  \dfrac{1}{3} \\
+ \dfrac{2}{3} & -\dfrac{1}{3} & -\dfrac{2}{3} \\
+ \dfrac{1}{3} & -\dfrac{2}{3} &  \dfrac{2}{3} \\
+\end{+pmatrix}$
+\end{demohigh}
+
+\begin{demo}
+$f(x)=\begin{cases}
+ 0,            & x=1; \\
+ \dfrac{1}{3}, & x=2; \\
+ \dfrac{2}{3}, & x=3; \\
+ 1,            & x=4. \\
+\end{cases}$
+\end{demo}
+
+\begin{demohigh}
+$f(x)=\begin{+cases}
+ 0,            & x=1; \\
+ \dfrac{1}{3}, & x=2; \\
+ \dfrac{2}{3}, & x=3; \\
+ 1,            & x=4. \\
+\end{+cases}$
+\end{demohigh}
+
+\section{Library \texttt{booktabs}}
+
+With \CC{\UseTblrLibrary{booktabs}} in the preamble of the document,
+\PP{tabularray} will load \PP{booktabs} package,
+and define
+  \CC{\toprule}, \CC{\midrule}, \CC{\bottomrule},
+  \CC{\cmidrule}, \CC{\cmidrulemore}, \CC{\morecmidrules},
+  \CC{\specialrule}, \CC{\addrowspace}, and \CC{\addlinespace}
+as table commands.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\toprule
+ Alpha   & Beta  & Gamma   & Delta \\
+\midrule
+ Epsilon & Zeta  & Eta     & Theta \\
+\cmidrule{1-3}
+ Iota    & Kappa & Lambda  & Mu    \\
+\cmidrule{2-4}
+ Nu      & Xi    & Omicron & Pi    \\
+\bottomrule
+\end{tblr}
+\end{demohigh}
+
+Just like \CC{\hline} and \CC{\cline} commands,
+you can also specify rule width and color by using hline keys in the optional
+argument of any of these commands.
+
+Like in \PP{booktabs}, by default
+  width of \CC{\toprule} and \CC{\bottomrule} are determined by \CC{\heavyrulewidth},
+  width of \CC{\midrule} is determined by \CC{\lightrulewidth}, and
+  width of \CC{\cmidrule} and \CC{\cmidrulemore} are determined by \CC{\cmidrulewidth}, respectively.
+All three \CC{\...rulewidth} are dimensions.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\toprule[2pt,purple3]
+ Alpha   & Beta  & Gamma  & Delta \\
+\midrule[blue3]
+ Epsilon & Zeta  & Eta    & Theta \\
+\cmidrule[azure3]{2-3}
+ Iota    & Kappa & Lambda & Mu    \\
+\bottomrule[2pt,purple3]
+\end{tblr}
+\end{demohigh}
+
+If you need more than one \verb!\cmidrule!s, you can use \verb!\cmidrulemore!
+command, which is simpler than the \verb!booktabs! usage
+\verb!\morecmidrules\cmidrule!.
+\verb!\cmidrulemore! can receive hline keys in an optional argument too.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\toprule
+ Alpha   & Beta  & Gamma   & Delta \\
+\cmidrule{1-3} \cmidrulemore{2-4}
+ Epsilon & Zeta  & Eta     & Theta \\
+\cmidrule{1-3} \morecmidrules \cmidrule{2-4}
+ Iota    & Kappa & Lambda  & Mu    \\
+\bottomrule
+\end{tblr}
+\end{demohigh}
+
+From version 2021N, you can set trimming positions of
+\CC{\cmidrule} and \CC{\cmidrulemore}, using newly introduced trimming
+options (\K{leftpos}, \K{rightpos}, \K{endpos}, \K{l}, \K{r},
+and \K{lr}) (see Section~\ref{sec:hlines-vlines}).
+Option \K{endpos} is already applied to these two commands.
+
+\begin{demohigh}
+\begin{tblr}{llll}
+\toprule
+ Alpha   & Beta  & Gamma   & Delta \\
+\cmidrule[lr]{1-2} \cmidrule[lr=-0.4]{3-4}
+ Epsilon & Zeta  & Eta     & Theta \\
+\cmidrule[r]{1-2} \cmidrule[l]{3-4}
+ Iota    & Kappa & Lambda  & Mu    \\
+\bottomrule
+\end{tblr}
+\end{demohigh}
+
+Since \PP{booktabs} tables usually don't have vlines, the meaningful values
+here are decimal numbers between \V{-1} and \V{0}.
+The default value \V{-0.8} for \V{l}, \V{r}, and \V{lr} is chosen to
+make similar result as \PP{booktabs} package does.
+
+There is also a \EE{booktabs} environment for you. With this environment,
+the default \KV{rowsep=0pt}, but extra vertical space will be added by
+\CC{\toprule}, \CC{\midrule}, \CC{\bottomrule} and \CC{\cmidrule} commands.
+The sizes of vertical space are determined by \CC{\aboverulesep} and \CC{\belowrulesep} dimensions.
+
+\begin{demohigh}
+\begin{booktabs}{
+  colspec = lcccc,
+  cell{1}{1} = {r=2}{}, cell{1}{2,4} = {c=2}{},
+}
+\toprule
+  Sample & I &   & II &   \\
+\cmidrule[lr]{2-3} \cmidrule[lr]{4-5}
+         & A & B & C & D \\
+\midrule
+  S1     & 5 & 6 & 7 & 8 \\
+  S2     & 6 & 7 & 8 & 5 \\
+  S3     & 7 & 8 & 5 & 6 \\
+\bottomrule
+\end{booktabs}
+\end{demohigh}
+% S4     & 8 & 5 & 6 & 7 \\
+
+You can also use \CC{\specialrule} command.
+The second argument sets \K{belowsep} of previous row,
+and the third argument sets \K{abovesep} of current row,
+
+\begin{demohigh}
+\begin{booktabs}{row{2}={olive9}}
+\toprule
+ Alpha   & Beta  & Gamma   & Delta \\
+\specialrule{0.5pt}{4pt}{6pt}
+ Epsilon & Zeta  & Eta     & Theta \\
+\specialrule{0.8pt,blue3}{3pt}{2pt}
+ Iota    & Kappa & Lambda  & Mu    \\
+\bottomrule
+\end{booktabs}
+\end{demohigh}
+
+At last, there is also an \CC{\addlinespace} command, with an alternative
+name \CC{\addrowspace}.
+You can specify the size of vertical space to be added in its optional
+argument, and the default size is determinted by \CC{\defaultaddspace}
+dimension, initially \V{0.5em}.
+This command adds one half of the space to \K{belowsep} of previous row,
+and the other half to \K{abovesep} of current row.
+
+\begin{demohigh}
+\begin{booktabs}{row{2}={olive9}}
+\toprule
+ Alpha   & Beta  & Gamma   & Delta \\
+\addlinespace
+ Epsilon & Zeta  & Eta     & Theta \\
+\addlinespace[1em]
+ Iota    & Kappa & Lambda  & Mu    \\
+\bottomrule
+\end{booktabs}
+\end{demohigh}
+
+From version 2022A, there is a \EE{longtabs} environment
+for writing long \PP{booktabs} tables,
+and a \EE{talltabs} environment for writing tall \PP{booktabs} tables.
+
+\section{Library \texttt{counter}}
+
+You need to load \LL{counter} library with \CC{\UseTblrLibrary{counter}},
+if you want to modify some LaTeX counters inside \PP{tabularray} tables.
+
+\begin{demohigh}
+\newcounter{mycnta}
+\newcommand{\mycnta}{\stepcounter{mycnta}\arabic{mycnta}}
+\begin{tblr}{hlines}
+  \mycnta & \mycnta & \mycnta \\
+  \mycnta & \mycnta & \mycnta \\
+  \mycnta & \mycnta & \mycnta \\
+\end{tblr}
+\end{demohigh}
+
+\section{Library \texttt{diagbox}}
+
+When writing \CC{\UseTblrLibrary{diagbox}} in the preamble of the document,
+\PP{tabularray} package loads \PP{diagbox} package,
+and you can use \CC{\diagbox} and \CC{\diagboxthree} commands inside \EE{tblr} environment.
+
+\begin{demohigh}
+\begin{tblr}{hlines,vlines}
+ \diagbox{Aa}{Pp} & Beta & Gamma \\
+ Epsilon & Zeta  & Eta \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{hlines,vlines}
+ \diagboxthree{Aa}{Pp}{Hh} & Beta & Gamma \\
+ Epsilon & Zeta  & Eta \\
+ Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+You can also use \CC{\diagbox} and \CC{\diagboxthree} commands in math mode.
+\nopagebreak
+\begin{demohigh}
+$\begin{tblr}{|c|cc|}
+\hline
+ \diagbox{X_1}{X_2} & 0 & 1 \\
+\hline
+  0 & 0.1 & 0.2 \\
+  1 & 0.3 & 0.4 \\
+\hline
+\end{tblr}$
+\end{demohigh}
+
+\section{Library \texttt{functional}}
+
+With \CC{\UseTblrLibrary{functional}} in the preamble of the document,
+\PP{tabularray} will load \href{https://ctan.org/pkg/functional}{\PP{functional}} package,
+and define outer key \K{evaluate} and inner key \K{process}.
+This library brings intuitive functional programming into \PP{tabularray} tables.
+
+\subsection{Evaluate inner specifications}
+
+With this library, \PP{tabularray} will evaluate every function
+(defined with \CC{\prgNewFunction}) within inner specifications,
+replacing it with its return value, before parsing the key-value pairs. Here is an example:
+\begin{demohigh}
+\begin{tblr}{
+  hlines,
+  row{2} = {bg=\funColor{RGB}{180,180,255}}
+}
+  Alpha   & Beta  & Gamma  \\
+  Epsilon & Zeta  & Eta    \\
+  Iota    & Kappa & Lambda
+\end{tblr}
+\end{demohigh}
+The \CC{\funColor} function is provided by \PP{functional} package.
+And now let's see another example:
+\begin{demohigh}
+\begin{tblr}{
+  row{2} = {bg=\intIfOddTF{\value{page}}{\prgReturn{red7}}{\prgReturn{blue7}}}
+}
+  Alpha   & Beta  & Gamma  \\
+  Epsilon & Zeta  & Eta    \\
+  Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+You may like to define a new function for it if you need to use it several times:
+
+\begin{demohigh}
+\IgnoreSpacesOn
+\prgNewFunction \colorMagic {mm} {
+  \intIfOddTF{\value{page}}{\prgReturn{#1}}{\prgReturn{#2}}
+}
+\IgnoreSpacesOff
+\begin{tblr}{
+  row{1} = {bg=\colorMagic{yellow7}{brown7}},
+  row{3} = {bg=\colorMagic{green7}{teal7}}
+}
+  Alpha   & Beta  & Gamma  \\
+  Epsilon & Zeta  & Eta    \\
+  Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\subsection{Evaluate table body}
+
+With outer key \K{evaluate}, you can evaluate every occurrence of a specified protected function
+(defined with \CC{\prgNewFunction}) and replace it with the return value before splitting the table body.
+
+The first application of \K{evaluate} key is for inputting files inside tables.
+Assume you have two files \FF{test1.tmp} and \FF{test2.tmp} with the following contents:
+
+\begin{filecontents*}[overwrite]{test1.tmp}
+Some & Some \\
+\end{filecontents*}
+\begin{filecontents*}[overwrite]{test2.tmp}
+Other & Other \\
+\end{filecontents*}
+
+\begin{codehigh}
+\begin{filecontents*}[overwrite]{test1.tmp}
+Some & Some \\
+\end{filecontents*}
+\end{codehigh}
+
+\begin{codehigh}
+\begin{filecontents*}[overwrite]{test2.tmp}
+Other & Other \\
+\end{filecontents*}
+\end{codehigh}
+
+Then you can input them with outer specification \KV{evaluate=\fileInput}.
+The \CC{\fileInput} function is provided by \PP{functional} package.
+
+\begin{demohigh}
+\begin{tblr}[evaluate=\fileInput]{hlines}
+  Row1 & 1 \\
+  \fileInput{test1.tmp}
+  Row3 & 3 \\
+  \fileInput{test2.tmp}
+  Row5 & 5 \\
+\end{tblr}
+\end{demohigh}
+
+In general, you can define your functions which return parts of table contents,
+and use \K{evaluate} key to evaluate them inside tables.
+
+\begin{demohigh}
+\IgnoreSpacesOn
+\prgNewFunction \myFunOne {m} {
+  \prgReturn {#1 & #1 \\}
+}
+\IgnoreSpacesOff
+\begin{tblr}[evaluate=\myFunOne]{hlines}
+  Row1 & 1 \\
+  \myFunOne{Text}
+  Row3 & 3 \\
+  \myFunOne{Text}
+  Row5 & 5 \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\IgnoreSpacesOn
+\prgNewFunction \myFunTwo {} {
+  \prgReturn {Other & Other \\}
+}
+\IgnoreSpacesOff
+\begin{tblr}[evaluate=\myFunTwo]{hlines}
+  Row1 & 1 \\
+  \myFunTwo
+  Row3 & 3 \\
+  \myFunTwo
+  Row5 & 5 \\
+\end{tblr}
+\end{demohigh}
+
+You can even generate the whole table with some function.
+
+\begin{demohigh}
+\IgnoreSpacesOn
+\prgNewFunction \makeEmptyTable {mm}  {
+  \tlSet \lTmpaTl {\intReplicate {\intEval{#2-1}} {&}}
+  \tlPutRight \lTmpaTl {\\}
+  \intReplicate {#1} {\tlUse \lTmpaTl}
+}
+\IgnoreSpacesOff
+\begin{tblr}[evaluate=\makeEmptyTable]{hlines,vlines}
+  \makeEmptyTable{3}{7}
+\end{tblr}
+\end{demohigh}
+
+From version 2023A, you can evaluate all functions in the table body
+with option \texttt{evaluate=all}.
+
+\subsection{Process table elements}
+
+With inner key \K{process}, you can modify the contents and styles before the table is built.
+Several public functions defined with \CC{\prgNewFuncton} are provided for you:
+
+\begin{itemize}
+  \item \CC{\cellGetText{<rownum>}{<colnum>}}
+  \item \CC{\cellSetText{<rownum>}{<colnum>}{<text>}}
+  \item \CC{\cellSetStyle{<rownum>}{<colnum>}{<style>}}
+  \item \CC{\rowSetStyle{<rownum>}{<style>}}
+  \item \CC{\columnSetStyle{<colnum>}{<style>}}
+\end{itemize}
+
+As the first example, let's calculate the sums of cells column by column:
+
+\IgnoreSpacesOn
+\prgNewFunction \calcSum {} {
+  \intStepOneInline {1} {\arabic{colcount}} {
+    \intZero \lTmpaInt
+    \intStepOneInline {1} {\arabic{rowcount}-1} {
+      \intAdd \lTmpaInt {\cellGetText {####1} {##1}}
+    }
+    \cellSetText {\expWhole{\arabic{rowcount}}} {##1} {\intUse\lTmpaInt}
+  }
+}
+\IgnoreSpacesOff
+\begin{codehigh}
+\IgnoreSpacesOn
+\prgNewFunction \calcSum {} {
+  \intStepOneInline {1} {\arabic{colcount}} {
+    \intZero \lTmpaInt
+    \intStepOneInline {1} {\arabic{rowcount}-1} {
+      \intAdd \lTmpaInt {\cellGetText {####1} {##1}}
+    }
+    \cellSetText {\expWhole{\arabic{rowcount}}} {##1} {\intUse\lTmpaInt}
+  }
+}
+\IgnoreSpacesOff
+\end{codehigh}
+
+\begin{demohigh}
+\begin{tblr}{colspec={rrr},process=\calcSum}
+\hline
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+\hline
+    &   &   \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Now, let's set background colors of cells depending on their contents:
+
+\IgnoreSpacesOn
+\prgNewFunction \colorBack {} {
+  \intStepOneInline {1} {\arabic{rowcount}} {
+    \intStepOneInline {1} {\arabic{colcount}} {
+      \intSet \lTmpaInt {\cellGetText {##1} {####1}}
+      \intCompareTF {\lTmpaInt} > {0}
+        {\cellSetStyle {##1} {####1} {bg=purple8}}
+        {\cellSetStyle {##1} {####1} {bg=olive8}}
+    }
+  }
+}
+\IgnoreSpacesOff
+\begin{codehigh}
+\IgnoreSpacesOn
+\prgNewFunction \colorBack {} {
+  \intStepOneInline {1} {\arabic{rowcount}} {
+    \intStepOneInline {1} {\arabic{colcount}} {
+      \intSet \lTmpaInt {\cellGetText {##1} {####1}}
+      \intCompareTF {\lTmpaInt} > {0}
+        {\cellSetStyle {##1} {####1} {bg=purple8}}
+        {\cellSetStyle {##1} {####1} {bg=olive8}}
+    }
+  }
+}
+\IgnoreSpacesOff
+\end{codehigh}
+
+\begin{demohigh}
+\begin{tblr}{hlines,vlines,cells={r,$},process=\colorBack}
+  -1 &  2 &  3 \\
+   4 &  5 & -6 \\
+   7 & -8 &  9 \\
+\end{tblr}
+\end{demohigh}
+
+We can also use color series of \PP{xcolor} package to color table rows:
+
+\definecolor{lightb}{RGB}{217,224,250}
+\definecolorseries{tblrow}{rgb}{last}{lightb}{white}
+\resetcolorseries[3]{tblrow}
+\IgnoreSpacesOn
+\prgNewFunction \colorSeries {} {
+  \intStepOneInline {1} {\arabic{rowcount}} {
+    \tlSet \lTmpaTl {\intMathMod {##1-1} {3}}
+    \rowSetStyle {##1} {\expWhole{bg=tblrow!![\lTmpaTl]}}
+  }
+}
+\IgnoreSpacesOff
+\begin{codehigh}
+\definecolor{lightb}{RGB}{217,224,250}
+\definecolorseries{tblrow}{rgb}{last}{lightb}{white}
+\resetcolorseries[3]{tblrow}
+\IgnoreSpacesOn
+\prgNewFunction \colorSeries {} {
+  \intStepOneInline {1} {\arabic{rowcount}} {
+    \tlSet \lTmpaTl {\intMathMod {##1-1} {3}}
+    \rowSetStyle {##1} {\expWhole{bg=tblrow!![\lTmpaTl]}}
+  }
+}
+\IgnoreSpacesOff
+\end{codehigh}
+
+\begin{demohigh}
+\begin{tblr}{hlines,process=\colorSeries}
+  Row1 & 1 \\
+  Row2 & 2 \\
+  Row3 & 3 \\
+  Row4 & 4 \\
+  Row5 & 5 \\
+  Row6 & 6 \\
+\end{tblr}
+\end{demohigh}
+
+\section{Library \texttt{hook}}
+
+This library is \emph{experimental}.
+It will also load \LL{varwidth} library and set \KV{measure=vstore} as default.
+See Section~\ref{sect:hook} for more details of the library.
+
+\section{Library \texttt{html}}
+
+This library is \emph{experimental}.
+See Section~\ref{sect:pubvar} for more details of the library.
+
+\section{Library \texttt{nameref}}
+
+From version 2022D, you can load \LL{nameref} library
+to make \CC{\nameref} and \EE{longtblr} work together.
+
+\section{Library \texttt{siunitx}}
+
+When writing \CC{\UseTblrLibrary{siunitx}} in the preamble of the document,
+\PP{tabularray} package loads \PP{siunitx} package,
+and defines \Q{S} column as \Q{Q} column with \K{si} key.
+
+\begin{demohigh}
+\begin{tblr}{
+  hlines, vlines,
+  colspec={S[table-format=3.2]S[table-format=3.2]}
+}
+   {Head}  & {Head} \\
+  111      & 111    \\
+    2.1    &   2.2  \\
+   33.11   &  33.22 \\
+\end{tblr}
+\end{demohigh}
+
+\begin{demohigh}
+\begin{tblr}{
+  hlines, vlines,
+  colspec={Q[si={table-format=3.2},c]Q[si={table-format=3.2},c]}
+}
+   {Head}  & {Head} \\
+  111      & 111    \\
+    2.1    &   2.2  \\
+   33.11   &  33.22 \\
+\end{tblr}
+\end{demohigh}
+
+Note that you need to use one pairs of curly braces to guard non-numeric cells%
+\footnote{Before version 2025A, three pairs of braces are needed.}.
+But it is cumbersome to enclose each cell with braces. From version 2022B
+a new key \K{guard} is provided for cells and rows. With \K{guard} key the previous example
+can be largely simplified.
+
+\begin{demohigh}
+\begin{tblr}{
+  hlines, vlines,
+  colspec={Q[si={table-format=3.2},c]Q[si={table-format=3.2},c]},
+  row{1} = {guard}
+}
+   Head  & Head   \\
+  111    & 111    \\
+    2.1  &   2.2  \\
+   33.11 &  33.22 \\
+\end{tblr}
+\end{demohigh}
+
+Also you must use \K{l}, \K{c} or \K{r} to set horizontal alignment for non-numeric cells:
+\nopagebreak
+\begin{demohigh}
+\begin{tblr}{
+  hlines, vlines, columns={6em},
+  colspec={
+    Q[si={table-format=3.2,table-number-alignment=left},l,blue7]
+    Q[si={table-format=3.2,table-number-alignment=center},c,teal7]
+    Q[si={table-format=3.2,table-number-alignment=right},r,purple7]
+  },
+  row{1} = {guard}
+}
+  Head  & Head   & Head   \\
+ 111    & 111    & 111    \\
+   2.1  &   2.2  &   2.3  \\
+  33.11 &  33.22 &  33.33 \\
+\end{tblr}
+\end{demohigh}
+
+Both \Q{S} and \Q{s} columns are supported. In fact, These two columns have been defined as follows:
+\begin{codehigh}
+\NewTblrColumnType{S}[1][]{Q[si={#1},c]}
+\NewTblrColumnType{s}[1][]{Q[si={#1},c,cmd=\TblrUnit]}
+\end{codehigh}
+You don't need to and are not allowed to define them again.
+
+\section{Library \texttt{tikz}}
+\label{sect:tikz}
+
+With this \emph{experimental} \LL{tikz} library,%
+\footnote{The author thanks \href{https://github.com/jasperhabicht}{Jasper Habicht}
+for his contributions to this library.}
+you can draw \PP{tikz} pictures below or above (short or tall) tables.
+This library depends on and loads \PP{tabularray} library \PP{hook} and \PP{tikz} library \TT{calc}.%
+\footnote{Please have a look at this \href{https://github.com/pgf-tikz/pgf/issues/1213}{\PP{tikz} issue}
+first if you need to write \fakeverb{\UseTblrLibrary{tikz}} in your LaTeX3 package.}
+
+To draw below/above a table,
+write some \PP{tikz} code inside \EE{tblrtikzbelow}/\EE{tblrtikzabove} environment.
+Both of them should be put before the table, and two compilations are needed to get desired result.
+
+Inside \EE{tblrtikzbelow}/\EE{tblrtikzabove} environment, you can use these predefined nodes:
+
+\begin{spectblr}[
+  caption = {Nodes created by \PP{tikz} library}
+]{}
+  Node Name &  Node Description \\
+  table node \NN{table}  & rectangle node for the whole table \\
+  cell node \NN{<i>-<j>} & rectangle node for \KK{cell{<i>}{<j>}} \\
+  corner node \NN{h<i>}  & coordinate node at the instersection point
+                           of \KK{hborder{<i>}} and \KK{vborder{1}} \\
+  corner node \NN{v<j>}  & coordinate node at the instersection point
+                           of \KK{vborder{<j>}} and \KK{hborder{1}}
+\end{spectblr}
+
+The first example below demonstrates the table node and cell nodes:
+
+\begin{demohigh}
+\begin{tblrtikzbelow}
+  \path[pattern color=gray9,pattern=checkerboard,
+        draw=blue3, ultra thick, rounded corners]
+    (table.north west) rectangle (table.south east);
+\end{tblrtikzbelow}%
+\begin{tblrtikzabove}
+  \draw[red3, thick]
+    (2-2.north west) -- (2-3.south east)
+    (2-2.south west) -- (2-3.north east);
+\end{tblrtikzabove}%
+\begin{tblr}{hline{2-3},vline{2-4}}
+  1-1 & 1-2 & 1-3 & 1-4 \\
+  2-1 & 2-2 & 2-3 & 2-4 \\
+  3-1 & 3-2 & 3-3 & 3-4
+\end{tblr}
+\end{demohigh}
+
+The second example below demonstrates corner nodes:
+
+\begin{demohigh}
+\begin{tblrtikzabove}
+  \draw[color=white,thick]
+       (h1-|v1) -- (h1-|v2) -- (h2-|v2)
+    -- (h2-|v3) -- (h3-|v3) -- (h3-|v4)
+    -- (h4-|v4) -- (h4-|v5) -- (h2-|v5)
+    -- (h2-|v6) -- (h1-|v6);
+\end{tblrtikzabove}%
+\begin{tblr}{hlines={wd=4pt},vlines={wd=3pt}}
+  1-1 & 1-2 & 1-3 & 1-4 & 1-5 \\
+  2-1 & 2-2 & 2-3 & 2-4 & 2-5 \\
+  3-1 & 3-2 & 3-3 & 3-4 & 3-5
+\end{tblr}
+\end{demohigh}
+
+By \PP{tikz} intersection syntax, \fakeverb{h<i>-|v<j>} is
+the instersection point of \KK{horder{<i>}} and \KK{vborder{<j>}}.
+
+It is rather complicated to add full support for drawing \PP{tikz} pictures on long tables.
+At present, the support is limited: only cell nodes are available for multi-page long tables.
+In writng drawing code,
+users are responsible for making sure the elements to draw are actually in current page table.
+These public variables might come in handy: \CC{\lTblrRowHeadInt}, \CC{\lTblrRowFootInt},
+\CC{\lTblrTablePageInt}, \CC{\lTblrRowFirstInt}, \CC{\lTblrRowLastInt}
+(they are described in Section~\ref{sect:pubvar}). Here is an example:
+
+\ExplSyntaxOn
+\cs_generate_variant:Nn \clist_map_inline:nn {e}
+\cs_new_protected:Npn \mymagic #1
+  {
+    \clist_map_inline:en {\ExpTblrChildClass {#1}}
+      {
+        \bool_lazy_and:nnT
+          { \int_compare_p:n {\lTblrRowFirstInt <= \use_i:nn ##1} }
+          { \int_compare_p:n {\lTblrRowLastInt >= \use_i:nn ##1} }
+          { \exp_args:Noo \mymagicfill {\use_i:nn ##1} {\use_ii:nn ##1} }
+      }
+  }
+\ExplSyntaxOff
+\newcommand\mymagicfill[2]{
+  \fill[teal7,rounded corners=8pt] (#1-#2.north west) rectangle (#1-#2.south east);
+}
+\begin{tblrtikzbelow}
+  \mymagic{magic}
+\end{tblrtikzbelow}%
+\begin{longtblr}[
+  caption = Long Table Tikz
+]{
+  rowhead=1, rowfoot=1, hlines, vlines, colspec={*{5}{X[r]}}
+}
+  Head1 & Head2 & Head3 & Head4 & Head5 \\
+    2-1 &   2-2 & \SetChild{class=magic}2-3 & 2-4 & 2-5 \\
+    3-1 &   3-2 &   3-3 &   3-4 &   3-5 \\
+    4-1 &   4-2 &   4-3 & \SetChild{class=magic}4-4 &4-5 \\
+    5-1 &   5-2 &   5-3 &   5-4 &   5-5 \\
+    6-1 &   6-2 &   6-3 &   6-4 &   6-5 \\
+    7-1 &   \SetChild{class=magic}7-2 & 7-3 & 7-4 & 7-5 \\
+    8-1 &   8-2 &   8-3 &   8-4 & \SetChild{class=magic}8-5 \\
+    9-1 &   9-2 &   9-3 &   9-4 &   9-5 \\
+    0-1 &   0-2 & \SetChild{class=magic}0-3 & 0-4 & 0-5 \\
+    1-1 &   1-2 &   1-3 &   1-4 &   1-5 \\
+   \SetChild{class=magic}2-1 & 2-2 & 2-3 & 2-4 & 2-5 \\
+    3-1 &   3-2 &   3-3 &   3-4 &   3-5 \\
+    4-1 &   4-2 &   4-3 & \SetChild{class=magic}4-4 &4-5 \\
+    5-1 &   5-2 &   5-3 &   5-4 &   5-5 \\
+  Foot1 & Foot2 & Foot3 & Foot4 & Foot5 \\
+\end{longtblr}
+
+\begin{codehigh}[language=latex/latex3]
+\ExplSyntaxOn
+\cs_generate_variant:Nn \clist_map_inline:nn {e}
+\cs_new_protected:Npn \mymagic #1
+  {
+    \clist_map_inline:en {\ExpTblrChildClass {#1}}
+      {
+        \bool_lazy_and:nnT
+          { \int_compare_p:n {\lTblrRowFirstInt <= \use_i:nn ##1} }
+          { \int_compare_p:n {\lTblrRowLastInt >= \use_i:nn ##1} }
+          { \exp_args:Noo \mymagicfill {\use_i:nn ##1} {\use_ii:nn ##1} }
+      }
+  }
+\ExplSyntaxOff
+\newcommand\mymagicfill[2]{
+  \fill[teal7,rounded corners=8pt] (#1-#2.north west) rectangle (#1-#2.south east);
+}
+\begin{tblrtikzbelow}
+  \mymagic{magic}
+\end{tblrtikzbelow}%
+\begin{longtblr}[
+  caption = Long Table Tikz
+]{
+  rowhead=1, rowfoot=1, hlines, vlines, colspec={*{5}{X[r]}}
+}
+  Head1 & Head2 & Head3 & Head4 & Head5 \\
+    2-1 &   2-2 & \SetChild{class=magic}2-3 & 2-4 & 2-5 \\
+    3-1 &   3-2 &   3-3 &   3-4 &   3-5 \\
+    4-1 &   4-2 &   4-3 & \SetChild{class=magic}4-4 &4-5 \\
+    5-1 &   5-2 &   5-3 &   5-4 &   5-5 \\
+    6-1 &   6-2 &   6-3 &   6-4 &   6-5 \\
+    7-1 &   \SetChild{class=magic}7-2 & 7-3 & 7-4 & 7-5 \\
+    8-1 &   8-2 &   8-3 &   8-4 & \SetChild{class=magic}8-5 \\
+    9-1 &   9-2 &   9-3 &   9-4 &   9-5 \\
+    0-1 &   0-2 & \SetChild{class=magic}0-3 & 0-4 & 0-5 \\
+    1-1 &   1-2 &   1-3 &   1-4 &   1-5 \\
+   \SetChild{class=magic}2-1 & 2-2 & 2-3 & 2-4 & 2-5 \\
+    3-1 &   3-2 &   3-3 &   3-4 &   3-5 \\
+    4-1 &   4-2 &   4-3 & \SetChild{class=magic}4-4 &4-5 \\
+    5-1 &   5-2 &   5-3 &   5-4 &   5-5 \\
+  Foot1 & Foot2 & Foot3 & Foot4 & Foot5 \\
+\end{longtblr}
+\end{codehigh}
+
+\section{Library \texttt{varwidth}}
+
+To build a nice table, \PP{tabularray} need to measure the widths of cells.
+By default, it uses \CC{\hbox} to measure the sizes.
+This causes an error if a cell contains some vertical material, such as lists or display maths.
+
+With \PP{varwidth} library, \PP{tabularray} will load \PP{varwidth} package,
+add a new inner specification \K{measure}, and set \KV{measure=vbox}
+so that it will use \CC{\vbox} to measure cell widths.
+
+\begin{demohigh}
+\begin{tblr}{hlines,measure=vbox}
+  Text Text Text Text Text Text Text
+  \begin{itemize}
+    \item List List List List List List
+    \item List List List List List List List
+  \end{itemize}
+  Text Text Text Text Text Text Text \\
+\end{tblr}
+\end{demohigh}
+
+From version 2022A, you can remove extra space above and below lists,
+by adding option \KV{stretch=-1}.
+The following example also needs \PP{enumitem} package and its \K{nosep} option:
+
+{\centering\begin{tblr}{
+  hlines,vlines,rowspec={Q[l,t]Q[l,b]},
+  measure=vbox,stretch=-1,
+}
+  \begin{itemize}[nosep]
+    \item List List List List List
+    \item List List List List List List
+  \end{itemize} & oooo \\
+  \begin{itemize}[nosep]
+    \item List List List List List
+    \item List List List List List List
+  \end{itemize} & gggg \\
+\end{tblr}\par}
+
+%% BUG: there is extra vertical space at the beginning of the first cell if I use demohigh
+%\begin{demohigh}
+\begin{codehigh}
+\begin{tblr}{
+  hlines,vlines,rowspec={Q[l,t]Q[l,b]},
+  measure=vbox,stretch=-1,
+}
+  \begin{itemize}[nosep]
+    \item List List List List List
+    \item List List List List List List
+  \end{itemize} & oooo \\
+  \begin{itemize}[nosep]
+    \item List List List List List
+    \item List List List List List List
+  \end{itemize} & gggg \\
+\end{tblr}
+\end{codehigh}
+%\end{demohigh}
+
+Note that option \KV{stretch=-1} also removes struts from cells, therefore it may not work well
+in \PP{tabularray} environments with \KV{rowsep=0pt}, such as
+\EE{booktabs}/\EE{longtabs}/\EE{talltabs} environments from \LL{booktabs} library.
+
+From version 2025A, \KK{measure} key also accepts an \emph{experimental} \VV{vstore} value.
+With \KV{measure=vstore}, \PP{tabularray} also measures cells with \CC{\vbox},
+but it will store the boxes for later use,
+which is necessary to make \CC{\lTblrMeasuringBool} status correct.
+
+From version 2025A, the setting of \KK{measure} key also applies to subtables.
+
+\section{Library \texttt{zref}}
+
+From version 2022D, you can load \LL{zref} library
+to make \CC{\zref} and \EE{longtblr} work together.
+
+\chapter{Tips and Tricks}
+
+\section{Default rule widths and colors}
+
+From version 2025A, default hrule and vrule widths are stored in variables
+\CC{\lTblrDefaultHruleWidthDim} and \CC{\lTblrDefaultVruleWidthDim} respectively,
+and default hrule and vrule colors are stored in variables \CC{\lTblrDefaultHruleColorTl}
+and \CC{\lTblrDefaultVruleColorTl} respectively. Here is an example:
+
+\begin{demohigh}
+\setlength\lTblrDefaultHruleWidthDim{1pt}%
+\setlength\lTblrDefaultVruleWidthDim{2pt}%
+\renewcommand\lTblrDefaultHruleColorTl{blue5}%
+\renewcommand\lTblrDefaultVruleColorTl{red5}%
+\begin{tblr}{
+  hlines, hline{2} = {wd=2pt, fg=cyan5},
+  vlines, vline{2} = {wd=1pt, fg=green5}
+}
+  Alpha   & Beta  & Gamma  \\
+  Epsilon & Zeta  & Eta    \\
+  Iota    & Kappa & Lambda \\
+\end{tblr}
+\end{demohigh}
+
+\section{Control horizontal alignment}
+
+You can control horizontal alignment of cells in \texttt{tabularray} with
+\href{https://www.ctan.org/pkg/ragged2e}{\texttt{ragged2e}} package,
+by redefining some of the following commands:
+
+\begin{codehigh}
+\RenewDocumentCommand\TblrAlignBoth{}{\justifying}
+\RenewDocumentCommand\TblrAlignLeft{}{\RaggedRight}
+\RenewDocumentCommand\TblrAlignCenter{}{\Centering}
+\RenewDocumentCommand\TblrAlignRight{}{\RaggedLeft}
+\end{codehigh}
+
+Please read the documentation of \texttt{ragged2e} package for more details of
+their alignment commands.
+
+\section{Use safe verbatim commands}%
+\label{sec:fakeverb}
+
+Due to the limitations of TeX,
+we are not able to make \CC{\verb} command behave well inside \PP{tabularray} tables.
+As a replacement, you may use \CC{\fakeverb} command from \href{https://www.ctan.org/pkg/codehigh}{\PP{codehigh}} package.
+
+The \CC{\fakeverb} command will remove the backslashes in the following control symbols before
+typesetting its content: \CC{\\\\}, \CC{\\\{}, \CC{\\\}}, \CC{\\\#}, \CC{\\\^} and \texttt{\textbackslash\textvisiblespace}, \CC{\\\%}.
+Also the argument of \CC{\fakeverb} command need to be enclosed with curly braces.
+Therefore it could be safely used inside \PP{tabularray} tables and other LaTeX commands.
+
+Here is an example of using \CC{\fakeverb} commands inside a \EE{tblr} environment:
+
+\begin{demohigh}
+\begin{tblr}{hlines}
+  Special & \fakeverb{\abc{}$&^_^uvw 123} \\
+  Spacing & \fakeverb{\bfseries\ \#\%}    \\
+  Nesting & \fbox{\fakeverb{$\left\\\{A\right.$\#}}
+\end{tblr}
+\end{demohigh}
+
+In the above example, balanced curly braces and control words (such as \CC{\bfseries})
+need not to be escaped---only several special characters need to be escaped.
+Please read the documentation of \PP{codehigh} package for more details of
+\CC{\fakeverb} commands.%
+\footnote{By the way, \CC{\EscVerb} command from
+\href{https://www.ctan.org/pkg/fvextra}{\PP{fvextra}} package is similar to
+\CC{\fakeverb} command, but with \CC{\EscVerb} you need to escape every control word.}
+
+\section{Blank lines around cells}
+
+In \PP{tabularray} tables, there could be a blank line before a cell, after a cell,
+or between table commands and cell text. Here is an example:
+
+\begin{demohigh}
+\begin{tblr}{rl}
+
+\hline
+
+  One
+
+  &
+
+  Two
+
+  \\
+
+\hline
+
+  Three
+
+  &
+
+  Four
+
+  \\
+
+\hline
+
+\end{tblr}
+\end{demohigh}
+
+But more blank lines are not supported.
+Therefore putting more than one blank line at any of these positions may cause wrong result.
+
+
+\chapter{Experimental Interfaces}
+\label{chap:exp}
+
+\mywarning{The interfaces in this chapter
+(and other undocumented public interfaces even if mentioned in the changelog) should be seen as \emph{experimental}
+and are likely to change in future releases, if necessary. Don’t use them in important documents.}
+
+\section{Experimental public key paths}
+
+In version 2025A, all \PP{tabularray} key paths were cleaned up as follows:
+\begin{itemize}[nosep]
+  \item \KP{tabularray/table/inner} (from \KP{tblr}): for inner specifications.
+  \item \KP{tabularray/table/outer} (from \KP{tblr-outer}): for outer specifications.
+  \item \KP{tabularray/column/inner} (from \KP{tblr-column}): for column specifications.
+  \item \KP{tabularray/row/inner} (from \KP{tblr-row}): for row specifications.
+  \item \KP{tabularray/cell/inner} (from \KP{tblr-cell-spec}): for cell specifications.
+  \item \KP{tabularray/cell/outer} (from \KP{tblr-cell-span}): for cell spanning specifications.
+  \item \KP{tabularray/hline/inner} (from \KP{tblr-hline}): for hline specifications.
+  \item \KP{tabularray/vline/inner} (from \KP{tblr-vline}): for vline specifications.
+  \item \KP{tabularray/hborder/inner} (from \KP{tblr-hborder}) for hborder specifications.
+  \item \KP{tabularray/vborder/inner} (from \KP{tblr-vborder}) for vborder specifications.
+\end{itemize}
+An advanced user or package writer can use \CC{\DeclareKeys} and \CC{\SetKeys} commands
+(provided by LaTeX format) to declare new keys and apply key-value lists, respectively.
+
+The key paths are quite long, therefore \PP{tabularray} provides two shortcut commands
+\CC{\DeclareTblrKeys} and \CC{\SetTblrKeys}:
+
+\begin{codehigh}
+\DeclareTblrKeys{<path>}{<keyvals>} = \DeclareKeys[tabularray/<path>]{<keyvals>}
+\SetTblrKeys{<path>}{<keyvals>} = \SetKeys[tabularray/<path>]{<keyvals>}
+\end{codehigh}
+
+\section{Experimental public hook names}
+\label{sect:hook}
+
+All experimental public \PP{tabularray} hook names provided by \LL{hook} library are as follows:
+\begin{itemize}[nosep]
+  \item \HP{tabularray/trial/before}: hook before trial typesetting.
+  \item \HP{tabularray/trial/after}: hook after trial typesetting.
+  \item \HP{tabularray/table/before}: hook before building the whole table.
+  \item \HP{tabularray/table/after}: hook after building the whole table.
+  \item \HP{tabularray/row/before}: hook before typesetting a table row.
+  \item \HP{tabularray/row/after}: hook after typesetting a table row.
+  \item \HP{tabularray/cell/before}: hook before typesetting a table cell.
+  \item \HP{tabularray/cell/after}: hook after typesetting a table cell.
+\end{itemize}
+An advanced user or package writer can use \CC{\AddToHook} and \CC{\AddToHookNext} commands
+(provided by LaTeX format) to inject code to \PP{tabularray} tables.
+
+The hook names are quite long, therefore \PP{tabularray} provides two shortcut commands
+\CC{\AddToTblrHook} and \CC{\AddToTblrHookNext}:
+
+%\begin{codehigh}
+%\AddToTblrHook{<name>}[<label>]{<code>}=\AddToHook{tabularray/<name>}[<label>]{<code>}
+%\AddToTblrHookNext{<name>}{<code>}=\AddToHookNext{tabularray/<name>}{<code>}
+%\end{codehigh}
+\begin{codehigh}
+\AddToTblrHook{<name>}{<code>} = \AddToHook{tabularray/<name>}{<code>}
+\AddToTblrHookNext{<name>}{<code>} = \AddToHookNext{tabularray/<name>}{<code>}
+\end{codehigh}
+
+\section{Experimental public variables}
+\label{sect:pubvar}
+
+This variable can be used to change page break settings for multirow cells:
+\begin{itemize}[nosep]
+  \item \CC{\lTblrCellBreakBool}: whether to allow page breaks in the middle of multirow cells.
+\end{itemize}
+
+This variable is always available throughout the whole typesetting process of tables:
+\begin{itemize}[nosep]
+  \item \CC{\lTblrMeasuringBool}: if \PP{tabularray} is doing trial typesetting.
+\end{itemize}
+You need to make sure \KV{measure=vstore} to make \CC{\lTblrMeasuringBool} correct.
+
+This variable is available before building every table:
+\begin{itemize}[nosep]
+  \item \CC{\lTblrPortraitTypeTl}: table type (\VV{short}, \VV{tall} or \VV{long}).
+\end{itemize}
+
+These variables are updated in building long tables:
+\begin{itemize}[nosep]
+  \item \CC{\lTblrRowHeadInt}: total number of head rows.
+  \item \CC{\lTblrRowFootInt}: total number of foot rows.
+  \item \CC{\lTblrTablePageInt}: index number of current page table.
+  \item \CC{\lTblrRowFirstInt}: first row number in row body of current page table.
+  \item \CC{\lTblrRowLastInt}: last row number in row body of curent page table.
+\end{itemize}
+
+These variables are updated by default before building every cell:
+\begin{itemize}[nosep]
+  \item \CC{\lTblrCellRowSpanInt}: how many rows are spanned by current cell.
+  \item \CC{\lTblrCellColSpanInt}: how many columns are spanned by current cell.
+  \item \CC{\lTblrCellOmittedBool}: if current cell is spanned by another cell.
+  \item \CC{\lTblrCellBackgroundTl}: background color of current cell.
+\end{itemize}
+
+These variables are updated by \LL{html} library before building every cell:
+%(you need to write \CC{\UseTblrLibrary{html}} first):
+\begin{itemize}[nosep]
+  \item \CC{\lTblrCellAboveBorderStyleTl}
+  \item \CC{\lTblrCellAboveBorderWidthDim}
+  \item \CC{\lTblrCellAboveBorderColorTl}
+  \item \CC{\lTblrCellBelowBorderStyleTl}
+  \item \CC{\lTblrCellBelowBorderWidthDim}
+  \item \CC{\lTblrCellBelowBorderColorTl}
+  \item \CC{\lTblrCellLeftBorderStyleTl}
+  \item \CC{\lTblrCellLeftBorderWidthDim}
+  \item \CC{\lTblrCellLeftBorderColorTl}
+  \item \CC{\lTblrCellRightBorderStyleTl}
+  \item \CC{\lTblrCellRightBorderWidthDim}
+  \item \CC{\lTblrCellRightBorderColorTl}
+\end{itemize}
+In the above, \TT{BorderStyle}, \TT{BorderWidth}, \TT{BorderColor} are similar to
+\K{border-style}, \K{border-width}, \K{border-color} in HTML/CSS, respectively.
+\TT{BorderStyle} and \TT{BorderColor} are empty by default.
+
+\section{New child indexers and selectors}
+\label{sect:newchild}
+
+\subsection{One dimensional indexers and selectors}
+
+You can define new child indexers with \CC{\NewTblrChildIndexer} command.
+As an example, the following is the simplified definition of \CI{Z} indexer:
+\begin{codehigh}[language=latex/latex3]
+\ExplSyntaxOn
+\NewTblrChildIndexer {Z} [1] [1]
+  {
+    \tl_set:Ne \lTblrChildIndexTl { \int_eval:n {\lTblrChildTotalInt + 1 - #1} {1} }
+  }
+\ExplSyntaxOff
+\end{codehigh}
+In the definition, you can use \CC{\lTblrChildTotalInt} which is the total number of children.
+And you only need to store the result index \fakeverb{<i>} in \CC{\lTblrChildIndexTl}.
+The name of an indexer \emph{must} consist of letters and start with an uppercase letter.
+
+You can define new child selectors with \CC{\NewTblrChildSelector} command.
+As an example, the following is the simplified definition of \CI{odd} selector:
+\begin{codehigh}[language=latex/latex3]
+\ExplSyntaxOn
+\NewTblrChildSelector {odd} [1] [1]
+  {
+    \clist_set:Ne \lTblrChildClist { {#1} {2} {\int_use:N \lTblrChildTotalInt} }
+  }
+\ExplSyntaxOff
+\end{codehigh}
+In the definition, you can use \CC{\lTblrChildTotalInt} which is the total number of children.
+And you only need to store the result indexes in \CC{\lTblrChildClist}.
+When some indexes form an arithmetic sequence,
+you can simplify them as \fakeverb{{<start>}{<step>}{<end>}}.
+The name of a selector \emph{must} consist of letters and start with a lowercase letter.
+
+\subsection{Two dimensional indexers and selectors}
+
+When selecting cells, you may need two dimensional indexers and selectors.
+You can also define new two dimensional child indexers with \CC{\NewTblrChildIndexer} command,
+and two dimensional child selectors with \CC{\NewTblrChildSelector} command.
+
+In the definitions, you can use \CC{\lTblrChildHtotalInt}
+which is the total number of horizontal children (rows), and \CC{\lTblrChildVtotalInt}
+which is the total number of vertical children (columns).
+
+You also need to store the result index \fakeverb{{<i>}{<j>}} in \CC{\lTblrChildIndexTl}
+in defining two dimensional child indexers.
+Similarly you also need to store the result indexes in \CC{\lTblrChildClist}
+in defining two dimensional child selectors.
+
+\subsection{Child ids and classes}
+
+When the table is long, it is clumsy to select children with indexes, positive or negative.
+In version 2025A, \PP{tabularray} borrows ideas of ids and classes from HTML/CSS.
+With table command \CC{\SetChild}, you can mark a hborder/vborder/row/column/cell with
+an id or class, and use it in inner specifications.
+
+The \CC{\SetChild} command accepts key-value input:
+\begin{spectblr}[
+  caption = {Key-value input in \fakeverb{\\SetChild} command} %FIXME
+]{}
+  Input & Description \\
+  \KV{id=Hello}  & create a child indexer \TT{Hello} which is an index \TT{{<i>}{<j>}} \\
+  \KV{idh=Hello} & create a child indexer \TT{Helloh} which is a horizontal index \TT{<i>} \\
+  \KV{idv=Hello} & create a child indexer \TT{Hellov} which is a vertical index  \TT{<j>} \\
+  \KV{id*=Hello} & create all of the above three child indexers \\
+  \KV{class=world}  & create a child selector \TT{world} which is a list of indexes \TT{{<i>}{<j>}} \\
+  \KV{classh=world} & create a child selector \TT{worldh} which is a list of horizontal indexes \TT{<i>} \\
+  \KV{classv=world} & create a child selector \TT{worldv} which is a list of vertical indexes \TT{<j>} \\
+  \KV{class*=world} & create all of the above three child selectors
+\end{spectblr}
+
+The following is an example of child ids
+(every id name must start with uppercase letter since it creates a child indexer):
+
+\begin{demohigh}
+\begin{tblr}{
+  hline{1,Z},
+  row{Barh,Quxh} = {bg=azure7},
+  column{Bazv,Quxv} = {fg=red3},
+  cell{Foo,Qux} = {cmd=\fbox}
+}
+  1 & 2 & 3 & \SetChild{id=Foo}  4 & 5 & 6 & 7 & 8 \\
+  2 & 2 & \SetChild{idh=Bar} 3 & 4 & 5 & 6 & 7 & 8 \\
+  3 & \SetChild{idv=Baz} 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+  \SetChild{id*=Qux} 4 & 2 & 3 & 4 & 5 & 6 & 7 & 8
+\end{tblr}
+\end{demohigh}
+
+The following is an example of child classes
+(every class name must start with lowercase letter since it creates a child selector):
+
+\begin{demohigh}
+\begin{tblr}{
+  hline{1,Z},
+  row{fooh} = {bg=azure7},
+  column{barv} = {fg=red3},
+  cell{baz} = {cmd=\fbox}
+}
+  1 & 2 & \SetChild{classh=foo} 3 & 4 & 5 & 6 & 7 \\
+  2 & \SetChild{classv=bar} 2 & 3 & 4 & 5 & 6 & 7 \\
+  \SetChild{class=baz} 3  & 2 & 3 & 4 & 5 & 6 & 7 \\
+  4 & 2 & 3 & 4 & \SetChild{class=baz}  5 & 6 & 7 \\
+  5 & 2 & 3 & 4 & 5 & \SetChild{classh=foo} 6 & 7 \\
+  6 & 2 & 3 & 4 & 5 & 6 & \SetChild{classv=bar} 7
+\end{tblr}
+\end{demohigh}
+
+Since \CC{\SetChild} commands need to be extracted first
+before parsing inner specifications, they \emph{must} be put
+at the beginning of cells, before other table commands such as \CC{\hline}.
+Therefore it conflicts with syntaxes \fakeverb{\\\\[<dimen>]} and \fakeverb{\\\\*}.
+They can be replaced with \fakeverb{\\\\\SetRow{belowsep+=<dimen>}}
+and \fakeverb{\\\\\nopagebreak} respectively,
+so that \CC{\SetChild} can be inserted in the middle:
+\begin{demohigh}
+\begin{tblr}{cell{Foo,Bar} = {fg=red3}}
+\hline
+  1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+\SetChild{id=Foo}\SetRow{belowsep+=5pt}\hline
+  2 & 2 & 3 & 4 & 5 & 6 & 7 \\
+\SetChild{id=Bar}\nopagebreak\hline
+  3 & 2 & 3 & 4 & 5 & 6 & 7 \\
+\hline
+\end{tblr}
+\end{demohigh}
+
+Only one \CC{\SetChild} command in each cell is supported.
+But you can create multiple ids or classes with single \CC{\SetChild} command.
+
+In drawing \PP{tikz} pictures on tables (see Section~\ref{sect:tikz}),
+you may want to get the value of a child id or class with \CC{\ExpTblrChildId} or \CC{\ExpTblrChildClass}.
+These two commands are fully expandable.
+
+\chapter{History and Future}
+
+\section{The future}
+
+As a policy, \PP{tabularray} can support at most four TeX Live releases with latest updates.
+For example, \PP{tabularray} releases published in \the\year{} could be used in TeX Live
+\inteval{\year-3}--\the\year{} with latest updates.
+
+To make the upcoming releases more stable, you are very welcome to test the latest package file
+in the repository. To test it, you only need to download the following \FF{tabularray.sty}
+and put it into the folder of your TeX documents:\newline
+\centerline{\url{https://github.com/lvjr/tabularray/raw/main/tabularray.sty}}
+
+\section{The history}
+
+The change log of \PP{tabularray} package will be updated on the wiki page:\newline
+\centerline{\url{https://github.com/lvjr/tabularray/wiki/ChangeLog}}
+
+When \PP{tabularray} makes some breaking changes of \emph{stable public} interfaces in a new release,
+you will be able to roll back to previous release to make your existing documents unaffected.
+
+Normally you don't know when there will be a new breaking release.
+To keep your old documents as they are, you may add the date of current release
+to the last optional argument of \CC{\usepackage} in loading \PP{tabularray},
+such as \CC{\usepackage{tabularray}[=2024-02-16]}.
+
+\subsection{Important changes in version 2025A}
+
+In version 2025A, there were several important changes:
+
+\begin{itemize}[nosep]
+  \item Inner key \KK{verb} (deprecated before) was removed;
+        it is better to use \CC{\fakeverb} command.
+  \item Support for end index in \CS{odd} and \CS{even} selectors was removed;
+        it is better to use \CS{every} selector.
+  \item Page breaks in the middle of multirow cells were disabled.%;
+        %use \CC{\lTblrCellBreakBool} to change it.
+  \item \CC{\DefTblrTemplate} was deprecated in favor of \CC{\DeclareTblrTemplate}.
+  \item \CC{\NewColumnType} was deprecated in favor of \CC{\NewTblrColumnType}.
+  \item \CC{\NewRowType} was deprecated in favor of \CC{\NewTblrRowType}.
+  \item \CC{\NewColumnRowType} was deprecated in favor of \CC{\NewTblrColumnRowType}.
+  \item \CC{\NewDashStyle} was deprecated in favor of \CC{\NewTblrDashStyle}.
+  \item \CC{\NewChildSelector} was deprecated in favor of \CC{\NewTblrChildSelector}.
+  \item \CC{\NewTableCommand} was deprecated in favor of \CC{\NewTblrTableCommand}.
+ %\item \CC{\NewContentCommand} was deprecated in favor of \CC{\NewTblrContentCommand}.
+  \item \CC{\tablewidth} was deprecated in favor of \CC{\lTblrTableWidthDim}.
+ %\item \CC{\g_tblr_level_int} was deprecated in favor of \CC{\gTblrLevelInt}.
+\end{itemize}
+
+For your old documents, you can still rollback to version 2024 by \CC{\usepackage{tabularray}[=v2024]}.
+
+\subsection{Important changes in version 2022A}
+
+In version 2022A, there were several breaking changes:
+
+\begin{itemize}[nosep]
+  \item \CC{\multicolumn} command was removed; it is better to use \CC{\SetCell} command.
+  \item \CC{\multirow} command was removed; it is better to use \CC{\SetCell} command.
+  \item \CC{\firsthline} command was removed; it is better to use \KV{baseline=T} option.
+  \item \CC{\lasthline} command was removed; it is better to use \KV{baseline=B} option.
+\end{itemize}
+
+For your old documents, you can still rollback to version 2021 by \CC{\usepackage{tabularray}[=v2021]}.
+
+\chapter{The Source Code}
+
+%\CodeHigh{lite}
+\dochighinput[language=latex/latex3]{tabularray.sty}
+
+\end{document}

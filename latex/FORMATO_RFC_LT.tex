@@ -1,0 +1,451 @@
+\input{Datos.txt}
+\documentclass[a4paper]{article}
+%girar horizontalmente un documento
+\usepackage{pdflscape}
+\usepackage{array}
+
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\usepackage{datatool}
+\DTLloaddb{ALTAS}{ALTAS.csv}
+\DTLloaddb{BAJAS}{BAJAS.csv}
+\DTLloaddb{CAMBIOS}{CAMBIOS.csv}
+\usepackage{ifthen}
+\usepackage{filecontents}
+\usepackage{setspace}
+\usepackage{tabularx}
+
+
+% *** Idioma ***
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+
+% *** Fuente ***
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+
+% *** Colores ***
+\usepackage{xcolor}
+\definecolor{azul}{RGB}{47,125,188} 
+\definecolor{dorado}{RGB}{190,150,91} 
+\definecolor{gris}{rgb}{0.752,0.752,0.752}
+\definecolor{morado}{RGB}{28,28,129}
+\definecolor{gristabla}{rgb}{0.85,0.85,0.85}
+\definecolor{BarleyWhite}{rgb}{1,0.949,0.8}
+\definecolor{Spindle}{rgb}{0.741,0.843,0.933}
+\definecolor{Zanah}{rgb}{0.886,0.941,0.85}
+\definecolor{black}{rgb}{0,0,0}
+
+
+% *** Margenes y Tamaño de Hoja
+\usepackage{geometry}
+\geometry{
+left = 25mm,
+right = 25mm,
+top = 60mm,
+bottom = 20mm,
+headheight = 35mm
+}
+
+% *** Imagenes ***
+\usepackage{graphicx}
+\graphicspath{./imagenes}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+% *** Fecha ***
+\usepackage[useregional]{datetime2}
+
+% *** Encabezado ***
+\usepackage{lastpage} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\lhead{
+		\begin{tblr}{
+		width = \linewidth,
+		colspec = {Q[230]Q[507]Q[100]Q[100]},
+		row{2} = {c},
+		row{3} = {c},
+		column{2} = {c},
+		cell{1}{1} = {r=4}{c},
+		cell{1}{2} = {r=3}{},
+		cell{1}{3} = {c},
+		cell{1}{4} = {c},
+		cell{4}{3} = {c=2}{c},
+		vlines,
+		hline{1,5} = {-}{},
+		hline{2-3} = {3-4}{},
+		hline{4} = {2-4}{},
+	}
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua\\Gerencia de Tecnologías de Información y Comunicaciones \\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad} & \tiny HOJA    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \tiny PROCESO   & \tiny ACMB \\
+	&                                                                                       &{ \tiny FECHA \\ \today} & {\tiny Último Cambio\\ Liberado }    \\
+	& { Solicitud de alta baja o cambio en la infraestructura de seguridad de la \\Comisión Nacional del Agua}                                       &  {\tiny ANEXO 17 FORMATO 1}       &           
+\end{tblr}
+}
+\chead{
+
+}
+\rhead{}
+
+
+%No cortar palabras
+\usepackage[none]{hyphenat}
+\begin{document}
+\sloppy
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[203]Q[200]Q[200]Q[200]},
+                     row{1}={dorado},
+                     row{6}={dorado},
+		row{1}={c},
+                     cell{1}{1} = {c=4}{0.679\linewidth},
+		cell{2}{3} = {r},
+		cell{2}{4} = {c},
+                     cell{3}{2} = {c=3}{0.679\linewidth},
+                     cell{4}{2} = {c=3}{0.679\linewidth},
+                     cell{5}{2} = {c=3}{0.679\linewidth},
+                     row{6}={c},
+                     cell{6}{1} = {c=4}{0.279\linewidth},
+                     row{7}={c},
+                     cell{8}{1} = {c},
+                     cell{8}{3} = {c=2}{0.279\linewidth},
+                     	hlines,
+		vlines,
+	}
+           \textbf{Información para el registro de solicitud de cambio:} &  &      &  \\
+	Numero de ticket:  & & {Fecha de \\ solicitud:}   & \today       \\
+	Temporalidad:& \TEMPO\\
+          {Memorando \\/ Atenta nota:}&\MEMO\\
+         Solicitud:\\
+            \textbf {Tipo de Cambio:} &\\
+            Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
+           Otro (\OTRO )& Describa brevemente:&\DESOTRO\\
+            
+          
+\end{longtblr}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[100]Q[300]Q[90]Q[90]},
+                     row{1}={dorado},
+                     row{3}={dorado},
+		row{1}={c},
+                     cell{1}{1} = {c=4}{0.874\linewidth},	
+                     cell{2}{3}={r},
+                     row{3}={c},
+                     cell{3}{1} = {c=4}{0.874\linewidth},
+                     cell{4}{3}={r},
+                     cell{5}{2} = {c=3}{0.679\linewidth},	
+                     cell{6}{2} = {c=3}{0.679\linewidth},
+		hlines,
+		vlines,
+	}
+            \textbf{Información del enlace informático:} &  &      &  \\
+             Nombre:                &   \NOMEI  &   {Télefono/\\Extensión:}&\EXTEI\\  
+            \textbf{Información del solicitante:} &  &      &  \\
+             Nombre:                &    \NOMS &   {Télefono/\\Extensión:}&\EXTS\\
+             Puesto:&\PUESTOS\\  Área: &\AREAS
+\end{longtblr}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Descripción detallada} \\ \DESDET
+\end{longtblr}
+
+
+%%%TABLAS DE ALTAS BAJAS Y CAMBIOS
+\clearpage
+
+\begin{landscape}
+\begin{spacing}{1.2}
+%%CONDICIONAL ALTAS
+\newboolean{altas}
+\setboolean{altas}{\ALTAS} 
+\ifthenelse{\boolean{altas}}
+{
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		hlines,
+		vlines,
+	}
+	\textbf{ALTAS} \\Sección A.- Comunicación intersistemas
+\end{longtblr}
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[5]Q[5]Q[10]Q[15]Q[8]Q[10]Q[10]Q[10]},                     
+  hlines,
+ % vlines,
+                     cells={c},
+ }
+\textbf{No°}&\textbf {Sistema\\ Origen}&\textbf{Función o rol \\de \\anfitrión(es) \\origen}&
+\textbf{IP/NAT anfitrión(es) \\origen/NAT}&\textbf{Sistema\\ Destino} &
+\textbf{Función o rol\\ de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
+\textbf{Protocolo\\ TCP y/o UDP}&\textbf{Puertos}
+\end{longtblr}
+
+\DTLforeach*{ALTAS}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+{
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[5]Q[5]Q[10]Q[15]Q[8]Q[10]Q[10]Q[10]},                     
+  %hlines,
+ % vlines,
+                     cells={c},
+ }
+\No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
+\end{longtblr}
+}
+}%%FIN CONDICIONAL IF
+{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{ALTAS} \\ NO SE REGISTRARON ALTAS
+
+\end{longtblr}
+}%%ELSE
+%%%%%%%%
+%%CAMBIOS
+\newboolean{bajas}
+\setboolean{bajas}{\BAJAS} 
+\ifthenelse{\boolean{bajas}}
+{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		hlines,
+		vlines,
+	}
+	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas
+\end{longtblr}
+%%CAMBIOS
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[5]Q[5]Q[10]Q[15]Q[8]Q[10]Q[10]Q[10]},                     
+  hlines,
+ % vlines,
+                     cells={c},
+ }
+\textbf{No°}&\textbf {Sistema\\ Origen}&\textbf{Función o rol \\de \\anfitrión(es) \\origen}&
+\textbf{IP/NAT anfitrión(es) \\origen/NAT}&\textbf{Sistema\\ Destino} &
+\textbf{Función o rol\\ de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
+\textbf{Protocolo\\ TCP y/o UDP}&\textbf{Puertos}
+\end{longtblr}
+
+\DTLforeach*{BAJAS}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+{
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[5]Q[5]Q[10]Q[15]Q[8]Q[10]Q[10]Q[10]},                     
+  %hlines,
+ % vlines,
+                     cells={c},
+ }
+\No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
+\end{longtblr}
+}
+}%%FIN CONDICIONAL
+{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{BAJAS} \\ NO SE REGISTRARON CAMBIOS
+
+\end{longtblr}
+}
+%%%%%
+%%BAJAS
+\newboolean{cambios}
+\setboolean{cambios}{\CAMBIOS} 
+\ifthenelse{\boolean{cambios}}
+{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{CAMBIOS} \\Sección A.- Comunicación intersistemas
+
+\end{longtblr}
+
+%%BAJAS
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[5]Q[5]Q[10]Q[15]Q[8]Q[10]Q[10]Q[10]},                     
+  hlines,
+ % vlines,
+                     cells={c},
+ }
+\textbf{No°}&\textbf {Sistema\\ Origen}&\textbf{Función o rol \\de \\anfitrión(es) \\origen}&
+\textbf{IP/NAT anfitrión(es) \\origen/NAT}&\textbf{Sistema\\ Destino} &
+\textbf{Función o rol\\ de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
+\textbf{Protocolo\\ TCP y/o UDP}&\textbf{Puertos}
+\end{longtblr}
+
+\DTLforeach*{CAMBIOS}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+{
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[5]Q[5]Q[10]Q[15]Q[8]Q[10]Q[10]Q[10]},                     
+  %hlines,
+ % vlines,
+                     cells={c},
+ }
+\No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
+\end{longtblr}
+}
+}%%FIN DE CONDICIONAL
+{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{CAMBIOS} \\ NO SE REGISTRARON BAJAS
+
+\end{longtblr}
+}
+
+
+
+\end{spacing}
+\end{landscape}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Justificación} \\ \JUSTIFICA
+\end{longtblr}
+
+%%%..... POLITICAS
+\section*{Políticas del servicio}
+{\small \begin{itemize}
+	        \item El solicitante deberá presentar este formato adjuntando el Memorando o Atenta nota y número de ticket de Mesa de ayuda asociado, sin los cuales no se podrá atender su solicitud.  
+	        \item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedita de las configuraciones solicitadas. Es responsabilidad del solicitante recabar la información con los Administradores de los sistemas o Áreas involucrados (Subgerencia de Sistemas y/o Subgerencia de Internet e Intranet).
+           \item El solicitante deberá proporcionar la dirección IP física y si utiliza dirección NAT agregarlo por cada servidor involucrado, no siendo responsabilidad de la SSTTS si al establecer la comunicación no conecta por falta de este dato. De no proporcionarse la dirección IP NAT correcta, las reglas de cortafuegos se configurarán por defecto con la dirección IP del adaptador de red de los servidores y corresponderá al Administrador del sistema aplicar los cambios en el sistema o servidores para establecer la comunicación.
+           \item El solicitante tiene la obligación de indicar si se trata de un traslado de permisos de una dirección IP a otra.
+           \item Para el traslado de permisos de una dirección IP a otra, se deberá llenar la sección de BAJAS con los permisos de la dirección IP anterior que se darán de baja, además de llenar la sección de ALTAS / CAMBIOS con los permisos que se requieren trasladar.
+           \item Si el solicitante NO indica que se trata de un traslado de permisos, éste será responsable de cualquier acceso no autorizado que se derive de los permisos de la dirección IP anterior debido a no haber solicitado la baja correspondiente de dichos accesos.
+           \item Es responsabilidad de los administradores de cada sistema llevar un control de las direcciones IP’s con acceso al sistema que administra.
+           \item Es responsabilidad de los administradores de cada sistema documentar el control de accesos en la Memoria Técnica. Se sugiere actualizarla periódicamente cada 2, 3, 4 o 6 meses.
+           \item Es responsabilidad de los administradores de cada servidor llevar un control de las direcciones IP’s con acceso al servidor que administra.
+           \item La solicitud para cambios en la infraestructura de seguridad (RFCs) será solicitada únicamente por los Administradores de cada sistema una vez que se apliquen los permisos de acceso en el propio sistema y aperturen los accesos en los cortafuegos locales de los servidores involucrados.
+           \item Es responsabilidad de los Administradores documentar el control de accesos de cada servidor en su respectiva Memoria Técnica, actualizando la misma periódicamente cada 2, 3, 4 0 6 meses.
+           \item Al firmar el solicitante se da por enterado de las políticas del servicio y acepta la responsabilidad de cualquier materialización de los riesgos derivados de las aperturas de comunicaciones asociadas al presente control de cambios.
+\end{itemize}
+
+\begin{table}[h]
+	\centering
+	\begin{tblr}{
+			width = \linewidth,
+			colspec = {Q[400]Q[400]},
+			row{1} = {gris},
+			row{2} = {c},
+                                row{3}={c},
+			cell{1}{1} = {c=2}{0.942\linewidth},
+                                cell{3}{1} = {c=2}{0.942\linewidth},
+			hlines,
+			vlines,
+		}
+		Fecha: \today                      &                                                                                                       \\
+		{Usuario que acepta\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} & {Gerente o director local que autoriza.\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} \\
+                     {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI\\\PUESTOEI}
+	\end{tblr}
+\end{table}
+
+\end{document}
