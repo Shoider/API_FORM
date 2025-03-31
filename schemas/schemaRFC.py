@@ -2,6 +2,11 @@ from marshmallow import Schema, fields, validate
 
 from schemas.schemaTablas import TablasSchema
 
+def validate_conditional_length(value):
+    if value is not None:
+        if not (1 <= len(value) <= 32):
+            raise validate.ValidationError("Length must be between 1 and 32.")
+
 class RegistroSchema2(Schema):
     tempo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     memo = fields.String(required=True, validate=validate.Length(min=1, max=256))
@@ -27,7 +32,7 @@ class RegistroSchema2(Schema):
     justifica3 = fields.String(required=True, validate=validate.Length(min=1, max=256)) 
 
     movimiento = fields.String(required=True, validate=validate.OneOf(["INTER", "ADMIN", "DES", "USUA", "OTRO"]))
-    desotro = fields.String(required=False, validate=validate.Length(min=1, max=32))
+    desotro = fields.String(validate=validate_conditional_length)
 
     # Checar si se puede fields.Boolean()
     ALTA = fields.Boolean(required=True)
