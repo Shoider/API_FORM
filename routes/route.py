@@ -165,6 +165,18 @@ class FileGeneratorRoute(Blueprint):
             usua = "X" if validated_data.get('movimiento') == "USUA" else " "
             otro = "X" if validated_data.get('movimiento') == "OTRO" else " "
 
+            # Transformar valores true y false
+            alta = "true" if validated_data.get('ALTA') == True else "false"
+            cambio = "true" if validated_data.get('CAMBIO') == True else "false"
+            baja = "true" if validated_data.get('BAJA') == True else "false"
+
+            # Unir Justificaciones
+            justifica1 = validated_data.get('justifica1')
+            justifica2 = validated_data.get('justifica2')
+            justifica3 = validated_data.get('justifica3')
+
+            justifica_combined = justifica1 + ". " + justifica2 + ". " + justifica3  # Concatenar con espacios
+
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
             with open(datos_txt_path, 'w') as file: 
@@ -191,52 +203,50 @@ class FileGeneratorRoute(Blueprint):
                 
                 # REVISAR
                 #file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica') + "}"+ os.linesep)
-                file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica, justifica2, justifica3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICA}{" + justifica_combined + "}" + os.linesep)
 
                 # PENDIENTE, Revisar si retorna mayusculas o minusculas o otra cosa, se requiere "true" o "false"
                 ##retorna en minusculas
                 ##SEGUN YO RETORNA MINUSCULAS {true}, {false} !
-
-                file.write("\\newcommand{\\ALTAS}{" + validated_data.get('ALTA') + "}" + os.linesep)
-                file.write("\\newcommand{\\CAMBIOS}{" + validated_data.get('CAMBIO') + "}" + os.linesep)
-                file.write("\\newcommand{\\BAJAS}{" + validated_data.get('BAJA') + "}" + os.linesep)
+                
+                file.write("\\newcommand{\\ALTAS}{" + alta + "}" + os.linesep)
+                file.write("\\newcommand{\\CAMBIOS}{" + cambio + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJAS}{" + baja + "}" + os.linesep)
 
                 file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOEI}{" + validated_data.get('puestoei') + "}"+ os.linesep)
 
             # Crear out.csv en el directorio temporal 3 veces para cada tabla
-            out_csv_path = os.path.join(temp_dir, "out.csv") #ALTA.CSV BAJAS.CSV CAMBIOS.CSV
-            df = pd.DataFrame([validated_data]) #Validate Data es la info para el csv
-            df.to_csv(out_csv_path, index=False, mode='a')
+            # out_csv_path = os.path.join(temp_dir, "out.csv") #ALTA.CSV BAJAS.CSV CAMBIOS.CSV
+            # df = pd.DataFrame([validated_data]) #Validate Data es la info para el csv
+            # df.to_csv(out_csv_path, index=False, mode='a')
 
-            # PENDIENTE A PARTIR DE AQUI
+            # REVISAR A PARTIR DE AQUI
 
             # Preparar archivos en el directorio temporal
-            #archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
-            #nombre_pdf = os.path.join(temp_dir, "Formato_RFC_LT.pdf")
+            archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
+            nombre_pdf = os.path.join(temp_dir, "Formato_RFC_LT.pdf")
 
             # Copia Formato_RFC_LT.tex del directorio /app/data al directorio temporal
-           # shutil.copy("/app/latex/Formato_RFC_LT.tex", archivo_tex)
+            shutil.copy("/app/latex/Formato_RFC_LT.tex", archivo_tex)
 
             # Copiar imágenes al directorio temporal
-            #imagenes_dir = os.path.join(temp_dir, "imagenes")
-            #shutil.copytree("/app/latex/imagenes", imagenes_dir)
+            imagenes_dir = os.path.join(temp_dir, "imagenes")
+            shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
             # Compilar latex
-            #try:
-             #   subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
-            #except:
-             #   self.logger.error(f"Error generando PDF: {e}")
-              #  return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
-            
-
+            try:
+                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+            except:
+                self.logger.error(f"Error generando PDF: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
 
             # Cargar pdf
-            #output = BytesIO()
-            #with open(nombre_pdf, "rb") as pdf_file:
-             #   output.write(pdf_file.read())
-            #output.seek(0)
+            output = BytesIO()
+            with open(nombre_pdf, "rb") as pdf_file:
+                output.write(pdf_file.read())
+            output.seek(0)
 
             # Enviar archivo
             return send_file(
@@ -255,7 +265,7 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             # PARA LOS TEST NO SE ELIMINA
             # shutil.rmtree(temp_dir)
-            self.logger.info(f"info: Registro Finalizado")
+            self.logger.info(f"info: Registro Finalizado en: ", temp_dir)
 
 
     def healthcheck(self):
