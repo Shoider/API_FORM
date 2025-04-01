@@ -164,6 +164,7 @@ class FileGeneratorRoute(Blueprint):
             des = "X" if validated_data.get('movimiento') == "DES" else " "
             usua = "X" if validated_data.get('movimiento') == "USUA" else " "
             otro = "X" if validated_data.get('movimiento') == "OTRO" else " "
+            desotro_value = validated_data.get('desotro', '')
 
             # Transformar valores true y false
             alta = "true" if validated_data.get('ALTA') == True else "false"
@@ -171,7 +172,7 @@ class FileGeneratorRoute(Blueprint):
             baja = "true" if validated_data.get('BAJA') == True else "false"
 
             # Unir Justificaciones
-            justifica1 = validated_data.get('justifica1')
+            justifica1 = validated_data.get('justifica')
             justifica2 = validated_data.get('justifica2')
             justifica3 = validated_data.get('justifica3')
 
@@ -191,7 +192,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\USUA}{" + usua + "}" + os.linesep)
                 file.write("\\newcommand{\\OTRO}{" + otro + "}" + os.linesep)
 
-                file.write("\\newcommand{\\DESOTRO}{"+ validated_data.get('desotro') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DESOTRO}{"+ desotro_value + "}"+ os.linesep)
 
                 file.write("\\newcommand{\\NOMEI}{"+ validated_data.get('nomei') + "}"+ os.linesep)
                 file.write("\\newcommand{\\EXTEI}{"+ validated_data.get('extei') + "}"+ os.linesep)
@@ -217,10 +218,26 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOEI}{" + validated_data.get('puestoei') + "}"+ os.linesep)
 
-            # Crear out.csv en el directorio temporal 3 veces para cada tabla
-            # out_csv_path = os.path.join(temp_dir, "out.csv") #ALTA.CSV BAJAS.CSV CAMBIOS.CSV
-            # df = pd.DataFrame([validated_data]) #Validate Data es la info para el csv
-            # df.to_csv(out_csv_path, index=False, mode='a')
+            # self.logger.info(f"info: Archivo de texto creado ")
+            # Crear csv en el directorio temporal 3 veces para cada tabla
+            out_csv_path = os.path.join(temp_dir, "ALTAS.csv") #ALTA.CSV BAJAS.CSV CAMBIOS.CSV
+            #df = pd.DataFrame([validated_data]) #Validate Data es la info para el csv
+            #df.to_csv(out_csv_path, index=False, mode='a')
+
+            # Crear un DataFrame vacío con el encabezado deseado
+            df = pd.DataFrame(columns=["N", "SO", "FRO", "IPO", "SD", "FRD", "IPD", "PRO", "PUER"])
+            # Guardar el DataFrame en un archivo CSV
+            df.to_csv(out_csv_path, index=False)
+
+            # CAMBIOS
+            out_csv_path = os.path.join(temp_dir, "CAMBIOS.csv")
+            df = pd.DataFrame(columns=["N", "SO", "FRO", "IPO", "SD", "FRD", "IPD", "PRO", "PUER"])
+            df.to_csv(out_csv_path, index=False)
+
+            # BAJAS
+            out_csv_path = os.path.join(temp_dir, "BAJAS.csv")
+            df = pd.DataFrame(columns=["N", "SO", "FRO", "IPO", "SD", "FRD", "IPD", "PRO", "PUER"])
+            df.to_csv(out_csv_path, index=False)
 
             # REVISAR A PARTIR DE AQUI
 
@@ -235,12 +252,15 @@ class FileGeneratorRoute(Blueprint):
             imagenes_dir = os.path.join(temp_dir, "imagenes")
             shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
+            #self.logger.info(f"info: Archivos necesarios copiados ")
             # Compilar latex
             try:
                 subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
             except:
                 self.logger.error(f"Error generando PDF: {e}")
                 return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+            
+            #self.logger.info(f"info: Latex compilado ")
 
             # Cargar pdf
             output = BytesIO()
@@ -264,9 +284,8 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             # PARA LOS TEST NO SE ELIMINA
-            # shutil.rmtree(temp_dir)
-            self.logger.info(f"info: Registro Finalizado en: ", temp_dir)
-
+            shutil.rmtree(temp_dir)
+            # self.logger.info(f'Registro Finalizado en: ' + temp_dir)
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""

@@ -183,7 +183,7 @@ headheight = 35mm
 \begin{spacing}{1.2}
 %%CONDICIONAL ALTAS
 \newboolean{altas}
-\setboolean{altas}{false} 
+\setboolean{altas}{\ALTAS} 
 \ifthenelse{\boolean{altas}}
 {
 
@@ -253,7 +253,7 @@ headheight = 35mm
 %%%%%%%%
 %%CAMBIOS
 \newboolean{bajas}
-\setboolean{bajas}{false} 
+\setboolean{bajas}{\BAJAS} 
 \ifthenelse{\boolean{bajas}}
 {
 \begin{longtblr}[
@@ -322,7 +322,7 @@ headheight = 35mm
 %%%%%
 %%BAJAS
 \newboolean{cambios}
-\setboolean{cambios}{false} 
+\setboolean{cambios}{\CAMBIOS} 
 \ifthenelse{\boolean{cambios}}
 {
 \begin{longtblr}[
