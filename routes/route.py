@@ -12,11 +12,12 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schema, forms_schemaRFC):
+    def __init__(self,forms_schema, forms_schemaRFC, forms_schemaTablas):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schema = forms_schema
+        self.forms_schemaTablas = forms_schemaTablas
         self.register_routes()
 
     def register_routes(self):
@@ -152,10 +153,7 @@ class FileGeneratorRoute(Blueprint):
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
 
-            # CHECAR COMO USAR SCHEMA 2
-            #LISTO!
-            validated_data = self.forms_schemaRFC.load(data) 
-            
+            validated_data = self.forms_schemaRFC.load(data)           
 
             # Transformar valores "X" y " " para Movimiento
             # EJEM sianti = "x" if validated_data.get('malware') == "SI" else " "
@@ -185,7 +183,6 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
                 file.write("\\newcommand{\\DESCBREVE}{" + validated_data.get('descbreve') + "}"+ os.linesep)
                 
-                # PENDIENTE DE TEST
                 file.write("\\newcommand{\\INTER}{" + inter + "}" + os.linesep)
                 file.write("\\newcommand{\\ADMIN}{" + admin + "}" + os.linesep)
                 file.write("\\newcommand{\\DES}{" + des + "}" + os.linesep)
@@ -202,13 +199,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\AREAS}{" + validated_data.get('areas') + "}"+ os.linesep)
                 file.write("\\newcommand{\\DESDET}{" + validated_data.get('desdet') + "}"+ os.linesep)
                 
-                # REVISAR
-                #file.write("\\newcommand{\\JUSTIFICA}{" + validated_data.get('justifica') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICA}{" + justifica_combined + "}" + os.linesep)
-
-                # PENDIENTE, Revisar si retorna mayusculas o minusculas o otra cosa, se requiere "true" o "false"
-                ##retorna en minusculas
-                ##SEGUN YO RETORNA MINUSCULAS {true}, {false} !
                 
                 file.write("\\newcommand{\\ALTAS}{" + alta + "}" + os.linesep)
                 file.write("\\newcommand{\\CAMBIOS}{" + cambio + "}" + os.linesep)
@@ -218,28 +209,81 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOEI}{" + validated_data.get('puestoei') + "}"+ os.linesep)
 
-            # self.logger.info(f"info: Archivo de texto creado ")
-            # Crear csv en el directorio temporal 3 veces para cada tabla
-            out_csv_path = os.path.join(temp_dir, "ALTAS.csv") #ALTA.CSV BAJAS.CSV CAMBIOS.CSV
-            #df = pd.DataFrame([validated_data]) #Validate Data es la info para el csv
-            #df.to_csv(out_csv_path, index=False, mode='a')
+            ###### Aqui funciona
 
-            # Crear un DataFrame vacío con el encabezado deseado
-            df = pd.DataFrame(columns=["N", "SO", "FRO", "IPO", "SD", "FRD", "IPD", "PRO", "PUER"])
-            # Guardar el DataFrame en un archivo CSV
-            df.to_csv(out_csv_path, index=False)
+            # ALTAS
+            out_csv_path = os.path.join(temp_dir, "ALTAS.csv")          # Crea nombre de archivo y dir
+            registros_altas = validated_data.get('registrosAltas', [])  # Obtiene array de los datos
+            
+            for registro in registros_altas:                            # Borra el campo inecesario
+                registro.pop('isNew', None)
+                if "IPO" in registro:                                   # Saltos de linea
+                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "IPD" in registro:                                  
+                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "SO" in registro:                                  
+                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SD" in registro:                                  
+                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRO" in registro:                                  
+                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SVO" in registro:                                  
+                    registro["SVO"] = registro["SVO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRD" in registro:                                  
+                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+
+            df = pd.DataFrame(registros_altas)                          # Crea un DataFrame con el array
+            df.to_csv(out_csv_path, index=False, mode='x')              # Genera el csv con el DataFrame
 
             # CAMBIOS
-            out_csv_path = os.path.join(temp_dir, "CAMBIOS.csv")
-            df = pd.DataFrame(columns=["N", "SO", "FRO", "IPO", "SD", "FRD", "IPD", "PRO", "PUER"])
-            df.to_csv(out_csv_path, index=False)
+            out_csv_path = os.path.join(temp_dir, "CAMBIOS.csv")        
+            registros_bajas = validated_data.get('registrosCambios', [])
+            
+            for registro in registros_bajas:                  
+                registro.pop('isNew', None)
+                if "IPO" in registro:                                   # Saltos de linea
+                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "IPD" in registro:                                  
+                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "SO" in registro:                                  
+                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SD" in registro:                                  
+                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRO" in registro:                                  
+                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SVO" in registro:                                  
+                    registro["SVO"] = registro["SVO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRD" in registro:                                  
+                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+
+            df = pd.DataFrame(registros_bajas)
+            df.to_csv(out_csv_path, index=False, mode='x')
 
             # BAJAS
             out_csv_path = os.path.join(temp_dir, "BAJAS.csv")
-            df = pd.DataFrame(columns=["N", "SO", "FRO", "IPO", "SD", "FRD", "IPD", "PRO", "PUER"])
-            df.to_csv(out_csv_path, index=False)
+            registros_bajas = validated_data.get('registrosBajas', [])
+            
+            for registro in registros_bajas:
+                registro.pop('isNew', None)
+                if "IPO" in registro:                                   # Saltos de linea
+                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "IPD" in registro:                                  
+                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "SO" in registro:                                  
+                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SD" in registro:                                  
+                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRO" in registro:                                  
+                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SVO" in registro:                                  
+                    registro["SVO"] = registro["SVO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRD" in registro:                                  
+                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
 
-            # REVISAR A PARTIR DE AQUI
+            df = pd.DataFrame(registros_bajas)
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            # LaTex
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
