@@ -3,6 +3,7 @@ from logger.logger import Logger
 from schemas.schema import RegistroSchema 
 from schemas.schemaRFC import RegistroSchema2
 from routes.route import FileGeneratorRoute  
+from schemas.schemaTablas import TablasSchema
 
 app = Flask(__name__)
 
@@ -13,10 +14,12 @@ logger = Logger()
 # Schema
 form_schema = RegistroSchema()
 
-form_schemaRFC = RegistroSchema2()  
+form_schemaRFC = RegistroSchema2() 
+
+forms_schemaTablas = TablasSchema()
 
 # Routes
-form_routes = FileGeneratorRoute(form_schema, form_schemaRFC)
+form_routes = FileGeneratorRoute(form_schema, form_schemaRFC, forms_schemaTablas)
 
 #Blueprint
 app.register_blueprint(form_routes)
