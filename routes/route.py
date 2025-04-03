@@ -227,8 +227,6 @@ class FileGeneratorRoute(Blueprint):
                     registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRO" in registro:                                  
                     registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SVO" in registro:                                  
-                    registro["SVO"] = registro["SVO"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRD" in registro:                                  
                     registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
 
@@ -237,9 +235,9 @@ class FileGeneratorRoute(Blueprint):
 
             # CAMBIOS
             out_csv_path = os.path.join(temp_dir, "CAMBIOS.csv")        
-            registros_bajas = validated_data.get('registrosCambios', [])
+            registros_cambios = validated_data.get('registrosCambios', [])
             
-            for registro in registros_bajas:                  
+            for registro in registros_cambios:                  
                 registro.pop('isNew', None)
                 if "IPO" in registro:                                   # Saltos de linea
                     registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
@@ -251,12 +249,10 @@ class FileGeneratorRoute(Blueprint):
                     registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRO" in registro:                                  
                     registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SVO" in registro:                                  
-                    registro["SVO"] = registro["SVO"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRD" in registro:                                  
                     registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
 
-            df = pd.DataFrame(registros_bajas)
+            df = pd.DataFrame(registros_cambios)
             df.to_csv(out_csv_path, index=False, mode='x')
 
             # BAJAS
@@ -275,8 +271,6 @@ class FileGeneratorRoute(Blueprint):
                     registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRO" in registro:                                  
                     registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SVO" in registro:                                  
-                    registro["SVO"] = registro["SVO"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRD" in registro:                                  
                     registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
 
