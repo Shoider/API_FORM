@@ -2,7 +2,7 @@ from marshmallow import Schema, fields, validate
 
 from marshmallow import Schema, fields, validate
 
-class TablasSchema(Schema):
+class TablasSchemaRFC(Schema):
     id = fields.Integer(required=True)
     SO = fields.String(required=True, validate=validate.Length(min=1, max=256))
     FRO = fields.String(required=True, validate=validate.Length(min=1, max=256))

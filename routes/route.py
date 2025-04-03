@@ -12,17 +12,19 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schema, forms_schemaRFC, forms_schemaTablas):
+    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaTablasRFC):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
+        self.forms_schemaVPN = forms_schemaVPN
+        self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
-        self.forms_schema = forms_schema
-        self.forms_schemaTablas = forms_schemaTablas
+        self.forms_schemaTablasRFC = forms_schemaTablasRFC
         self.register_routes()
 
     def register_routes(self):
         """Function to register the routes for file generation"""
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
+        self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/healthcheck", methods=["GET"])(self.healthcheck)
 
@@ -47,7 +49,8 @@ class FileGeneratorRoute(Blueprint):
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
 
-            validated_data = self.forms_schema.load(data)
+            # Validacion
+            validated_data = self.forms_schemaVPN.load(data)
             
             # Transformar valores "SI" y "NO"
             sianti = "x" if validated_data.get('malware') == "SI" else " "
@@ -142,9 +145,8 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-    def rfc(self):
+    def tel(self):
         try:
-
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
@@ -153,6 +155,152 @@ class FileGeneratorRoute(Blueprint):
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
 
+            # Validacion
+            validated_data = self.forms_schemaTel(data)
+            
+            # Tipo de Movimiento
+            alta = "X" if validated_data.get('movimiento') == "ALTA" else " "
+            baja = "X" if validated_data.get('movimiento') == "BAJA" else " "
+            cambio = "X" if validated_data.get('movimiento') == "CAMBIO" else " "
+
+            # Traducir valores true y false
+            externo = "true" if validated_data.get('externo') == True else "false"
+            marca = "true" if validated_data.get('marca') == True else "false"
+            modelo = "true" if validated_data.get('modelo') == True else "false"
+            serie = "true" if validated_data.get('serie') == True else "false"
+            version = "true" if validated_data.get('version') == True else "false"
+
+            # Transformar valores "X" y " "
+            siInterno = "X" if validated_data.get('interno') == True else " "
+            noInterno = "X" if validated_data.get('interno') == False else " "
+
+            siMundo = "X" if validated_data.get('mundo') == True else " "
+            noMundo = "X" if validated_data.get('mundo') == False else " "
+
+            siLocal = "X" if validated_data.get('local') == True else " "
+            noLocal = "X" if validated_data.get('local') == False else " "
+
+            sicLocal = "X" if validated_data.get('cLocal') == True else " "
+            nocLocal = "X" if validated_data.get('cLocal') == False else " "
+
+            siNacional = "X" if validated_data.get('nacional') == True else " "
+            noNacional = "X" if validated_data.get('nacional') == False else " "
+
+            sicNacional = "X" if validated_data.get('cNacional') == True else " "
+            sicNacional = "X" if validated_data.get('cNacional') == False else " "
+
+            siEua = "X" if validated_data.get('eua') == True else " "
+            noEua = "X" if validated_data.get('eua') == False else " "
+
+            # Crear Datos.txt en el directorio temporal
+            datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+            with open(datos_txt_path, 'w') as file: 
+                file.write("\\newcommand{\\ALTA}{" + alta + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
+                file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
+
+                # PENDIENTE file.write("\\newcommand{\\TIPOUSUARIO}{"+ validated_data.get('tipoUsuario')+"}"+ os.linesep)
+
+                file.write("\\newcommand{\\ACTIVACION}{"+ validated_data.get('activacion') + "}"+ os.linesep)
+                file.write("\\newcommand{\\EXPIRACION}{" + validated_data.get('expiracion') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CURPUSUARIO}{" + validated_data.get('curpUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DIRECCION}{" + validated_data.get('direccion') + "}"+ os.linesep)
+                file.write("\\newcommand{\\UAUSUARIO}{" + validated_data.get('uaUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREEMPLEADO}{" + validated_data.get('nombreEmpleado')+ "}"+ os.linesep)
+                file.write("\\newcommand{\\IDEMPLEADO}{" + validated_data.get('idEmpleado') + "}"+ os.linesep)
+                file.write("\\newcommand{\\EXTEMPLEADO}{" + validated_data.get('extEmpleado') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CORREO}{"+ validated_data.get('correo') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoEmpleado') + "}"+ os.linesep)
+
+                # Opciones???
+                file.write("\\newcommand{\\SIINTERNO}{" + siInterno + "}" + os.linesep)
+                file.write("\\newcommand{\\NOINTERNO}{" + noInterno + "}" + os.linesep)
+                file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
+                file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
+                file.write("\\newcommand{\\SILOCAL}{" + siLocal + "}" + os.linesep)
+                file.write("\\newcommand{\\NOLOCAL}{" + noLocal + "}" + os.linesep)
+                file.write("\\newcommand{\\SICLOCAL}{" + sicLocal + "}" + os.linesep)
+                file.write("\\newcommand{\\NOCLOCAL}{" + nocLocal + "}" + os.linesep)
+                file.write("\\newcommand{\\SINACIONAL}{" + siNacional + "}" + os.linesep)
+                file.write("\\newcommand{\\NONACIONAL}{" + noNacional + "}" + os.linesep)
+                file.write("\\newcommand{\\SICNACIONAL}{" + sicNacional + "}" + os.linesep)
+                file.write("\\newcommand{\\NOCNACIONAL}{" + noNacional + "}" + os.linesep)
+                file.write("\\newcommand{\\SIEUA}{" + siEua + "}" + os.linesep)
+                file.write("\\newcommand{\\NOEUA}{" + noEua + "}" + os.linesep)
+
+                file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PEUSTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
+
+                # ESTO REVISAR file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get('tipoEquipo') + "}"+ os.linesep)  
+
+                file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
+                file.write("\\newcommand{\\MARCA}{" + marca + "}" + os.linesep)
+                file.write("\\newcommand{\\MODELO}{" + modelo + "}" + os.linesep)
+                file.write("\\newcommand{\\SERIE}{" + serie + "}" + os.linesep)
+                file.write("\\newcommand{\\VERSION}{" + version + "}" + os.linesep)
+
+            #### PENDIENTE nombre del archivo ####
+
+            # Crear out.csv en el directorio temporal
+            out_csv_path = os.path.join(temp_dir, "out.csv")
+            df = pd.DataFrame([validated_data])
+            df.to_csv(out_csv_path, index=False, mode='a')
+
+            # Preparar archivos en el directorio temporal
+            archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
+            nombre_pdf = os.path.join(temp_dir, "Formato_TELEFONIA.pdf")
+
+            # Copia Formato_TELEFONIA.tex del directorio /app/data al directorio temporal
+            shutil.copy("/app/latex/Formato_TELEFONIA.tex", archivo_tex)
+
+            # Copiar imágenes al directorio temporal
+            imagenes_dir = os.path.join(temp_dir, "imagenes")
+            shutil.copytree("/app/latex/imagenes", imagenes_dir)
+
+            # Compilar latex
+            try:
+                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+            except:
+                self.logger.error(f"Error generando PDF: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+            
+            # Cargar pdf
+            output = BytesIO()
+            with open(nombre_pdf, "rb") as pdf_file:
+                output.write(pdf_file.read())
+            output.seek(0)
+
+            # Enviar archivo
+            return send_file(
+                output,
+                mimetype="application/pdf",
+                download_name="registro.pdf",
+                as_attachment=True,
+            )
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
+
+    def rfc(self):
+        try:
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+
+            # Validacion
             validated_data = self.forms_schemaRFC.load(data)           
 
             # Transformar valores "X" y " " para Movimiento

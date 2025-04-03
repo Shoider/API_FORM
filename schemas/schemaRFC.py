@@ -2,7 +2,7 @@ from marshmallow import Schema, fields, validate
 
 from schemas.schemaTablas import TablasSchema
 
-class RegistroSchema2(Schema):
+class RegistroSchemaRFC(Schema):
     tempo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     memo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     descbreve = fields.String(required=True, validate=validate.Length(min=1, max=256))

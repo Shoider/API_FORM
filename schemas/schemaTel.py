@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate
 
-class RegistroSchema(Schema):
+class RegistroSchemaTel(Schema):
     nombre = fields.String(required=True, validate=validate.Length(min=1, max=64))
     puesto = fields.String(required=True, validate=validate.Length(min=1, max=64))
     ua = fields.String(required=True, validate=validate.Length(min=1, max=64))

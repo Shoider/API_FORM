@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, send_file
 from logger.logger import Logger
-from schemas.schema import RegistroSchema 
-from schemas.schemaRFC import RegistroSchema2
+from schemas.schemaVPN import RegistroSchemaVPN
+from schemas.schemaRFC import RegistroSchemaRFC
 from routes.route import FileGeneratorRoute  
-from schemas.schemaTablas import TablasSchema
+from schemas.schemaTablas import TablasSchemaRFC
+from schemas.schemaTel import RegistroSchemaTel
 
 app = Flask(__name__)
 
@@ -12,14 +13,13 @@ app = Flask(__name__)
 logger = Logger()
 
 # Schema
-form_schema = RegistroSchema()
-
-form_schemaRFC = RegistroSchema2() 
-
-forms_schemaTablas = TablasSchema()
+form_schemaVPN = RegistroSchemaVPN()
+form_schemaTel = RegistroSchemaTel()
+form_schemaRFC = RegistroSchemaRFC() 
+forms_schemaTablasRFC = TablasSchemaRFC()
 
 # Routes
-form_routes = FileGeneratorRoute(form_schema, form_schemaRFC, forms_schemaTablas)
+form_routes = FileGeneratorRoute(form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaTablasRFC)
 
 #Blueprint
 app.register_blueprint(form_routes)
