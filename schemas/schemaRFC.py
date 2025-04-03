@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate
 
-from schemas.schemaTablas import TablasSchema
+from schemas.schemaTablas import TablasSchemaRFC
 
 class RegistroSchemaRFC(Schema):
     tempo = fields.String(required=True, validate=validate.Length(min=1, max=256))
@@ -34,7 +34,7 @@ class RegistroSchemaRFC(Schema):
     BAJA = fields.Boolean(required=True)
     CAMBIO = fields.Boolean(required=True)
 
-    registrosAltas = fields.List(fields.Nested(TablasSchema))
-    registrosCambios = fields.List(fields.Nested(TablasSchema))
-    registrosBajas = fields.List(fields.Nested(TablasSchema))
-    registros = fields.List(fields.Nested(TablasSchema))
+    registrosAltas = fields.List(fields.Nested(TablasSchemaRFC))
+    registrosCambios = fields.List(fields.Nested(TablasSchemaRFC))
+    registrosBajas = fields.List(fields.Nested(TablasSchemaRFC))
+    registros = fields.List(fields.Nested(TablasSchemaRFC))
