@@ -163,37 +163,34 @@ class FileGeneratorRoute(Blueprint):
             baja = "X" if validated_data.get('movimiento') == "BAJA" else " "
             cambio = "X" if validated_data.get('movimiento') == "CAMBIO" else " "
 
-            # Traducir valores true y false
-            externo = "true" if validated_data.get('externo') == True else "false"
-            marca = "true" if validated_data.get('marca') == True else "false"
-            modelo = "true" if validated_data.get('modelo') == True else "false"
-            serie = "true" if validated_data.get('serie') == True else "false"
-            version = "true" if validated_data.get('version') == True else "false"
+            # Traducir valores true y false #PENDIGN
+            externo = "true" if validated_data.get('usuaExterno') == True else "false"
 
             # Transformar valores "X" y " "
-            siInterno = "X" if validated_data.get('interno') == True else " "
-            noInterno = "X" if validated_data.get('interno') == False else " "
+            siInterno = "X" if validated_data.get('interno') == "SI" else " "
+            noInterno = "X" if validated_data.get('interno') == "NO" else " "
 
-            siMundo = "X" if validated_data.get('mundo') == True else " "
-            noMundo = "X" if validated_data.get('mundo') == False else " "
+            siMundo = "X" if validated_data.get('mundo') == "SI" else " "
+            noMundo = "X" if validated_data.get('mundo') == "NO" else " "
 
-            siLocal = "X" if validated_data.get('local') == True else " "
-            noLocal = "X" if validated_data.get('local') == False else " "
+            siLocal = "X" if validated_data.get('local') == "SI" else " "
+            noLocal = "X" if validated_data.get('local') == "NO" else " "
 
-            sicLocal = "X" if validated_data.get('cLocal') == True else " "
-            nocLocal = "X" if validated_data.get('cLocal') == False else " "
+            sicLocal = "X" if validated_data.get('cLocal') == "SI" else " "
+            nocLocal = "X" if validated_data.get('cLocal') == "NO" else " "
 
-            siNacional = "X" if validated_data.get('nacional') == True else " "
-            noNacional = "X" if validated_data.get('nacional') == False else " "
+            siNacional = "X" if validated_data.get('nacional') == "SI" else " "
+            noNacional = "X" if validated_data.get('nacional') == "NO" else " "
 
-            sicNacional = "X" if validated_data.get('cNacional') == True else " "
-            sicNacional = "X" if validated_data.get('cNacional') == False else " "
+            sicNacional = "X" if validated_data.get('cNacional') == "SI" else " "
+            sicNacional = "X" if validated_data.get('cNacional') == "NO" else " "
 
-            siEua = "X" if validated_data.get('eua') == True else " "
-            noEua = "X" if validated_data.get('eua') == False else " "
+            siEua = "X" if validated_data.get('eua') == "SI" else " "
+            noEua = "X" if validated_data.get('eua') == "NO" else " "
 
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+            
             with open(datos_txt_path, 'w') as file: 
                 file.write("\\newcommand{\\ALTA}{" + alta + "}" + os.linesep)
                 file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
@@ -237,12 +234,10 @@ class FileGeneratorRoute(Blueprint):
                 # ESTO REVISAR file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get('tipoEquipo') + "}"+ os.linesep)  
 
                 file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
-                file.write("\\newcommand{\\MARCA}{" + marca + "}" + os.linesep)
-                file.write("\\newcommand{\\MODELO}{" + modelo + "}" + os.linesep)
-                file.write("\\newcommand{\\SERIE}{" + serie + "}" + os.linesep)
-                file.write("\\newcommand{\\VERSION}{" + version + "}" + os.linesep)
-
-            #### PENDIENTE nombre del archivo ####
+                file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}" + os.linesep)
+                file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}" + os.linesep)
+                file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
+                file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
 
             # Crear out.csv en el directorio temporal
             out_csv_path = os.path.join(temp_dir, "out.csv")
