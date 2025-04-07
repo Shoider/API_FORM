@@ -16,10 +16,10 @@ logger = Logger()
 form_schemaVPN = RegistroSchemaVPN()
 form_schemaTel = RegistroSchemaTel()
 form_schemaRFC = RegistroSchemaRFC() 
-forms_schemaTablasRFC = TablasSchemaRFC()
+forms_schemaTablas = TablasSchemaRFC()
 
 # Routes
-form_routes = FileGeneratorRoute(form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaTablasRFC)
+form_routes = FileGeneratorRoute(form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaTablas)
 
 #Blueprint
 app.register_blueprint(form_routes)

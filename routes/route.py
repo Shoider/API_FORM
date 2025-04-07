@@ -12,13 +12,13 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaTablasRFC):
+    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaTablas):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
         self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
-        self.forms_schemaTablasRFC = forms_schemaTablasRFC
+        self.forms_schemaTablas = forms_schemaTablas
         self.register_routes()
 
     def register_routes(self):
@@ -156,7 +156,7 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify({"error": "Invalid data"}), 400
 
             # Validacion
-            validated_data = self.forms_schemaTel(data)
+            validated_data = self.forms_schemaTel.load(data)
             
             # Tipo de Movimiento
             alta = "X" if validated_data.get('movimiento') == "ALTA" else " "
@@ -239,10 +239,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
                 file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
 
-            # Crear out.csv en el directorio temporal
-            out_csv_path = os.path.join(temp_dir, "out.csv")
-            df = pd.DataFrame([validated_data])
-            df.to_csv(out_csv_path, index=False, mode='a')
+            
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
@@ -466,7 +463,7 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             # PARA LOS TEST NO SE ELIMINA
             shutil.rmtree(temp_dir)
-            # self.logger.info(f'Registro Finalizado en: ' + temp_dir)
+            # self.logger.info(f'Registro Finalizado.')
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
