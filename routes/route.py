@@ -183,7 +183,7 @@ class FileGeneratorRoute(Blueprint):
             noNacional = "X" if validated_data.get('nacional') == "NO" else " "
 
             sicNacional = "X" if validated_data.get('cNacional') == "SI" else " "
-            sicNacional = "X" if validated_data.get('cNacional') == "NO" else " "
+            nocNacional = "X" if validated_data.get('cNacional') == "NO" else " "
 
             siEua = "X" if validated_data.get('eua') == "SI" else " "
             noEua = "X" if validated_data.get('eua') == "NO" else " "
@@ -196,12 +196,13 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
                 file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
 
-                # PENDIENTE file.write("\\newcommand{\\TIPOUSUARIO}{"+ validated_data.get('tipoUsuario')+"}"+ os.linesep)
+                file.write("\\newcommand{\\TIPOUSUARIO}{"+ validated_data.get('tipoUsuario')+"}"+ os.linesep)
 
                 file.write("\\newcommand{\\ACTIVACION}{"+ validated_data.get('activacion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\EXPIRACION}{" + validated_data.get('expiracion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\CURPUSUARIO}{" + validated_data.get('curpUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CURPEMPLEADO}{" + validated_data.get('curpEmpleado') + "}"+ os.linesep)
                 file.write("\\newcommand{\\DIRECCION}{" + validated_data.get('direccion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\UAUSUARIO}{" + validated_data.get('uaUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREEMPLEADO}{" + validated_data.get('nombreEmpleado')+ "}"+ os.linesep)
@@ -222,18 +223,19 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\SINACIONAL}{" + siNacional + "}" + os.linesep)
                 file.write("\\newcommand{\\NONACIONAL}{" + noNacional + "}" + os.linesep)
                 file.write("\\newcommand{\\SICNACIONAL}{" + sicNacional + "}" + os.linesep)
-                file.write("\\newcommand{\\NOCNACIONAL}{" + noNacional + "}" + os.linesep)
+                file.write("\\newcommand{\\NOCNACIONAL}{" + nocNacional + "}" + os.linesep)
                 file.write("\\newcommand{\\SIEUA}{" + siEua + "}" + os.linesep)
                 file.write("\\newcommand{\\NOEUA}{" + noEua + "}" + os.linesep)
 
                 file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
-                file.write("\\newcommand{\\PEUSTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
 
                 # ESTO REVISAR file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get('tipoEquipo') + "}"+ os.linesep)  
 
                 file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
+                file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get ('tipoEquipo') + "}" + os.linesep)
                 file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}" + os.linesep)
                 file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}" + os.linesep)
                 file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
@@ -280,7 +282,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
+            #shutil.rmtree(temp_dir)
+            print(temp_dir)
 
     def rfc(self):
         try:
