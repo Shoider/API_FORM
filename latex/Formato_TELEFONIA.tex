@@ -24,7 +24,7 @@ left = 25mm,
 right = 25mm,
 top = 60mm,
 bottom = 20mm,
-headheight = 35mm
+headheight = 28mm
 }
 
 % *** Imagenes ***
@@ -66,7 +66,7 @@ headheight = 35mm
 		vlines,
                       hlines,
 	}
-	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Subdirección general de administración.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
 	&                                                                                       & \tiny VERSIÓN   & \tiny 5.1 \\
 	&                                                                                       & \tiny FECHA & {\tiny 03-04-2025 }    \\
 	& { Solicitud de servicios de telefonía.\\(Alta, Baja, Cambio)}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
@@ -103,7 +103,7 @@ headheight = 35mm
            Tipo de usuario: & \TIPOUSUARIO & Expediente abierto: & ? \\
            Fecha de activación: & \ACTIVACION &Fecha de expiración: & \EXPIRACION
 \end{longtblr}
-\vspace{-25pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -131,7 +131,7 @@ Unidad Aministrativa:           &\UAUSUARIO
 \setboolean{externo}{\EXTERNO}
 \ifthenelse{\boolean{externo}}
 {
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -154,7 +154,7 @@ Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
 
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -175,7 +175,7 @@ Puesto:           &\PUESTOEMPLEADO
 	\textbf{Servicio Larga Distancia Nacional:}       &Si (\SINACIONAL )~ No(\NONACIONAL ) & \textbf{Serivicio Celular Larga Distancia:}                                  & Si (\SICNACIONAL )~ No(\NOCNACIONAL ) \\
 	\textbf{Servicio Larga Distancia Estados Unidos y Canadá:} &&& Si (\SIEUA )~ No(\NOEUA)
 \end{longtblr}
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -195,7 +195,7 @@ Puesto:           &\PUESTOEMPLEADO
 \TIPOEQUIPO&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -210,8 +210,8 @@ Puesto:           &\PUESTOEMPLEADO
 	}
 	\textbf{Justificación de los Servicios Solicitados} \\\JUSTIFICACION
 \end{longtblr}
-
-\vspace{-20pt}
+\clearpage
+%\vspace{-20pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
