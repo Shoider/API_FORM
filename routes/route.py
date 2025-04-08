@@ -201,14 +201,13 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\ACTIVACION}{"+ validated_data.get('activacion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\EXPIRACION}{" + validated_data.get('expiracion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
-                file.write("\\newcommand{\\CURPUSUARIO}{" + validated_data.get('curpUsuario') + "}"+ os.linesep)
-                file.write("\\newcommand{\\CURPEMPLEADO}{" + validated_data.get('curpEmpleado') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correoUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\DIRECCION}{" + validated_data.get('direccion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\UAUSUARIO}{" + validated_data.get('uaUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREEMPLEADO}{" + validated_data.get('nombreEmpleado')+ "}"+ os.linesep)
                 file.write("\\newcommand{\\IDEMPLEADO}{" + validated_data.get('idEmpleado') + "}"+ os.linesep)
                 file.write("\\newcommand{\\EXTEMPLEADO}{" + validated_data.get('extEmpleado') + "}"+ os.linesep)
-                file.write("\\newcommand{\\CORREO}{"+ validated_data.get('correo') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CORREOEMPLEADO}{"+ validated_data.get('correoEmpleado') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoEmpleado') + "}"+ os.linesep)
 
                 # Opciones???
@@ -235,7 +234,6 @@ class FileGeneratorRoute(Blueprint):
                 # ESTO REVISAR file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get('tipoEquipo') + "}"+ os.linesep)  
 
                 file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
-                file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get ('tipoEquipo') + "}" + os.linesep)
                 file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}" + os.linesep)
                 file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}" + os.linesep)
                 file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
