@@ -469,7 +469,7 @@ class FileGeneratorRoute(Blueprint):
             shutil.rmtree(temp_dir)
             # self.logger.info(f'Registro Finalizado.')
     def inter(self):
-        try:
+        try: 
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
@@ -482,8 +482,32 @@ class FileGeneratorRoute(Blueprint):
             validated_data = self.forms_schemaInter.load(data)
             
             # Transformar valores "SI" y "NO"
-            #sianti = "x" if validated_data.get('malware') == "SI" else " "
-            #noanti = "x" if validated_data.get('malware') == "NO" else " "
+            descarga = "x" if validated_data.get('malware') == True else " "
+            foros = "x" if validated_data.get('malware') == True else " "
+            comercio = "x" if validated_data.get('malware') == True else " "
+            redes = "x" if validated_data.get('malware') == True else " "
+            videos = "x" if validated_data.get('malware') == True else " "
+            whats = "x" if validated_data.get('malware') == True else " "
+            dropbox = "x" if validated_data.get('malware') == True else " "
+            onedrive = "x" if validated_data.get('malware') == True else " "
+            skype = "x" if validated_data.get('malware') == True else " "
+            wetransfer = "x" if validated_data.get('malware') == True else " "
+            team = "x" if validated_data.get('malware') == True else " "
+            otra = "x" if validated_data.get('malware') == True else " "
+
+            descargabool = "true" if validated_data.get('descarga') == True else "false"
+            forosbool = "true" if validated_data.get('forosbool') == True else "false"
+            comerciobool = "true" if validated_data.get('comercio') == True else "false"
+            redesbool = "true" if validated_data.get('redes') == True else "false"
+            videosbool = "true" if validated_data.get('video') == True else "false"
+            whatsbool = "true" if validated_data.get('whats') == True else "false"
+            dropboxbool = "true" if validated_data.get('dropbox') == True else "false"
+            onedrivebool = "true" if validated_data.get('onedrive') == True else "false"
+            skypebool = "true" if validated_data.get('skype') == True else "false"
+            wetransferbool = "true" if validated_data.get('wetransfer') == True else "false"
+            teambool = "true" if validated_data.get('team') == True else "false"
+            otrabool = "true" if validated_data.get('otra') == True else "false"
+
 
             
 
@@ -500,6 +524,32 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\EXTUSUARIO}{" + validated_data.get('modelo') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('jefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestojefe') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
+                file.write("\\newcommand{\\FOROS}{" + foros + "}" + os.linesep)
+                file.write("\\newcommand{\\COMERCIO}{" + comercio + "}" + os.linesep)
+                file.write("\\newcommand{\\REDES}{" + redes + "}" + os.linesep)
+                file.write("\\newcommand{\\VIDEOS}{" + videos + "}" + os.linesep)
+                file.write("\\newcommand{\\WHATS}{" + whats + "}" + os.linesep)
+                file.write("\\newcommand{\\DROPBOX}{" + dropbox + "}" + os.linesep)
+                file.write("\\newcommand{\\ONEDRIVE}{" + onedrive + "}" + os.linesep)
+                file.write("\\newcommand{\\SKYPE}{" + skype + "}" + os.linesep)
+                file.write("\\newcommand{\\WETRANSFER}{" + wetransfer + "}" + os.linesep)
+                file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
+                
+                file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
+                file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
+                file.write("\\newcommand{\\COMERCIOBOOL}{" + comerciobool + "}" + os.linesep)
+                file.write("\\newcommand{\\REDESBOOL}{" + redesbool + "}" + os.linesep)
+                file.write("\\newcommand{\\VIDEOSBOOL}{" + videosbool + "}" + os.linesep)
+                file.write("\\newcommand{\\WHATSBOOL}{" + whatsbool + "}" + os.linesep)
+                file.write("\\newcommand{\\DROPBOXBOOL}{" + dropboxbool + "}" + os.linesep)
+                file.write("\\newcommand{\\ONEDRIVEBOOL}{" + onedrivebool + "}" + os.linesep)
+                file.write("\\newcommand{\\SKYPEBOOL}{" + skypebool + "}" + os.linesep)
+                file.write("\\newcommand{\\WETRANSFERBOOL}{" + wetransferbool + "}" + os.linesep)
+                file.write("\\newcommand{\\TEAMBOOL}{" + teambool + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRABOOL}{" + otrabool + "}" + os.linesep)
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_INTERNET.tex")
