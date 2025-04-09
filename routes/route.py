@@ -107,9 +107,12 @@ class FileGeneratorRoute(Blueprint):
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
+            archivo_aux = os.path.join(temp_dir, "Formato_VPN_241105.aux")
+
 
             # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
             shutil.copy("/app/latex/Formato_VPN_241105.tex", archivo_tex)
+            shutil.copy("/app/latex/Formato_VPN_241105.aux", archivo_aux)
 
             # Copiar imágenes al directorio temporal
             imagenes_dir = os.path.join(temp_dir, "imagenes")
@@ -144,6 +147,7 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
+            #print("prueba")
 
     def tel(self):
         try:
