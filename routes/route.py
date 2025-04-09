@@ -171,9 +171,6 @@ class FileGeneratorRoute(Blueprint):
             externo = "true" if validated_data.get('usuaExterno') == True else "false"
 
             # Transformar valores "X" y " "
-            siInterno = "X" if validated_data.get('interno') == "SI" else " "
-            noInterno = "X" if validated_data.get('interno') == "NO" else " "
-
             siMundo = "X" if validated_data.get('mundo') == "SI" else " "
             noMundo = "X" if validated_data.get('mundo') == "NO" else " "
 
@@ -215,8 +212,6 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoEmpleado') + "}"+ os.linesep)
 
                 # Opciones???
-                file.write("\\newcommand{\\SIINTERNO}{" + siInterno + "}" + os.linesep)
-                file.write("\\newcommand{\\NOINTERNO}{" + noInterno + "}" + os.linesep)
                 file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                 file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
                 file.write("\\newcommand{\\SILOCAL}{" + siLocal + "}" + os.linesep)
@@ -248,9 +243,11 @@ class FileGeneratorRoute(Blueprint):
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_TELEFONIA.pdf")
+            archivo_aux = os.path.join(temp_dir, "Formato_TELEFONIA.aux")
 
             # Copia Formato_TELEFONIA.tex del directorio /app/data al directorio temporal
             shutil.copy("/app/latex/Formato_TELEFONIA.tex", archivo_tex)
+            shutil.copy("/app/latex/Formato_TELEFONIA.aux", archivo_aux)
 
             # Copiar imágenes al directorio temporal
             imagenes_dir = os.path.join(temp_dir, "imagenes")

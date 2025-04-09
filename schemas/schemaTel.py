@@ -28,7 +28,6 @@ class RegistroSchemaTel(Schema):
     
     tipoUsuario = fields.String(required=True)
 
-    interno = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
     mundo = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
     local = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
     cLocal = fields.String(required=True, validate=validate.OneOf(["SI", "NO"]))
