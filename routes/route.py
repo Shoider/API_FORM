@@ -283,8 +283,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)
-            print(temp_dir)
+            shutil.rmtree(temp_dir)
+            #print(temp_dir)
 
     def rfc(self):
         try:
@@ -593,8 +593,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
-            #print("prueba")
+            #shutil.rmtree(temp_dir)
+            print("prueba")
 
 
     def healthcheck(self):
