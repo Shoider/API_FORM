@@ -12,13 +12,14 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaTablas):
+    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaTablas, forms_schemaInter):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
         self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schemaTablas = forms_schemaTablas
+        self.forms_schemaInter = forms_schemaInter
         self.register_routes()
 
     def register_routes(self):
@@ -26,6 +27,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
+        self.route("/api/v1/inter", methods=["POST"])(self.inter)
         self.route("/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -322,8 +324,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)
-            print(temp_dir)
+            shutil.rmtree(temp_dir)
+            #print(temp_dir)
 
     def rfc(self):
         try:
@@ -495,7 +497,137 @@ class FileGeneratorRoute(Blueprint):
             # PARA LOS TEST NO SE ELIMINA
             shutil.rmtree(temp_dir)
             # self.logger.info(f'Registro Finalizado.')
+    def inter(self):
+        try: 
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+
+            # Validacion
+            validated_data = self.forms_schemaInter.load(data)
+            
+            # Transformar valores "SI" y "NO"
+            descarga = "x" if validated_data.get('malware') == True else " "
+            foros = "x" if validated_data.get('malware') == True else " "
+            comercio = "x" if validated_data.get('malware') == True else " "
+            redes = "x" if validated_data.get('malware') == True else " "
+            videos = "x" if validated_data.get('malware') == True else " "
+            whats = "x" if validated_data.get('malware') == True else " "
+            dropbox = "x" if validated_data.get('malware') == True else " "
+            onedrive = "x" if validated_data.get('malware') == True else " "
+            skype = "x" if validated_data.get('malware') == True else " "
+            wetransfer = "x" if validated_data.get('malware') == True else " "
+            team = "x" if validated_data.get('malware') == True else " "
+            otra = "x" if validated_data.get('malware') == True else " "
+
+            descargabool = "true" if validated_data.get('descarga') == True else "false"
+            forosbool = "true" if validated_data.get('forosbool') == True else "false"
+            comerciobool = "true" if validated_data.get('comercio') == True else "false"
+            redesbool = "true" if validated_data.get('redes') == True else "false"
+            videosbool = "true" if validated_data.get('video') == True else "false"
+            whatsbool = "true" if validated_data.get('whats') == True else "false"
+            dropboxbool = "true" if validated_data.get('dropbox') == True else "false"
+            onedrivebool = "true" if validated_data.get('onedrive') == True else "false"
+            skypebool = "true" if validated_data.get('skype') == True else "false"
+            wetransferbool = "true" if validated_data.get('wetransfer') == True else "false"
+            teambool = "true" if validated_data.get('team') == True else "false"
+            otrabool = "true" if validated_data.get('otra') == True else "false"
+
+
+            
+
+            # Crear Datos.txt en el directorio temporal
+            datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+            with open(datos_txt_path, 'w') as file: 
+                file.write("\\newcommand{\\FECHASOLI}{"+ validated_data.get('nombre')+"}"+ os.linesep)
+                file.write("\\newcommand{\\UAUSUARIO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('ua') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOUSUARIO}{" + validated_data.get('id') + "}"+ os.linesep)
+                file.write("\\newcommand{\\IPUSUARIO}{" + validated_data.get('extension') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correo')+ "}"+ os.linesep)
+                file.write("\\newcommand{\\TELEUSUARIO}{" + validated_data.get('marca') + "}"+ os.linesep)
+                file.write("\\newcommand{\\EXTUSUARIO}{" + validated_data.get('modelo') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('jefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestojefe') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
+                file.write("\\newcommand{\\FOROS}{" + foros + "}" + os.linesep)
+                file.write("\\newcommand{\\COMERCIO}{" + comercio + "}" + os.linesep)
+                file.write("\\newcommand{\\REDES}{" + redes + "}" + os.linesep)
+                file.write("\\newcommand{\\VIDEOS}{" + videos + "}" + os.linesep)
+                file.write("\\newcommand{\\WHATS}{" + whats + "}" + os.linesep)
+                file.write("\\newcommand{\\DROPBOX}{" + dropbox + "}" + os.linesep)
+                file.write("\\newcommand{\\ONEDRIVE}{" + onedrive + "}" + os.linesep)
+                file.write("\\newcommand{\\SKYPE}{" + skype + "}" + os.linesep)
+                file.write("\\newcommand{\\WETRANSFER}{" + wetransfer + "}" + os.linesep)
+                file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
+                
+                file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
+                file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
+                file.write("\\newcommand{\\COMERCIOBOOL}{" + comerciobool + "}" + os.linesep)
+                file.write("\\newcommand{\\REDESBOOL}{" + redesbool + "}" + os.linesep)
+                file.write("\\newcommand{\\VIDEOSBOOL}{" + videosbool + "}" + os.linesep)
+                file.write("\\newcommand{\\WHATSBOOL}{" + whatsbool + "}" + os.linesep)
+                file.write("\\newcommand{\\DROPBOXBOOL}{" + dropboxbool + "}" + os.linesep)
+                file.write("\\newcommand{\\ONEDRIVEBOOL}{" + onedrivebool + "}" + os.linesep)
+                file.write("\\newcommand{\\SKYPEBOOL}{" + skypebool + "}" + os.linesep)
+                file.write("\\newcommand{\\WETRANSFERBOOL}{" + wetransferbool + "}" + os.linesep)
+                file.write("\\newcommand{\\TEAMBOOL}{" + teambool + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRABOOL}{" + otrabool + "}" + os.linesep)
+
+            # Preparar archivos en el directorio temporal
+            archivo_tex = os.path.join(temp_dir, "Formato_INTERNET.tex")
+            nombre_pdf = os.path.join(temp_dir, "Formato_INTERNET.pdf")
+           # archivo_aux = os.path.join(temp_dir, "Formato_INTERNET.aux")
+
+
+            # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+            shutil.copy("/app/latex/Formato_INTERNET.tex", archivo_tex)
+            #shutil.copy("/app/latex/Formato_INTERNET", archivo_aux)
+
+            # Copiar imágenes al directorio temporal
+            imagenes_dir = os.path.join(temp_dir, "imagenes")
+            shutil.copytree("/app/latex/imagenes", imagenes_dir)
+
+            # Compilar latex
+            try:
+                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+            except:
+                self.logger.error(f"Error generando PDF: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+            
+            # Cargar pdf
+            output = BytesIO()
+            with open(nombre_pdf, "rb") as pdf_file:
+                output.write(pdf_file.read())
+            output.seek(0)
+
+            # Enviar archivo
+            return send_file(
+                output,
+                mimetype="application/pdf",
+                download_name="registro.pdf",
+                as_attachment=True,
+            )
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            #shutil.rmtree(temp_dir)
+            print("prueba")
+
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
         return jsonify({"status": "Up"}), 200
+    
+    

@@ -1,0 +1,492 @@
+%\textbf{\emph{ejemplo}}
+\input{Datos.txt}
+\documentclass[letterpaper,9pt]{article}
+\usepackage{ifthen}
+
+% *** Idioma ***
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+
+% *** Fuente ***
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+
+% *** Colores ***
+\usepackage{xcolor}
+\definecolor{dorado}{RGB}{190,150,91} 
+\definecolor{gris}{rgb}{0.752,0.752,0.752}
+
+% *** Margenes y Tamaño de Hoja
+\usepackage{geometry}
+\geometry{
+left = 25mm,
+right = 25mm,
+top = 60mm,
+bottom = 20mm,
+headheight = 28mm
+}
+
+% *** Imagenes ***
+\usepackage{graphicx}
+\graphicspath{./imagenes}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+% *** Fecha ***
+%\usepackage[useregional]{datetime2}
+\usepackage{datetime2}
+\DTMsetdatestyle{ddmmyyyy}
+
+%No cortar palabras
+\usepackage[none]{hyphenat}
+
+
+% *** Encabezado ***
+\usepackage{lastpage} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+
+\lhead{
+		\begin{tblr}{
+		width = \linewidth,
+		colspec = {Q[230]Q[507]Q[100]Q[100]},
+		row{2} = {c},
+		row{3} = {c},
+		column{2} = {c},
+		cell{1}{1} = {r=4}{c},
+		cell{1}{2} = {r=3}{},
+                     cell{4}{2} = {h},
+		cell{1}{3} = {c},
+		cell{1}{4} = {c},
+		cell{4}{3} = {c=2}{c},
+		vlines,
+                      hlines,
+	}
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \tiny VERSIÓN   & \tiny PENDIENTE \\
+	&                                                                                       & \tiny FECHA & {\tiny FECHA DE PUBLICACION PENDIENTE }    \\
+	& { Solicitud de Ampliación del Servicio de Internet }                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
+\end{tblr}
+}
+\chead{}
+\rhead{}
+
+% *** Pie de Pagina
+%\renewcommand{\footrulewidth}{0.5pt}
+\lfoot{}
+\cfoot{}
+%\rfoot{}
+
+\begin{document}
+\sloppy
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[200]},  
+                      row{1}={r}                 
+	}
+&&{\textbf{Fecha de la solicitud:}} &\FECHASOLI    
+\end{longtblr}
+
+\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]Q[90]Q[90]},
+		row{1} = {c},
+                     row{1}={dorado},                    
+		cell{1}{1} = {c=4}{0.874\linewidth},
+		cell{2}{2} = {c=3}{0.674\linewidth},
+		cell{3}{2} = {c=3}{0.674\linewidth},
+		cell{4}{2} = {c=3}{0.674\linewidth},
+		cell{5}{2} = {c=3}{0.674\linewidth},     
+                      cell{6}{2} = {c=3}{0.674\linewidth},     
+		cell{7}{2} = {c=3}{0.674\linewidth},     
+                      cell{8}{2} = {c=3}{0.674\linewidth},     
+		hlines,
+		vlines,
+	}
+\textbf{Datos de Usuario (a)} &  &      &  \\
+Unidad Aministrativa:           &\UAUSUARIO\\
+Área:&\AREAUSUARIO\\
+Nombre:                     &  \NOMBREUSUARIO \\
+Puesto o Cargo: & \PUESTOUSUARIO\\
+IP del equipo asignado: & \IPUSUARIO\\
+Correo: &   \CORREOUSUARIO  \\
+Dirección:   &  Av. Insurgentes Sur 2416 Col.Copilco el Bajo. CP.04340,Coyoacán,CDMX, \textbf  \DIRECCION  \\
+Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
+
+\end{longtblr}
+
+\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[200]Q[200]},                   
+		cell{1}{1} = {c=3}{0.974\linewidth},
+                     cell{3}{1} = {c=3}{0.974\linewidth},
+	}
+\textbf{La configuración de navegación para todos los usuarios (perfil básico), está diseñada para el desempeño sustantivo de las funciones, lo anterior con la finalidad de proteger y administrar eficientemente los recursos informáticos, determinando así las siguientes categorías de navegación: )} &  &     \\
+{•	Arte y Cultura.\\
+•	Correduría y Negociación.\\
+•	Empresas y Economía.\\
+•	Caridad sin fines de lucro.\\
+•	Educación.\\
+•	Correo electrónico.\\}
+               & 
+{•	Finanzas.\\
+•	Gobierno y Legal.\\
+•	Salud.\\
+•	Informativo y Noticias.\\
+•	Aplicaciones de Oficina.\\
+•	Negocios y Bienes inmuebles.\\}
+                &
+{•Restaurantes y Gastronomía.\\
+•	Motores de Búsqueda.\\
+•	Portales de Contenidos.\\
+•	Educación Sexual.\\
+•	Traducción.\\
+•	Viajes.} \\
+
+{\textbf {Perfiles avanzados de navegación:}} Deberá seleccionar las opciones de navegación requeridas (categoría de navegación), considerando estrictamente las necesarias para el desempeño de sus funciones; mismas que deberán ser justificadas plenamente y autorizadas por el Director o Gerente del área de adscripción.
+\end{longtblr}
+
+
+\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[18]Q[200]Q[18]Q[200]Q[18]Q[200]},
+		row{1} = {c},
+                     row{1}={dorado},
+                    cell{1}{1} = {c=6}{0.874\linewidth},	
+		hlines,
+		vlines,
+	}
+\textbf{Categorías de Navegación}         \\
+ (\DESCARGA )& \textbf{Descarga de software}  & (\FOROS )& \textbf{Foros y Blogs} & (\COMERCIO)& \textbf{Comercio Electrónico}  \\
+ (\REDES )& \textbf{Redes Sociales}  & (\VIDEOS )& \textbf{Videos-YouTube{\tiny{(Streaming)}}} & (\WHATS)& \textbf{WhatsApp Web}  \\
+(\DROPBOX )& \textbf{DropBox}  & (\ONEDRIVE )& \textbf{OneDrive} & (\SKYPE)& \textbf{Skype}  \\
+(\WETRANSFER)& \textbf{Wetransfer}  & (\TEAM )& \textbf{TeamViewer} & (\OTRA)& \textbf{Otra}  
+\end{longtblr}
+
+{\textbf{Importante:}} En la(s) siguiente(s) tabla(s) deberá JUSTIFICAR cada una de las categorías seleccionadas; considerando toda la información de referencia para validar los servicios solicitados (URL´s de los sitios); considerando en lo particular las solicitudes deben estar asociadas a requerimientos específicos de las funciones encomendadas e información institucional y NO para fines ni servicios personales. 
+
+%%%JUSTIFICACIONES
+
+\newboolean{descarga}
+\setboolean{descarga}{\DESCARGABOOL}
+\newboolean{foros}
+\setboolean{foros}{\FOROSBOOL}
+\newboolean{comercio}
+\setboolean{comercio}{\COMERCIOBOOL}
+\newboolean{redes}
+\setboolean{redes}{\REDESBOOL}
+\newboolean{videos}
+\setboolean{videos}{\VIDEOSBOOL}
+\newboolean{whats}
+\setboolean{whats}{\WHATSBOOL}
+\newboolean{dropbox}
+\setboolean{dropbox}{\WHATSBOOL}
+\newboolean{onedrive}
+\setboolean{onedrive}{\ONEDRIVEBOOL}
+\newboolean{skype}
+\setboolean{skype}{\SKYPEBOOL}
+\newboolean{wetransfer}
+\setboolean{wetransfer}{\WETRANSFERBOOL}
+\newboolean{team}
+\setboolean{team}{\TEAMBOOL}
+\newboolean{otra}
+\setboolean{otra}{\OTRABOOL}
+
+\clearpage
+\textbf {JUSTIFICACIONES}
+%%%DESCARGA
+\ifthenelse{\boolean{descarga}}{
+%\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},  
+		hlines,
+		vlines,
+	}
+\textbf{Descarga de software} \\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLDESCARGA\\
+\textbf{Justificación:}&
+\JUSTIFICADESCARGA
+\end{longtblr}
+}{~}
+%%FOROS
+\ifthenelse{\boolean{foros}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Foros y Blogs} \\
+Referencia del servicio requerido\\ (URL del servicio): & \URLFOROS \\
+\textbf{Justificación:}&
+\JUSTIFICAFOROS
+\end{longtblr}
+}{~}
+%%COMERCIO
+\ifthenelse{\boolean{comercio}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth}, 
+		hlines,
+		vlines,
+	}
+\textbf{Comercio Electrónico} \\
+Referencia del servicio requerido\\ (URL del servicio): & \URLCOMERCIO\\
+\textbf{Justificación:}&
+\JUSTIFICACOMERCIO
+\end{longtblr}
+}{~}
+%%%REDES
+\ifthenelse{\boolean{redes}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth}, 
+		hlines,
+		vlines,
+	}
+\textbf{Redes Sociales} \\
+Referencia del servicio requerido\\ (URL del servicio): & \URLREDES\\
+\textbf{Justificación:}&
+\JUSTIFICAREDES
+\end{longtblr}
+}{~}
+%%VIDEOS
+\ifthenelse{\boolean{videos}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Videos-YouTube} \\
+Referencia del servicio requerido\\ (URL del servicio): & \URLVIDEOS\\
+\textbf{Justificación:}&
+\JUSTIFICAVIDEOS
+\end{longtblr}
+}{~}
+%%%WHATS
+\ifthenelse{\boolean{whats}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth}, 
+		hlines,
+		vlines,
+	}
+\textbf{WhatsApp Web} \\
+Referencia del servicio requerido \\(URL del servicio): & \URLWHATS\\
+\textbf{Justificación:}&
+\JUSTIFICAWHATS
+\end{longtblr}
+}{~}
+%%DROPBOX
+\ifthenelse{\boolean{dropbox}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth}, 
+		hlines,
+		vlines,
+	}
+\textbf{DropBox} \\
+Referencia del servicio requerido\\ (URL del servicio): & \URLDROPBOX\\
+\textbf{Justificación:}&
+\JUSTIFICADROPBOX
+\end{longtblr}
+}{~}
+%%ONEDRIVE
+\ifthenelse{\boolean{onedrive}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},   
+		hlines,
+		vlines,
+	}
+\textbf{OneDrive} \\
+Referencia del servicio requerido \\(URL del servicio): & \URLONEDRIVE\\
+\textbf{Justificación:}&
+\JUSTIFICAONEDRIVE
+\end{longtblr}
+}{~}
+%%SKYPE
+\ifthenelse{\boolean{skype}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Skype} \\
+Referencia del servicio requerido \\(URL del servicio): & \URLSKYPE\\
+\textbf{Justificación:}&
+\JUSTIFICASKYPE
+\end{longtblr}
+}{~}
+%%WETRANSFER
+\ifthenelse{\boolean{wetransfer}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Wetransfer} \\
+Referencia del servicio requerido \\(URL del servicio): &\URLWETRANSFER\\
+\textbf{Justificación:}&
+\JUSTIFICAWETRANSFER
+\end{longtblr}
+}{~}
+%%TEAM
+\ifthenelse{\boolean{team}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{TeamViewer} \\
+Referencia del servicio requerido\\ (URL del servicio): & \URLTEAM\\
+\textbf{Justificación:}&
+\JUSTIFICATEAM
+\end{longtblr}
+}{~}
+%%OTRA
+\ifthenelse{\boolean{otra}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},   
+		hlines,
+		vlines,
+	}
+\textbf{Otra: \OTRAC} \\
+Referencia del servicio requerdo (URL del servicio): & \URLOTRA\\
+\textbf{Justificación:}&
+\JUSTIFICAOTRA
+\end{longtblr}
+}{~}
+
+\clearpage
+%%%..... POLITICAS
+\section*{Políticas del servicio}
+{\small \begin{itemize}
+	        \item 	Es responsabilidad de los servidores públicos, así como personal externo de los activos de información el adoptar las medidas que determine la CONAGUA para mantener y garantizar la seguridad de la Información, siendo la Gerencia de Tecnología de la Información y Comunicaciones la responsable de establecer los mecanismos que permitan garantizar la confidencialidad, integridad y disponibilidad de la Información.
+	        \item 	La Subgerencia de Internet e Intranet, adscrita a la Gerencia de Tecnología de la Información y Comunicaciones, como administrador del servicio es el área responsable de definir los lineamientos que deberán ser atendidos por todos los usuarios y administradores en la ampliación del servicio de navegación de internet.
+           \item La Subgerencia de Internet e Intranet, será la responsable de implementar y garantizar la disponibilidad en todo momento del servicio.
+           \item Los accesos para los servicios habilitados serán exclusivamente para los usuarios que tengan debidamente la justificación y que cumplan con el llenado del formato y su formalización mediante el memorándum correspondiente para hacer uso de ella.
+           \item Es responsabilidad de quien autoriza los accesos solicitados y justificados anteriormente, así como la supervisión del correcto uso de los recursos, siendo la Subgerencia de Internet e Intranet el área responsable de la validación y supervisión periódica del buen uso de estos, lo anterior para salvaguardar el correcto funcionamiento de la infraestructura que soportan los servicios de la CONAGUA.
+           \item Los usuarios con ampliación en la Navegación de Internet deben usar responsablemente el servicio de navegación web que es proporcionado por la Gerencia de Tecnología de la Información y Comunicaciones.
+           \item Queda prohibido descargar y abrir páginas web o archivos sospechosos que puedan comprometer los equipos y la red. Para cualquier duda sobre algún sitio o página que represente actividad sospechosa, deberá hacer de conocimiento a la GTIC a través de la Mesa de Servicios.
+           \item La violación, desatento u omisión de las políticas y procedimientos de Seguridad de la Información de la CONAGUA generan sanciones previstas en la Ley General de responsabilidades Administrativas; en la Ley del Servicio Profesional de Carrera en la Administración Pública Federal y demás disposiciones jurídicas aplicables.           
+\end{itemize}
+%%nombres y firmas
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[100]Q[100]Q[100]},
+			%row{1} = {gris},
+			row{1} = {c},
+                                row{2}={c},
+			%hlines,
+			%vlines,
+		}
+		%Fecha: \today                      &                                                                                                       \\
+		{Usuario que acepta\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO \\~\\ \PUESTOUSUARIO} & {~\\~\\[1cm] \rule{5cm}{0.5mm}\\Lic. Alfonso Isaac Frías Castillo\\ ~\\Subgerente de Soporte Técnico,\\Telecomunicaciones y Seguridad} &
+                     {Gerente o Director Local que Autoriza\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE \\~ \\ \PUESTOJEFE}
+	\end{longtblr}
+{\textbf{Nota:}}
+Este formato debe ser entregado a través del servicio de Mesa de Servicio, acompañado de un Memorando dirigido al {\textbf {Lic. Alfonso Isaac Frías Castillo}} (Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad).
+De no recibir dichos formatos en original en un lapso no mayor a 5 días hábiles se retirarán los permisos solicitados y se otorgará el acceso a navegación básico.
+
+\end{document}
