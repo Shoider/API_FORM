@@ -143,30 +143,36 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
 
             # Crear out.csv en el directorio temporal
-            out_csv_path = os.path.join(temp_dir, "out.csv")
-            df = pd.DataFrame([validated_data])
-            df.to_csv(out_csv_path, index=False, mode='a')
+            # out_csv_path = os.path.join(temp_dir, "out.csv")
+            # df = pd.DataFrame([validated_data])
+            # df.to_csv(out_csv_path, index=False, mode='a')
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
-            archivo_aux = os.path.join(temp_dir, "Formato_VPN_241105.aux")
-
 
             # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
             shutil.copy("/app/latex/Formato_VPN_241105.tex", archivo_tex)
-            shutil.copy("/app/latex/Formato_VPN_241105.aux", archivo_aux)
 
             # Copiar imágenes al directorio temporal
             imagenes_dir = os.path.join(temp_dir, "imagenes")
             shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-            # Compilar latex
+            # Compilar latex Aux
+            try:
+                subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+            except:
+                self.logger.error(f"Error generando archivo .aux: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+
+            # Compilar latex PDF
             try:
                 subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo PDF generado para {archivo_tex}")
             except:
                 self.logger.error(f"Error generando PDF: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+                return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
             
             # Cargar pdf
             output = BytesIO()
@@ -178,19 +184,18 @@ class FileGeneratorRoute(Blueprint):
             return send_file(
                 output,
                 mimetype="application/pdf",
-                download_name="registro.pdf",
+                download_name="Registro_VPN.pdf",
                 as_attachment=True,
             )
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 400
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
-            #print("prueba")
 
     def tel(self):
         try:
@@ -254,7 +259,6 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\CORREOEMPLEADO}{"+ validated_data.get('correoEmpleado') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoEmpleado') + "}"+ os.linesep)
 
-                # Opciones???
                 file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                 file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
                 file.write("\\newcommand{\\SILOCAL}{" + siLocal + "}" + os.linesep)
@@ -271,9 +275,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
-                file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
-
-                # ESTO REVISAR file.write("\\newcommand{\\TIPOEQUIPO}{" + validated_data.get('tipoEquipo') + "}"+ os.linesep)  
+                file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep) 
 
                 file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
                 file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}" + os.linesep)
@@ -281,27 +283,32 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
                 file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
 
-            
-
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_TELEFONIA.pdf")
-            archivo_aux = os.path.join(temp_dir, "Formato_TELEFONIA.aux")
 
             # Copia Formato_TELEFONIA.tex del directorio /app/data al directorio temporal
             shutil.copy("/app/latex/Formato_TELEFONIA.tex", archivo_tex)
-            shutil.copy("/app/latex/Formato_TELEFONIA.aux", archivo_aux)
 
             # Copiar imágenes al directorio temporal
             imagenes_dir = os.path.join(temp_dir, "imagenes")
             shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-            # Compilar latex
+            # Compilar latex Aux
+            try:
+                subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+            except:
+                self.logger.error(f"Error generando archivo .aux: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+
+            # Compilar latex PDF
             try:
                 subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo PDF generado para {archivo_tex}")
             except:
                 self.logger.error(f"Error generando PDF: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+                return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
             
             # Cargar pdf
             output = BytesIO()
@@ -313,7 +320,7 @@ class FileGeneratorRoute(Blueprint):
             return send_file(
                 output,
                 mimetype="application/pdf",
-                download_name="registro.pdf",
+                download_name="RegistroTelefonia.pdf",
                 as_attachment=True,
             )
         except ValidationError as err:
@@ -325,7 +332,6 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
-            #print(temp_dir)
 
     def rfc(self):
         try:
@@ -449,9 +455,6 @@ class FileGeneratorRoute(Blueprint):
             registros = validated_data.get('registrosOtroBajas', [])  # Obtiene array de los datos
             self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros) #Se cambia el nombre de la columna
 
-
-            # LaTex
-
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_RFC_LT.pdf")
@@ -463,15 +466,21 @@ class FileGeneratorRoute(Blueprint):
             imagenes_dir = os.path.join(temp_dir, "imagenes")
             shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-            #self.logger.info(f"info: Archivos necesarios copiados ")
-            # Compilar latex
+            # Compilar latex Aux
+            try:
+                subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+            except:
+                self.logger.error(f"Error generando archivo .aux: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+
+            # Compilar latex PDF
             try:
                 subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo PDF generado para {archivo_tex}")
             except:
                 self.logger.error(f"Error generando PDF: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
-            
-            #self.logger.info(f"info: Latex compilado ")
+                return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
 
             # Cargar pdf
             output = BytesIO()
@@ -483,7 +492,7 @@ class FileGeneratorRoute(Blueprint):
             return send_file(
                 output,
                 mimetype="application/pdf",
-                download_name="registro.pdf",
+                download_name="RegistroRFC.pdf",
                 as_attachment=True,
             )
         except ValidationError as err:
@@ -495,8 +504,10 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             # PARA LOS TEST NO SE ELIMINA
-            shutil.rmtree(temp_dir)
-            # self.logger.info(f'Registro Finalizado.')
+            # shutil.rmtree(temp_dir)
+            self.logger.info(f'Registro Finalizado: ', temp_dir)
+
+
     def inter(self):
         try: 
             # Crear directorio temporal único
@@ -536,9 +547,6 @@ class FileGeneratorRoute(Blueprint):
             wetransferbool = "true" if validated_data.get('wetransfer') == True else "false"
             teambool = "true" if validated_data.get('team') == True else "false"
             otrabool = "true" if validated_data.get('otra') == True else "false"
-
-
-            
 
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
@@ -585,23 +593,29 @@ class FileGeneratorRoute(Blueprint):
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_INTERNET.tex")
             nombre_pdf = os.path.join(temp_dir, "Formato_INTERNET.pdf")
-           # archivo_aux = os.path.join(temp_dir, "Formato_INTERNET.aux")
-
 
             # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
             shutil.copy("/app/latex/Formato_INTERNET.tex", archivo_tex)
-            #shutil.copy("/app/latex/Formato_INTERNET", archivo_aux)
 
             # Copiar imágenes al directorio temporal
             imagenes_dir = os.path.join(temp_dir, "imagenes")
             shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-            # Compilar latex
+            # Compilar latex Aux
+            try:
+                subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+            except:
+                self.logger.error(f"Error generando archivo .aux: {e}")
+                return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+
+            # Compilar latex PDF
             try:
                 subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                self.logger.info(f"Archivo PDF generado para {archivo_tex}")
             except:
                 self.logger.error(f"Error generando PDF: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX: {e}"}), 500
+                return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
             
             # Cargar pdf
             output = BytesIO()
@@ -613,7 +627,7 @@ class FileGeneratorRoute(Blueprint):
             return send_file(
                 output,
                 mimetype="application/pdf",
-                download_name="registro.pdf",
+                download_name="RegistroInternet.pdf",
                 as_attachment=True,
             )
         except ValidationError as err:
@@ -624,8 +638,7 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)
-            print("prueba")
+            shutil.rmtree(temp_dir)
 
 
     def healthcheck(self):
