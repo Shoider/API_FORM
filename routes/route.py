@@ -511,21 +511,21 @@ class FileGeneratorRoute(Blueprint):
             validated_data = self.forms_schemaInter.load(data)
             
             # Transformar valores "SI" y "NO"
-            descarga = "x" if validated_data.get('malware') == True else " "
-            foros = "x" if validated_data.get('malware') == True else " "
-            comercio = "x" if validated_data.get('malware') == True else " "
-            redes = "x" if validated_data.get('malware') == True else " "
-            videos = "x" if validated_data.get('malware') == True else " "
-            whats = "x" if validated_data.get('malware') == True else " "
-            dropbox = "x" if validated_data.get('malware') == True else " "
-            onedrive = "x" if validated_data.get('malware') == True else " "
-            skype = "x" if validated_data.get('malware') == True else " "
-            wetransfer = "x" if validated_data.get('malware') == True else " "
-            team = "x" if validated_data.get('malware') == True else " "
-            otra = "x" if validated_data.get('malware') == True else " "
+            descarga = "x" if validated_data.get('descarga') == True else " "
+            foros = "x" if validated_data.get('foros') == True else " "
+            comercio = "x" if validated_data.get('comercio') == True else " "
+            redes = "x" if validated_data.get('redes') == True else " "
+            videos = "x" if validated_data.get('videos') == True else " "
+            whats = "x" if validated_data.get('whats') == True else " "
+            dropbox = "x" if validated_data.get('dropbox') == True else " "
+            onedrive = "x" if validated_data.get('onedrive') == True else " "
+            skype = "x" if validated_data.get('skype') == True else " "
+            wetransfer = "x" if validated_data.get('wetransfer') == True else " "
+            team = "x" if validated_data.get('team') == True else " "
+            otra = "x" if validated_data.get('otra') == True else " "
 
             descargabool = "true" if validated_data.get('descarga') == True else "false"
-            forosbool = "true" if validated_data.get('forosbool') == True else "false"
+            forosbool = "true" if validated_data.get('foros') == True else "false"
             comerciobool = "true" if validated_data.get('comercio') == True else "false"
             redesbool = "true" if validated_data.get('redes') == True else "false"
             videosbool = "true" if validated_data.get('video') == True else "false"
@@ -545,6 +545,7 @@ class FileGeneratorRoute(Blueprint):
             with open(datos_txt_path, 'w') as file: 
                 file.write("\\newcommand{\\FECHASOLI}{"+ validated_data.get('fechasoli')+"}"+ os.linesep)
                 file.write("\\newcommand{\\UAUSUARIO}{"+ validated_data.get('uaUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\AREAUSUARIO}{"+ validated_data.get('areaUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOUSUARIO}{" + validated_data.get('puestoUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\IPUSUARIO}{" + validated_data.get('ipUsuario') + "}"+ os.linesep)
