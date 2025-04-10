@@ -539,7 +539,7 @@ class FileGeneratorRoute(Blueprint):
             forosbool = "true" if validated_data.get('foros') == True else "false"
             comerciobool = "true" if validated_data.get('comercio') == True else "false"
             redesbool = "true" if validated_data.get('redes') == True else "false"
-            videosbool = "true" if validated_data.get('video') == True else "false"
+            videosbool = "true" if validated_data.get('videos') == True else "false"
             whatsbool = "true" if validated_data.get('whats') == True else "false"
             dropboxbool = "true" if validated_data.get('dropbox') == True else "false"
             onedrivebool = "true" if validated_data.get('onedrive') == True else "false"
@@ -667,8 +667,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
-
+            #shutil.rmtree(temp_dir)
+            print("hola")
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
