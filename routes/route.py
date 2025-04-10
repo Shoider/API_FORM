@@ -566,6 +566,8 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\WETRANSFER}{" + wetransfer + "}" + os.linesep)
                 file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
                 file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
+
+                file.write("\\newcommand{\\OTRAC}{"+ validated_data.get('otraC') + "}"+ os.linesep)
                 
                 file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
                 file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
