@@ -40,6 +40,47 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
+        
+    def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros):
+        """
+        Crea un archivo CSV a partir de un array de registros,
+        con la columna 'id' siempre renombrada a 'No'.
+
+        Args:
+            temp_dir (str): Directorio temporal donde se guardará el CSV.
+            nombre_archivo_csv (str): Nombre del archivo CSV a crear.
+            registros (list): Array de diccionarios con los registros.
+        """
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+
+            if not registros:
+                print(f"El array de registros está vacío. No se creará el archivo '{nombre_archivo_csv}'.")
+                return
+
+            for registro in registros:
+                registro.pop('isNew', None)
+                if "IPO" in registro:
+                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "IPD" in registro:
+                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "SO" in registro:
+                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "SD" in registro:
+                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRO" in registro:
+                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "FRD" in registro:
+                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+
+            df = pd.DataFrame(registros)
+            df = df.rename(columns={'id': 'No'})  # Siempre renombra 'id' a 'No'
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}")
     
     def vpn(self):
         try:
@@ -299,19 +340,21 @@ class FileGeneratorRoute(Blueprint):
             # Validacion
             validated_data = self.forms_schemaRFC.load(data)           
 
-            # Transformar valores "X" y " " para Movimiento
-            # EJEM sianti = "x" if validated_data.get('malware') == "SI" else " "
-            inter = "X" if validated_data.get('movimiento') == "INTER" else " "
-            admin = "X" if validated_data.get('movimiento') == "ADMIN" else " "
-            des = "X" if validated_data.get('movimiento') == "DES" else " "
-            usua = "X" if validated_data.get('movimiento') == "USUA" else " "
-            otro = "X" if validated_data.get('movimiento') == "OTRO" else " "
-            desotro_value = validated_data.get('desotro', '')
+            # Transformar valores "X" y " " para Tipo de Movimiento
+            intersistemas = "x" if validated_data.get('intersistemas') == True else " "
+            administrador = "x" if validated_data.get('administrador') == True else " "
+            desarrollador = "x" if validated_data.get('desarrollador') == True else " "
+            usuario = "x" if validated_data.get('usuario') == True else " "
+            otro = "x" if validated_data.get('otro') == True else " "
 
-            # Transformar valores true y false
-            alta = "true" if validated_data.get('ALTA') == True else "false"
-            cambio = "true" if validated_data.get('CAMBIO') == True else "false"
-            baja = "true" if validated_data.get('BAJA') == True else "false"
+            # Booleanos para Tipo de Movimiento
+            intersistemasBool = "true" if validated_data.get('intersistemas') == True else "false"
+            administradorBool = "true" if validated_data.get('administrador') == True else "false"
+            desarrolladorBool = "true" if validated_data.get('desarrollador') == True else "false"
+            usuarioBool = "true" if validated_data.get('usuario') == True else "false"
+            otroBool = "true" if validated_data.get('otro') == True else "false"
+
+            desotro_value = validated_data.get('desotro', '')
 
             # Unir Justificaciones
             justifica1 = validated_data.get('justifica')
@@ -326,15 +369,6 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\TEMPO}{"+ validated_data.get('tempo')+"}"+ os.linesep)
                 file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
                 file.write("\\newcommand{\\DESCBREVE}{" + validated_data.get('descbreve') + "}"+ os.linesep)
-                
-                file.write("\\newcommand{\\INTER}{" + inter + "}" + os.linesep)
-                file.write("\\newcommand{\\ADMIN}{" + admin + "}" + os.linesep)
-                file.write("\\newcommand{\\DES}{" + des + "}" + os.linesep)
-                file.write("\\newcommand{\\USUA}{" + usua + "}" + os.linesep)
-                file.write("\\newcommand{\\OTRO}{" + otro + "}" + os.linesep)
-
-                file.write("\\newcommand{\\DESOTRO}{"+ desotro_value + "}"+ os.linesep)
-
                 file.write("\\newcommand{\\NOMEI}{"+ validated_data.get('nomei') + "}"+ os.linesep)
                 file.write("\\newcommand{\\EXTEI}{"+ validated_data.get('extei') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMS}{"+ validated_data.get('noms') + "}"+ os.linesep)
@@ -342,84 +376,79 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\PUESTOS}{" + validated_data.get('puestos') + "}"+ os.linesep)
                 file.write("\\newcommand{\\AREAS}{" + validated_data.get('areas') + "}"+ os.linesep)
                 file.write("\\newcommand{\\DESDET}{" + validated_data.get('desdet') + "}"+ os.linesep)
-                
                 file.write("\\newcommand{\\JUSTIFICA}{" + justifica_combined + "}" + os.linesep)
-                
-                file.write("\\newcommand{\\ALTAS}{" + alta + "}" + os.linesep)
-                file.write("\\newcommand{\\CAMBIOS}{" + cambio + "}" + os.linesep)
-                file.write("\\newcommand{\\BAJAS}{" + baja + "}" + os.linesep)
-
                 file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOEI}{" + validated_data.get('puestoei') + "}"+ os.linesep)
 
-            ###### Aqui funciona
+                # Tablas
+                file.write("\\newcommand{\\INTER}{" + intersistemas + "}" + os.linesep)
+                file.write("\\newcommand{\\ADMIN}{" + administrador + "}" + os.linesep)
+                file.write("\\newcommand{\\DES}{" + desarrollador + "}" + os.linesep)
+                file.write("\\newcommand{\\USUA}{" + usuario + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRO}{" + otro + "}" + os.linesep)
 
-            # ALTAS
-            out_csv_path = os.path.join(temp_dir, "ALTAS.csv")          # Crea nombre de archivo y dir
-            registros_altas = validated_data.get('registrosAltas', [])  # Obtiene array de los datos
+                file.write("\\newcommand{\\INTERBOOL}{" + intersistemasBool + "}" + os.linesep)
+                file.write("\\newcommand{\\ADMINBOOL}{" + administradorBool + "}" + os.linesep)
+                file.write("\\newcommand{\\DESBOOL}{" + desarrolladorBool + "}" + os.linesep)
+                file.write("\\newcommand{\\USUABOOL}{" + usuarioBool + "}" + os.linesep)
+                file.write("\\newcommand{\\OTROBOOL}{" + otroBool + "}" + os.linesep)
+
+                file.write("\\newcommand{\\DESOTRO}{"+ desotro_value + "}"+ os.linesep)
+
+            ###### Aqui funciona Generalmente, Abajo esta dificil de entender
+
+            # Tablas csv
+
+            # Intersistemas
+            # Cambios
+            registrosAltas = validated_data.get('registrosInterCambiosAltas', [])  # Obtiene array de los datos
+            registrosBajas = validated_data.get('registrosInterCambiosBajas', [])  # Obtiene array de los datos
+            # AÑADIR COMENTARIO AL ID "C*"
             
-            for registro in registros_altas:                            # Borra el campo inecesario
-                registro.pop('isNew', None)
-                if "IPO" in registro:                                   # Saltos de linea
-                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "IPD" in registro:                                  
-                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "SO" in registro:                                  
-                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SD" in registro:                                  
-                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRO" in registro:                                  
-                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRD" in registro:                                  
-                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+            # Altas
+            registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
+            registros.extend(registrosAltas)                            # Unir registros de altas y cambios
+            self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros) #Se cambia el nombre de la columna
+            # Bajas
+            registros = validated_data.get('registrosInterBajas', [])   # Obtiene array de los datos
+            registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
+            self.crear_csv_desde_registros(temp_dir, "BAJASINTER.csv", registros) #Se cambia el nombre de la columna
 
-            df = pd.DataFrame(registros_altas)                          # Crea un DataFrame con el array
-            df.to_csv(out_csv_path, index=False, mode='x')              # Genera el csv con el DataFrame
+            # Administrador
+            # Altas
+            registros = validated_data.get('registrosAdminAltas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros) #Se cambia el nombre de la columna
+            # Bajas
+            registros = validated_data.get('registrosAdminBajas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros) #Se cambia el nombre de la columna
 
-            # CAMBIOS
-            out_csv_path = os.path.join(temp_dir, "CAMBIOS.csv")        
-            registros_cambios = validated_data.get('registrosCambios', [])
+            # Desarrollador
+            # Altas
+            registros = validated_data.get('registrosDesAltas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros) #Se cambia el nombre de la columna
+            # Bajas
+            registros = validated_data.get('registrosDesBajas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "BAJASDES.csv", registros) #Se cambia el nombre de la columna
+
+            # Usuario
+            # Cambios
             
-            for registro in registros_cambios:                  
-                registro.pop('isNew', None)
-                if "IPO" in registro:                                   # Saltos de linea
-                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "IPD" in registro:                                  
-                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "SO" in registro:                                  
-                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SD" in registro:                                  
-                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRO" in registro:                                  
-                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRD" in registro:                                  
-                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+            # Altas
+            registros = validated_data.get('registrosUsuaAltas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros) #Se cambia el nombre de la columna
+            # Bajas
+            registros = validated_data.get('registrosUsuaBajas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros) #Se cambia el nombre de la columna
 
-            df = pd.DataFrame(registros_cambios)
-            df.to_csv(out_csv_path, index=False, mode='x')
+            # Otro
+            # Altas
+            registros = validated_data.get('registrosOtroAltas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros) #Se cambia el nombre de la columna
+            # Bajas
+            registros = validated_data.get('registrosOtroBajas', [])  # Obtiene array de los datos
+            self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros) #Se cambia el nombre de la columna
 
-            # BAJAS
-            out_csv_path = os.path.join(temp_dir, "BAJAS.csv")
-            registros_bajas = validated_data.get('registrosBajas', [])
-            
-            for registro in registros_bajas:
-                registro.pop('isNew', None)
-                if "IPO" in registro:                                   # Saltos de linea
-                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "IPD" in registro:                                  
-                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "SO" in registro:                                  
-                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SD" in registro:                                  
-                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRO" in registro:                                  
-                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRD" in registro:                                  
-                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
-
-            df = pd.DataFrame(registros_bajas)
-            df.to_csv(out_csv_path, index=False, mode='x')
 
             # LaTex
 
