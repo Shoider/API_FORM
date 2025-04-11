@@ -26,6 +26,9 @@ class RegistroSchemaInter(Schema):
     wetransfer= fields.Boolean(required=True)
     team= fields.Boolean(required=True)
     otra= fields.Boolean(required=True)
+    otra2= fields.Boolean(required=False)
+    otra3= fields.Boolean(required=False)
+    otra4= fields.Boolean(required=False)
     onedrive= fields.Boolean(required=True)
 
     urlDescarga= fields.String(required=False)
@@ -53,4 +56,15 @@ class RegistroSchemaInter(Schema):
     urlOtra= fields.String(required=False)
     justificaOtra= fields.String(required=False)
     otraC= fields.String(required=False)
+
+
+    urlOtra2= fields.String(required=False)
+    justificaOtra2= fields.String(required=False)
+    otraC2= fields.String(required=False)
+    urlOtra3= fields.String(required=False)
+    justificaOtra3= fields.String(required=False)
+    otraC3= fields.String(required=False)
+    urlOtra4= fields.String(required=False)
+    justificaOtra4= fields.String(required=False)
+    otraC4= fields.String(required=False)
     

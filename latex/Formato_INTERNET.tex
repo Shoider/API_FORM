@@ -122,7 +122,7 @@ Nombre:                     &  \NOMBREUSUARIO \\
 Puesto o Cargo: & \PUESTOUSUARIO\\
 IP del equipo asignado: & \IPUSUARIO\\
 Correo: &   \CORREOUSUARIO  \\
-Dirección:   &  Av. Insurgentes Sur 2416 Col.Copilco el Bajo. CP.04340,Coyoacán,CDMX, \textbf  \DIRECCION  \\
+Dirección:   &  \textbf  \DIRECCION  \\
 Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 
 \end{longtblr}
@@ -180,7 +180,7 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
  (\DESCARGA )& \textbf{Descarga de software}  & (\FOROS )& \textbf{Foros y Blogs} & (\COMERCIO)& \textbf{Comercio Electrónico}  \\
  (\REDES )& \textbf{Redes Sociales}  & (\VIDEOS )& \textbf{Videos-YouTube{\tiny{(Streaming)}}} & (\WHATS)& \textbf{WhatsApp Web}  \\
 (\DROPBOX )& \textbf{DropBox}  & (\ONEDRIVE )& \textbf{OneDrive} & (\SKYPE)& \textbf{Skype}  \\
-(\WETRANSFER)& \textbf{Wetransfer}  & (\TEAM )& \textbf{TeamViewer} & (\OTRA)& \textbf{Otra}  
+(\WETRANSFER)& \textbf{Wetransfer}  & (\TEAM )& \textbf{TeamViewer} & (\OTRA)& \textbf{Otra(s)}  
 \end{longtblr}
 
 {\textbf{Importante:}} En la(s) siguiente(s) tabla(s) deberá JUSTIFICAR cada una de las categorías seleccionadas; considerando toda la información de referencia para validar los servicios solicitados (URL´s de los sitios); considerando en lo particular las solicitudes deben estar asociadas a requerimientos específicos de las funciones encomendadas e información institucional y NO para fines ni servicios personales. 
@@ -211,6 +211,13 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 \setboolean{team}{\TEAMBOOL}
 \newboolean{otra}
 \setboolean{otra}{\OTRABOOL}
+\newboolean{otra2}
+\setboolean{otra2}{\OTRABOOLdos}
+\newboolean{otra3}
+\setboolean{otra3}{\OTRABOOLtres}
+\newboolean{otra4}
+\setboolean{otra4}{\OTRABOOLcuatro}
+
 
 \clearpage
 \textbf {JUSTIFICACIONES}
@@ -249,7 +256,7 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 		vlines,
 	}
 \textbf{Foros y Blogs} \\
-Referencia del servicio requerido\\ (URL del servicio): & \URLFOROS \\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLFOROS \\
 \textbf{Justificación:}&
 \JUSTIFICAFOROS
 \end{longtblr}
@@ -269,7 +276,7 @@ Referencia del servicio requerido\\ (URL del servicio): & \URLFOROS \\
 		vlines,
 	}
 \textbf{Comercio Electrónico} \\
-Referencia del servicio requerido\\ (URL del servicio): & \URLCOMERCIO\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLCOMERCIO\\
 \textbf{Justificación:}&
 \JUSTIFICACOMERCIO
 \end{longtblr}
@@ -289,7 +296,7 @@ Referencia del servicio requerido\\ (URL del servicio): & \URLCOMERCIO\\
 		vlines,
 	}
 \textbf{Redes Sociales} \\
-Referencia del servicio requerido\\ (URL del servicio): & \URLREDES\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLREDES\\
 \textbf{Justificación:}&
 \JUSTIFICAREDES
 \end{longtblr}
@@ -309,7 +316,7 @@ Referencia del servicio requerido\\ (URL del servicio): & \URLREDES\\
 		vlines,
 	}
 \textbf{Videos-YouTube} \\
-Referencia del servicio requerido\\ (URL del servicio): & \URLVIDEOS\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLVIDEOS\\
 \textbf{Justificación:}&
 \JUSTIFICAVIDEOS
 \end{longtblr}
@@ -329,7 +336,7 @@ Referencia del servicio requerido\\ (URL del servicio): & \URLVIDEOS\\
 		vlines,
 	}
 \textbf{WhatsApp Web} \\
-Referencia del servicio requerido \\(URL del servicio): & \URLWHATS\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLWHATS\\
 \textbf{Justificación:}&
 \JUSTIFICAWHATS
 \end{longtblr}
@@ -349,7 +356,7 @@ Referencia del servicio requerido \\(URL del servicio): & \URLWHATS\\
 		vlines,
 	}
 \textbf{DropBox} \\
-Referencia del servicio requerido\\ (URL del servicio): & \URLDROPBOX\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLDROPBOX\\
 \textbf{Justificación:}&
 \JUSTIFICADROPBOX
 \end{longtblr}
@@ -369,7 +376,7 @@ Referencia del servicio requerido\\ (URL del servicio): & \URLDROPBOX\\
 		vlines,
 	}
 \textbf{OneDrive} \\
-Referencia del servicio requerido \\(URL del servicio): & \URLONEDRIVE\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLONEDRIVE\\
 \textbf{Justificación:}&
 \JUSTIFICAONEDRIVE
 \end{longtblr}
@@ -389,7 +396,7 @@ Referencia del servicio requerido \\(URL del servicio): & \URLONEDRIVE\\
 		vlines,
 	}
 \textbf{Skype} \\
-Referencia del servicio requerido \\(URL del servicio): & \URLSKYPE\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLSKYPE\\
 \textbf{Justificación:}&
 \JUSTIFICASKYPE
 \end{longtblr}
@@ -409,7 +416,7 @@ Referencia del servicio requerido \\(URL del servicio): & \URLSKYPE\\
 		vlines,
 	}
 \textbf{Wetransfer} \\
-Referencia del servicio requerido \\(URL del servicio): &\URLWETRANSFER\\
+{Referencia del servicio requerido\\ (URL del servicio):}&\URLWETRANSFER\\
 \textbf{Justificación:}&
 \JUSTIFICAWETRANSFER
 \end{longtblr}
@@ -429,14 +436,14 @@ Referencia del servicio requerido \\(URL del servicio): &\URLWETRANSFER\\
 		vlines,
 	}
 \textbf{TeamViewer} \\
-Referencia del servicio requerido\\ (URL del servicio): & \URLTEAM\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLTEAM\\
 \textbf{Justificación:}&
 \JUSTIFICATEAM
 \end{longtblr}
 }{~}
 %%OTRA
 \ifthenelse{\boolean{otra}}{
-\vspace{-25pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -449,9 +456,69 @@ Referencia del servicio requerido\\ (URL del servicio): & \URLTEAM\\
 		vlines,
 	}
 \textbf{Otra: \OTRAC} \\
-Referencia del servicio requerdo (URL del servicio): & \URLOTRA\\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLOTRA\\
 \textbf{Justificación:}&
 \JUSTIFICAOTRA
+\end{longtblr}
+}{~}
+%%otra2
+\ifthenelse{\boolean{otra2}}{
+\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},   
+		hlines,
+		vlines,
+	}
+\textbf{Otra: \OTRACdos} \\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLOTRAdos\\
+\textbf{Justificación:}&
+\JUSTIFICAOTRAdos
+\end{longtblr}
+}{~}
+%%otra3
+\ifthenelse{\boolean{otra3}}{
+\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},   
+		hlines,
+		vlines,
+	}
+\textbf{Otra: \OTRACtres} \\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLOTRAtres\\
+\textbf{Justificación:}&
+\JUSTIFICAOTRAtres
+\end{longtblr}
+}{~}
+%%otra4
+\ifthenelse{\boolean{otra4}}{
+\vspace{-30pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[150]Q[300]},
+                     row{1}={gris},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},   
+		hlines,
+		vlines,
+	}
+\textbf{Otra: \OTRACcuatro} \\
+{Referencia del servicio requerido\\ (URL del servicio):} & \URLOTRAcuatro\\
+\textbf{Justificación:}&
+\JUSTIFICAOTRAcuatro
 \end{longtblr}
 }{~}
 
@@ -482,11 +549,11 @@ Referencia del servicio requerdo (URL del servicio): & \URLOTRA\\
 			%vlines,
 		}
 		%Fecha: \today                      &                                                                                                       \\
-		{Usuario que acepta\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO \\~\\ \PUESTOUSUARIO} & {~\\~\\[1cm] \rule{5cm}{0.5mm}\\Lic. Alfonso Isaac Frías Castillo\\ ~\\Subgerente de Soporte Técnico,\\Telecomunicaciones y Seguridad} &
+		{Usuario que acepta\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO \\~\\ \PUESTOUSUARIO} & {~\\~\\[1cm] \rule{5cm}{0.5mm}\\Ing. Alfonso Isaac Frías Castillo\\ ~\\Subgerente de Soporte Técnico,\\Telecomunicaciones y Seguridad} &
                      {Gerente o Director Local que Autoriza\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE \\~ \\ \PUESTOJEFE}
 	\end{longtblr}
 {\textbf{Nota:}}
-Este formato debe ser entregado a través del servicio de Mesa de Servicio, acompañado de un Memorando dirigido al {\textbf {Lic. Alfonso Isaac Frías Castillo}} (Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad).
+Este formato debe ser entregado a través del servicio de Mesa de Servicio, acompañado de un Memorando dirigido al {\textbf {Ing. Alfonso Isaac Frías Castillo}} (Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad).
 De no recibir dichos formatos en original en un lapso no mayor a 5 días hábiles se retirarán los permisos solicitados y se otorgará el acceso a navegación básico.
 
 \end{document}

@@ -561,24 +561,27 @@ class FileGeneratorRoute(Blueprint):
             validated_data = self.forms_schemaInter.load(data)
             
             # Transformar valores "SI" y "NO"
-            descarga = "x" if validated_data.get('malware') == True else " "
-            foros = "x" if validated_data.get('malware') == True else " "
-            comercio = "x" if validated_data.get('malware') == True else " "
-            redes = "x" if validated_data.get('malware') == True else " "
-            videos = "x" if validated_data.get('malware') == True else " "
-            whats = "x" if validated_data.get('malware') == True else " "
-            dropbox = "x" if validated_data.get('malware') == True else " "
-            onedrive = "x" if validated_data.get('malware') == True else " "
-            skype = "x" if validated_data.get('malware') == True else " "
-            wetransfer = "x" if validated_data.get('malware') == True else " "
-            team = "x" if validated_data.get('malware') == True else " "
-            otra = "x" if validated_data.get('malware') == True else " "
+            descarga = "x" if validated_data.get('descarga') == True else " "
+            foros = "x" if validated_data.get('foros') == True else " "
+            comercio = "x" if validated_data.get('comercio') == True else " "
+            redes = "x" if validated_data.get('redes') == True else " "
+            videos = "x" if validated_data.get('videos') == True else " "
+            whats = "x" if validated_data.get('whats') == True else " "
+            dropbox = "x" if validated_data.get('dropbox') == True else " "
+            onedrive = "x" if validated_data.get('onedrive') == True else " "
+            skype = "x" if validated_data.get('skype') == True else " "
+            wetransfer = "x" if validated_data.get('wetransfer') == True else " "
+            team = "x" if validated_data.get('team') == True else " "
+            otra = "x" if validated_data.get('otra') == True else " "
+            otra2 = "x" if validated_data.get('otra2') == True else " "
+            otra3 = "x" if validated_data.get('otra3') == True else " "
+            otra4 = "x" if validated_data.get('otra4') == True else " "
 
             descargabool = "true" if validated_data.get('descarga') == True else "false"
-            forosbool = "true" if validated_data.get('forosbool') == True else "false"
+            forosbool = "true" if validated_data.get('foros') == True else "false"
             comerciobool = "true" if validated_data.get('comercio') == True else "false"
             redesbool = "true" if validated_data.get('redes') == True else "false"
-            videosbool = "true" if validated_data.get('video') == True else "false"
+            videosbool = "true" if validated_data.get('videos') == True else "false"
             whatsbool = "true" if validated_data.get('whats') == True else "false"
             dropboxbool = "true" if validated_data.get('dropbox') == True else "false"
             onedrivebool = "true" if validated_data.get('onedrive') == True else "false"
@@ -586,20 +589,25 @@ class FileGeneratorRoute(Blueprint):
             wetransferbool = "true" if validated_data.get('wetransfer') == True else "false"
             teambool = "true" if validated_data.get('team') == True else "false"
             otrabool = "true" if validated_data.get('otra') == True else "false"
+            otrabool2 = "true" if validated_data.get('otra2') == True else "false"
+            otrabool3 = "true" if validated_data.get('otra3') == True else "false"
+            otrabool4 = "true" if validated_data.get('otra4') == True else "false"
 
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
             with open(datos_txt_path, 'w') as file: 
-                file.write("\\newcommand{\\FECHASOLI}{"+ validated_data.get('nombre')+"}"+ os.linesep)
-                file.write("\\newcommand{\\UAUSUARIO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
-                file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('ua') + "}"+ os.linesep)
-                file.write("\\newcommand{\\PUESTOUSUARIO}{" + validated_data.get('id') + "}"+ os.linesep)
-                file.write("\\newcommand{\\IPUSUARIO}{" + validated_data.get('extension') + "}"+ os.linesep)
-                file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correo')+ "}"+ os.linesep)
-                file.write("\\newcommand{\\TELEUSUARIO}{" + validated_data.get('marca') + "}"+ os.linesep)
-                file.write("\\newcommand{\\EXTUSUARIO}{" + validated_data.get('modelo') + "}"+ os.linesep)
-                file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('jefe') + "}"+ os.linesep)
-                file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestojefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\FECHASOLI}{"+ validated_data.get('fechasoli')+"}"+ os.linesep)
+                file.write("\\newcommand{\\UAUSUARIO}{"+ validated_data.get('uaUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\AREAUSUARIO}{"+ validated_data.get('areaUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOUSUARIO}{" + validated_data.get('puestoUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\IPUSUARIO}{" + validated_data.get('ipUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correoUsuario')+ "}"+ os.linesep)
+                file.write("\\newcommand{\\TELUSUARIO}{" + validated_data.get('teleUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\EXTUSUARIO}{" + validated_data.get('extUsuario') + "}"+ os.linesep)
+                file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreJefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoJefe') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DIRECCION}{"+ validated_data.get('direccion') + "}"+ os.linesep)
 
                 file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
                 file.write("\\newcommand{\\FOROS}{" + foros + "}" + os.linesep)
@@ -614,7 +622,15 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
                 file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
 
+                file.write("\\newcommand{\\OTRAdos}{" + otra2 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRAtres}{" + otra3 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRAcuatro}{" + otra4 + "}" + os.linesep)
+
                 file.write("\\newcommand{\\OTRAC}{"+ validated_data.get('otraC') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\OTRACdos}{"+ validated_data.get('otraC2') + "}"+ os.linesep)
+                file.write("\\newcommand{\\OTRACtres}{"+ validated_data.get('otraC3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\OTRACcuatro}{"+ validated_data.get('otraC4') + "}"+ os.linesep)
                 
                 file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
                 file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
@@ -628,6 +644,46 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\WETRANSFERBOOL}{" + wetransferbool + "}" + os.linesep)
                 file.write("\\newcommand{\\TEAMBOOL}{" + teambool + "}" + os.linesep)
                 file.write("\\newcommand{\\OTRABOOL}{" + otrabool + "}" + os.linesep)
+
+                file.write("\\newcommand{\\OTRABOOLdos}{" + otrabool2 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRABOOLtres}{" + otrabool3 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRABOOLcuatro}{" + otrabool4 + "}" + os.linesep)
+
+                file.write("\\newcommand{\\URLDESCARGA}{"+ validated_data.get('urlDescarga') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLFOROS}{"+ validated_data.get('urlForos') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLREDES}{"+ validated_data.get('urlRedes') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLCOMERCIO}{"+ validated_data.get('urlComercio') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLVIDEOS}{"+ validated_data.get('urlVideos') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLWHATS}{"+ validated_data.get('urlWhats') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLDROPBOX}{"+ validated_data.get('urlDropbox') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLONEDRIVE}{"+ validated_data.get('urlOnedrive') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLSKYPE}{"+ validated_data.get('urlSkype') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLWETRANSFER}{"+ validated_data.get('urlWetransfer') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLTEAM}{"+ validated_data.get('urlTeam') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLOTRA}{"+ validated_data.get('urlOtra') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\URLOTRAdos}{"+ validated_data.get('urlOtra2') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLOTRAtres}{"+ validated_data.get('urlOtra3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLOTRAcuatro}{"+ validated_data.get('urlOtra4') + "}"+ os.linesep)
+
+
+                file.write("\\newcommand{\\JUSTIFICADESCARGA}{"+ validated_data.get('justificaDescarga') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAFOROS}{"+ validated_data.get('justificaForos') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAREDES}{"+ validated_data.get('justificaRedes') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICACOMERCIO}{"+ validated_data.get('justificaComercio') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAVIDEOS}{"+ validated_data.get('justificaVideos') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAWHATS}{"+ validated_data.get('justificaWhats') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICADROPBOX}{"+ validated_data.get('justificaDropbox') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAONEDRIVE}{"+ validated_data.get('justificaOnedrive') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICASKYPE}{"+ validated_data.get('justificaSkype') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAWETRANSFER}{"+ validated_data.get('justificaWetransfer') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICATEAM}{"+ validated_data.get('justificaTeam') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAOTRA}{"+ validated_data.get('justificaOtra') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ validated_data.get('justificaOtra2') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ validated_data.get('justificaOtra3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ validated_data.get('justificaOtra4') + "}"+ os.linesep)
+
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_INTERNET.tex")
@@ -677,8 +733,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
-
+            #shutil.rmtree(temp_dir)
+            print("hola")
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""

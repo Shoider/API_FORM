@@ -12,11 +12,11 @@ class RegistroSchemaRFC(Schema):
     descbreve = fields.String(required=True, validate=validate.Length(min=1, max=256))
 
     nomei = fields.String(required=True, validate=validate.Length(min=1, max=31))
-    extei = fields.String(required=True, validate=validate.Length(min=1, max=4))
+    extei = fields.String(required=True, validate=validate.Length(min=1, max=20))
     puestoei = fields.String(required=True, validate=validate.Length(min=1, max=256))
 
     noms = fields.String(required=True, validate=validate.Length(min=1, max=31))
-    exts = fields.String(required=True, validate=validate.Length(min=1, max=4))
+    exts = fields.String(required=True, validate=validate.Length(min=1, max=20))
     puestos = fields.String(required=True, validate=validate.Length(min=1, max=256))
     areas = fields.String(required=True, validate=validate.Length(min=1, max=256))
     nombreJefe = fields.String(required=True, validate=validate.Length(min=1, max=256))
