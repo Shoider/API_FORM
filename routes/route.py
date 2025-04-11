@@ -55,8 +55,7 @@ class FileGeneratorRoute(Blueprint):
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
             if not registros:
-                print(f"El array de registros está vacío. No se creará el archivo '{nombre_archivo_csv}'.")
-                return
+                df = pd.DataFrame([{}], columns=['No', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER'])
 
             for registro in registros:
                 registro.pop('isNew', None)
@@ -236,19 +235,14 @@ class FileGeneratorRoute(Blueprint):
             # Transformar valores "X" y " "
             siMundo = "X" if validated_data.get('mundo') == "SI" else " "
             noMundo = "X" if validated_data.get('mundo') == "NO" else " "
-
             siLocal = "X" if validated_data.get('local') == "SI" else " "
             noLocal = "X" if validated_data.get('local') == "NO" else " "
-
             sicLocal = "X" if validated_data.get('cLocal') == "SI" else " "
             nocLocal = "X" if validated_data.get('cLocal') == "NO" else " "
-
             siNacional = "X" if validated_data.get('nacional') == "SI" else " "
             noNacional = "X" if validated_data.get('nacional') == "NO" else " "
-
             sicNacional = "X" if validated_data.get('cNacional') == "SI" else " "
             nocNacional = "X" if validated_data.get('cNacional') == "NO" else " "
-
             siEua = "X" if validated_data.get('eua') == "SI" else " "
             noEua = "X" if validated_data.get('eua') == "NO" else " "
 
@@ -375,6 +369,36 @@ class FileGeneratorRoute(Blueprint):
             usuarioBool = "true" if validated_data.get('usuario') == True else "false"
             otroBool = "true" if validated_data.get('otro') == True else "false"
 
+            # Booleanos para Generacion de tablas
+            AltaInter = "true" if validated_data.get('AltaInter') == True else "false"
+            BajaInter = "true" if validated_data.get('BajaInter') == True else "false"
+            AltaAdmin = "true" if validated_data.get('AltaAdmin') == True else "false"
+            BajaAdmin = "true" if validated_data.get('BajaAdmin') == True else "false"
+            AltaDes = "true" if validated_data.get('AltaDes') == True else "false"
+            BajaDes = "true" if validated_data.get('BajaDes') == True else "false"
+            AltaUsua = "true" if validated_data.get('AltaUsua') == True else "false"
+            BajaUsua = "true" if validated_data.get('BajaUsua') == True else "false"
+            AltaOtro = "true" if validated_data.get('AltaOtro') == True else "false"
+            BajaOtro = "true" if validated_data.get('BajaOtro') == True else "false"
+
+            # En caso de cambios
+            if validated_data.get('CambioInter') == True:
+                AltaInter = "true"
+                BajaInter = "true"
+            if validated_data.get('CambioAdmin') == True:
+                AltaAdmin = "true"
+                BajaAdmin = "true"
+            if validated_data.get('CambioDes') == True:
+                AltaDes = "true"
+                BajaDes = "true"
+            if validated_data.get('CambioUsua') == True:
+                AltaUsua = "true"
+                BajaUsua = "true"
+            if validated_data.get('CambioOtro') == True:
+                AltaOtro = "true"
+                BajaOtro = "true"
+
+            # Desotro valor default
             desotro_value = validated_data.get('desotro', '')
 
             # Unir Justificaciones
@@ -416,6 +440,17 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\OTROBOOL}{" + otroBool + "}" + os.linesep)
 
                 file.write("\\newcommand{\\DESOTRO}{"+ desotro_value + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\ALTASINTER}{" + AltaInter + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJASINTER}{" + BajaInter + "}" + os.linesep)
+                file.write("\\newcommand{\\ALTASADMIN}{" + AltaAdmin + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJASADMIN}{" + BajaAdmin + "}" + os.linesep)
+                file.write("\\newcommand{\\ALTASDES}{" + AltaDes + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJASDES}{" + BajaDes + "}" + os.linesep)
+                file.write("\\newcommand{\\ALTASUSUA}{" + AltaUsua + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJASUSUA}{" + BajaUsua + "}" + os.linesep)
+                file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
+                file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
 
             ###### Aqui funciona Generalmente, Abajo esta dificil de entender
 
