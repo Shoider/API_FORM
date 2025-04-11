@@ -534,6 +534,9 @@ class FileGeneratorRoute(Blueprint):
             wetransfer = "x" if validated_data.get('wetransfer') == True else " "
             team = "x" if validated_data.get('team') == True else " "
             otra = "x" if validated_data.get('otra') == True else " "
+            otra2 = "x" if validated_data.get('otra2') == True else " "
+            otra3 = "x" if validated_data.get('otra3') == True else " "
+            otra4 = "x" if validated_data.get('otra4') == True else " "
 
             descargabool = "true" if validated_data.get('descarga') == True else "false"
             forosbool = "true" if validated_data.get('foros') == True else "false"
@@ -547,6 +550,9 @@ class FileGeneratorRoute(Blueprint):
             wetransferbool = "true" if validated_data.get('wetransfer') == True else "false"
             teambool = "true" if validated_data.get('team') == True else "false"
             otrabool = "true" if validated_data.get('otra') == True else "false"
+            otrabool2 = "true" if validated_data.get('otra2') == True else "false"
+            otrabool3 = "true" if validated_data.get('otra3') == True else "false"
+            otrabool4 = "true" if validated_data.get('otra4') == True else "false"
 
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
@@ -577,7 +583,15 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
                 file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
 
+                file.write("\\newcommand{\\OTRAdos}{" + otra2 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRAtres}{" + otra3 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRAcuatro}{" + otra4 + "}" + os.linesep)
+
                 file.write("\\newcommand{\\OTRAC}{"+ validated_data.get('otraC') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\OTRACdos}{"+ validated_data.get('otraC2') + "}"+ os.linesep)
+                file.write("\\newcommand{\\OTRACtres}{"+ validated_data.get('otraC3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\OTRACcuatro}{"+ validated_data.get('otraC4') + "}"+ os.linesep)
                 
                 file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
                 file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
@@ -592,6 +606,10 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\TEAMBOOL}{" + teambool + "}" + os.linesep)
                 file.write("\\newcommand{\\OTRABOOL}{" + otrabool + "}" + os.linesep)
 
+                file.write("\\newcommand{\\OTRABOOLdos}{" + otrabool2 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRABOOLtres}{" + otrabool3 + "}" + os.linesep)
+                file.write("\\newcommand{\\OTRABOOLcuatro}{" + otrabool4 + "}" + os.linesep)
+
                 file.write("\\newcommand{\\URLDESCARGA}{"+ validated_data.get('urlDescarga') + "}"+ os.linesep)
                 file.write("\\newcommand{\\URLFOROS}{"+ validated_data.get('urlForos') + "}"+ os.linesep)
                 file.write("\\newcommand{\\URLREDES}{"+ validated_data.get('urlRedes') + "}"+ os.linesep)
@@ -605,6 +623,11 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\URLTEAM}{"+ validated_data.get('urlTeam') + "}"+ os.linesep)
                 file.write("\\newcommand{\\URLOTRA}{"+ validated_data.get('urlOtra') + "}"+ os.linesep)
 
+                file.write("\\newcommand{\\URLOTRAdos}{"+ validated_data.get('urlOtra2') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLOTRAtres}{"+ validated_data.get('urlOtra3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\URLOTRAcuatro}{"+ validated_data.get('urlOtra4') + "}"+ os.linesep)
+
+
                 file.write("\\newcommand{\\JUSTIFICADESCARGA}{"+ validated_data.get('justificaDescarga') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICAFOROS}{"+ validated_data.get('justificaForos') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICAREDES}{"+ validated_data.get('justificaRedes') + "}"+ os.linesep)
@@ -617,6 +640,10 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\JUSTIFICAWETRANSFER}{"+ validated_data.get('justificaWetransfer') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICATEAM}{"+ validated_data.get('justificaTeam') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICAOTRA}{"+ validated_data.get('justificaOtra') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ validated_data.get('justificaOtra2') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ validated_data.get('justificaOtra3') + "}"+ os.linesep)
+                file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ validated_data.get('justificaOtra4') + "}"+ os.linesep)
 
 
             # Preparar archivos en el directorio temporal
