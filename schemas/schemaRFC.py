@@ -41,25 +41,25 @@ class RegistroSchemaRFC(Schema):
 
     # Tipo de movimiento
     # InterSistemas
-    altaInter = fields.Boolean(required=False)
-    bajaInter = fields.Boolean(required=False)
-    cambioInter = fields.Boolean(required=False)
+    AltaInter = fields.Boolean(required=False)
+    BajaInter = fields.Boolean(required=False)
+    CambioInter = fields.Boolean(required=False)
     # Administrador
-    altaAdmin = fields.Boolean(required=False)
-    bajaAdmin = fields.Boolean(required=False)
-    cambioAdmin = fields.Boolean(required=False)
+    AltaAdmin = fields.Boolean(required=False)
+    BajaAdmin = fields.Boolean(required=False)
+    CambioAdmin = fields.Boolean(required=False)
     # Desarrollador
-    altaDes = fields.Boolean(required=False)
-    bajaDes = fields.Boolean(required=False)
-    cambioDes = fields.Boolean(required=False)
+    AltaDes = fields.Boolean(required=False)
+    BajaDes = fields.Boolean(required=False)
+    CambioDes = fields.Boolean(required=False)
     # Usuario
-    altaUsua = fields.Boolean(required=False)
-    bajaUsua = fields.Boolean(required=False)
-    cambioUsua = fields.Boolean(required=False)
+    AltaUsua = fields.Boolean(required=False)
+    BajaUsua = fields.Boolean(required=False)
+    CambioUsua = fields.Boolean(required=False)
     # Otro
-    altaOtro = fields.Boolean(required=False)
-    bajaOtro = fields.Boolean(required=False)
-    cambioOtro = fields.Boolean(required=False)
+    AltaOtro = fields.Boolean(required=False)
+    BajaOtro = fields.Boolean(required=False)
+    CambioOtro = fields.Boolean(required=False)
 
     # Tablas
     # InterSistemas
