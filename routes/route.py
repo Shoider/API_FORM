@@ -55,7 +55,7 @@ class FileGeneratorRoute(Blueprint):
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
             if not registros:
-                df = pd.DataFrame([{}], columns=['No', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER'])
+                df = pd.DataFrame([{}], columns=['id', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER'])
 
             for registro in registros:
                 registro.pop('isNew', None)
@@ -73,7 +73,7 @@ class FileGeneratorRoute(Blueprint):
                     registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
 
             df = pd.DataFrame(registros)
-            df = df.rename(columns={'id': 'No'})  # Siempre renombra 'id' a 'No'
+            df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
             df.to_csv(out_csv_path, index=False, mode='x')
 
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
