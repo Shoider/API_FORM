@@ -81,6 +81,21 @@ class FileGeneratorRoute(Blueprint):
 
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}")
+
+    def modificar_registros_id(registros):
+        """
+        Modifica el array de registros para concatenar "*C" y un salto de línea a la columna "id".
+
+        Args:
+            registros (list): El array de registros a modificar.
+        """
+        if not registros:
+            print("El array de registros está vacío.")
+            return
+
+        for registro in registros:
+            if "id" in registro:
+                registro["id"] = str(registro["id"]) + "\\\\C*"  # Concatena "*C" y un salto de línea
     
     def vpn(self):
         try:
@@ -410,7 +425,9 @@ class FileGeneratorRoute(Blueprint):
             # Cambios
             registrosAltas = validated_data.get('registrosInterCambiosAltas', [])  # Obtiene array de los datos
             registrosBajas = validated_data.get('registrosInterCambiosBajas', [])  # Obtiene array de los datos
-            # AÑADIR COMENTARIO AL ID "C*"
+            # Añadir que viene de Cambios "C*"
+            self.modificar_registros_id(registrosAltas)
+            self.modificar_registros_id(registrosBajas)
             
             # Altas
             registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
@@ -422,6 +439,12 @@ class FileGeneratorRoute(Blueprint):
             self.crear_csv_desde_registros(temp_dir, "BAJASINTER.csv", registros) #Se cambia el nombre de la columna
 
             # Administrador
+            # Cambios
+            registrosAltas = validated_data.get('registrosAdminCambiosAltas', [])
+            registrosBajas = validated_data.get('registrosAdminCambiosBajas', [])
+            # Añadir que viene de Cambios "C*"
+            self.modificar_registros_id(registrosAltas)
+            self.modificar_registros_id(registrosBajas)
             # Altas
             registros = validated_data.get('registrosAdminAltas', [])  # Obtiene array de los datos
             self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros) #Se cambia el nombre de la columna
@@ -430,6 +453,12 @@ class FileGeneratorRoute(Blueprint):
             self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros) #Se cambia el nombre de la columna
 
             # Desarrollador
+            # Cambios
+            registrosAltas = validated_data.get('registrosDesCambiosAltas', [])
+            registrosBajas = validated_data.get('registrosDesCambiosBajas', [])
+            # Añadir que viene de Cambios "C*"
+            self.modificar_registros_id(registrosAltas)
+            self.modificar_registros_id(registrosBajas)
             # Altas
             registros = validated_data.get('registrosDesAltas', [])  # Obtiene array de los datos
             self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros) #Se cambia el nombre de la columna
@@ -439,7 +468,11 @@ class FileGeneratorRoute(Blueprint):
 
             # Usuario
             # Cambios
-            
+            registrosAltas = validated_data.get('registrosUsuaCambiosAltas', [])
+            registrosBajas = validated_data.get('registrosUsuaCambiosBajas', [])
+            # Añadir que viene de Cambios "C*"
+            self.modificar_registros_id(registrosAltas)
+            self.modificar_registros_id(registrosBajas)
             # Altas
             registros = validated_data.get('registrosUsuaAltas', [])  # Obtiene array de los datos
             self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros) #Se cambia el nombre de la columna
@@ -448,6 +481,12 @@ class FileGeneratorRoute(Blueprint):
             self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros) #Se cambia el nombre de la columna
 
             # Otro
+            # Cambios
+            registrosAltas = validated_data.get('registrosOtroCambiosAltas', [])
+            registrosBajas = validated_data.get('registrosOtroCambiosBajas', [])
+            # Añadir que viene de Cambios "C*"
+            self.modificar_registros_id(registrosAltas)
+            self.modificar_registros_id(registrosBajas)
             # Altas
             registros = validated_data.get('registrosOtroAltas', [])  # Obtiene array de los datos
             self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros) #Se cambia el nombre de la columna
