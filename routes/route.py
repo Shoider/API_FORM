@@ -55,7 +55,7 @@ class FileGeneratorRoute(Blueprint):
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
             if not registros:
-                print(f"El array de registros está vacío. No se creará el archivo '{nombre_archivo_csv}'.")
+                df = pd.DataFrame([{}], columns=['No'])
                 return
 
             for registro in registros:
