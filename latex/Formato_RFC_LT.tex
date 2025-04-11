@@ -10,8 +10,21 @@
 \usepackage{booktabs}
 
 \usepackage{datatool}
-\DTLloaddb{ALTAS}{ALTAS.csv}
-\DTLloaddb{BAJAS}{BAJAS.csv}
+%\DTLloaddb{ALTAS}{ALTAS.csv}
+
+\DTLloaddb{ALTASINTER}{ALTASINTER.csv}
+\DTLloaddb{ALTASDES}{ALTASDES.csv}
+\DTLloaddb{ALTASUSUA}{ALTASUSUA.csv}
+\DTLloaddb{ALTASADMIN}{ALTASADMIN.csv}
+\DTLloaddb{ALTASOTRO}{ALTASOTRO.csv}
+
+%\DTLloaddb{BAJAS}{BAJAS.csv}
+
+\DTLloaddb{BAJASINTER}{BAJASINTER.csv}
+\DTLloaddb{BAJASDES}{BAJASDES.csv}
+\DTLloaddb{BAJASUSUA}{BAJASUSUA.csv}
+\DTLloaddb{BAJASADMIN}{BAJASADMIN.csv}
+\DTLloaddb{BAJASOTRO}{BAJASOTRO.csv}
 %\DTLloaddb{CAMBIOS}{CAMBIOS.csv}
 \usepackage{ifthen}
 \usepackage{filecontents}
@@ -237,8 +250,8 @@ headheight = 25mm,
 \textbf{Función o rol de \\dispositivo(s) \\destino}&\textbf{IP/NAT dispositivo(s) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{ALTAS}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%INTERSISTEMAS
+\DTLforeach*{ALTASINTER}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -292,8 +305,8 @@ headheight = 25mm,
 \textbf{Función o rol de \\dispositivo(s) \\destino}&\textbf{IP/NAT dispositivo(s) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{BAJAS}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%INTERSISTEMAS
+\DTLforeach*{BAJASINTER}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -353,8 +366,8 @@ headheight = 25mm,
 \textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{ALTAS}{\No=N, \NombreAdmin=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%ADMINISTRATIVOS
+\DTLforeach*{ALTASADMIN}{\No=N, \NombreAdmin=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -407,8 +420,8 @@ headheight = 25mm,
 \textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{BAJAS}{\No=N, \NombreAdmin=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%ADMINISTRATIVOS
+\DTLforeach*{BAJASADMIN}{\No=N, \NombreAdmin=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -468,8 +481,8 @@ headheight = 25mm,
 \textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{ALTAS}{\No=N, \NombreDes=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%DESARROLLADORES
+\DTLforeach*{ALTASDES}{\No=N, \NombreDes=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -522,8 +535,8 @@ vlines,
 \textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{BAJAS}{\No=N, \NombreDes=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%DESARROLLADORES
+\DTLforeach*{BAJASDES}{\No=N, \NombreDes=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -583,8 +596,8 @@ vlines,
 \textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{ALTAS}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%USUARIO
+\DTLforeach*{ALTASUSUA}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
@@ -637,8 +650,8 @@ vlines,
 \textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino/NAT}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-
-\DTLforeach*{BAJAS}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+%%%%USUARIO
+\DTLforeach*{BAJASUSUA}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
  \begin{longtblr}[
