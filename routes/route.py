@@ -55,8 +55,7 @@ class FileGeneratorRoute(Blueprint):
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
             if not registros:
-                df = pd.DataFrame([{}], columns=['No'])
-                return
+                df = pd.DataFrame([{}], columns=['No', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER'])
 
             for registro in registros:
                 registro.pop('isNew', None)
