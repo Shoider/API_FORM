@@ -82,7 +82,7 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}")
 
-    def modificar_registros_id(registros):
+    def modificar_registros_id(self, registros):
         """
         Modifica el array de registros para concatenar "*C" y un salto de línea a la columna "id".
 
@@ -542,10 +542,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            # PARA LOS TEST NO SE ELIMINA
-            # shutil.rmtree(temp_dir)
-            self.logger.info(f'Registro Finalizado: ', temp_dir)
-
+            #shutil.rmtree(temp_dir)
+            self.logger.info(f"Directorio temporal {temp_dir} no eliminado.")
 
     def inter(self):
         try: 

@@ -1,4 +1,4 @@
-FROM python:3.13.2-slim-bookworm
+FROM python:3.13.3-slim-bookworm
 
 WORKDIR /app
 
@@ -13,11 +13,6 @@ RUN mkdir -p /app/logs && \
 RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 777 /app/data
-
-#RUN mv Formato_VPN_241105.tex data
-#RUN mv imagenes data
-#RUN mv tabularray data
-#RUN mv lastpage data
 
 RUN apt-get update && \
     apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra && \
