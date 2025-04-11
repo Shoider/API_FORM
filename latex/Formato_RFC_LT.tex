@@ -201,12 +201,24 @@ headheight = 25mm,
 %%%TABLAS DE ALTAS BAJAS Y CAMBIOS
 %%%PARA ALTAS
 \clearpage
-\newboolean{altas}
-\setboolean{altas}{\ALTAS} 
+\newboolean{altasinter}
+\setboolean{altasinter}{\ALTASINTER} 
+\newboolean{altasadmin}
+\setboolean{altasadmin}{\ALTASADMIN} 
+\newboolean{altasdes}
+\setboolean{altasdes}{\ALTASDES} 
+\newboolean{altasusua}
+\setboolean{altasusua}{\ALTASUSUA} 
 
 %%PARA BAJAS
-\newboolean{bajas}
-\setboolean{bajas}{\BAJAS} 
+\newboolean{bajasinter}
+\setboolean{bajasinter}{\BAJASINTER} 
+\newboolean{bajasadmin}
+\setboolean{bajasadmin}{\BAJASADMIN} 
+\newboolean{bajasdes}
+\setboolean{bajasdes}{\BAJASDES} 
+\newboolean{bajasusua}
+\setboolean{bajasusua}{\BAJASUSUA} 
 
 
 %%%%%%%
@@ -215,9 +227,9 @@ headheight = 25mm,
 \setboolean{inter}{\INTERBOOL} 
 \ifthenelse{\boolean{inter}}
 {
-%%ALTAS
+%%ALTASINTERSISTEMAS
 
-\ifthenelse{\boolean{altas}}
+\ifthenelse{\boolean{altasinter}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -270,9 +282,9 @@ headheight = 25mm,
 }%%FIN CONDICIONAL IF
 
 %%%%%%%%
-%%BAJAS
+%%BAJAS INTERSISTEMAS
 
-\ifthenelse{\boolean{bajas}}
+\ifthenelse{\boolean{bajasinter}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -331,9 +343,9 @@ headheight = 25mm,
 \setboolean{admin}{\ADMINBOOL} 
 \ifthenelse{\boolean{admin}}
 {
-%%ALTAS
+%%ALTASADMIN
 
-\ifthenelse{\boolean{altas}}
+\ifthenelse{\boolean{altasadmin}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -386,8 +398,8 @@ headheight = 25mm,
 }
 %%%%%%%%
 
-%%BAJAS
-\ifthenelse{\boolean{bajas}}
+%%BAJASINTER
+\ifthenelse{\boolean{bajasinter}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -446,9 +458,9 @@ headheight = 25mm,
 \setboolean{des}{\DESBOOL} 
 \ifthenelse{\boolean{des}}
 {
-%%ALTAS
+%%ALTASDES
 
-\ifthenelse{\boolean{altas}}
+\ifthenelse{\boolean{altasdes}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -501,8 +513,8 @@ vlines,
 }
 %%%%%%%%
 
-%%BAJAS
-\ifthenelse{\boolean{bajas}}
+%%BAJAS DES
+\ifthenelse{\boolean{bajasdes}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -561,9 +573,9 @@ vlines,
 \setboolean{usua}{\USUABOOL} 
 \ifthenelse{\boolean{usua}}
 {
-%%ALTAS
+%%ALTAS USUA
 
-\ifthenelse{\boolean{altas}}
+\ifthenelse{\boolean{altasusua}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -616,8 +628,8 @@ vlines,
 }
 %%%%%%%%
 
-%%BAJAS
-\ifthenelse{\boolean{bajas}}
+%%BAJASUSUA
+\ifthenelse{\boolean{bajasusua}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
