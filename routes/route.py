@@ -94,7 +94,9 @@ class FileGeneratorRoute(Blueprint):
 
         for registro in registros:
             if "id" in registro:
-                registro["id"] = str(registro["id"]) + "\\\\C*"  # Concatena "*C" y un salto de línea
+                #registro["id"] = str(registro["id"]) + "\\\\C*"  # Concatena "*C" y un salto de línea
+                registro["id"]= "*C" + str(registro["id"])
+
     
     def vpn(self):
         try:
