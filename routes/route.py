@@ -628,6 +628,8 @@ class FileGeneratorRoute(Blueprint):
             otrabool3 = "true" if validated_data.get('otra3') == True else "false"
             otrabool4 = "true" if validated_data.get('otra4') == True else "false"
 
+            direcConAla = validated_data.get("direccion") + ", "+ validated_data.get("piso") + ", " + validated_data.get("ala")
+
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
             with open(datos_txt_path, 'w') as file: 
@@ -642,7 +644,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\EXTUSUARIO}{" + validated_data.get('extUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreJefe') + "}"+ os.linesep)
                 file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoJefe') + "}"+ os.linesep)
-                file.write("\\newcommand{\\DIRECCION}{"+ validated_data.get('direccion') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DIRECCION}{"+ direcConAla +  "}"+ os.linesep)
 
                 file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
                 file.write("\\newcommand{\\FOROS}{" + foros + "}" + os.linesep)
