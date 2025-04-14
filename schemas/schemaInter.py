@@ -67,4 +67,9 @@ class RegistroSchemaInter(Schema):
     urlOtra4= fields.String(required=False)
     justificaOtra4= fields.String(required=False)
     otraC4= fields.String(required=False)
+
+    ala= fields.String(required=False)
+    piso= fields.String(required=False)
+
+
     
