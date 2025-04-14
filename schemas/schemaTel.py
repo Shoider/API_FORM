@@ -7,6 +7,8 @@ class RegistroSchemaTel(Schema):
     nombreUsuario= fields.String(required=True)
     correoUsuario= fields.String(required=True)
     direccion= fields.String(required=True)
+    piso= fields.String(required=False)
+    ala= fields.String(required=False)
     uaUsuario= fields.String(required=True)
 
     nombreEmpleado= fields.String(required=False)

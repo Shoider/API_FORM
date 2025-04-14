@@ -229,6 +229,9 @@ class FileGeneratorRoute(Blueprint):
             baja = "X" if validated_data.get('movimiento') == "BAJA" else " "
             cambio = "X" if validated_data.get('movimiento') == "CAMBIO" else " "
 
+            # Direccion
+            direcion = validated_data.get('direccion') + ", " + validated_data.get('piso') + ", " + validated_data.get('ala')
+
             # Traducir valores true y false #PENDIGN
             externo = "true" if validated_data.get('usuaExterno') == True else "false"
 
@@ -260,7 +263,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\EXPIRACION}{" + validated_data.get('expiracion') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correoUsuario') + "}"+ os.linesep)
-                file.write("\\newcommand{\\DIRECCION}{" + validated_data.get('direccion') + "}"+ os.linesep)
+                file.write("\\newcommand{\\DIRECCION}{" + direcion + "}"+ os.linesep)
                 file.write("\\newcommand{\\UAUSUARIO}{" + validated_data.get('uaUsuario') + "}"+ os.linesep)
                 file.write("\\newcommand{\\NOMBREEMPLEADO}{" + validated_data.get('nombreEmpleado')+ "}"+ os.linesep)
                 file.write("\\newcommand{\\IDEMPLEADO}{" + validated_data.get('idEmpleado') + "}"+ os.linesep)
