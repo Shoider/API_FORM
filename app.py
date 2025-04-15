@@ -5,6 +5,8 @@ from schemas.schemaRFC import RegistroSchemaRFC
 from routes.route import FileGeneratorRoute  
 from schemas.schemaTel import RegistroSchemaTel
 from schemas.schemaInter import RegistroSchemaInter
+from services.service import Service
+from models.model import BDModel
 
 app = Flask(__name__)
 
@@ -18,11 +20,24 @@ form_schemaTel = RegistroSchemaTel()
 form_schemaRFC = RegistroSchemaRFC() 
 forms_schemaInter = RegistroSchemaInter()
 
+# Model
+db_conn = BDModel()
+db_conn.connect_to_database()
+
+# Service
+service = Service(db_conn)
+
 # Routes
-form_routes = FileGeneratorRoute(form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaInter)
+form_routes = FileGeneratorRoute(service, form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaInter)
 
 #Blueprint
 app.register_blueprint(form_routes)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=False)
+    try:
+        app.run(host="0.0.0.0", debug=False)
+        logger.info("Application started")
+    finally:
+        db_conn.close_connection()
+        logger.info("Application closed")
+        logger.info("MongoDB connection closed")
