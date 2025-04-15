@@ -113,7 +113,6 @@ class FileGeneratorRoute(Blueprint):
 
             # Guardar en BD
             new_vpn_data = validated_data  # Asumiendo que validated_data contiene los datos para la VPN
-            service = service(self.db_conn)
             vpn_registro, status_code = self.service.add_VPN(new_vpn_data)
 
             if status_code == 201:
@@ -796,5 +795,4 @@ class FileGeneratorRoute(Blueprint):
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
         return jsonify({"status": "Up"}), 200
-    
-    
+

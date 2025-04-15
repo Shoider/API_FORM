@@ -2,6 +2,7 @@ import datetime
 from flask import jsonify
 from pymongo import ReturnDocument
 from logger.logger import Logger
+from bson import ObjectId
 
 class Service:
     """Service class to that implements the logic of the CRUD operations for tickets"""
@@ -25,7 +26,7 @@ class Service:
     def add_VPN(self, new_vpn):
         """Function to add a VPN register to the database with a custom ID"""
         try:
-            now = datetime.now()
+            now = datetime.datetime.now()
             yy = now.strftime("%y")
             mm = now.strftime("%m")
             dd = now.strftime("%d")
