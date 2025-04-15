@@ -108,7 +108,7 @@ class Service:
             return jsonify({"error": f"Error adding TELEFONIA register to database with custom ID: {e}"}), 500
         
     def add_internet(self, new_internet):
-        """Function to add a TELEFONIA register to the database with a custom ID"""
+        """Function to add a INTERNET register to the database with a custom ID"""
         try:
             now = datetime.datetime.now()
             yy = now.strftime("%y")
