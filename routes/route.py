@@ -12,13 +12,14 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaInter):
+    def __init__(self, service, forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaInter):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
         self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schemaInter = forms_schemaInter
+        self.service = service
         self.register_routes()
 
     def register_routes(self):
@@ -109,101 +110,110 @@ class FileGeneratorRoute(Blueprint):
 
             # Validacion
             validated_data = self.forms_schemaVPN.load(data)
+
+            # Guardar en BD
+            new_vpn_data = validated_data  # Asumiendo que validated_data contiene los datos para la VPN
+            service = service(self.db_conn)
+            vpn_registro, status_code = service.add_VPN(new_vpn_data)
+
+            if status_code == 201:
+                noformato = vpn_registro.get('_id')
+                self.logger.info(f"Registro VPN agregado con ID: {noformato}")
             
-            # Transformar valores "SI" y "NO"
-            sianti = "x" if validated_data.get('malware') == "SI" else " "
-            noanti = "x" if validated_data.get('malware') == "NO" else " "
+                # Transformar valores "SI" y "NO"
+                sianti = "x" if validated_data.get('malware') == "SI" else " "
+                noanti = "x" if validated_data.get('malware') == "NO" else " "
 
-            sivige = "x" if validated_data.get('vigencia') == "SI" else " "
-            novige = "x" if validated_data.get('vigencia') == "NO" else " "
+                sivige = "x" if validated_data.get('vigencia') == "SI" else " "
+                novige = "x" if validated_data.get('vigencia') == "NO" else " "
 
-            siso = "x" if validated_data.get('so') == "SI" else " "
-            noso = "x" if validated_data.get('so') == "NO" else " "
+                siso = "x" if validated_data.get('so') == "SI" else " "
+                noso = "x" if validated_data.get('so') == "NO" else " "
 
-            silic = "x" if validated_data.get('licencia') == "SI" else " "
-            nolic = "x" if validated_data.get('licencia') == "NO" else " "
+                silic = "x" if validated_data.get('licencia') == "SI" else " "
+                nolic = "x" if validated_data.get('licencia') == "NO" else " "
 
-            alta = "x" if validated_data.get('movimiento') == "ALTA" else " "
-            baja = "x" if validated_data.get('movimiento') == "BAJA" else " "
-            cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else " "
-            
-            # Crear Datos.txt en el directorio temporal
-            datos_txt_path = os.path.join(temp_dir, "Datos.txt")
-            with open(datos_txt_path, 'w') as file: 
-                file.write("\\newcommand{\\NOMBRE}{"+ validated_data.get('nombre')+"}"+ os.linesep)
-                file.write("\\newcommand{\\PUESTO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
-                file.write("\\newcommand{\\UA}{" + validated_data.get('ua') + "}"+ os.linesep)
-                file.write("\\newcommand{\\ID}{" + validated_data.get('id') + "}"+ os.linesep)
-                file.write("\\newcommand{\\EXT}{" + validated_data.get('extension') + "}"+ os.linesep)
-                file.write("\\newcommand{\\CORREO}{" + validated_data.get('correo')+ "}"+ os.linesep)
-                file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}"+ os.linesep)
-                file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}"+ os.linesep)
-                file.write("\\newcommand{\\SERIE}{"+ validated_data.get('serie') + "}"+ os.linesep)
-                file.write("\\newcommand{\\MACADDRESS}{"+ validated_data.get('macadress') + "}"+ os.linesep)
-                file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('jefe') + "}"+ os.linesep)
-                file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestojefe') + "}"+ os.linesep)
-                file.write("\\newcommand{\\SERVICIOS}{" + validated_data.get('servicios') + "}"+ os.linesep)
-                file.write("\\newcommand{\\JUSTIFICACION}{" + validated_data.get('justificacion') + "}"+ os.linesep)
+                alta = "x" if validated_data.get('movimiento') == "ALTA" else " "
+                baja = "x" if validated_data.get('movimiento') == "BAJA" else " "
+                cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else " "
 
-                file.write("\\newcommand{\\SIANTI}{" + sianti + "}" + os.linesep)
-                file.write("\\newcommand{\\NOANTI}{" + noanti + "}" + os.linesep)
-                file.write("\\newcommand{\\SIVIGE}{" + sivige + "}" + os.linesep)
-                file.write("\\newcommand{\\NOVIGE}{" + novige + "}" + os.linesep)
-                file.write("\\newcommand{\\SISO}{" + siso + "}" + os.linesep)
-                file.write("\\newcommand{\\NOSO}{" + noso + "}" + os.linesep)
-                file.write("\\newcommand{\\SILIC}{" + silic + "}" + os.linesep)
-                file.write("\\newcommand{\\NOLIC}{" + nolic + "}" + os.linesep)
-                file.write("\\newcommand{\\ALTA}{" + alta + "}" + os.linesep)
-                file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
-                file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
+                # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+                with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\NOMBRE}{"+ validated_data.get('nombre')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTO}{"+ validated_data.get('puesto') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\UA}{" + validated_data.get('ua') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\ID}{" + validated_data.get('id') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXT}{" + validated_data.get('extension') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREO}{" + validated_data.get('correo')+ "}"+ os.linesep)
+                    file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\SERIE}{"+ validated_data.get('serie') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\MACADDRESS}{"+ validated_data.get('macadress') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('jefe') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestojefe') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\SERVICIOS}{" + validated_data.get('servicios') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{" + validated_data.get('justificacion') + "}"+ os.linesep)
 
-                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\SIANTI}{" + sianti + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOANTI}{" + noanti + "}" + os.linesep)
+                    file.write("\\newcommand{\\SIVIGE}{" + sivige + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOVIGE}{" + novige + "}" + os.linesep)
+                    file.write("\\newcommand{\\SISO}{" + siso + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOSO}{" + noso + "}" + os.linesep)
+                    file.write("\\newcommand{\\SILIC}{" + silic + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOLIC}{" + nolic + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALTA}{" + alta + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
+                    file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
 
-            # Crear out.csv en el directorio temporal
-            # out_csv_path = os.path.join(temp_dir, "out.csv")
-            # df = pd.DataFrame([validated_data])
-            # df.to_csv(out_csv_path, index=False, mode='a')
+                    # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 
-            # Preparar archivos en el directorio temporal
-            archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
-            nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
+                # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
 
-            # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
-            shutil.copy("/app/latex/Formato_VPN_241105.tex", archivo_tex)
+                # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_VPN_241105.tex", archivo_tex)
 
-            # Copiar imágenes al directorio temporal
-            imagenes_dir = os.path.join(temp_dir, "imagenes")
-            shutil.copytree("/app/latex/imagenes", imagenes_dir)
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-            # Compilar latex Aux
-            try:
-                subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
-                self.logger.info(f"Archivo .aux generado para {archivo_tex}")
-            except:
-                self.logger.error(f"Error generando archivo .aux: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+                # Compilar latex Aux
+                try:
+                    subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando archivo .aux: {e}")
+                    return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
 
-            # Compilar latex PDF
-            try:
-                subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
-                self.logger.info(f"Archivo PDF generado para {archivo_tex}")
-            except:
-                self.logger.error(f"Error generando PDF: {e}")
-                return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
-            
-            # Cargar pdf
-            output = BytesIO()
-            with open(nombre_pdf, "rb") as pdf_file:
-                output.write(pdf_file.read())
-            output.seek(0)
+                # Compilar latex PDF
+                try:
+                    subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
+                
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
 
-            # Enviar archivo
-            return send_file(
-                output,
-                mimetype="application/pdf",
-                download_name="Registro_VPN.pdf",
-                as_attachment=True,
-            )
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="Registro_VPN.pdf",
+                    as_attachment=True,
+                )
+        
+            else:
+                return jsonify(vpn_registro), status_code
+
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
             return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 400
@@ -212,7 +222,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
+            #shutil.rmtree(temp_dir)
+            self.logger.info(f"Directorio temporal: {temp_dir}")
 
     def tel(self):
         try:
@@ -459,7 +470,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\BAJASUSUA}{" + BajaUsua + "}" + os.linesep)
                 file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                 file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
-                
+
                 file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
             ###### Aqui funciona Generalmente, Abajo esta dificil de entender
@@ -780,8 +791,7 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)
-            print("hola")
+            shutil.rmtree(temp_dir)
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
