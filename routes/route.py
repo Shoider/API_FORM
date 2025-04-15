@@ -308,7 +308,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
                 file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
 
-                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+              #  file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
@@ -470,7 +470,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                 file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
 
-                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+               # file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
             ###### Aqui funciona Generalmente, Abajo esta dificil de entender
 
@@ -739,7 +739,7 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ validated_data.get('justificaOtra3') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ validated_data.get('justificaOtra4') + "}"+ os.linesep)
 
-                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+              #  file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
 
             # Preparar archivos en el directorio temporal
