@@ -126,7 +126,7 @@ class FileGeneratorRoute(Blueprint):
             alta = "x" if validated_data.get('movimiento') == "ALTA" else " "
             baja = "x" if validated_data.get('movimiento') == "BAJA" else " "
             cambio = "x" if validated_data.get('movimiento') == "CAMBIO" else " "
-
+            
             # Crear Datos.txt en el directorio temporal
             datos_txt_path = os.path.join(temp_dir, "Datos.txt")
             with open(datos_txt_path, 'w') as file: 
@@ -156,6 +156,8 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\ALTA}{" + alta + "}" + os.linesep)
                 file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
                 file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
+
+                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
             # Crear out.csv en el directorio temporal
             # out_csv_path = os.path.join(temp_dir, "out.csv")
@@ -295,6 +297,8 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}" + os.linesep)
                 file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
                 file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
+
+                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
             # Preparar archivos en el directorio temporal
             archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
@@ -455,6 +459,8 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\BAJASUSUA}{" + BajaUsua + "}" + os.linesep)
                 file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                 file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
+                
+                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
             ###### Aqui funciona Generalmente, Abajo esta dificil de entender
 
@@ -722,6 +728,8 @@ class FileGeneratorRoute(Blueprint):
                 file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ validated_data.get('justificaOtra2') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ validated_data.get('justificaOtra3') + "}"+ os.linesep)
                 file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ validated_data.get('justificaOtra4') + "}"+ os.linesep)
+
+                file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
 
             # Preparar archivos en el directorio temporal
