@@ -3,7 +3,6 @@ from logger.logger import Logger
 from schemas.schemaVPN import RegistroSchemaVPN
 from schemas.schemaRFC import RegistroSchemaRFC
 from routes.route import FileGeneratorRoute  
-from schemas.schemaTablas import TablasSchemaRFC
 from schemas.schemaTel import RegistroSchemaTel
 from schemas.schemaInter import RegistroSchemaInter
 
@@ -17,11 +16,10 @@ logger = Logger()
 form_schemaVPN = RegistroSchemaVPN()
 form_schemaTel = RegistroSchemaTel()
 form_schemaRFC = RegistroSchemaRFC() 
-forms_schemaTablas = TablasSchemaRFC()
 forms_schemaInter = RegistroSchemaInter()
 
 # Routes
-form_routes = FileGeneratorRoute(form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaTablas,forms_schemaInter)
+form_routes = FileGeneratorRoute(form_schemaVPN, form_schemaTel, form_schemaRFC, forms_schemaInter)
 
 #Blueprint
 app.register_blueprint(form_routes)

@@ -12,13 +12,12 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaTablas, forms_schemaInter):
+    def __init__(self,forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaInter):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
         self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
-        self.forms_schemaTablas = forms_schemaTablas
         self.forms_schemaInter = forms_schemaInter
         self.register_routes()
 
