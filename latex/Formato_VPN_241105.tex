@@ -32,7 +32,9 @@ headheight = 35mm
 \usepackage{tabularray}
 
 % *** Fecha ***
-\usepackage[useregional]{datetime2}
+%\usepackage[useregional]{datetime2}
+\usepackage{datetime2}
+
 
 
 %No cortar palabras
@@ -51,12 +53,13 @@ headheight = 35mm
 		row{2} = {c},
 		row{3} = {c},
 		column{2} = {c},
+                      cell{4}{2} = {h},
 		cell{1}{1} = {r=4}{c},
 		cell{1}{2} = {r=3}{},
 		cell{1}{3} = {c},
 		cell{1}{4} = {c},
 		cell{4}{3} = {c=2}{c},
-                     cell{4}{2} = {c},
+                    % cell{4}{2} = {c},
 		vlines,
 		hline{1,5} = {-}{},
 		hline{2-3} = {3-4}{},
@@ -65,7 +68,7 @@ headheight = 35mm
 	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua\\Gerencia de Tecnologías de Información \\y Comunicaciones\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
 	&                                                                                       & \tiny Proyecto   & \tiny VPN \\
 	&                                                                                       & \tiny Documento & {\tiny Formato }    \\
-	& { Solicitud del Servicio de VPN}                                       &  \includegraphics[width=0.07\textwidth]{imagenes/Logo_Octubre_2024}       &           
+	& { Solicitud del Servicio de VPN}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
 }
 \chead{
@@ -82,8 +85,6 @@ headheight = 35mm
 \begin{document}
 \sloppy
 
-
-
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -91,13 +92,15 @@ headheight = 35mm
 		width = \linewidth,
 		colspec = {Q[203]Q[200]Q[200]Q[200]},
 		column{2} = {c},
+		cell{1}{2} = {c},
 		cell{1}{3} = {r},
+                     cell{1}{4} = {c},
                      cell{2}{3} = {c},
 		cell{2}{4} = {c},
 		hlines,
 		vlines,
 	}
-	Numero de reporte:  &          & Fecha:   & \today       \\
+	Numero de formato:  &\NOFORMATO       & Fecha:   &\DTMsetdatestyle{ddmmyyyy}  \today       \\
 	Tipo de Movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) 
 \end{longtblr}
 
