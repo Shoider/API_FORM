@@ -6,7 +6,7 @@ class RegistroSchemaVPN(Schema):
     ua = fields.String(required=True, validate=validate.Length(min=1, max=64))
     id = fields.String(required=True, validate=validate.Length(min=1, max=32))
     extension = fields.String(required=True, validate=validate.Length(min=1, max=4))
-    correo = fields.Email(required=True, validate=validate.Length(min=1, max=64))
+    correo = fields.String(required=True, validate=validate.Length(min=1, max=64))
     marca = fields.String(required=True, validate=validate.Length(min=1, max=16))
     modelo = fields.String(required=True, validate=validate.Length(min=1, max=16))
     serie = fields.String(required=True, validate=validate.Length(min=1, max=16))

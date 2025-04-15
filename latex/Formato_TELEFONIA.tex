@@ -24,7 +24,7 @@ left = 25mm,
 right = 25mm,
 top = 60mm,
 bottom = 20mm,
-headheight = 35mm
+headheight = 28mm
 }
 
 % *** Imagenes ***
@@ -38,6 +38,7 @@ headheight = 35mm
 % *** Fecha ***
 %\usepackage[useregional]{datetime2}
 \usepackage{datetime2}
+\DTMsetdatestyle{ddmmyyyy}
 
 %No cortar palabras
 \usepackage[none]{hyphenat}
@@ -65,9 +66,9 @@ headheight = 35mm
 		vlines,
                       hlines,
 	}
-	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Subdirección general de administración.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
 	&                                                                                       & \tiny VERSIÓN   & \tiny 5.1 \\
-	&                                                                                       & \tiny FECHA & {\tiny 03-04-2025 }    \\
+	&                                                                                       & \tiny FECHA & {\tiny FECHA DE PUBLICACION PENDIENTE }    \\
 	& { Solicitud de servicios de telefonía.\\(Alta, Baja, Cambio)}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
 }
@@ -99,10 +100,10 @@ headheight = 35mm
 	}
 	Número de movimiento:  &          & Fecha de la solicitud:   & \today       \\
 	Tipo de Movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) \\
-           Tipo de usuario: & \TIPOUSUARIO & Expediente abierto: & ? \\
+           Tipo de usuario: & \TIPOUSUARIO \\
            Fecha de activación: & \ACTIVACION &Fecha de expiración: & \EXPIRACION
 \end{longtblr}
-\vspace{-25pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -116,13 +117,15 @@ headheight = 35mm
 		cell{3}{2} = {c=3}{0.674\linewidth},
 		cell{4}{2} = {c=3}{0.674\linewidth},
 		cell{5}{2} = {c=3}{0.674\linewidth},     
+                    cell{6}{2} = {c=3}{0.674\linewidth},   
 		hlines,
 		vlines,
 	}
 \textbf{Datos de Usuario (a) que utilizará el servicio (CONAGUA o Externo)} &  &      &  \\
 Nombre:                     &  \NOMBREUSUARIO \\
-CURP: &   \CURPUSUARIO  \\
-Dirección:   &     \DIRECCION  \\
+Correo: &   \CORREOUSUARIO  \\
+Dirección:   &  Av. Insurgentes Sur 2416 Col.Copilco el Bajo. CP.04340,Coyoacán,CDMX, \textbf  \DIRECCION  \\
+Puesto: & \PUESTOUSUARIO\\
 Unidad Aministrativa:           &\UAUSUARIO
 \end{longtblr}
 
@@ -130,7 +133,7 @@ Unidad Aministrativa:           &\UAUSUARIO
 \setboolean{externo}{\EXTERNO}
 \ifthenelse{\boolean{externo}}
 {
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -147,13 +150,12 @@ Unidad Aministrativa:           &\UAUSUARIO
 	}
 \textbf{Datos del Empleado(a) de CONAGUA (Responsable, si el usuario es externo)} &  &      &  \\
 Nombre:                     &  \NOMBREEMPLEADO &Número de empleado:&\IDEMPLEADO \\
-CURP: & \CURPEMPLEADO &Telefóno/Ext: & \EXTEMPLEADO  \\
-eMail:   &     \CORREO  \\
+Correo: & \CORREOEMPLEADO &Telefóno/Ext: & \EXTEMPLEADO  \\
 Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
 
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -174,7 +176,7 @@ Puesto:           &\PUESTOEMPLEADO
 	\textbf{Servicio Larga Distancia Nacional:}       &Si (\SINACIONAL )~ No(\NONACIONAL ) & \textbf{Serivicio Celular Larga Distancia:}                                  & Si (\SICNACIONAL )~ No(\NOCNACIONAL ) \\
 	\textbf{Servicio Larga Distancia Estados Unidos y Canadá:} &&& Si (\SIEUA )~ No(\NOEUA)
 \end{longtblr}
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -191,10 +193,10 @@ Puesto:           &\PUESTOEMPLEADO
 	}
 \textbf{Caracteristicas del Equipo donde se configura la cuenta de Red}         \\
  \textbf {Tipo Equipo}&\textbf {Marca}&\textbf {Modelo}&\textbf {Serie}&\textbf {Versión de sistema operativo}\\
-\TIPOEQUIPO&\MARCA&\MODELO&\SERIE&\VERSION
+TELEFONO&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 
-\vspace{-15pt}
+\vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -209,8 +211,8 @@ Puesto:           &\PUESTOEMPLEADO
 	}
 	\textbf{Justificación de los Servicios Solicitados} \\\JUSTIFICACION
 \end{longtblr}
-
-\vspace{-20pt}
+\clearpage
+%\vspace{-20pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
