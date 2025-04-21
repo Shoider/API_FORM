@@ -67,7 +67,7 @@ headheight = 28mm
                       hlines,
 	}
 	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \tiny VERSIÓN   & \tiny PENDIENTE \\
+	&                                                                                       & \tiny VERSIÓN   & \tiny 5.1 \\
 	&                                                                                       & \tiny FECHA & {\tiny FECHA DE PUBLICACION PENDIENTE }    \\
 	& { Solicitud de servicios de telefonía.\\(Alta, Baja, Cambio)}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
@@ -77,7 +77,7 @@ headheight = 28mm
 
 % *** Pie de Pagina
 %\renewcommand{\footrulewidth}{0.5pt}
-\lfoot{\tiny Notas: a) La información de este documento implica conocer y aceptar la normatividad vigente, así como el compromiso de uso ético y racional de los servicios asignados. b)En caso de impresiones en hojas separadas, todas deben venir rubrica. }
+\lfoot{\tiny Notas: a) La información de este documento implica conocer y acepatr la normatividad vigente, así como el compromiso de uso ético y racional de los servicios asignados. b)En caso de impresiones en hojas separadas, todas deben venir rubrica. }
 \cfoot{}
 %\rfoot{}
 
@@ -99,7 +99,7 @@ headheight = 28mm
 		cell{2}{4} = {c},
 	}
 	Número de formato:  & \NOFORMATO          & Fecha de la solicitud:   & \today       \\
-	Tipo de Movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) \\
+	Tipo de movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) \\
            Tipo de usuario: & \TIPOUSUARIO \\
            Fecha de activación: & \ACTIVACION &Fecha de expiración: & \EXPIRACION
 \end{longtblr}
@@ -109,22 +109,17 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[200]Q[300]Q[90]Q[90]},
+		colspec = {Q[90]Q[300]},
 		row{1} = {c},
                      row{1}={dorado},                    
-		cell{1}{1} = {c=4}{0.874\linewidth},
-		cell{2}{2} = {c=3}{0.674\linewidth},
-		cell{3}{2} = {c=3}{0.674\linewidth},
-		cell{4}{2} = {c=3}{0.674\linewidth},
-		cell{5}{2} = {c=3}{0.674\linewidth},     
-                    cell{6}{2} = {c=3}{0.674\linewidth},   
+		cell{1}{1} = {c=2}{0.874\linewidth},
 		hlines,
 		vlines,
 	}
-\textbf{Datos de Usuario (a) que utilizará el servicio (CONAGUA o Externo)} &  &      &  \\
+\textbf{Datos de Usuario(a) que utilizará el servicio (CONAGUA o Externo)} &   \\
 Nombre:                     &  \NOMBREUSUARIO \\
 Correo: &   \CORREOUSUARIO  \\
-Dirección:   &  \textbf  \DIRECCION  \\
+Dirección:   & \textbf  \DIRECCION  \\
 Puesto: & \PUESTOUSUARIO\\
 Unidad Aministrativa:           &\UAUSUARIO
 \end{longtblr}
@@ -139,12 +134,12 @@ Unidad Aministrativa:           &\UAUSUARIO
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[200]Q[300]Q[90]Q[90]},
+		colspec = {Q[100]Q[300]Q[200]Q[300]},
 		row{1} = {c},
-                     row{1}={dorado},                    
+                     row{1}={dorado},         
+                     cell{3}{3}={j},           
 		cell{1}{1} = {c=4}{0.874\linewidth},
-		cell{4}{2} = {c=3}{0.674\linewidth},
-		cell{5}{2} = {c=3}{0.674\linewidth},        
+		cell{4}{2} = {c=3}{0.674\linewidth},      
 		hlines,
 		vlines,
 	}
@@ -170,8 +165,8 @@ Puesto:           &\PUESTOEMPLEADO
 		hlines,
 		vlines,
 	}
-\textbf{Caracteristicas del Servicio Solicitado}         \\
-\textbf{Servicio Interno:}       &  Si (X)~ No(~)  & \textbf{\textbf{Serivicio de Larga \\Distancia\\Resto del Mundo:}}                           & Si (\SIMUNDO )~ No(\NOMUNDO ) \\
+\textbf{Características del Servicio Solicitado}         \\
+\textbf{Servicio Interno:}       &  Si (X)~ No(~ )  & \textbf{\textbf{Serivicio de Larga \\Distancia\\Resto del Mundo:}}                           & Si (\SIMUNDO )~ No(\NOMUNDO ) \\
 	\textbf{Servicio Local:}      &  Si (\SILOCAL )~ No(\NOLOCAL)  &\textbf {Servicio Celular Local:}    & Si (\SICLOCAL )~ No(\NOCLOCAL ) \\
 	\textbf{Servicio Larga Distancia Nacional:}       &Si (\SINACIONAL )~ No(\NONACIONAL ) & \textbf{Serivicio Celular Larga Distancia:}                                  & Si (\SICNACIONAL )~ No(\NOCNACIONAL ) \\
 	\textbf{Servicio Larga Distancia Estados Unidos y Canadá:} &&& Si (\SIEUA )~ No(\NOEUA)
@@ -193,7 +188,7 @@ Puesto:           &\PUESTOEMPLEADO
 	}
 \textbf{Caracteristicas del Equipo donde se configura la cuenta de Red}         \\
  \textbf {Tipo Equipo}&\textbf {Marca}&\textbf {Modelo}&\textbf {Serie}&\textbf {Versión de sistema operativo}\\
-TELEFONO&\MARCA&\MODELO&\SERIE&\VERSION
+Telefóno&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 
 \vspace{-30pt}
