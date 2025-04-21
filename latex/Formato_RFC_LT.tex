@@ -150,7 +150,7 @@ headheight = 25mm,
 	Numero de ticket:  & & {Fecha de solicitud:}   & \today       \\
 	Temporalidad:& \TEMPO\\
           {Memorando / Atenta nota:}&\MEMO\\
-         Solicitud:\\
+         Solicitud:&  \DESCBREVE\\
             \textbf {Tipo de Cambio:} &\\
             Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
            Otro (\OTRO )& Describa brevemente:&\DESOTRO\\          
@@ -302,7 +302,7 @@ headheight = 25mm,
 	}
 	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas
 \end{longtblr}
-%%BAJAS
+%%BAJASintersistemas
 \vspace{-30pt}
  \begin{longtblr}[
  label = none,
@@ -400,8 +400,8 @@ headheight = 25mm,
 }
 %%%%%%%%
 
-%%BAJASINTER
-\ifthenelse{\boolean{bajasinter}}
+%%BAJASADMIN
+\ifthenelse{\boolean{bajasadmin}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
