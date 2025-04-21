@@ -21,7 +21,7 @@ class RegistroSchemaTel(Schema):
     puestoUsuario= fields.String(required=True, validate=validate.Length(min=1, max=256))
     nombreJefe= fields.String(required=True, validate=validate.Length(min=1, max=256))
     puestoJefe= fields.String(required=True, validate=validate.Length(min=1, max=256))
-    marca= fields.String(required=True, validate=validate.Length(min=1, max=16))
+    marca= fields.String(required=True)
     modelo= fields.String(required=True, validate=validate.Length(min=1, max=16))
     serie= fields.String(required=True, validate=validate.Length(min=1, max=16))
     version= fields.String(required=True, validate=validate.Length(min=1, max=16))
