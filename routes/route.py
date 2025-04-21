@@ -521,9 +521,11 @@ class FileGeneratorRoute(Blueprint):
                 self.modificar_registros_id(registrosBajas)
                 # Altas
                 registros = validated_data.get('registrosAdminAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas)      
                 self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosAdminBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas)   
                 self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros) #Se cambia el nombre de la columna
 
                 # Desarrollador
@@ -535,9 +537,11 @@ class FileGeneratorRoute(Blueprint):
                 self.modificar_registros_id(registrosBajas)
                 # Altas
                 registros = validated_data.get('registrosDesAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas) 
                 self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosDesBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASDES.csv", registros) #Se cambia el nombre de la columna
 
                 # Usuario
@@ -549,9 +553,11 @@ class FileGeneratorRoute(Blueprint):
                 self.modificar_registros_id(registrosBajas)
                 # Altas
                 registros = validated_data.get('registrosUsuaAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas) 
                 self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosUsuaBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros) #Se cambia el nombre de la columna
 
                 # Otro
@@ -563,9 +569,11 @@ class FileGeneratorRoute(Blueprint):
                 self.modificar_registros_id(registrosBajas)
                 # Altas
                 registros = validated_data.get('registrosOtroAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas) 
                 self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosOtroBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros) #Se cambia el nombre de la columna
 
                 # Preparar archivos en el directorio temporal
