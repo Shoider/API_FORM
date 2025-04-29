@@ -25,7 +25,7 @@ ENV TEXINPUT=".:/app/latex/imagenes/:/app/latex/:/texmf//:$TEXINPUTS"
 
 EXPOSE 8000 
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8000/healthcheck || exit 1
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8000/api/healthcheck || exit 1
 
 USER app
 

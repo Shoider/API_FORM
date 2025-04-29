@@ -28,7 +28,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
-        self.route("/healthcheck", methods=["GET"])(self.healthcheck)
+        self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
         """Function to fetch the request data"""
