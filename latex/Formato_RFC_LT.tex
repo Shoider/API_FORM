@@ -121,42 +121,7 @@ headheight = 25mm,
 \usepackage[none]{hyphenat}
 \begin{document}
 \sloppy
-
 \vspace{-30pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[203]Q[200]Q[200]Q[200]},
-                     row{1}={dorado},
-                     row{6}={dorado},
-		row{1}={c},
-                     cell{1}{1} = {c=4}{0.679\linewidth},
-		cell{2}{3} = {r},
-		cell{2}{4} = {c},
-                     cell{3}{2} = {c=3}{0.679\linewidth},
-                     cell{4}{2} = {c=3}{0.679\linewidth},
-                     cell{5}{2} = {c=3}{0.679\linewidth},
-                     row{6}={c},
-                     cell{6}{1} = {c=4}{0.279\linewidth},
-                     row{7}={c},
-                     cell{8}{1} = {c},
-                     cell{8}{3} = {c=2}{0.279\linewidth},
-                     	hlines,
-		vlines,
-	}
-           \textbf{Información para el registro de solicitud:} &  &      &  \\
-	Numero de ticket: \NOTICKET  & & {Fecha de solicitud:}   & \today       \\
-	Temporalidad:& \TEMPO\\
-          {Memorando / Atenta nota:}&\MEMO\\
-         Solicitud:&  \DESCBREVE\\
-            \textbf {Tipo de Cambio:} &\\
-            Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
-           Otro (\OTRO )& Describa brevemente:&\DESOTRO\\          
-\end{longtblr}
-
-\vspace{-15pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -164,24 +129,65 @@ headheight = 25mm,
 		width = \linewidth,
 		colspec = {Q[100]Q[300]Q[90]Q[90]},
                      row{1}={dorado},
-                     row{3}={dorado},
+                     row{5}={dorado},
 		row{1}={c},
                      cell{1}{1} = {c=4}{0.874\linewidth},	
                      cell{2}{3}={r},
-                     row{3}={c},
-                     cell{3}{1} = {c=4}{0.874\linewidth},
+                     row{5}={c},
+                     cell{5}{1} = {c=4}{0.874\linewidth},
                      cell{4}{3}={r},
                      cell{5}{2} = {c=3}{0.679\linewidth},	
                      cell{6}{2} = {c=3}{0.679\linewidth},
 		hlines,
 		vlines,
 	}
-            \textbf{Información del enlace informático:} &  &      &  \\
-             Nombre:                &   \NOMEI  &   {Teléfono/Extensión:}&\EXTEI\\  
-            \textbf{Información del solicitante:} &  &      &  \\
+           \textbf{Información del solicitante:} &  &      &  \\
              Nombre:                &    \NOMS &   {Teléfono/Extensión:}&\EXTS\\
-             Puesto:&\PUESTOS\\  Área: &\AREAS
+             Puesto:&\PUESTOS\\  Área: &\AREAS\\
+            
+            
 \end{longtblr}
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[203]Q[200]Q[200]Q[200]},
+                     row{1}={dorado},
+                     row{8}={dorado},
+		row{1}={c},
+		row{8}={c},
+                     row{3}={dorado},
+		row{3}={c},
+                     cell{1}{1} = {c=4}{0.679\linewidth},
+		cell{2}{3} = {r},
+		cell{2}{4} = {c},
+                     cell{3}{1} = {c=4}{0.679\linewidth},
+                     cell{8}{1} = {c=4}{0.679\linewidth},
+                     cell{5}{2} = {c=3}{0.679\linewidth},
+                     cell{6}{2} = {c=3}{0.679\linewidth},
+                     cell{7}{2} = {c=3}{0.679\linewidth},
+                     row{9}={c},
+                     %cell{8}{1} = {c},
+                     %cell{8}{3} = {c=2}{0.279\linewidth},
+                     	hlines,
+		vlines,
+	}
+           \textbf{Información del enlace informático:} &  &      &  \\
+             Nombre:                &   \NOMEI  &   {Teléfono/Extensión:}&\EXTEI\\
+          \textbf{Información para el registro de solicitud:} &  &      &  \\
+	Numero de ticket: & \NOTICKET & {Fecha de solicitud:}   & \today       \\
+	Temporalidad:& \TEMPO\\
+          {Memorando / Atenta nota:}&\MEMO\\
+         Solicitud:&  \DESCBREVE\\
+            \textbf {Tipo de Cambio:} &\\
+            Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
+           Otro (\OTRO )& Describa brevemente:&\DESOTRO\\   
+                 
+\end{longtblr}
+
+
 
 \vspace{-15pt}
 \begin{longtblr}[
@@ -739,7 +745,7 @@ vlines,
 		}
 		%Fecha: \today                      &                                                                                                       \\
 		{Usuario que acepta\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} & {Gerente o director local que autoriza.\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} &
-                     {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI\\\PUESTOEI}
+                     {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
 	\end{longtblr}
 
 \end{document}
