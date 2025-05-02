@@ -462,7 +462,6 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\JUSTIFICA}{" + justifica_combined + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOEI}{" + validated_data.get('puestoei') + "}"+ os.linesep)
 
                     # Tablas
                     file.write("\\newcommand{\\INTER}{" + intersistemas + "}" + os.linesep)

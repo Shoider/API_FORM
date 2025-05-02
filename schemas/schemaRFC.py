@@ -14,7 +14,7 @@ class RegistroSchemaRFC(Schema):
 
     nomei = fields.String(required=True, validate=validate.Length(min=1, max=31))
     extei = fields.String(required=True, validate=validate.Length(min=1, max=20))
-    puestoei = fields.String(required=True, validate=validate.Length(min=1, max=256))
+    
 
     noms = fields.String(required=True, validate=validate.Length(min=1, max=31))
     exts = fields.String(required=True, validate=validate.Length(min=1, max=20))
