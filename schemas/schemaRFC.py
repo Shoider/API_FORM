@@ -8,7 +8,6 @@ class RegistroSchemaRFC(Schema):
 
     # Datos Generales
     noticket = fields.String(required=True, validate=validate.Length(min=1, max=256))
-    tempo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     memo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     descbreve = fields.String(required=True, validate=validate.Length(min=1, max=256))
 
