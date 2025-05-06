@@ -390,8 +390,12 @@ class FileGeneratorRoute(Blueprint):
 
             if status_code == 201:
                 noformato = rfc_registro.get('_id')
-                self.logger.info(f"Registro RFC agregado con ID: {noformato}")      
+                self.logger.info(f"Registro RFC agregado con ID: {noformato}")    
 
+                 # Booleanos para   Quien solicita
+                solicitante = "true" if validated_data.get('soli') == True else "false"
+                enlacein = "true" if validated_data.get('enlace') == True else "false"
+               
                 # Transformar valores "X" y " " para Tipo de Movimiento
                 intersistemas = "x" if validated_data.get('intersistemas') == True else " "
                 administrador = "x" if validated_data.get('administrador') == True else " "
@@ -448,6 +452,8 @@ class FileGeneratorRoute(Blueprint):
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
                 with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\SOLI}{" + solicitante + "}" + os.linesep)
+                    file.write("\\newcommand{\\ENLACE}{" + enlacein + "}" + os.linesep)
                     file.write("\\newcommand{\\NOTICKET}{"+ validated_data.get('noticket')+"}"+ os.linesep)
                     file.write("\\newcommand{\\TEMPO}{"+ validated_data.get('tempo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
@@ -488,6 +494,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\BAJASUSUA}{" + BajaUsua + "}" + os.linesep)
                     file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
+
 
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
