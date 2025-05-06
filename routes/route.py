@@ -57,6 +57,9 @@ class FileGeneratorRoute(Blueprint):
             if not registros:
                 df = pd.DataFrame([{}], columns=['id', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER'])
 
+            contador = 0
+            temporalidades = ""
+
             for registro in registros:
                 registro.pop('isNew', None)
                 if "IPO" in registro:
@@ -72,11 +75,28 @@ class FileGeneratorRoute(Blueprint):
                 if "FRD" in registro:
                     registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
 
+                # TEMPORALIDAD
+                cambio = ""  # Inicializa la variable cambio
+                if "TEMP" in registro:
+                    if registro["TEMP"] == "Temporal":
+                        contador = contador + 1
+                        cambio = "T " + contador
+                        if "FECHA" in registro:
+                            temporalidades += "T" + contador + ": " + registro["FECHA"] + "\\\\"
+                    elif registro["TEMP"] == "Permanente":
+                        cambio = "P"
+
+                # Agrega el valor de cambio al campo "id"
+                if "id" in registro:
+                    registro["id"] = str(registro["id"]) + "\\\\" + cambio
+
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
             df.to_csv(out_csv_path, index=False, mode='x')
 
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+            return temporalidades
 
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}")
@@ -94,7 +114,6 @@ class FileGeneratorRoute(Blueprint):
 
         for registro in registros:
             if "id" in registro:
-                #registro["id"] = str(registro["id"]) + "\\\\C*"  # Concatena "*C" y un salto de línea
                 registro["id"]= "*C" + str(registro["id"])
 
     
@@ -494,16 +513,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
 
-                    ##TEMPORALIDADES
-                    file.write("\\newcommand{\\TEMPOUSUA}{"+ validated_data.get('tempousua')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\TEMPOADMIN}{"+ validated_data.get('tempoadmin')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\TEMPODES}{" + validated_data.get('tempodes') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\TEMPOINTER}{"+ validated_data.get('tempointer')+"}"+ os.linesep)
-
-
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
-
-                ###### Aqui funciona Generalmente, Abajo esta dificil de entender
 
                 # Tablas csv
 
@@ -513,12 +523,11 @@ class FileGeneratorRoute(Blueprint):
                 registrosBajas = validated_data.get('registrosInterCambiosBajas', [])  # Obtiene array de los datos
                 # Añadir que viene de Cambios "C*"
                 self.modificar_registros_id(registrosAltas)
-                self.modificar_registros_id(registrosBajas)
-                
+                self.modificar_registros_id(registrosBajas)            
                 # Altas
                 registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
                 registros.extend(registrosAltas)                            # Unir registros de altas y cambios
-                self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros) #Se cambia el nombre de la columna
+                tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosInterBajas', [])   # Obtiene array de los datos
                 registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
@@ -534,7 +543,7 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosAdminAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas)      
-                self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros) #Se cambia el nombre de la columna
+                tempAdmin = self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosAdminBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas)   
@@ -550,7 +559,7 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosDesAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
-                self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros) #Se cambia el nombre de la columna
+                tempDes = self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosDesBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
@@ -566,7 +575,7 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosUsuaAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
-                self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros) #Se cambia el nombre de la columna
+                tempUsua = self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosUsuaBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
@@ -582,11 +591,19 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosOtroAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
-                self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros) #Se cambia el nombre de la columna
+                tempOtro = self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosOtroBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros) #Se cambia el nombre de la columna
+
+                # Temporalidades
+                with open(datos_txt_path, 'a') as file: 
+                    file.write("\\newcommand{\\TEMPOINTER}{"+ tempInter +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOUSUA}{"+ tempUsua +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOADMIN}{"+ tempAdmin +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPODES}{"+ tempDes +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOOTRO}{"+ tempOtro +"}"+ os.linesep)
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
