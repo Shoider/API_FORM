@@ -183,26 +183,25 @@ headheight = 25mm,
 		colspec = {Q[203]Q[200]Q[200]Q[200]},
                      row{1}={dorado},
 		row{1}={c},
-                     row{6}={dorado},
-		row{6}={c},
+                     row{5}={dorado},
+		row{5}={c},
                      cell{1}{1} = {c=4}{0.679\linewidth},
 		cell{2}{3} = {r},
 		cell{2}{4} = {c},
-                     cell{6}{1} = {c=4}{0.679\linewidth},
-                     cell{8}{3} = {c=2}{0.379\linewidth},
+                     cell{5}{1} = {c=4}{0.679\linewidth},
+                     cell{7}{3} = {c=2}{0.379\linewidth},
                      cell{3}{2} = {c=3}{0.679\linewidth},
                      cell{4}{2} = {c=3}{0.679\linewidth},
-                     cell{5}{2} = {c=3}{0.679\linewidth},
-                     row{7}={c},
-                     cell{8}{1}={c},
-                     cell{8}{2}={c},                     
+                     %cell{5}{2} = {c=3}{0.679\linewidth},
+                     row{6}={c},
+                     cell{7}{1}={c},
+                     cell{7}{2}={c},                     
                      	hlines,
 		vlines,
 	}
           
           \textbf{Información para el registro de solicitud:} &  &      &  \\
 	Numero de ticket: & \NOTICKET & {Fecha de solicitud:}   & \today       \\
-	Temporalidad:& \TEMPO\\
           {Memorando / Atenta nota:}&\MEMO\\
          Solicitud:&  \DESCBREVE\\
             \textbf {Tipo de Cambio:} &\\
@@ -369,6 +368,24 @@ headheight = 25mm,
 }%%FIN CONDICIONAL
 }%%FIN DE INTERSISTEMAS
 
+%%%%%TEMPORALIDAD INTERSISTEMAS 
+
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Intersistemas} \\ \TEMPOINTER
+\end{longtblr}
+
 
 %%%%ADMINISTRATIVOS
 \newboolean{admin}
@@ -483,6 +500,24 @@ headheight = 25mm,
 }
 }
 }%%FIN DE ADMINISTRATIVOS
+
+%%%%%TEMPORALIDAD ADMINISTRATIVOS 
+
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Administrativos} \\ \TEMPOADMIN
+\end{longtblr}
 
 
 %%%%DESARROLLADORES
@@ -599,6 +634,23 @@ vlines,
 }
 }%%FIN DE DESARROLLADORES
 
+%%%%%TEMPORALIDAD DESARROLLADORES 
+
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Desarrolladores} \\ \TEMPODES
+\end{longtblr}
 
 %%%%USUARIO
 \newboolean{usua}
@@ -713,6 +765,24 @@ vlines,
 }
 }
 }%%FIN DE USUARIOS
+
+%%%%%TEMPORALIDAD USUARIOS 
+
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Usuarios} \\ \TEMPOUSUA
+\end{longtblr}
 
 
 %%%%%JUSTIFICACION
