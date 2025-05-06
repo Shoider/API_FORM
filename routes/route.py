@@ -80,7 +80,7 @@ class FileGeneratorRoute(Blueprint):
                 if "TEMP" in registro:
                     if registro["TEMP"] == "Temporal":
                         contador = contador + 1
-                        cambio = "T " + contador
+                        cambio = "T" + contador
                         if "FECHA" in registro:
                             temporalidades += "T" + contador + ": " + registro["FECHA"] + "\\\\"
                     elif registro["TEMP"] == "Permanente":
