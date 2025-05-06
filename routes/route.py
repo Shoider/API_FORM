@@ -455,7 +455,6 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\SOLI}{" + solicitante + "}" + os.linesep)
                     file.write("\\newcommand{\\ENLACE}{" + enlacein + "}" + os.linesep)
                     file.write("\\newcommand{\\NOTICKET}{"+ validated_data.get('noticket')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\TEMPO}{"+ validated_data.get('tempo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DESCBREVE}{" + validated_data.get('descbreve') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMEI}{"+ validated_data.get('nomei') + "}"+ os.linesep)
@@ -494,6 +493,12 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\BAJASUSUA}{" + BajaUsua + "}" + os.linesep)
                     file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
+
+                    ##TEMPORALIDADES
+                    file.write("\\newcommand{\\TEMPOUSUA}{"+ validated_data.get('tempousua')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOADMIN}{"+ validated_data.get('tempoadmin')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPODES}{" + validated_data.get('tempodes') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOINTER}{"+ validated_data.get('tempointer')+"}"+ os.linesep)
 
 
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
