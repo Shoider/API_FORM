@@ -41,7 +41,7 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
         
-    def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros):
+    def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros, Alta):
         """
         Crea un archivo CSV a partir de un array de registros,
         con la columna 'id' siempre renombrada a 'No'.
@@ -87,8 +87,9 @@ class FileGeneratorRoute(Blueprint):
                         cambio = "P"
 
                 # Agrega el valor de cambio al campo "id"
-                if "id" in registro:
-                    registro["id"] = str(registro["id"]) + "\\\\" + str(cambio)
+                if Alta == True:
+                    if "id" in registro:
+                        registro["id"] = str(registro["id"]) + "\\\\" + str(cambio)
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
@@ -527,11 +528,11 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
                 registros.extend(registrosAltas)                            # Unir registros de altas y cambios
-                tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros) #Se cambia el nombre de la columna
+                tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosInterBajas', [])   # Obtiene array de los datos
                 registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
-                self.crear_csv_desde_registros(temp_dir, "BAJASINTER.csv", registros) #Se cambia el nombre de la columna
+                self.crear_csv_desde_registros(temp_dir, "BAJASINTER.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Administrador
                 # Cambios
@@ -543,11 +544,11 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosAdminAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas)      
-                tempAdmin = self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros) #Se cambia el nombre de la columna
+                tempAdmin = self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosAdminBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas)   
-                self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros) #Se cambia el nombre de la columna
+                self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Desarrollador
                 # Cambios
@@ -559,11 +560,11 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosDesAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
-                tempDes = self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros) #Se cambia el nombre de la columna
+                tempDes = self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosDesBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
-                self.crear_csv_desde_registros(temp_dir, "BAJASDES.csv", registros) #Se cambia el nombre de la columna
+                self.crear_csv_desde_registros(temp_dir, "BAJASDES.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Usuario
                 # Cambios
@@ -575,11 +576,11 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosUsuaAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
-                tempUsua = self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros) #Se cambia el nombre de la columna
+                tempUsua = self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosUsuaBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
-                self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros) #Se cambia el nombre de la columna
+                self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Otro
                 # Cambios
@@ -591,11 +592,11 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosOtroAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
-                tempOtro = self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros) #Se cambia el nombre de la columna
+                tempOtro = self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosOtroBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
-                self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros) #Se cambia el nombre de la columna
+                self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Temporalidades
                 with open(datos_txt_path, 'a') as file: 
