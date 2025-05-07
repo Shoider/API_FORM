@@ -252,6 +252,9 @@ headheight = 25mm,
 \setboolean{bajasusua}{\BAJASUSUA} 
 
 
+
+
+
 %%%%%%%
 %%%%INTERSISTEMAS
 \newboolean{inter}
@@ -310,6 +313,22 @@ headheight = 25mm,
 \No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD INTERSISTEMAS 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Intersistemas} \\ \TEMPOINTER
+\end{longtblr}
 }%%FIN CONDICIONAL IF
 
 %%%%%%%%
@@ -367,24 +386,6 @@ headheight = 25mm,
 }
 }%%FIN CONDICIONAL
 }%%FIN DE INTERSISTEMAS
-
-%%%%%TEMPORALIDAD INTERSISTEMAS 
-
-\vspace{-20pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
-                     row{1}={dorado},
-		row{2} = {},
-		hlines,
-		vlines,
-	}
-	\textbf{Temporalidad de Intersistemas} \\ \TEMPOINTER
-\end{longtblr}
 
 
 %%%%ADMINISTRATIVOS
@@ -444,6 +445,22 @@ headheight = 25mm,
 \No&\NombreAdmin&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD ADMINISTRATIVOS 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Administrativos} \\ \TEMPOADMIN
+\end{longtblr}
 }
 %%%%%%%%
 
@@ -500,24 +517,6 @@ headheight = 25mm,
 }
 }
 }%%FIN DE ADMINISTRATIVOS
-
-%%%%%TEMPORALIDAD ADMINISTRATIVOS 
-
-\vspace{-20pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
-                     row{1}={dorado},
-		row{2} = {},
-		hlines,
-		vlines,
-	}
-	\textbf{Temporalidad de Administrativos} \\ \TEMPOADMIN
-\end{longtblr}
 
 
 %%%%DESARROLLADORES
@@ -577,6 +576,22 @@ vlines,
 \No&\NombreDes&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD DESARROLLADORES 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Desarrolladores} \\ \TEMPODES
+\end{longtblr}
 }
 %%%%%%%%
 
@@ -634,23 +649,6 @@ vlines,
 }
 }%%FIN DE DESARROLLADORES
 
-%%%%%TEMPORALIDAD DESARROLLADORES 
-
-\vspace{-20pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
-                     row{1}={dorado},
-		row{2} = {},
-		hlines,
-		vlines,
-	}
-	\textbf{Temporalidad de Desarrolladores} \\ \TEMPODES
-\end{longtblr}
 
 %%%%USUARIO
 \newboolean{usua}
@@ -709,6 +707,22 @@ vlines,
 \No&\NombreUsua&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD USUARIOS 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Usuarios} \\ \TEMPOUSUA
+\end{longtblr}%%fin de tempo usua
 }
 %%%%%%%%
 
@@ -727,7 +741,7 @@ vlines,
 		%hlines,
 		%vlines,
 	}
-	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador
+	\textbf{BAJAS} \\Sección D.- Accesos de usuarios
 \end{longtblr}
 %%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
 \vspace{-30pt}
@@ -765,24 +779,6 @@ vlines,
 }
 }
 }%%FIN DE USUARIOS
-
-%%%%%TEMPORALIDAD USUARIOS 
-
-\vspace{-20pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
-                     row{1}={dorado},
-		row{2} = {},
-		hlines,
-		vlines,
-	}
-	\textbf{Temporalidad de Usuarios} \\ \TEMPOUSUA
-\end{longtblr}
 
 
 %%%%%JUSTIFICACION
