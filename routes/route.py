@@ -78,17 +78,17 @@ class FileGeneratorRoute(Blueprint):
                 # TEMPORALIDAD
                 cambio = ""  # Inicializa la variable cambio
                 if "TEMPO" in registro:
-                    if registro["TEMPO"] == "Temporal":
+                    if registro["TEMPO"] == "TEMPORAL":
                         contador = contador + 1
-                        cambio = "T" + contador
+                        cambio = "T" + str(contador)
                         if "FECHA" in registro:
-                            temporalidades += "T" + contador + ": " + registro["FECHA"] + "\\\\"
-                    elif registro["TEMPO"] == "Permanente":
+                            temporalidades += "T" + str(contador) + ": " + str(registro["FECHA"]) + "\\\\"
+                    elif registro["TEMPO"] == "PERMANENTE":
                         cambio = "P"
 
                 # Agrega el valor de cambio al campo "id"
                 if "id" in registro:
-                    registro["id"] = str(registro["id"]) + "\\\\" + cambio
+                    registro["id"] = str(registro["id"]) + "\\\\" + str(cambio)
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
