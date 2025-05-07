@@ -657,8 +657,7 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            print("Directorio Temporal de RFC" + temp_dir)
-            #shutil.rmtree(temp_dir)
+            shutil.rmtree(temp_dir)
 
     def inter(self):
         try: 
