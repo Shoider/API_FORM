@@ -338,7 +338,7 @@ class FileGeneratorRoute(Blueprint):
                 accesoRemoto = "true" if validated_data.get('accesoRemoto') == True else "false"
                 
                 now = datetime.datetime.now()
-                fecha = now.strftime("%d-%m-%Y")  # DD-MM-YYYY
+                fecha = now.strftime("%d-%m-%Y")  # Formato: DD-MM-YYYY
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
@@ -401,7 +401,7 @@ class FileGeneratorRoute(Blueprint):
                 archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
                 nombre_pdf = os.path.join(temp_dir, "Formato_VPN_Mayo.pdf")
 
-                # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+                # Copia Formato_VPN_Mayo.tex del directorio /app/data al directorio temporal
                 shutil.copy("/app/latex/Formato_VPN_Mayo.tex", archivo_tex)
 
                 # Copiar imágenes al directorio temporal
