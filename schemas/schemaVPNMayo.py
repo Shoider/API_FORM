@@ -1,5 +1,4 @@
 from marshmallow import Schema, fields, validate
-# from schemas.schemaTablas import TablasSchemaRFC
 from schemas.schemaTablasVPN import TablasSchemaSitios
 from schemas.schemaTablasVPN import TablasSchemasAcceso
 
@@ -41,7 +40,7 @@ class RegistroSchemaVPNMayo(Schema):
     movimiento =fields.String(required=False)
     justificacion=fields.String(required=True)
 
-     # INCISO A)
-    registrosSitios = fields.List(fields.Nested(TablasSchemaSitios))
-    #INCISIO B)
-    registrosAcceso = fields.List(fields.Nested(TablasSchemasAcceso))
+    # INCISO B)
+    registrosWeb = fields.List(fields.Nested(TablasSchemaSitios))
+    # INCISO C)
+    registrosRemoto = fields.List(fields.Nested(TablasSchemasAcceso))

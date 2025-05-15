@@ -3,6 +3,7 @@ import pandas as pd
 import tempfile
 import shutil
 import os
+import datetime
 
 from flask import Blueprint, request, jsonify, send_file
 from io import BytesIO
@@ -26,7 +27,7 @@ class FileGeneratorRoute(Blueprint):
     def register_routes(self):
         """Function to register the routes for file generation"""
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
-        self.route("/api/v1/vpnmayo", methods=["POST"])(self.vpnmayo)
+        self.route("/api/v2/vpn", methods=["POST"])(self.vpnmayo)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
@@ -271,6 +272,8 @@ class FileGeneratorRoute(Blueprint):
                 altausuario = "x" if validated_data.get('movimiento') == "ALTA" else " "
                 bajausuario = "x" if validated_data.get('movimiento') == "BAJA" else " "
 
+                now = datetime.datetime.now()
+                fecha = now.strftime("%d-%m-%Y")  # DD-MM-YYYY
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
@@ -278,7 +281,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\UA}{"+ validated_data.get('unidadAdministrativa')+"}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\FECHA}{"+ validated_data.get('')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHA}{"+ fecha +"}"+ os.linesep)
                     file.write("\\newcommand{\\AREA}{"+ validated_data.get('areaAdscripcion')+"}"+ os.linesep)
                     file.write("\\newcommand{\\SUBGERENCIA}{"+ validated_data.get('subgerencia')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREENLACE}{"+ validated_data.get('nombreEnlace')+"}"+ os.linesep)
@@ -313,8 +316,8 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 
                 # Preparar archivos en el directorio temporal
-                archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
-                nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
+                archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_VPN_Mayo.pdf")
 
                 # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
                 shutil.copy("/app/latex/Formato_VPN_Mayo.tex", archivo_tex)
@@ -337,7 +340,7 @@ class FileGeneratorRoute(Blueprint):
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
                 except:
                     self.logger.error(f"Error generando PDF: {e}")
-                    return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
+                    return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
                 
                 # Cargar pdf
                 output = BytesIO()
@@ -364,7 +367,9 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)        
+            #shutil.rmtree(temp_dir)        
+            print("Directorio temporal:")
+            print(temp_dir)
 
     def tel(self):
         try:

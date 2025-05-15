@@ -1,18 +1,19 @@
 from marshmallow import Schema, fields, validate
 
 class TablasSchemaSitios(Schema):
-     id=fields.String(required=True)
-     movimiento=fields.String(required=True)
-     nombreSistema=fields.String(required=True)
-     siglas=fields.String(required=True)
-     url=fields.String(required=True)
-     puertosServicios=fields.String(required=True)
-     isNew=fields.String(required=True)
+     id=fields.String(required=False)
+     movimiento=fields.String(required=False)
+     nombreSistema=fields.String(required=False)
+     siglas=fields.String(required=False)
+     url=fields.String(required=False)
+     puertosServicios=fields.String(required=False)
+     isNew=fields.String(required=False)
+     
 class TablasSchemasAcceso (Schema):
-     id =fields.String(required=True)
-     movimiento =fields.String(required=True)
+     id =fields.String(required=False)
+     movimiento =fields.String(required=False)
      nomenclatura =fields.String(required=False)
      nombreSistema =fields.String(required=False)
-     direccion =fields.String(required=True)
-     sistemaOperativo =fields.String(required=True)
-     isNew=fields.String(required=True)
+     direccion =fields.String(required=False)
+     sistemaOperativo =fields.String(required=False)
+     isNew=fields.String(required=False)

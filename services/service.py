@@ -51,6 +51,34 @@ class Service:
             self.logger.error(f"Error adding VPN register to database with custom ID: {e}")
             return jsonify({"error": f"Error adding VPN register to database with custom ID: {e}"}), 500
         
+    def add_VPNMayo(self, new_vpn):
+        """Function to add a VPN Mayo register to the database with a custom ID"""
+        try:
+            now = datetime.datetime.now()
+            yy = now.strftime("%y")
+            mm = now.strftime("%m")
+            dd = now.strftime("%d")
+            base_id = f"{yy}{mm}{dd}"
+
+            # Atomically find and increment the daily counter
+            counter_doc = self.db_conn.db.vpnMayoCounters.find_one_and_update(
+                {"_id": base_id},
+                {"$inc": {"seq": 1}},
+                upsert=True,
+                return_document=ReturnDocument.AFTER,
+            )
+
+            sequence = counter_doc.get("seq", 1)
+            padded_sequence = str(sequence).zfill(4)
+            custom_id = f"{base_id}{padded_sequence}"
+            new_vpn["_id"] = custom_id
+
+            self.db_conn.db.vpnMayo.insert_one(new_vpn)
+            return {"_id": custom_id}, 201
+        except Exception as e:
+            self.logger.error(f"Error adding VPN Mayo register to database with custom ID: {e}")
+            return jsonify({"error": f"Error adding VPN Mayo register to database with custom ID: {e}"}), 500
+        
     def add_RFC(self, new_rfc):
         """Function to add a RFC register to the database with a custom ID"""
         try:
