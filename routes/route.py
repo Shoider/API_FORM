@@ -331,6 +331,11 @@ class FileGeneratorRoute(Blueprint):
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
                 conagua = "true" if validated_data.get('solicitante') == "CONAGUA" else "false"
                 externo = "true" if validated_data.get('solicitante') == "EXTERNO" else "false"
+
+                # Opcion seleccionada
+                cuentaUsuario = "true" if validated_data.get('cuentaUsuario') == True else "false"
+                accesoWeb = "true" if validated_data.get('accesoWeb') == True else "false"
+                accesoRemoto = "true" if validated_data.get('accesoRemoto') == True else "false"
                 
                 now = datetime.datetime.now()
                 fecha = now.strftime("%d-%m-%Y")  # DD-MM-YYYY
@@ -372,18 +377,25 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\ALTAUSUARIO}{" + altausuario + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJAUSUARIO}{" + bajausuario + "}" + os.linesep)
 
+                    # Booleanos para las opciones necesarias de mostrar tablas o no
+                    file.write("\\newcommand{\\CONAGUA}{" + conagua + "}" + os.linesep)
+                    file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\CUENTAUSUARIO}{" + cuentaUsuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\ACCESOWEB}{" + accesoWeb + "}" + os.linesep)
+                    file.write("\\newcommand{\\ACCESOREMOTO}{" + accesoRemoto + "}" + os.linesep)
+
                     # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 
                 # Archivos .csv para las tablas
                 # b) Acceso a sitios Web
-                registros = validated_data.get('registrosWeb', [])              # Obtiene array de los datos
+                registros = validated_data.get('registrosWeb', [])       # Obtiene array de los datos
                 self.crear_csv_VPN_Web(temp_dir, "WEB.csv", registros)   # Se crea el .csv
 
                 # c) Acceso a escritorio remoto
                 registros = validated_data.get('registrosRemoto', []) 
                 self.crear_csv_VPN_Remoto(temp_dir, "REMOTO.csv", registros)
-
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
@@ -422,7 +434,7 @@ class FileGeneratorRoute(Blueprint):
                 return send_file(
                     output,
                     mimetype="application/pdf",
-                    download_name="Registro_VPN.pdf",
+                    download_name="Registro_VPN_Mayo.pdf",
                     as_attachment=True,
                 )
         

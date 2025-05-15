@@ -9,8 +9,6 @@ class RegistroSchemaVPNMayo(Schema):
     subgerencia = fields.String(required=True)
     nombreEnlace = fields.String(required=True)
     telefonoEnlace = fields.String(required=True)
-
-    solicitante= fields.Boolean(required=True)
     
     nombreInterno=fields.String(required=False)
     puestoInterno= fields.String(required=False)
@@ -39,6 +37,12 @@ class RegistroSchemaVPNMayo(Schema):
 
     movimiento =fields.String(required=False)
     justificacion=fields.String(required=True)
+
+    # Booleanos
+    solicitante = fields.Boolean(required=True)
+    cuentaUsuario = fields.Boolean(required=True)
+    accesoWeb = fields.Boolean(required=True)
+    accesoRemoto = fields.Boolean(required=True)
 
     # INCISO B)
     registrosWeb = fields.List(fields.Nested(TablasSchemaSitios))
