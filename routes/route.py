@@ -337,7 +337,7 @@ class FileGeneratorRoute(Blueprint):
                 accesoRemoto = "true" if validated_data.get('accesoRemoto') == True else "false"
 
                 nombreusuario= validated_data.get('nombreInterno') if conagua == "true" else validated_data.get('nombreExterno')
-                puestousuario= validated_data.get('puestointerno') if conagua == "true" else ""
+                puestousuario= validated_data.get('puestoInterno') if conagua == "true" else ""
                 
                 now = datetime.datetime.now()
                 fecha = now.strftime("%d-%m-%Y")  # Formato: DD-MM-YYYY
