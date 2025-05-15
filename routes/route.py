@@ -105,6 +105,62 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}")
 
+    def crear_csv_VPN_Web(self, temp_dir, nombre_archivo_csv, registros):
+        """
+        Crea un archivo CSV a partir de un array de registros,
+        con la columna 'id' siempre renombrada a 'No'.
+
+        Args:
+            temp_dir (str): Directorio temporal donde se guardará el CSV.
+            nombre_archivo_csv (str): Nombre del archivo CSV a crear.
+            registros (list): Array de diccionarios con los registros.
+        """
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nombreSistema', 'siglas', 'url', 'puertosServicios'])
+
+            for registro in registros:
+                registro.pop('isNew', None)
+
+            df = pd.DataFrame(registros)
+            df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}")
+
+    def crear_csv_VPN_Remoto(self, temp_dir, nombre_archivo_csv, registros):
+        """
+        Crea un archivo CSV a partir de un array de registros,
+        con la columna 'id' siempre renombrada a 'No'.
+
+        Args:
+            temp_dir (str): Directorio temporal donde se guardará el CSV.
+            nombre_archivo_csv (str): Nombre del archivo CSV a crear.
+            registros (list): Array de diccionarios con los registros.
+        """
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nomeclatura', 'nombreSistema', 'direccion', 'sistemaOperativo'])
+
+            for registro in registros:
+                registro.pop('isNew', None)
+
+            df = pd.DataFrame(registros)
+            df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}")
+
     def modificar_registros_id(self, registros):
         """
         Modifica el array de registros para concatenar "*C" y un salto de línea a la columna "id".
@@ -272,6 +328,10 @@ class FileGeneratorRoute(Blueprint):
                 altausuario = "x" if validated_data.get('movimiento') == "ALTA" else " "
                 bajausuario = "x" if validated_data.get('movimiento') == "BAJA" else " "
 
+                # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
+                conagua = "true" if validated_data.get('solicitante') == "CONAGUA" else "false"
+                externo = "true" if validated_data.get('solicitante') == "EXTERNO" else "false"
+                
                 now = datetime.datetime.now()
                 fecha = now.strftime("%d-%m-%Y")  # DD-MM-YYYY
 
@@ -314,6 +374,16 @@ class FileGeneratorRoute(Blueprint):
 
                     # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
+
+                # Archivos .csv para las tablas
+                # b) Acceso a sitios Web
+                registros = validated_data.get('registrosWeb', [])              # Obtiene array de los datos
+                self.crear_csv_VPN_Web(temp_dir, "WEB.csv", registros)   # Se crea el .csv
+
+                # c) Acceso a escritorio remoto
+                registros = validated_data.get('registrosRemoto', []) 
+                self.crear_csv_VPN_Remoto(temp_dir, "REMOTO.csv", registros)
+
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
