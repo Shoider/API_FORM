@@ -12,10 +12,11 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaTel, forms_schemaRFC, forms_schemaInter):
+    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
+        self.forms_schemaVPNMayo = forms_schemaVPNMayo
         self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schemaInter = forms_schemaInter
@@ -25,6 +26,7 @@ class FileGeneratorRoute(Blueprint):
     def register_routes(self):
         """Function to register the routes for file generation"""
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
+        self.route("/api/v1/vpnmayo", methods=["POST"])(self.vpnmayo)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
@@ -242,6 +244,127 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
+
+
+    def vpnmayo(self):
+        try:
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+
+            # Validacion
+            validated_data = self.forms_schemaVPNMayo.load(data)
+
+            # Guardar en BD
+            new_vpnmayo_data = validated_data
+            vpnmayo_registro, status_code = self.service.add_VPNMayo(new_vpnmayo_data)
+
+            if status_code == 201:
+                noformato = vpnmayo_registro.get('_id')
+                self.logger.info(f"Registro VPN Mayo agregado con ID: {noformato}")
+            
+                # Transformar valores "SI" y "NO"
+                altausuario = "x" if validated_data.get('movimiento') == "ALTA" else " "
+                bajausuario = "x" if validated_data.get('movimiento') == "BAJA" else " "
+
+
+                # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
+                with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\UA}{"+ validated_data.get('unidadAdministrativa')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHA}{"+ validated_data.get('')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\AREA}{"+ validated_data.get('areaAdscripcion')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SUBGERENCIA}{"+ validated_data.get('subgerencia')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREENLACE}{"+ validated_data.get('nombreEnlace')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTENLACE}{"+ validated_data.get('telefonoEnlace')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBRECONAGUA}{"+ validated_data.get('nombreInterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOCONAGUA}{"+ validated_data.get('puestoInterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOCONAGUA}{"+ validated_data.get('correoInterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTCONAGUA}{"+ validated_data.get('telefonoInterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEXTERNO}{"+ validated_data.get('nombreExterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOEXTERNO}{"+ validated_data.get('correoExterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPRESA}{"+ validated_data.get('empresaExterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EQUIPODES}{"+ validated_data.get('equipoExterno')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOEMPLEADO}{"+ validated_data.get('numeroEmpleadoResponsable')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPLEADO}{"+ validated_data.get('nombreResponsable')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoResponsable')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UAEMPLEADO}{"+ validated_data.get('unidadAdministrativaResponsable')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEMPLEADO}{"+ validated_data.get('telefonoResponsable')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TIPOEQUIPO}{"+ validated_data.get('')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SO}{"+ validated_data.get('tipoEquipo')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MARCA}{"+ validated_data.get('marca')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MODELO}{"+ validated_data.get('modelo')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOSERIE}{"+ validated_data.get('serie')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreAutoriza')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoAutoriza')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\ALTAUSUARIO}{" + altausuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJAUSUARIO}{" + bajausuario + "}" + os.linesep)
+
+                    # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
+
+                # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_VPN_241105.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_VPN_241105.pdf")
+
+                # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_VPN_Mayo.tex", archivo_tex)
+
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
+
+                # Compilar latex Aux
+                try:
+                    subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando archivo .aux: {e}")
+                    return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+
+                # Compilar latex PDF
+                try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
+                
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
+
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="Registro_VPN.pdf",
+                    as_attachment=True,
+                )
+        
+            else:
+                return jsonify(vpnmayo_registro), status_code
+
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)        
 
     def tel(self):
         try:
