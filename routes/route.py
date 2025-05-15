@@ -336,6 +336,9 @@ class FileGeneratorRoute(Blueprint):
                 accesoWeb = "true" if validated_data.get('accesoWeb') == True else "false"
                 accesoRemoto = "true" if validated_data.get('accesoRemoto') == True else "false"
 
+                nombreusuario= validated_data.get('nombreInterno') if conagua == "true" else validated_data.get('nombreExterno')
+                puestousuario= validated_data.get('puestointerno') if conagua == "true" else ""
+                
                 now = datetime.datetime.now()
                 fecha = now.strftime("%d-%m-%Y")  # Formato: DD-MM-YYYY
 
@@ -368,8 +371,10 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MARCA}{"+ validated_data.get('marca')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MODELO}{"+ validated_data.get('modelo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOSERIE}{"+ validated_data.get('serie')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoInterno')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ nombreusuario+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ puestousuario+"}"+ os.linesep)
+
                     file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreAutoriza')+"}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoAutoriza')+"}"+ os.linesep)
 

@@ -1,6 +1,7 @@
 \input{DatosVPN.txt}
 
 \documentclass[letterpaper,11pt]{article}
+\usepackage{ifthen}
 
 \usepackage{array}
 \usepackage{soul}
@@ -139,8 +140,13 @@ Número de teléfono y/o extensión: & \EXTENLACE
 \end{longtblr}
 
 \textbf{2. Datos de identificación del usuario solicitante}
+
 \vspace{-15pt}
 
+\newboolean{conagua}
+\setboolean{conagua}{\CONAGUA}
+\ifthenelse{\boolean{conagua}}
+{
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -159,9 +165,8 @@ Puesto o Cargo: &   \PUESTOCONAGUA  \\
 Correo Electrónico:   & \CORREOCONAGUA    \\
 Número de teléfono y/o extensión: & \EXTCONAGUA
 \end{longtblr}
-
-\vspace{-25pt}
-
+}
+{
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -188,6 +193,7 @@ Puesto o cargo:&\PUESTOEMPLEADO\\
 Unidad Administrativa:&\UAEMPLEADO\\
 Número de teléfono o extensión:&\EXTEMPLEADO
 \end{longtblr}
+}
 
 \textbf{3.Servicios solicitados}
 
@@ -213,7 +219,10 @@ Marca: &   \MARCA  & Modelo: & \MODELO\\
 Número de serie:&\NOSERIE
 \end{longtblr}
 
-%\vspace{50pt}
+\newboolean{cuentausuario}
+\setboolean{cuentausuario}{\CUENTAUSUARIO}
+\ifthenelse{\boolean{cuentausuario}}
+{
 \textbf{a)Cuenta de usuario}
 \vspace{-10pt}
 \begin{longtblr}[
@@ -227,7 +236,12 @@ Número de serie:&\NOSERIE
 	~~Alta de usuario (\ALTAUSUARIO) ~~    & ~~Baja de usuario   (\BAJAUSUARIO) ~~
 	
 \end{longtblr}
+}
 
+\newboolean{accesoweb}
+\setboolean{accesoweb}{\ACCESOWEB}
+\ifthenelse{\boolean{accesoweb}}
+{
 \textbf{b) Accesos a sitios Web o Equipo}
 %%%%%%%
 %%%%ACCESOS A SITIOS
@@ -261,7 +275,6 @@ Número de serie:&\NOSERIE
 \textbf{\footnotesize Siglas\\ (si aplica)}&\textbf{\footnotesize URL/IP del Equipo} &
 \textbf{\footnotesize Puertos o \\Servicios \\adicionales}
 \end{longtblr}
-
 %%%%SITIOSWEB
 \DTLforeach*{SITIOSWEB}{\ID=ID, \ABC=ABC, \SIST=SIST, \SIGLAS=SIGLAS, \URL=URL, \PUERTOS=PUERTOS}
 {
@@ -279,7 +292,12 @@ Número de serie:&\NOSERIE
 \ID&\ABC&\SIST&\SIGLAS&\URL& \PUERTOS
 \end{longtblr}
 }
+}
 
+\newboolean{accesoremoto}
+\setboolean{accesoremoto}{\ACCESOREMOTO}
+\ifthenelse{\boolean{accesoremoto}}
+{
 
 \textbf{c)Acceso a escritorios remoto}
 %%%%%%%
@@ -333,7 +351,7 @@ Número de serie:&\NOSERIE
 \ID&\ABC&\NOMEN&\NOMBRE&\IP& \SO
 \end{longtblr}
 }
-
+}
 
 \vspace{-25pt}
 \begin{longtblr}[
