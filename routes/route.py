@@ -371,8 +371,10 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MARCA}{"+ validated_data.get('marca')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MODELO}{"+ validated_data.get('modelo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOSERIE}{"+ validated_data.get('serie')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ nombreusuario+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ puestousuario+"}"+ os.linesep)
+
                     file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreAutoriza')+"}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoAutoriza')+"}"+ os.linesep)
 
