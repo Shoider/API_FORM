@@ -330,13 +330,12 @@ class FileGeneratorRoute(Blueprint):
 
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
                 conagua = "true" if validated_data.get('solicitante') == "CONAGUA" else "false"
-                externo = "true" if validated_data.get('solicitante') == "EXTERNO" else "false"
 
                 # Opcion seleccionada
                 cuentaUsuario = "true" if validated_data.get('cuentaUsuario') == True else "false"
                 accesoWeb = "true" if validated_data.get('accesoWeb') == True else "false"
                 accesoRemoto = "true" if validated_data.get('accesoRemoto') == True else "false"
-                
+
                 now = datetime.datetime.now()
                 fecha = now.strftime("%d-%m-%Y")  # Formato: DD-MM-YYYY
 
@@ -370,7 +369,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MODELO}{"+ validated_data.get('modelo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOSERIE}{"+ validated_data.get('serie')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoInterno')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreAutoriza')+"}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoAutoriza')+"}"+ os.linesep)
 
@@ -379,7 +378,6 @@ class FileGeneratorRoute(Blueprint):
 
                     # Booleanos para las opciones necesarias de mostrar tablas o no
                     file.write("\\newcommand{\\CONAGUA}{" + conagua + "}" + os.linesep)
-                    file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
 
                     file.write("\\newcommand{\\CUENTAUSUARIO}{" + cuentaUsuario + "}" + os.linesep)
                     file.write("\\newcommand{\\ACCESOWEB}{" + accesoWeb + "}" + os.linesep)
