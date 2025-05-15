@@ -1,0 +1,409 @@
+\input{DatosVPN.txt}
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{array}
+\usepackage{soul}
+
+\usepackage{graphicx}
+\usepackage{longtable}
+
+\usepackage{datatool}
+\DTLloaddb{SITIOSWEB}{SITIOSWEB.csv}
+\DTLloaddb{REMOTOESC}{REMOTOESC.csv}
+
+% *** Idioma ***
+\usepackage[spanish]{babel}
+%\usepackage[utf8]{inputenc}
+
+% *** Fuente ***
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
+
+% *** Colores ***
+\usepackage{xcolor}
+\definecolor{dorado}{RGB}{190,150,91} 
+
+% *** Margenes y Tamaño de Hoja
+\usepackage{geometry}
+\geometry{
+left = 25mm,
+right = 25mm,
+top = 45mm,
+bottom = 15mm,
+headheight = 28mm
+}
+
+% *** Imagenes ***
+\usepackage{graphicx}
+\graphicspath{./imagenes}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+% *** Fecha ***
+%\usepackage[useregional]{datetime2}
+%\usepackage{datetime2}
+\usepackage{datetime2}
+\DTMsetdatestyle{ddmmyyyy}
+
+
+%No cortar palabras
+\usepackage[none]{hyphenat}
+
+
+% *** Encabezado ***
+\usepackage{lastpage} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\lhead{
+		\begin{tblr}{
+		width = \linewidth,
+		colspec = {Q[120]Q[507]Q[70]Q[70]},
+		row{2} = {c},
+		row{3} = {c},
+                     row{4} = {c},
+		column{2} = {c},
+                      cell{4}{2} = {h},
+		cell{1}{1} = {r=4}{c},
+		cell{1}{2} = {r=3}{},
+		cell{1}{3} = {c},
+		cell{1}{4} = {c},
+		vlines,
+		hline{1,5} = {-}{},
+		hline{2-3} = {3-4}{},
+		hline{4} = {2-4}{},
+	}
+	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{ COMISIÓN NACIONAL DEL AGUA}\\{\footnotesize SUBDIRECCIÓN GENERAL DE ADMINISTRACIÓN}\\{\footnotesize Gerencia de Tecnologías de Información y Comunicaciones} \\{\footnotesize Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad}} & \tiny Página    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \tiny Versión  & \tiny 0.3 \\
+	&                                                                                       & \tiny Fecha de Formato & {\tiny Mayo-2025 }    \\
+	& { \textbf {Solicitud de Acceso Remoto a tráves de una Red Privada Virtual (VPN)}         }                              &  \tiny No. Formato & {\tiny \NOFORMATO }
+\end{tblr}
+}
+\chead{
+
+}
+\rhead{}
+
+% *** Pie de Pagina
+%\renewcommand{\footrulewidth}{0.5pt}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\begin{document}
+\sloppy
+%\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[200]Q[170]Q[80]},
+		column{1} = {l},
+		column{2} = {c},
+		column{3} = {l},
+		column{4} = {c},
+		hlines,
+		vlines,
+	}
+	Número de memorando:  &\NOMEMO      & Fecha de la solicitud:   & 15-05-2025
+\end{longtblr}
+\textbf{1. Datos de identificación del área solicitante}
+\vspace{-15pt}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]},
+                     column{1}={r},
+                     column{2}={j},
+                      row{4} = {c},
+		cell{4}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+Unidad Administrativa:                     &  \UA \\
+Área de descripción: &   \AREA  \\
+Subgerencia o Subdirección:   & \SUBGERENCIA     \\
+\textbf{Enlace Informático o Contacto Responsable del área de adscripción} &    \\
+Nombre Completo:   & \NOMBREENLACE     \\
+Número de teléfono y/o extensión: & \EXTENLACE 
+\end{longtblr}
+
+\textbf{2. Datos de identificación del usuario solicitante}
+\vspace{-15pt}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]},
+                     column{1}={r},
+                      row{1} = {c},
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Datos del usuario solicitante  CONAGUA}&\\
+Nombre Completo:                     &  \NOMBRECONAGUA \\
+Puesto o Cargo: &   \PUESTOCONAGUA  \\
+Correo Electrónico:   & \CORREOCONAGUA    \\
+Número de teléfono y/o extensión: & \EXTCONAGUA
+\end{longtblr}
+
+\vspace{-25pt}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]},
+                     column{1}={r},
+                      row{1} = {c},
+		cell{1}{1} = {c=2}{0.874\linewidth},
+                     row{5} = {c},
+		cell{5}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Datos del usuario solicitante  EXTERNO}&\\
+Nombre Completo:                     &  \NOMBREEXTERNO \\
+Nombre completo de la empresa: &   \NOMBREEMPRESA  \\
+Equipo de desarrollo:   & \EQUIPODES    \\
+\textbf{Datos de la persona responsable en la CONAGUA para el solicitante externo}\\
+Número de empleado: &\NOEMPLEADO\\
+Nombre Completo:&\NOMBREEMPLEADO\\
+Puesto o cargo:&\PUESTOEMPLEADO\\
+Unidad Administrativa:&\UAEMPLEADO\\
+Número de teléfono o extensión:&\EXTEMPLEADO
+\end{longtblr}
+
+\textbf{3.Servicios solicitados}
+
+\vspace{-15pt}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[200]Q[200]Q[200]},
+                     column{1}={r},
+                     column{3}={r},
+                      row{1} = {c},
+		cell{1}{1} = {c=4}{0.874\linewidth},
+                     cell{4}{2} = {c=3}{0.644\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Datos del equipo de origen}&&&\\
+Tipo de Equipo:                     &\TIPOEQUIPO &Sistema Operativo:&\SO \\
+Marca: &   \MARCA  & Modelo: & \MODELO\\
+Número de serie:&\NOSERIE
+\end{longtblr}
+
+%\vspace{50pt}
+\textbf{a)Cuenta de usuario}
+\vspace{-10pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,		
+		hlines,
+		vlines,
+	}
+	~~Alta de usuario (\ALTAUSUARIO) ~~    & ~~Baja de usuario   (\BAJAUSUARIO) ~~
+	
+\end{longtblr}
+
+\textbf{b) Accesos a sitios Web o Equipo}
+%%%%%%%
+%%%%ACCESOS A SITIOS
+\vspace{-10pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     %row{1}={dorado},                     
+		hlines,
+		vlines,
+	}
+	\textbf{Acceso a sitios Web o Equipo}
+\end{longtblr}
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+\vspace{-35pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  hlines,
+  vlines,
+                     cells={c},
+ }
+\textbf{\footnotesize ID}&\textbf {\footnotesize A\\B\\C}&\textbf{\footnotesize Nombre Sistema / Servicio \\ (si aplica)}&
+\textbf{\footnotesize Siglas\\ (si aplica)}&\textbf{\footnotesize URL/IP del Equipo} &
+\textbf{\footnotesize Puertos o \\Servicios \\adicionales}
+\end{longtblr}
+
+%%%%SITIOSWEB
+\DTLforeach*{SITIOSWEB}{\ID=ID, \ABC=ABC, \SIST=SIST, \SIGLAS=SIGLAS, \URL=URL, \PUERTOS=PUERTOS}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  hlines,
+ vlines,
+                     cells={c},
+ }
+\ID&\ABC&\SIST&\SIGLAS&\URL& \PUERTOS
+\end{longtblr}
+}
+
+
+\textbf{c)Acceso a escritorios remoto}
+%%%%%%%
+%%%%ACCESOS A SITIOS
+\vspace{-10pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     %row{1}={dorado},                     
+		hlines,
+		vlines,
+	}
+	\textbf{Acceso a escritorio remoto (Solo RustDesk)}\\
+           \textbf{Equipo Destino CONAGUA}
+\end{longtblr}
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+\vspace{-35pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  hlines,
+  vlines,
+                     cells={c},
+ }
+\textbf{ID}&\textbf {A\\B\\C}&\textbf{Nomenclatura}&
+\textbf{Nombre}&\textbf{Dirección IP} &
+\textbf{Sistema Operativo}
+\end{longtblr}
+
+%%%%SITIOSWEB
+\DTLforeach*{REMOTOESC}{\ID=ID, \ABC=ABC, \NOMEN=NOMEN, \NOMBRE=NOMBRE, \IP=IP, \SO=SO}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  hlines,
+ vlines,
+                     cells={c},
+ }
+\ID&\ABC&\NOMEN&\NOMBRE&\IP& \SO
+\end{longtblr}
+}
+
+
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+                     %row{1}={dorado},
+		cells = {c},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Justificación de la necesidad del servicio} \\\JUSTIFICACION
+\end{longtblr}
+\clearpage
+\section*{Terminos y condiciones de uso del servicio:}
+{\footnotesize \begin{enumerate}
+	\item El usuario solicitante puede tramitar este formato las veces que sea necesario, según sus necesidades. Los servicios solicitados son acumulados a los existentes. Es responsabilidad del solicitante, indicar correctamente el movimiento (A, B, C) de los servicios especificados tomando en cuenta su historial de solicitudes.
+	\item El Enlace Informático de la unidad administrativa solicitante, será quien gestione y de seguimiento a la solicitud de servicios de Red Privada Virtual (VPN) del personal de su unidad. 
+	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad única y exclusivamente proveerá el servicio de acceso remoto por VPN al usuario solicitante autorizado por el titular de su unidad administrativa previa presentación del formato debidamente llenado.
+	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad, le proveerá al usuario autorizado la credencial de acceso, manual de instalación y configuración del software de cliente de VPN de usuario mediante correo electrónico personalizado.
+	\item El acceso a los servicios de red interna mediante el servicio de VPN, será con el uso de una contraseña que cumpla con la política correspondiente y el envío por correo electrónico al usuario de una clave de 6 dígitos como doble factor de autenticación. Es responsabilidad única y exclusiva del usuario autorizado a conservar en secreto, no proporcionar a terceros su contraseña y no permitir el acceso a su cuenta de correo electrónico para la obtención de la clave de 6 dígitos a terceros.
+	\item Posterior al proceso de autorización de acceso al usuario y ya establecido el túnel de VPN, solo el tráfico que se iden-tifique que tiene como destino la red interna de la CONAGUA cursará por el túnel de VPN, el resto del tráfico del equi-po origen del usuario seguirá las rutas que tenga definidas en su configuración para acceder a otros recursos de red.
+	\item El servicio de VPN, solo permitirá por cada usuario, una conexión desde un dispositivo remoto, por lo que no será posible tener 2 o más conexiones simultáneas para una misma cuenta.
+	\item La sesión establecida será automáticamente cerrada transcurridos 10 minutos de inactividad. El usuario deberá repetir el proceso de inicio de sesión para conectarse a la red de la CONAGUA. Está prohibido usar cualquier proceso o software para mantener la sesión activa.
+	\item El usuario autorizado de VPN acepta que al hacer uso del servicio de VPN mediante cualquier tipo de conexión, es de su exclusiva responsabilidad el costo que ello genere.
+           \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren actualizados. En el caso de equipo per-sonal, es responsabilidad del usuario autorizado ejecutar y mantener actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de aplicaciones y exploradores entre otros que ofrezca el sistema ope-rativo o sean instalados de manera independiente.
+            \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en mate-ria de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
+
+\end{enumerate}}
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			%row{1} = {gris},
+			%row{1} = {c},
+                                row{1}={c},
+			%cell{1}{1} = {c=2}{0.942\linewidth},
+                                %cell{2}{1} = {c=2}{0.942\linewidth},
+			%hlines,
+			%vlines,
+		}                                                                                            
+		{\footnotesize Acepto los Términos y Condiciones de Uso del Servicio\\[1cm] \rule{5cm}{0.5mm}\\\footnotesize \NOMBREUSUARIO} & 
+                   {\footnotesize Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\\footnotesize \NOMBREJEFE\\ \footnotesize \PUESTOJEFE} &
+                   {\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize \NOMBREEMPLEADO\\ \footnotesize \PUESTOEMPLEADO}
+	\end{longtblr}
+\ul{\textbf {Formalización exclusiva para personal externo de la Subgerencia de Sistemas}}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			%row{1} = {gris},
+			%row{1} = {c},
+                                row{1}={c},
+			%cell{1}{1} = {c=2}{0.942\linewidth},
+                                %cell{2}{1} = {c=2}{0.942\linewidth},
+			%hlines,
+			%vlines,
+		}                                                                                            
+		{\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize \NOMBREUSUARIO\\ \footnotesize \PUESTOUSUARIO} & 
+                  % {Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\NOMBREJEFE\\PUESTOJEFE} &
+                   {\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
+	\end{longtblr}
+
+{\tiny {\textbf{ Nota:}} El memorando se debe dirigir al Titular de la Gerencia de Tecnología de la Información y Comunicaciones con copia al Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad. En caso de no recibir el memorando y esta solicitud en original en un lapso de 15 días hábiles para los Organismos de Cuenca o Direcciones Locales; o en un lapso no mayor a 3 días hábiles para otras unidades administrativas, se deshabilitará la cuenta del usuario y solo será reactivada hasta la recepción de ambos documentos.}
+
+\end{document}
