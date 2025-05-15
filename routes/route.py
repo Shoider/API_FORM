@@ -394,11 +394,11 @@ class FileGeneratorRoute(Blueprint):
                 # Archivos .csv para las tablas
                 # b) Acceso a sitios Web
                 registros = validated_data.get('registrosWeb', [])       # Obtiene array de los datos
-                self.crear_csv_VPN_Web(temp_dir, "WEB.csv", registros)   # Se crea el .csv
+                self.crear_csv_VPN_Web(temp_dir, "SITIOSWEB.csv", registros)   # Se crea el .csv
 
                 # c) Acceso a escritorio remoto
                 registros = validated_data.get('registrosRemoto', []) 
-                self.crear_csv_VPN_Remoto(temp_dir, "REMOTO.csv", registros)
+                self.crear_csv_VPN_Remoto(temp_dir, "REMOTOESC.csv", registros)
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
