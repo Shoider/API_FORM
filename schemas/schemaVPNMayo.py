@@ -39,7 +39,7 @@ class RegistroSchemaVPNMayo(Schema):
     justificacion=fields.String(required=True)
 
     # Booleanos
-    solicitante = fields.Boolean(required=True)
+    solicitante = fields.String(required=True)
     cuentaUsuario = fields.Boolean(required=True)
     accesoWeb = fields.Boolean(required=True)
     accesoRemoto = fields.Boolean(required=True)
