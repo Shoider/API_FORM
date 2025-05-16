@@ -113,7 +113,7 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	Número de memorando:  &\NOMEMO      & Fecha de la solicitud:   & 15-05-2025
+	Número de memorando:  &\NOMEMO      & Fecha de la solicitud:   & \FECHA
 \end{longtblr}
 \textbf{1. Datos de identificación del área solicitante}
 \vspace{-15pt}
@@ -384,6 +384,16 @@ Número de serie:&\NOSERIE
             \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en mate-ria de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
 
 \end{enumerate}}
+
+
+\newboolean{otra}
+\setboolean{otra}{\OTRA}
+\ifthenelse{\boolean{otra}}
+{
+\newboolean{conaguafirma}
+\setboolean{conaguafirma}{\CONAGUAFIRMA}
+\ifthenelse{\boolean{conaguafirma}}
+{
 \vspace{-15pt}
 \begin{longtblr}[
 	label = none,
@@ -403,7 +413,34 @@ Número de serie:&\NOSERIE
                    {\footnotesize Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\\footnotesize \NOMBREJEFE\\ \footnotesize \PUESTOJEFE} &
                    {\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize \NOMBREEMPLEADO\\ \footnotesize \PUESTOEMPLEADO}
 	\end{longtblr}
-\ul{\textbf {Formalización exclusiva para personal externo de la Subgerencia de Sistemas}}
+}
+{
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			%row{1} = {gris},
+			%row{1} = {c},
+                                row{1}={c},
+			%cell{1}{1} = {c=2}{0.942\linewidth},
+                                %cell{2}{1} = {c=2}{0.942\linewidth},
+			%hlines,
+			%vlines,
+		}                                                                                            
+		{\footnotesize Acepto los Términos y Condiciones de Uso del Servicio\\[1cm] \rule{5cm}{0.5mm}\\\footnotesize \NOMBREUSUARIO} & 
+                   {\footnotesize Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\\footnotesize \NOMBREJEFE\\ \footnotesize \PUESTOJEFE} 
+	\end{longtblr}
+}
+}
+
+\newboolean{sistemas}
+\setboolean{sistemas}{\SISTEMAS}
+\ifthenelse{\boolean{sistemas}}
+{
+%\ul{\textbf {Formalización exclusiva para personal externo de la Subgerencia de Sistemas}}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -422,6 +459,7 @@ Número de serie:&\NOSERIE
                   % {Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\NOMBREJEFE\\PUESTOJEFE} &
                    {\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
 	\end{longtblr}
+}
 
 {\tiny {\textbf{ Nota:}} El memorando se debe dirigir al Titular de la Gerencia de Tecnología de la Información y Comunicaciones con copia al Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad. En caso de no recibir el memorando y esta solicitud en original en un lapso de 15 días hábiles para los Organismos de Cuenca o Direcciones Locales; o en un lapso no mayor a 3 días hábiles para otras unidades administrativas, se deshabilitará la cuenta del usuario y solo será reactivada hasta la recepción de ambos documentos.}
 

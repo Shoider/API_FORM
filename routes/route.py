@@ -125,7 +125,7 @@ class FileGeneratorRoute(Blueprint):
                 registro.pop('isNew', None)
 
             df = pd.DataFrame(registros)
-            df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
+            df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
             df.to_csv(out_csv_path, index=False, mode='x')
 
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
@@ -153,7 +153,7 @@ class FileGeneratorRoute(Blueprint):
                 registro.pop('isNew', None)
 
             df = pd.DataFrame(registros)
-            df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
+            df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
             df.to_csv(out_csv_path, index=False, mode='x')
 
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
@@ -331,6 +331,11 @@ class FileGeneratorRoute(Blueprint):
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
                 conagua = "true" if validated_data.get('solicitante') == "CONAGUA" else "false"
 
+                ###PARA BOOLEANOS DE FIRMA
+                conaguafirma = "false" if conagua == "true" else "false"
+                sistemas = "true" if validated_data.get('subgerencia')== "Subgerencia de Sistemas"  else "false"
+                otrasub = "true" if sistemas == "false" else "false"
+
                 # Opcion seleccionada
                 cuentaUsuario = "true" if validated_data.get('cuentaUsuario') == True else "false"
                 accesoWeb = "true" if validated_data.get('accesoWeb') == True else "false"
@@ -384,6 +389,11 @@ class FileGeneratorRoute(Blueprint):
                     # Booleanos para las opciones necesarias de mostrar tablas o no
                     file.write("\\newcommand{\\CONAGUA}{" + conagua + "}" + os.linesep)
 
+                    ##BOOLEANOS PARA FIRMAS 
+                    file.write("\\newcommand{\\CONAGUAFIRMA}{" + conaguafirma + "}" + os.linesep)
+                    file.write("\\newcommand{\\SISTEMAS}{" + sistemas + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRA}{" + otrasub + "}" + os.linesep)
+
                     file.write("\\newcommand{\\CUENTAUSUARIO}{" + cuentaUsuario + "}" + os.linesep)
                     file.write("\\newcommand{\\ACCESOWEB}{" + accesoWeb + "}" + os.linesep)
                     file.write("\\newcommand{\\ACCESOREMOTO}{" + accesoRemoto + "}" + os.linesep)
@@ -412,15 +422,16 @@ class FileGeneratorRoute(Blueprint):
                 shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
                 # Compilar latex Aux
-                try:
-                    subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
-                    self.logger.info(f"Archivo .aux generado para {archivo_tex}")
-                except:
-                    self.logger.error(f"Error generando archivo .aux: {e}")
-                    return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
+               # try:
+                    #subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
+                    #self.logger.info(f"Archivo .aux generado para {archivo_tex}")
+                #except:
+                 #   self.logger.error(f"Error generando archivo .aux: {e}")
+                  #  return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
 
                 # Compilar latex PDF
                 try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
                 except:
