@@ -126,6 +126,11 @@ class FileGeneratorRoute(Blueprint):
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
+            df = df.rename(columns={'movimiento': 'ABC'})
+            df = df.rename(columns={'nombreSistema': 'SIST'})
+            df = df.rename(columns={'siglas': 'SIGLAS'})
+            df = df.rename(columns={'url': 'URL'})
+            df = df.rename(columns={'puertosServicios': 'PUERTOS'})
             df.to_csv(out_csv_path, index=False, mode='x')
 
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
@@ -154,6 +159,11 @@ class FileGeneratorRoute(Blueprint):
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
+            df = df.rename(columns={'movimiento': 'ABC'})  
+            df = df.rename(columns={'nomenclatura': 'NOMEN'})  
+            df = df.rename(columns={'nombreSistema': 'NOMBRE'})  
+            df = df.rename(columns={'direccion': 'IP'})  
+            df = df.rename(columns={'sistemaOperativo': 'SO'})  
             df.to_csv(out_csv_path, index=False, mode='x')
 
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
