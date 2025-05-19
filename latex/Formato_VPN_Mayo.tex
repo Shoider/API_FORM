@@ -15,12 +15,8 @@
 
 % *** Idioma ***
 \usepackage[spanish]{babel}
-%\usepackage[utf8]{inputenc}
 
 % *** Fuente ***
-%\usepackage{lmodern}
-%\usepackage[T1]{fontenc}
-
 \usepackage{fontspec}
 \setmainfont{Noto Sans}
 
@@ -45,14 +41,6 @@ headheight = 28mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
-
-% *** Fecha ***
-%\usepackage[useregional]{datetime2}
-%\usepackage{datetime2}
-\usepackage{datetime2}
-\DTMsetdatestyle{ddmmyyyy}
-
-
 %No cortar palabras
 \usepackage[none]{hyphenat}
 
@@ -92,7 +80,6 @@ headheight = 28mm
 \rhead{}
 
 % *** Pie de Pagina
-%\renewcommand{\footrulewidth}{0.5pt}
 \lfoot{}
 \cfoot{}
 \rfoot{}
@@ -113,7 +100,7 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	Número de memorando:  &\NOMEMO      & Fecha de la solicitud:   & \FECHA
+	Número de memorando:  &      & Fecha de la solicitud:   & \FECHA
 \end{longtblr}
 \textbf{1. Datos de identificación del área solicitante}
 \vspace{-15pt}
@@ -194,7 +181,7 @@ Unidad Administrativa:&\UAEMPLEADO\\
 Número de teléfono o extensión:&\EXTEMPLEADO
 \end{longtblr}
 }
-\clearpage
+
 \textbf{3.Servicios solicitados}
 
 \vspace{-15pt}
@@ -238,10 +225,12 @@ Número de serie:&\NOSERIE
 \end{longtblr}
 }
 
+
 \newboolean{accesoweb}
 \setboolean{accesoweb}{\ACCESOWEB}
 \ifthenelse{\boolean{accesoweb}}
 {
+\clearpage
 \textbf{b) Accesos a sitios Web o Equipo}
 %%%%%%%
 %%%%ACCESOS A SITIOS
@@ -252,8 +241,7 @@ Número de serie:&\NOSERIE
 	]{
 		width = \linewidth,
 		colspec = {Q[935]},
-		cells = {c},
-                     %row{1}={dorado},                     
+		cells = {c},                     
 		hlines,
 		vlines,
 	}
@@ -266,14 +254,14 @@ Número de serie:&\NOSERIE
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  colspec = {Q[1]Q[2]Q[6]Q[4]Q[12]Q[5]},                     
   hlines,
   vlines,
                      cells={c},
  }
-\textbf{\footnotesize ID}&\textbf {\footnotesize A\\B\\C}&\textbf{\footnotesize Nombre Sistema / Servicio \\ (si aplica)}&
-\textbf{\footnotesize Siglas\\ (si aplica)}&\textbf{\footnotesize URL/IP del Equipo} &
-\textbf{\footnotesize Puertos o \\Servicios \\adicionales}
+\textbf{\footnotesize ID}&\textbf {\footnotesize A|B|C}&\textbf{\footnotesize Nombre Sistema/Servicio}&
+\textbf{\footnotesize Siglas}&\textbf{\footnotesize URL/IP del Equipo} &
+\textbf{\footnotesize Puertos o Servicios \\adicionales}
 \end{longtblr}
 %%%%SITIOSWEB
 \DTLforeach*{SITIOSWEB}{\ID=ID, \ABC=ABC, \SIST=SIST, \SIGLAS=SIGLAS, \URL=URL, \PUERTOS=PUERTOS}
@@ -283,13 +271,12 @@ Número de serie:&\NOSERIE
  label = none,
  entry = none,
  ]{
-  width = \linewidth,
-  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
-  hlines,
- vlines,
-                     cells={c},
+                      colspec = {Q[1]Q[2]Q[6]Q[4]Q[12]Q[5]},                     
+                      hlines,
+                     vlines,
+                    cells={c},                                
  }
-\ID&\ABC&\SIST&\SIGLAS&\URL& \PUERTOS
+{\ID}&{\ABC}&{\SIST}&{\SIGLAS}&{\URL}&{ \PUERTOS}
 \end{longtblr}
 }
 }
@@ -309,8 +296,7 @@ Número de serie:&\NOSERIE
 	]{
 		width = \linewidth,
 		colspec = {Q[935]},
-		cells = {c},
-                     %row{1}={dorado},                     
+		cells = {c},                
 		hlines,
 		vlines,
 	}
@@ -324,14 +310,14 @@ Número de serie:&\NOSERIE
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  colspec = {Q[1]Q[2]Q[6]Q[6]Q[6]Q[6]},                     
   hlines,
   vlines,
                      cells={c},
  }
-\textbf{ID}&\textbf {A\\B\\C}&\textbf{Nomenclatura}&
-\textbf{Nombre}&\textbf{Dirección IP} &
-\textbf{Sistema Operativo}
+\textbf{\footnotesize ID}&\textbf {\footnotesize A|B|C}&\textbf{\footnotesize Nomenclatura}&
+\textbf{\footnotesize Nombre}&\textbf{\footnotesize Dirección IP} &
+\textbf{\footnotesize Sistema Operativo}
 \end{longtblr}
 
 %%%%SITIOSWEB
@@ -343,7 +329,7 @@ Número de serie:&\NOSERIE
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[1]Q[1]Q[8]Q[6]Q[12]Q[4]},                     
+  colspec = {Q[1]Q[2]Q[6]Q[6]Q[6]Q[6]},                     
   hlines,
  vlines,
                      cells={c},
@@ -362,7 +348,6 @@ Número de serie:&\NOSERIE
 	]{
 		width = \linewidth,
 		colspec = {Q[935]},
-                     %row{1}={dorado},
 		cells = {c},
 		row{2} = {},
 		hlines,
@@ -403,13 +388,7 @@ Número de serie:&\NOSERIE
 	]{
 			width = \linewidth,
 			colspec = {Q[200]Q[200]Q[200]},
-			%row{1} = {gris},
-			%row{1} = {c},
                                 row{1}={c},
-			%cell{1}{1} = {c=2}{0.942\linewidth},
-                                %cell{2}{1} = {c=2}{0.942\linewidth},
-			%hlines,
-			%vlines,
 		}                                                                                            
 		{ Acepto los Términos y Condiciones de Uso del Servicio\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO} & 
                    { Autoriza Servicios\\~\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE\\  \PUESTOJEFE} &
@@ -424,13 +403,7 @@ Número de serie:&\NOSERIE
 	]{
 			width = \linewidth,
 			colspec = {Q[200]Q[200]Q[200]},
-			%row{1} = {gris},
-			%row{1} = {c},
                                 row{1}={c},
-			%cell{1}{1} = {c=2}{0.942\linewidth},
-                                %cell{2}{1} = {c=2}{0.942\linewidth},
-			%hlines,
-			%vlines,
 		}                                                                                            
 		{ Acepto los Términos y Condiciones de Uso del Servicio\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO} & 
                    { Autoriza Servicios\\~\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE\\  \PUESTOJEFE} 
@@ -449,16 +422,9 @@ Número de serie:&\NOSERIE
 	]{
 			width = \linewidth,
 			colspec = {Q[200]Q[200]Q[200]},
-			%row{1} = {gris},
-			%row{1} = {c},
                                 row{1}={c},
-			%cell{1}{1} = {c=2}{0.942\linewidth},
-                                %cell{2}{1} = {c=2}{0.942\linewidth},
-			%hlines,
-			%vlines,
 		}                                                                                            
 		{\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize \NOMBREUSUARIO\\ \footnotesize \PUESTOUSUARIO} & 
-                  % {Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\NOMBREJEFE\\PUESTOJEFE} &
                    {\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
 	\end{longtblr}
 }
