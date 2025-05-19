@@ -362,7 +362,7 @@ class FileGeneratorRoute(Blueprint):
                 with open(datos_txt_path, 'w') as file: 
                     file.write("\\newcommand{\\UA}{"+ validated_data.get('unidadAdministrativa')+"}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando')+"}"+ os.linesep)
+                    #file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando')+"}"+ os.linesep)
                     file.write("\\newcommand{\\FECHA}{"+ fecha +"}"+ os.linesep)
                     file.write("\\newcommand{\\AREA}{"+ validated_data.get('areaAdscripcion')+"}"+ os.linesep)
                     file.write("\\newcommand{\\SUBGERENCIA}{"+ validated_data.get('subgerencia')+"}"+ os.linesep)

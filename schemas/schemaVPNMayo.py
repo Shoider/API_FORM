@@ -3,7 +3,7 @@ from schemas.schemaTablasVPN import TablasSchemaSitios
 from schemas.schemaTablasVPN import TablasSchemasAcceso
 
 class RegistroSchemaVPNMayo(Schema):
-    memorando=fields.String(required=True)
+    #memorando=fields.String(required=True)
     unidadAdministrativa = fields.String(required=True)
     areaAdscripcion = fields.String(required=True)
     subgerencia = fields.String(required=True)
