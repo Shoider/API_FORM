@@ -1,6 +1,7 @@
 \input{Datos.txt}
 %%GIRAR TODO EL DOCUMENTO
-\documentclass[a4paper,landscape]{article}
+%\documentclass[a4paper,landscape]{article}
+\documentclass[letterpaper,11pt,landscape]{article}
 %GIRAR UN ESPACIO ESPECIFICO 
 \usepackage{pdflscape}
 \usepackage{array}
@@ -37,12 +38,11 @@
 \usepackage[utf8]{inputenc}
 
 % *** Fuente ***
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
 %%FUENTE NOTO
-%\usepackage[T1]{fontenc}    % Codificación de fuente
-%\usepackage[utf8]{inputenc} % Codificación del archivo fuente
-%\usepackage{noto}           % Paquete para usar Noto Sans
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
 
 % *** Colores ***
 \usepackage{xcolor}
@@ -60,11 +60,11 @@
 % *** Margenes y Tamaño de Hoja
 \usepackage{geometry}
 \geometry{
-left = 25mm,
-right = 25mm,
-top = 40mm,
-bottom = 1mm,
-headheight = 25mm,
+left = 15mm,
+right = 15mm,
+top = 45mm,
+bottom = 15mm,
+headheight = 28mm
 }
 
 % *** Imagenes ***
@@ -102,10 +102,10 @@ headheight = 25mm,
 		hline{2-3} = {3-4}{},
 		hline{4} = {2-4}{},
 	}
-	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información y Comunicaciones. \\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \tiny HOJA    & {\tiny \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \tiny PROCESO   & \tiny ACMB \\
-	&                                                                                       &{ \tiny FECHA \\ 07-04-2025} & {\tiny Último Cambio\\ Liberado }    \\
-	& { Solicitud de alta baja o cambio en la infraestructura de seguridad de la \\Comisión Nacional del Agua.}                                       &  { \scriptsize No. Formato \\ \NOFORMATO}       & { \scriptsize ANEXO 17 FORMATO 1}
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf {COMISIÓN NACIONAL DEL AGUA}\\Gerencia de Tecnologías de Información y Comunicaciones. \\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \footnotesize HOJA    & {\footnotesize \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       &\footnotesize PROCESO   & \footnotesize ACMB \\
+	&                                                                                       &{ \footnotesize FECHA \\ 07-04-2025} & {\footnotesize Último Cambio\\ Liberado }    \\
+	&\textbf { Solicitud de alta baja o cambio en la infraestructura de seguridad de la Comisión Nacional del Agua.}                                       &  { \footnotesize No. Formato \\ \NOFORMATO}       & { \footnotesize ANEXO 17 FORMATO 1}
 \end{tblr}
 }
 \chead{}
@@ -329,6 +329,7 @@ headheight = 25mm,
 	}
 	\textbf{Temporalidad de Intersistemas} \\ \TEMPOINTER
 \end{longtblr}
+\clearpage
 }%%FIN CONDICIONAL IF
 
 %%%%%%%%
@@ -723,6 +724,7 @@ vlines,
 	}
 	\textbf{Temporalidad de Usuarios} \\ \TEMPOUSUA
 \end{longtblr}%%fin de tempo usua
+\clearpage
 }
 %%%%%%%%
 
@@ -801,8 +803,8 @@ vlines,
 %\end{landscape}
 \clearpage
 %%%..... POLÍTICAS
-\section*{Políticas del servicio}
-{\small \begin{itemize}
+\textbf{Políticas del servicio}
+{\begin{itemize}
 	        \item El solicitante deberá presentar este formato adjuntando el Memorando o Atenta nota y número de ticket de Mesa de ayuda asociado, sin los cuales no se podrá atender su solicitud.  
 	        \item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedita de las configuraciones solicitadas. Es responsabilidad del solicitante recabar la información con los Administradores de los sistemas o Áreas involucrados (Subgerencia de Sistemas y/o Subgerencia de Internet e Intranet).
            \item El solicitante deberá proporcionar la dirección IP física y si utiliza dirección NAT agregarlo por cada servidor involucrado, no siendo responsabilidad de la SSTTS si al establecer la comunicación no conecta por falta de este dato. De no proporcionarse la dirección IP NAT correcta, las reglas de cortafuegos se configurarán por defecto con la dirección IP del adaptador de red de los servidores y corresponderá al Administrador del sistema aplicar los cambios en el sistema o servidores para establecer la comunicación.
