@@ -1,6 +1,7 @@
 \input{Datos.txt}
 %%GIRAR TODO EL DOCUMENTO
-\documentclass[a4paper,landscape]{article}
+%\documentclass[a4paper,landscape]{article}
+\documentclass[letterpaper,11pt,landscape]{article}
 %GIRAR UN ESPACIO ESPECIFICO 
 \usepackage{pdflscape}
 \usepackage{array}
@@ -37,12 +38,11 @@
 \usepackage[utf8]{inputenc}
 
 % *** Fuente ***
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
 %%FUENTE NOTO
-%\usepackage[T1]{fontenc}    % Codificación de fuente
-%\usepackage[utf8]{inputenc} % Codificación del archivo fuente
-%\usepackage{noto}           % Paquete para usar Noto Sans
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
 
 % *** Colores ***
 \usepackage{xcolor}
@@ -60,11 +60,11 @@
 % *** Margenes y Tamaño de Hoja
 \usepackage{geometry}
 \geometry{
-left = 25mm,
-right = 25mm,
-top = 40mm,
-bottom = 1mm,
-headheight = 25mm,
+left = 15mm,
+right = 15mm,
+top = 45mm,
+bottom = 15mm,
+headheight = 28mm
 }
 
 % *** Imagenes ***
@@ -94,16 +94,18 @@ headheight = 25mm,
 		cell{1}{2} = {r=3}{},
 		cell{1}{3} = {c},
 		cell{1}{4} = {c},
-		cell{4}{3} = {c=2}{c},
+                     cell{4}{3} = {c},
+                     cell{4}{4} = {c},
+		%cell{4}{3} = {c=2}{c},
 		vlines,
 		hline{1,5} = {-}{},
 		hline{2-3} = {3-4}{},
 		hline{4} = {2-4}{},
 	}
-	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información y Comunicaciones. \\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \tiny HOJA    & {\tiny \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \tiny PROCESO   & \tiny ACMB \\
-	&                                                                                       &{ \tiny FECHA \\ 07-04-2025} & {\tiny Último Cambio\\ Liberado }    \\
-	& { Solicitud de alta baja o cambio en la infraestructura de seguridad de la \\Comisión Nacional del Agua.}                                       &  { \scriptsize ANEXO 17 FORMATO 1}       &           
+	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf {COMISIÓN NACIONAL DEL AGUA}\\Gerencia de Tecnologías de Información y Comunicaciones. \\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \footnotesize HOJA    & {\footnotesize \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       &\footnotesize PROCESO   & \footnotesize ACMB \\
+	&                                                                                       &{ \footnotesize FECHA \\ 07-04-2025} & {\footnotesize Último Cambio\\ Liberado }    \\
+	&\textbf { Solicitud de alta baja o cambio en la infraestructura de seguridad de la Comisión Nacional del Agua.}                                       &  { \footnotesize No. Formato \\ \NOFORMATO}       & { \footnotesize ANEXO 17 FORMATO 1}
 \end{tblr}
 }
 \chead{}
@@ -119,40 +121,58 @@ headheight = 25mm,
 \usepackage[none]{hyphenat}
 \begin{document}
 \sloppy
-
+%%%INFORMACIÓN DEL SOLICITANTE Y ENLACE INFORMATICO 
+\newboolean{soli}
+\setboolean{soli}{\SOLI}
+\ifthenelse{\boolean{soli}}{
 \vspace{-30pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[203]Q[200]Q[200]Q[200]},
-                     row{1}={dorado},
-                     row{6}={dorado},
+		colspec = {Q[100]Q[300]Q[90]Q[90]},
+                     row{1}={dorado},                    
 		row{1}={c},
-                     cell{1}{1} = {c=4}{0.679\linewidth},
-		cell{2}{3} = {r},
-		cell{2}{4} = {c},
-                     cell{3}{2} = {c=3}{0.679\linewidth},
-                     cell{4}{2} = {c=3}{0.679\linewidth},
-                     cell{5}{2} = {c=3}{0.679\linewidth},
-                     row{6}={c},
-                     cell{6}{1} = {c=4}{0.279\linewidth},
-                     row{7}={c},
-                     cell{8}{1} = {c},
-                     cell{8}{3} = {c=2}{0.279\linewidth},
-                     	hlines,
+                     cell{1}{1} = {c=4}{0.874\linewidth},	
+                     cell{2}{3}={r},
+                     cell{3}{2} = {c=3}{0.679\linewidth},                    
+                     cell{4}{3}={r},	
+                     cell{4}{2} = {c=3}{0.679\linewidth},                     
+		hlines,
 		vlines,
 	}
-           \textbf{Información para el registro de solicitud:} &  &      &  \\
-	Numero de ticket:  & & {Fecha de solicitud:}   & \today       \\
-	Temporalidad:& \TEMPO\\
-          {Memorando / Atenta nota:}&\MEMO\\
-         Solicitud:\\
-            \textbf {Tipo de Cambio:} &\\
-            Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
-           Otro (\OTRO )& Describa brevemente:&\DESOTRO\\          
-\end{longtblr}
+        
+   \textbf{Información del solicitante:} &  &      &  \\
+             Nombre:                &    \NOMS &   {Teléfono/Extensión:}&\EXTS\\
+             Puesto:&\PUESTOS\\  Área: &\AREAS            
+\end{longtblr}}
+
+\newboolean{enlace}
+\setboolean{enlace}{\ENLACE}
+\ifthenelse{\boolean{enlace}}{
+\vspace{-40pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[100]Q[300]Q[90]Q[90]},
+                     row{1}={dorado},                    
+		row{1}={c},
+                     cell{1}{1} = {c=4}{0.874\linewidth},	
+                     cell{2}{3}={r},                     
+		hlines,
+		vlines,
+	}
+             \textbf{Información del enlace informático:} &  &      &  \\
+             Nombre:                &   \NOMEI  &   {Teléfono/Extensión:}&\EXTEI       
+           
+\end{longtblr}}
+
+
+
+
 
 \vspace{-15pt}
 \begin{longtblr}[
@@ -160,26 +180,37 @@ headheight = 25mm,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[100]Q[300]Q[90]Q[90]},
+		colspec = {Q[203]Q[200]Q[200]Q[200]},
                      row{1}={dorado},
-                     row{3}={dorado},
 		row{1}={c},
-                     cell{1}{1} = {c=4}{0.874\linewidth},	
-                     cell{2}{3}={r},
-                     row{3}={c},
-                     cell{3}{1} = {c=4}{0.874\linewidth},
-                     cell{4}{3}={r},
-                     cell{5}{2} = {c=3}{0.679\linewidth},	
-                     cell{6}{2} = {c=3}{0.679\linewidth},
-		hlines,
+                     row{5}={dorado},
+		row{5}={c},
+                     cell{1}{1} = {c=4}{0.679\linewidth},
+		cell{2}{3} = {r},
+		cell{2}{4} = {c},
+                     cell{5}{1} = {c=4}{0.679\linewidth},
+                     cell{7}{3} = {c=2}{0.379\linewidth},
+                     cell{3}{2} = {c=3}{0.679\linewidth},
+                     cell{4}{2} = {c=3}{0.679\linewidth},
+                     %cell{5}{2} = {c=3}{0.679\linewidth},
+                     row{6}={c},
+                     cell{7}{1}={c},
+                     cell{7}{2}={c},                     
+                     	hlines,
 		vlines,
 	}
-            \textbf{Información del enlace informático:} &  &      &  \\
-             Nombre:                &   \NOMEI  &   {Télefono/Extensión:}&\EXTEI\\  
-            \textbf{Información del solicitante:} &  &      &  \\
-             Nombre:                &    \NOMS &   {Télefono/Extensión:}&\EXTS\\
-             Puesto:&\PUESTOS\\  Área: &\AREAS
+          
+          \textbf{Información para el registro de solicitud:} &  &      &  \\
+	Numero de ticket: & \NOTICKET & {Fecha de solicitud:}   & \today       \\
+          {Memorando / Atenta nota:}&\MEMO\\
+         Solicitud:&  \DESCBREVE\\
+            \textbf {Tipo de Cambio:} &\\
+            Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
+           Otro (\OTRO )& Describa brevemente:&\DESOTRO\\   
+                 
 \end{longtblr}
+
+
 
 \vspace{-15pt}
 \begin{longtblr}[
@@ -219,6 +250,9 @@ headheight = 25mm,
 \setboolean{bajasdes}{\BAJASDES} 
 \newboolean{bajasusua}
 \setboolean{bajasusua}{\BAJASUSUA} 
+
+
+
 
 
 %%%%%%%
@@ -279,6 +313,23 @@ headheight = 25mm,
 \No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD INTERSISTEMAS 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Intersistemas} \\ \TEMPOINTER
+\end{longtblr}
+\clearpage
 }%%FIN CONDICIONAL IF
 
 %%%%%%%%
@@ -300,7 +351,7 @@ headheight = 25mm,
 	}
 	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas
 \end{longtblr}
-%%BAJAS
+%%BAJASintersistemas
 \vspace{-30pt}
  \begin{longtblr}[
  label = none,
@@ -395,11 +446,27 @@ headheight = 25mm,
 \No&\NombreAdmin&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD ADMINISTRATIVOS 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Administrativos} \\ \TEMPOADMIN
+\end{longtblr}
 }
 %%%%%%%%
 
-%%BAJASINTER
-\ifthenelse{\boolean{bajasinter}}
+%%BAJASADMIN
+\ifthenelse{\boolean{bajasadmin}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -476,7 +543,7 @@ headheight = 25mm,
 	}
 	\textbf{ALTAS} \\Sección C.- Accesos de desarrollador
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
 \vspace{-30pt}
  \begin{longtblr}[
  label = none,
@@ -510,6 +577,22 @@ vlines,
 \No&\NombreDes&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD DESARROLLADORES 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Desarrolladores} \\ \TEMPODES
+\end{longtblr}
 }
 %%%%%%%%
 
@@ -530,7 +613,7 @@ vlines,
 	}
 	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
 \vspace{-30pt}
  \begin{longtblr}[
  label = none,
@@ -591,7 +674,7 @@ vlines,
 	}
 	\textbf{ALTAS} \\Sección D.- Accesos de usuario
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
 \vspace{-30pt}
  \begin{longtblr}[
  label = none,
@@ -625,6 +708,23 @@ vlines,
 \No&\NombreUsua&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+%%%%%TEMPORALIDAD USUARIOS 
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                     row{1}={dorado},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de Usuarios} \\ \TEMPOUSUA
+\end{longtblr}%%fin de tempo usua
+\clearpage
 }
 %%%%%%%%
 
@@ -643,9 +743,9 @@ vlines,
 		%hlines,
 		%vlines,
 	}
-	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador
+	\textbf{BAJAS} \\Sección D.- Accesos de usuarios
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
+%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
 \vspace{-30pt}
  \begin{longtblr}[
  label = none,
@@ -702,9 +802,9 @@ vlines,
 
 %\end{landscape}
 \clearpage
-%%%..... POLITICAS
-\section*{Políticas del servicio}
-{\small \begin{itemize}
+%%%..... POLÍTICAS
+\textbf{Políticas del servicio}
+{\begin{itemize}
 	        \item El solicitante deberá presentar este formato adjuntando el Memorando o Atenta nota y número de ticket de Mesa de ayuda asociado, sin los cuales no se podrá atender su solicitud.  
 	        \item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedita de las configuraciones solicitadas. Es responsabilidad del solicitante recabar la información con los Administradores de los sistemas o Áreas involucrados (Subgerencia de Sistemas y/o Subgerencia de Internet e Intranet).
            \item El solicitante deberá proporcionar la dirección IP física y si utiliza dirección NAT agregarlo por cada servidor involucrado, no siendo responsabilidad de la SSTTS si al establecer la comunicación no conecta por falta de este dato. De no proporcionarse la dirección IP NAT correcta, las reglas de cortafuegos se configurarán por defecto con la dirección IP del adaptador de red de los servidores y corresponderá al Administrador del sistema aplicar los cambios en el sistema o servidores para establecer la comunicación.
@@ -718,8 +818,18 @@ vlines,
            \item Es responsabilidad de los Administradores documentar el control de accesos de cada servidor en su respectiva Memoria Técnica, actualizando la misma periódicamente cada 2, 3, 4 0 6 meses.
            \item Al firmar el solicitante se da por enterado de las políticas del servicio y acepta la responsabilidad de cualquier materialización de los riesgos derivados de las aperturas de comunicaciones asociadas al presente control de cambios.
 \end{itemize}
+\newboolean{enlacebool}
+\setboolean{enlacebool}{\ENLACEBOOL}
 
+\newboolean{solibool}
+\setboolean{solibool}{\SOLIBOOL}
 
+\newboolean{enlacesolibool}
+\setboolean{enlacesolibool}{\ENLACESOLIBOOL}
+
+%%AMBOS
+\ifthenelse{\boolean{enlacesolibool}}{
+         
            %\vspace{-7pt}
 	\begin{longtblr}[
 	label = none,
@@ -736,8 +846,57 @@ vlines,
 			%vlines,
 		}
 		%Fecha: \today                      &                                                                                                       \\
-		{Usuario que acepta\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} & {Gerente o director local que autoriza.\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} &
-                     {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI\\\PUESTOEI}
+		{Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
+                   {Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} &
+                   {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
 	\end{longtblr}
+}
+
+%%SOLI
+          \ifthenelse{\boolean{solibool}}{
+           %\vspace{-7pt}
+	\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			%row{1} = {gris},
+			row{1} = {c},
+                                row{2}={c},
+			%cell{1}{1} = {c=2}{0.942\linewidth},
+                                cell{2}{1} = {c=2}{0.942\linewidth},
+			%hlines,
+			%vlines,
+		}
+		%Fecha: \today                      &                                                                                                       \\
+		{Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
+                   {Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} 
+                  % {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
+	\end{longtblr}
+}
+
+\ifthenelse{\boolean{enlacebool}}{         
+           %\vspace{-7pt}
+	\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			%row{1} = {gris},
+			row{1} = {c},
+                                row{2}={c},
+			%cell{1}{1} = {c=2}{0.942\linewidth},
+                                cell{2}{1} = {c=2}{0.942\linewidth},
+			%hlines,
+			%vlines,
+		}
+		%Fecha: \today                      &                                                                                                       \\
+		{Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
+                  % {Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} &
+                   {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
+	\end{longtblr}
+}
 
 \end{document}

@@ -15,17 +15,19 @@ RUN mkdir -p /app/data && \
     chmod -R 777 /app/data
 
 RUN apt-get update && \
-    apt-get install -y curl texlive texlive-lang-spanish texlive-latex-extra && \
+    apt-get install -y curl texlive texlive-xetex texlive-lang-spanish texlive-latex-extra fonts-noto && \
     texhash && \
     rm -rf /var/lib/apt/lists/*
-
+    
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
 
 ENV TEXINPUT=".:/app/latex/imagenes/:/app/latex/:/texmf//:$TEXINPUTS"
 
+ENV TEXINPUTS=".:/app/latex/imagenes/:/app/latex/:/texmf//:$TEXINPUTS"
+
 EXPOSE 8000 
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8000/healthcheck || exit 1
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8000/api/healthcheck || exit 1
 
 USER app
 

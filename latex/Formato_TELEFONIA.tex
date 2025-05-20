@@ -1,6 +1,6 @@
 %\textbf{\emph{ejemplo}}
 \input{Datos.txt}
-\documentclass[letterpaper,9pt]{article}
+\documentclass[letterpaper,11pt]{article}
 \usepackage{ifthen}
 
 % *** Idioma ***
@@ -8,8 +8,11 @@
 \usepackage[utf8]{inputenc}
 
 % *** Fuente ***
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%%%FUENTE NOTO SANS
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
 
 
 % *** Colores ***
@@ -20,11 +23,11 @@
 % *** Margenes y Tamaño de Hoja
 \usepackage{geometry}
 \geometry{
-left = 25mm,
-right = 25mm,
-top = 60mm,
+left = 15mm,
+right = 15mm,
+top = 45mm,
 bottom = 20mm,
-headheight = 28mm
+headheight = 30mm
 }
 
 % *** Imagenes ***
@@ -53,7 +56,7 @@ headheight = 28mm
 \lhead{
 		\begin{tblr}{
 		width = \linewidth,
-		colspec = {Q[230]Q[507]Q[100]Q[100]},
+		colspec = {Q[120]Q[507]Q[70]Q[70]},
 		row{2} = {c},
 		row{3} = {c},
 		column{2} = {c},
@@ -66,9 +69,9 @@ headheight = 28mm
 		vlines,
                       hlines,
 	}
-	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \tiny VERSIÓN   & \tiny 5.1 \\
-	&                                                                                       & \tiny FECHA & {\tiny FECHA DE PUBLICACION PENDIENTE }    \\
+	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{COMISIÓN NACIONAL DEL AGUA}\\Gerencia de Tecnologías de Información y Comunicaciones.\\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \footnotesize Página    & {\footnotesize \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \footnotesize VERSIÓN   & \footnotesize 5.1 \\
+	&                                                                                       & \footnotesize FECHA & {\footnotesize  Mayo-2025 }    \\
 	& { Solicitud de servicios de telefonía.\\(Alta, Baja, Cambio)}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
 }
@@ -98,7 +101,7 @@ headheight = 28mm
                      cell{2}{3} = {c},
 		cell{2}{4} = {c},
 	}
-	Número de movimiento:  &          & Fecha de la solicitud:   & \today       \\
+	Número de formato:  & \NOFORMATO          & Fecha de la solicitud:   & \today       \\
 	Tipo de Movimiento: & Alta (\ALTA ) & Baja (\BAJA ) & Cambio (\CAMBIO ) \\
            Tipo de usuario: & \TIPOUSUARIO \\
            Fecha de activación: & \ACTIVACION &Fecha de expiración: & \EXPIRACION
@@ -124,7 +127,7 @@ headheight = 28mm
 \textbf{Datos de Usuario (a) que utilizará el servicio (CONAGUA o Externo)} &  &      &  \\
 Nombre:                     &  \NOMBREUSUARIO \\
 Correo: &   \CORREOUSUARIO  \\
-Dirección:   &  Av. Insurgentes Sur 2416 Col.Copilco el Bajo. CP.04340,Coyoacán,CDMX, \textbf  \DIRECCION  \\
+Dirección:   &  \textbf  \DIRECCION  \\
 Puesto: & \PUESTOUSUARIO\\
 Unidad Aministrativa:           &\UAUSUARIO
 \end{longtblr}
@@ -171,7 +174,7 @@ Puesto:           &\PUESTOEMPLEADO
 		vlines,
 	}
 \textbf{Caracteristicas del Servicio Solicitado}         \\
-\textbf{Servicio Interno:}       &  Si (\SIINTERNO )~ No(\NOINTERNO )  & \textbf{\textbf{Serivicio de Larga \\Distancia\\Resto del Mundo:}}                           & Si (\SIMUNDO )~ No(\NOMUNDO ) \\
+\textbf{Servicio Interno:}       &  Si (X )~ No(~ )  & \textbf{\textbf{Serivicio de Larga \\Distancia\\Resto del Mundo:}}                           & Si (\SIMUNDO )~ No(\NOMUNDO ) \\
 	\textbf{Servicio Local:}      &  Si (\SILOCAL )~ No(\NOLOCAL)  &\textbf {Servicio Celular Local:}    & Si (\SICLOCAL )~ No(\NOCLOCAL ) \\
 	\textbf{Servicio Larga Distancia Nacional:}       &Si (\SINACIONAL )~ No(\NONACIONAL ) & \textbf{Serivicio Celular Larga Distancia:}                                  & Si (\SICNACIONAL )~ No(\NOCNACIONAL ) \\
 	\textbf{Servicio Larga Distancia Estados Unidos y Canadá:} &&& Si (\SIEUA )~ No(\NOEUA)
@@ -193,7 +196,7 @@ Puesto:           &\PUESTOEMPLEADO
 	}
 \textbf{Caracteristicas del Equipo donde se configura la cuenta de Red}         \\
  \textbf {Tipo Equipo}&\textbf {Marca}&\textbf {Modelo}&\textbf {Serie}&\textbf {Versión de sistema operativo}\\
-TELEFONO&\MARCA&\MODELO&\SERIE&\VERSION
+TELÉFONO&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 
 \vspace{-30pt}
@@ -213,6 +216,8 @@ TELEFONO&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 \clearpage
 %\vspace{-20pt}
+\textbf{Políticas del servicio}
+PENDIENTES
 \begin{longtblr}[
 	label = none,
 	entry = none,
