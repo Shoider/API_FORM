@@ -175,3 +175,43 @@ class Service:
                 elif isinstance(value, (list, dict)):
                     self._convert_objectid_to_str(value)
         return data
+    
+
+    # Aqui van actualizaciones de memorandos
+    def actualizar_memorando_vpn(self, documento_id, nuevo_memorando) -> dict:
+        """
+        Busca un documento en MongoDB por su ID, actualiza el campo 'memorando'
+        y retorna el documento original antes de la actualización.
+
+        Args:
+            documento_id (str): El ID del documento a actualizar.
+            nuevo_memorando (str): El nuevo valor para el campo 'memorando'.
+
+        Returns:
+            dict: El documento original encontrado en la base de datos antes de la actualización,
+                o None si no se encuentra el documento.
+        """
+        try:
+            vpn_collection = self.db_conn.db['vpnMayo']
+            # Buscar el documento por su ID
+            documento_original = vpn_collection.find_one({'_id': documento_id})
+
+            if documento_original:
+                # Actualizar el campo 'memorando'
+                resultado = vpn_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'memorando': nuevo_memorando}}
+                )
+
+                if resultado.modified_count > 0:
+                    return documento_original, 201
+                else:
+                    # Si no se modificó nada (aunque se encontró el documento),
+                    # podría ser un caso a considerar en tu lógica de manejo de errores.
+                    return documento_original, 202
+            else:
+                return None, 203 # No se encontró el documento con el ID proporcionado
+
+        except Exception as e:
+            print(f"Ocurrió un error: {e}")
+            return None, 400

@@ -13,7 +13,7 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter):
+    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
@@ -21,6 +21,7 @@ class FileGeneratorRoute(Blueprint):
         self.forms_schemaTel = forms_schemaTel
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schemaInter = forms_schemaInter
+        self.actualizarMemo = actualizarMemo
         self.service = service
         self.register_routes()
 
@@ -28,6 +29,7 @@ class FileGeneratorRoute(Blueprint):
         """Function to register the routes for file generation"""
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
         self.route("/api/v2/vpn", methods=["POST"])(self.vpnmayo)
+        self.route("/api/v2/vpnActualizar", methods=["POST"])(self.vpnMemorando)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
@@ -313,26 +315,40 @@ class FileGeneratorRoute(Blueprint):
             shutil.rmtree(temp_dir)
 
 
-    def vpnmayo(self):
+    def vpnmayo(self, data=None):
         try:
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
-            data = request.get_json()
+            if data is None:
+                data = request.get_json()
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
+            
+            self.logger.info("Datos recibidos en API VPN")
+            self.logger.info(data)
 
             # Validacion
             validated_data = self.forms_schemaVPNMayo.load(data)
-
-            # Guardar en BD
-            new_vpnmayo_data = validated_data
-            vpnmayo_registro, status_code = self.service.add_VPNMayo(new_vpnmayo_data)
+            
+            # memorando NO viene o está vacío
+            if not validated_data.get('memorando'):
+                self.logger.info("El campo memorando está vacío o no fue enviado")
+                # Guardar en BD
+                new_vpnmayo_data = validated_data
+                vpnmayo_registro, status_code = self.service.add_VPNMayo(new_vpnmayo_data)
+                if status_code == 201:
+                    noformato = vpnmayo_registro.get('_id')
+                    self.logger.info(f"Registro VPN Mayo agregado con ID: {noformato}")
+            else:
+                self.logger.info("El campo memorando ya esta disponible")
+                noformato=validated_data.get('_id')
+                self.logger.info(f"Registro VPN Mayo actualizado con ID: {noformato}")
+                self.logger.warning("No se actualizara la base de datos")
+                status_code = 201
 
             if status_code == 201:
-                noformato = vpnmayo_registro.get('_id')
-                self.logger.info(f"Registro VPN Mayo agregado con ID: {noformato}")
             
                 # Transformar valores "SI" y "NO"
                 altausuario = "x" if validated_data.get('movimiento') == "ALTA" else " "
@@ -362,7 +378,7 @@ class FileGeneratorRoute(Blueprint):
                 with open(datos_txt_path, 'w') as file: 
                     file.write("\\newcommand{\\UA}{"+ validated_data.get('unidadAdministrativa')+"}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion')+"}"+ os.linesep)
-                    #file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando', ' ')+"}"+ os.linesep)
                     file.write("\\newcommand{\\FECHA}{"+ fecha +"}"+ os.linesep)
                     file.write("\\newcommand{\\AREA}{"+ validated_data.get('areaAdscripcion')+"}"+ os.linesep)
                     file.write("\\newcommand{\\SUBGERENCIA}{"+ validated_data.get('subgerencia')+"}"+ os.linesep)
@@ -1111,6 +1127,54 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
+
+    # Actualizar memorandos
+    def vpnMemorando(self):
+        try: 
+            # Recibimos datos
+            data = request.get_json()
+
+            # Validamos que existan datos
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            # Validacion
+            validated_data = self.actualizarMemo.load(data)
+
+            memorando = validated_data.get('memorando')
+            nFormato = validated_data.get('numeroFormato')
+
+            # Llamada al servicio de actualizacion de datos
+            DatosVPN, status_code = self.service.actualizar_memorando_vpn(nFormato, memorando)
+
+            if status_code == 201:
+                self.logger.info("Informacion actualizada con exito en la base de datos")
+                # Agregar o actualizar el campo 'memorando' en DatosVPN
+                DatosVPN['memorando'] = memorando
+                # Enviar archivo
+                return self.vpnmayo(DatosVPN)
+
+            if status_code == 202:
+                self.logger.info("No se logro actualizar el memorando")
+                return jsonify(DatosVPN), status_code
+            if status_code == 400:
+                self.logger.error("Ocurrio un error")
+                return jsonify(DatosVPN), status_code
+            if status_code == 203:
+                self.logger.error("No se encontro el Numero de Formato para editar")
+                return jsonify(DatosVPN), status_code
+            else:
+                self.logger.error("Ocurrio otro error aqui")
+                return jsonify(DatosVPN), status_code
+
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+
+
+
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
