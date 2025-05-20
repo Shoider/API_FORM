@@ -13,7 +13,7 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo):
+    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
@@ -22,6 +22,7 @@ class FileGeneratorRoute(Blueprint):
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schemaInter = forms_schemaInter
         self.actualizarMemo = actualizarMemo
+        self.actualizarFuncionRol = actualizarFuncionRol
         self.service = service
         self.register_routes()
 
@@ -30,6 +31,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
         self.route("/api/v2/vpn", methods=["POST"])(self.vpnmayo)
         self.route("/api/v2/vpnActualizar", methods=["POST"])(self.vpnMemorando)
+        self.route("/api/v2/rfcActualizar", methods=["POST"])(self.rfcFuncionORol)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
@@ -1165,7 +1167,27 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
+    
+    def rfcFuncionORol(self):
+        try: 
+            # Recibimos datos
+            data = request.get_json()
 
+            # Validamos que existan datos
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            # Validacion
+            validated_data = self.actualizarFuncionRol.load(data)
+
+            func = validated_data.get('memorando')
+            nFormato = validated_data.get('numeroFormato')
+            
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
 
 
 

@@ -7,6 +7,7 @@ from routes.route import FileGeneratorRoute
 from schemas.schemaTel import RegistroSchemaTel
 from schemas.schemaInter import RegistroSchemaInter
 from schemas.schemaActualizarMemo import ActualizacionMemorando
+from schemas.schemaActualizarFuncionRol import ActualizacionFuncionRol
 from services.service import Service
 from models.model import BDModel
 
@@ -24,6 +25,7 @@ form_schemaRFC = RegistroSchemaRFC()
 forms_schemaInter = RegistroSchemaInter()
 
 actualizarMemo = ActualizacionMemorando()
+actualizarFuncionRol = ActualizacionFuncionRol()
 
 # Model
 db_conn = BDModel()
