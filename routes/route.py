@@ -327,9 +327,6 @@ class FileGeneratorRoute(Blueprint):
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
-            
-            self.logger.info("Datos recibidos en API VPN")
-            self.logger.info(data)
 
             # Validacion
             validated_data = self.forms_schemaVPNMayo.load(data)
