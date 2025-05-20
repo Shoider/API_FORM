@@ -8,8 +8,11 @@
 \usepackage[utf8]{inputenc}
 
 % *** Fuente ***
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%%%FUENTE NOTO SANS
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
 
 
 % *** Colores ***
@@ -20,11 +23,11 @@
 % *** Margenes y Tamaño de Hoja
 \usepackage{geometry}
 \geometry{
-left = 25mm,
-right = 25mm,
-top = 60mm,
+left = 15mm,
+right = 15mm,
+top = 45mm,
 bottom = 20mm,
-headheight = 28mm
+headheight = 20mm
 }
 
 % *** Imagenes ***
@@ -53,7 +56,7 @@ headheight = 28mm
 \lhead{
 		\begin{tblr}{
 		width = \linewidth,
-		colspec = {Q[230]Q[507]Q[100]Q[100]},
+		colspec = {Q[120]Q[507]Q[70]Q[70]},
 		row{2} = {c},
 		row{3} = {c},
 		column{2} = {c},
@@ -68,10 +71,10 @@ headheight = 28mm
 		vlines,
                       hlines,
 	}
-	\includegraphics[width=0.2\textwidth]{imagenes/Logo_de_la_Conagua} & {Comisión Nacional del Agua.\\Gerencia de Tecnologías de Información \\y Comunicaciones.\\ Subgerencia de Soporte Técnico, \\ Telecomunicaciones y Seguridad.} & \tiny Hoja    & {\tiny \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \tiny VERSIÓN   & \tiny PENDIENTE \\
-	&                                                                                       & \tiny FECHA & {\tiny FECHA DE PUBLICACION PENDIENTE }    \\
-	& { Solicitud de Ampliación del Servicio de Internet }                                       &  \tiny NO. DE FORMATO      &  \tiny \NOFORMATO        
+	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{COMISIÓN NACIONAL DEL AGUA.}\\Gerencia de Tecnologías de Información y Comunicaciones.\\ Subgerencia de Soporte Técnico,  Telecomunicaciones y Seguridad.} & \footnotesize Página   & {\footnotesize \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \footnotesize VERSIÓN   & \footnotesize PENDIENTE \\
+	&                                                                                       & \footnotesize FECHA & {\footnotesize PENDIENTE }    \\
+	&\ { Solicitud de Ampliación del Servicio de Internet }                                       &  \footnotesize NO. DE FORMATO      &  \footnotesize \NOFORMATO        
 \end{tblr}
 }
 \chead{}
@@ -118,13 +121,13 @@ headheight = 28mm
 		vlines,
 	}
 \textbf{Datos de Usuario (a)} &  &      &  \\
-Unidad Administrativa:           &\UAUSUARIO\\
+Unidad Aministrativa:           &\UAUSUARIO\\
 Área:&\AREAUSUARIO\\
 Nombre:                     &  \NOMBREUSUARIO \\
 Puesto o Cargo: & \PUESTOUSUARIO\\
 IP del equipo asignado: & \IPUSUARIO\\
 Correo: &   \CORREOUSUARIO  \\
-Dirección:   & \textbf  \DIRECCION  \\
+Dirección:   &  \textbf  \DIRECCION  \\
 Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 
 \end{longtblr}
@@ -181,7 +184,7 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 \textbf{Categorías de Navegación}         \\
  (\DESCARGA )& \textbf{Descarga de software}  & (\FOROS )& \textbf{Foros y Blogs} & (\COMERCIO)& \textbf{Comercio Electrónico}  \\
  (\REDES )& \textbf{Redes Sociales}  & (\VIDEOS )& \textbf{Videos-YouTube{\tiny{(Streaming)}}} & (\WHATS)& \textbf{WhatsApp Web}  \\
-(\DROPBOX )& \textbf{Dropbox}  & (\ONEDRIVE )& \textbf{OneDrive} & (\SKYPE)& \textbf{Skype}  \\
+(\DROPBOX )& \textbf{DropBox}  & (\ONEDRIVE )& \textbf{OneDrive} & (\SKYPE)& \textbf{Skype}  \\
 (\WETRANSFER)& \textbf{Wetransfer}  & (\TEAM )& \textbf{TeamViewer} & (\OTRA)& \textbf{Otra}  
 \end{longtblr}
 
@@ -202,7 +205,7 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 \newboolean{whats}
 \setboolean{whats}{\WHATSBOOL}
 \newboolean{dropbox}
-\setboolean{dropbox}{\DROPBOXBOOL}
+\setboolean{dropbox}{\WHATSBOOL}
 \newboolean{onedrive}
 \setboolean{onedrive}{\ONEDRIVEBOOL}
 \newboolean{skype}
@@ -544,11 +547,8 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 	]{
 			width = \linewidth,
 			colspec = {Q[100]Q[100]Q[100]},
-			%row{1} = {gris},
 			row{1} = {c},
                                 row{2}={c},
-			%hlines,
-			%vlines,
 		}
 		%Fecha: \today                      &                                                                                                       \\
 		{Usuario que acepta\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO \\~\\ \PUESTOUSUARIO} & {~\\~\\[1cm] \rule{5cm}{0.5mm}\\Lic. Alfonso Isaac Frías Castillo\\ ~\\Subgerente de Soporte Técnico,\\Telecomunicaciones y Seguridad} &

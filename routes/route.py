@@ -1085,21 +1085,14 @@ class FileGeneratorRoute(Blueprint):
                 imagenes_dir = os.path.join(temp_dir, "imagenes")
                 shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-                # Compilar latex Aux
+                 # Compilar XeLaTeX
                 try:
-                    subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
-                    self.logger.info(f"Archivo .aux generado para {archivo_tex}")
-                except:
-                    self.logger.error(f"Error generando archivo .aux: {e}")
-                    return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
-
-                # Compilar latex PDF
-                try:
-                    subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
                 except:
                     self.logger.error(f"Error generando PDF: {e}")
-                    return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
+                    return jsonify({"error": f"Error al compilar XeLaTeX: {e}"}), 500
                 
                 # Cargar pdf
                 output = BytesIO()
