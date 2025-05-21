@@ -228,7 +228,7 @@ class Service:
                 # Actualizar el campo 'memorando'
                 resultado = rfc_collection.update_one(
                     {'_id': documento_id},
-                    {'$set': {'memorando': nuevo_memorando}}
+                    {'$set': {'FRO': nuevo_funcionrol}}
                 )
 
                 if resultado.modified_count > 0:

@@ -1176,26 +1176,40 @@ class FileGeneratorRoute(Blueprint):
             # Validacion
             validated_data = self.actualizarFuncionRol.load(data)
 
-            func = validated_data.get('memorando')
+            funcionrol = validated_data.get('funcionrol')
             nFormato = validated_data.get('numeroFormato')
 
-             # Llamada al servicio de actualizacion de datos
-            DatosVPN, status_code = self.service.actualizar_memorando_vpn(nFormato, memorando)
+            # Llamada al servicio de actualizacion de datos
+            DatosRFC, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol)
 
             if status_code == 201:
                 self.logger.info("Informacion actualizada con exito en la base de datos")
-                # Agregar o actualizar el campo 'memorando' en DatosVPN
-                DatosVPN['memorando'] = memorando
+                # Agregar o actualizar el campo 'memorando' en DatosRFC
+                DatosRFC['funcionrol'] = funcionrol
                 # Enviar archivo
-                return self.vpnmayo(DatosVPN)
-            
+                return self.rfc(DatosRFC)
+
+            if status_code == 202:
+                self.logger.info("No se logro actualizar el memorando")
+                return jsonify(DatosRFC), status_code
+            if status_code == 400:
+                self.logger.error("Ocurrio un error")
+                return jsonify(DatosRFC), status_code
+            if status_code == 203:
+                self.logger.error("No se encontro el Numero de Formato para editar")
+                return jsonify(DatosRFC), status_code
+            else:
+                self.logger.error("Ocurrio otro error aqui")
+                return jsonify(DatosRFC), status_code
+
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
             return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
-
+    
+           
 
 
     def healthcheck(self):
