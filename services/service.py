@@ -211,7 +211,36 @@ class Service:
                     return documento_original, 202
             else:
                 return None, 203 # No se encontró el documento con el ID proporcionado
-
+            
         except Exception as e:
+            print(f"Ocurrió un error: {e}")
+            return None, 400
+            
+
+    def actualizar_funcionrol_rfc(self,documento_id, nuevo_funcionrol)->dict:
+
+     try:
+            rfc_collection = self.db_conn.db['rfc']
+            # Buscar el documento por su ID
+            documento_original = rfc_collection.find_one({'_id': documento_id}) 
+
+            if documento_original:
+                # Actualizar el campo 'memorando'
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'memorando': nuevo_memorando}}
+                )
+
+                if resultado.modified_count > 0:
+                    return documento_original, 201
+                else:
+                    # Si no se modificó nada (aunque se encontró el documento),
+                    # podría ser un caso a considerar en tu lógica de manejo de errores.
+                    return documento_original, 202
+            else:
+                return None, 203 # No se encontró el documento con el ID proporcionado
+
+
+     except Exception as e:
             print(f"Ocurrió un error: {e}")
             return None, 400

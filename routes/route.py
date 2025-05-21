@@ -1178,6 +1178,16 @@ class FileGeneratorRoute(Blueprint):
 
             func = validated_data.get('memorando')
             nFormato = validated_data.get('numeroFormato')
+
+             # Llamada al servicio de actualizacion de datos
+            DatosVPN, status_code = self.service.actualizar_memorando_vpn(nFormato, memorando)
+
+            if status_code == 201:
+                self.logger.info("Informacion actualizada con exito en la base de datos")
+                # Agregar o actualizar el campo 'memorando' en DatosVPN
+                DatosVPN['memorando'] = memorando
+                # Enviar archivo
+                return self.vpnmayo(DatosVPN)
             
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
