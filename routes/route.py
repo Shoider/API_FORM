@@ -1220,25 +1220,36 @@ class FileGeneratorRoute(Blueprint):
             # Validamos que existan datos
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
+            
             # Validacion
             validated_data = self.actualizarFuncionRol.load(data)
 
             funcionrol = validated_data.get('funcionrol')
             nFormato = validated_data.get('numeroFormato')
-            nRegistro = validated_data ('numeroRegistro')
-            movimiento = validated_data('movimiento')
+
+            nRegistro = int(validated_data.get('numeroRegistro'))
+            self.logger.info(f"El valor de nRegistro es: {nRegistro}")
+
+            movimiento = validated_data.get('movimientoID')
 
             # Llamada al servicio de actualizacion de datos
             Datos, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol, nRegistro, movimiento)
 
             if status_code == 201:
                 self.logger.info("Informacion actualizada con exito en la base de datos")
-                # Agregar o actualizar el campo 'memorando' en Datos
                 # Enviar archivo
-                return self.rfc(Datos)
+                self.logger.info("Hola codigo 201:")
+                self.logger.info(Datos)
+                dataA = request.get_json()
+                self.logger.info("Datos en  dataA")
+                self.logger.info(dataA)
+                validated_data2 = self.forms_schemaRFC.load(dataA)
+                self.logger.info(validated_data2)
+                return jsonify(validated_data2), status_code
+                #return self.rfc(Datos)
 
             if status_code == 202:
-                self.logger.info("No se logro actualizar el memorando")
+                self.logger.info("No se logro actualizar el FRO")
                 return jsonify(Datos), status_code
             if status_code == 203:
                 self.logger.error("No se encontro formato con  el ID especifico")
