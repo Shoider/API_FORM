@@ -10,6 +10,7 @@ class RegistroSchemaRFC(Schema):
     noticket = fields.String(required=True, validate=validate.Length(min=1, max=256))
     memo = fields.String(required=True, validate=validate.Length(min=1, max=256))
     descbreve = fields.String(required=True, validate=validate.Length(min=1, max=256))
+    _id = fields.String(required=False)
 
     nomei = fields.String(required=False, validate=validate.Length(min=1, max=31))
     extei = fields.String(required=False, validate=validate.Length(min=1, max=20))

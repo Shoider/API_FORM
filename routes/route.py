@@ -522,9 +522,7 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)        
-            print("Directorio temporal:")
-            print(temp_dir)
+            shutil.rmtree(temp_dir)        
 
     def tel(self):
         try:
@@ -672,7 +670,6 @@ class FileGeneratorRoute(Blueprint):
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
-            data = request.get_json()
             if data is None:
                 data = request.get_json()
 
@@ -680,15 +677,25 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify({"error": "Invalid data"}), 400
 
             # Validacion
-            validated_data = self.forms_schemaRFC.load(data)     
+            validated_data = self.forms_schemaRFC.load(data)    
 
-            # Guardar en BD
-            new_rfc_data = validated_data
-            rfc_registro, status_code = self.service.add_RFC(new_rfc_data)
+            # memorando NO viene o está vacío
+            if not validated_data.get('_id'):
+                self.logger.info("El campo memorando está vacío o no fue enviado")
+                # Guardar en BD
+                new_rfc_data = validated_data
+                rfc_registro, status_code = self.service.add_RFC(new_rfc_data)
+                if status_code == 201:
+                    noformato = rfc_registro.get('_id')
+                    self.logger.info(f"Registro RFC agregado con ID: {noformato}")
+            else:
+                self.logger.info("El campo _id ya esta disponible")
+                noformato=validated_data.get('_id')
+                self.logger.info(f"Registro RFC actualizado con ID: {noformato}")
+                self.logger.warning("No se actualizara la base de datos")
+                status_code = 201 
 
-            if status_code == 201:
-                noformato = rfc_registro.get('_id')
-                self.logger.info(f"Registro RFC agregado con ID: {noformato}")    
+            if status_code == 201:    
 
                  # Booleanos para   Quien solicita
                 solicitante = "true" if validated_data.get('soli') == True else "false"
@@ -964,10 +971,10 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-          # self.logger('prueba')
-           # shutil.rmtree(temp_dir)
-           print("Directorio temporal:")
-           print(temp_dir)
+            # self.logger('prueba')
+            # shutil.rmtree(temp_dir)
+            print("Directorio temporal:")
+            print(temp_dir)
 
 
     def inter(self):
@@ -1238,15 +1245,9 @@ class FileGeneratorRoute(Blueprint):
             if status_code == 201:
                 self.logger.info("Informacion actualizada con exito en la base de datos")
                 # Enviar archivo
-                self.logger.info("Hola codigo 201:")
+                self.logger.info("Datos en Datos")
                 self.logger.info(Datos)
-                dataA = request.get_json()
-                self.logger.info("Datos en  dataA")
-                self.logger.info(dataA)
-                validated_data2 = self.forms_schemaRFC.load(dataA)
-                self.logger.info(validated_data2)
-                return jsonify(validated_data2), status_code
-                #return self.rfc(Datos)
+                return self.rfc(Datos)
 
             if status_code == 202:
                 self.logger.info("No se logro actualizar el FRO")
