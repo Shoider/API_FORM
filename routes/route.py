@@ -1229,23 +1229,22 @@ class FileGeneratorRoute(Blueprint):
             movimiento = validated_data('movimiento')
 
             # Llamada al servicio de actualizacion de datos
-            Datos, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol, movimiento, nRegistro)
+            Datos, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol, nRegistro, movimiento)
 
             if status_code == 201:
                 self.logger.info("Informacion actualizada con exito en la base de datos")
                 # Agregar o actualizar el campo 'memorando' en Datos
-                #Datos['funcionrol'] = funcionrol
                 # Enviar archivo
-                #return self.rfc(Datos)
+                return self.rfc(Datos)
 
             if status_code == 202:
                 self.logger.info("No se logro actualizar el memorando")
                 return jsonify(Datos), status_code
+            if status_code == 203:
+                self.logger.error("No se encontro formato con  el ID especifico")
+                return jsonify(Datos), status_code
             if status_code == 400:
                 self.logger.error("Ocurrio un error")
-                return jsonify(Datos), status_code
-            if status_code == 203:
-                self.logger.error("No se encontro el Numero de Formato para editar")
                 return jsonify(Datos), status_code
             else:
                 self.logger.error("Ocurrio otro error aqui")
@@ -1258,9 +1257,6 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
     
-           
-
-
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
         return jsonify({"status": "Up"}), 200
