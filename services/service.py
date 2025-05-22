@@ -217,35 +217,44 @@ class Service:
             return None, 400
             
 
-    def actualizar_funcionrol_rfc(self,documento_id, nuevo_funcionrol)->dict:
+    def actualizar_funcionrol_rfc(self,documento_id, nuevo_funcionrol, id_registro, tabla)->dict:
 
-     try:
+        try:
             rfc_collection = self.db_conn.db['rfc']
             # Buscar el documento por su ID
-            #documento_original = rfc_collection.find_one({'_id': documento_id}).find_one({'registrosInterAltas':registro_altas}).find_one({'id':id_registro})
             documento_original = rfc_collection.find_one({'_id': documento_id})
 
-            if documento_original:
-                # Actualizar el campo 'memorando'
-                #id_valor = documento_original['registroInterAltas'].get('id','valor no encontrado')
-                #print(f"Valor id: {id_valor}")
+            # PARA ALTAS
+            if (tabla == "ALTAS"):
                 resultado = rfc_collection.update_one(
-                    {'_id': documento_id},
-                    #{'registrosInterAltas':registro_altas},
-                    #{'id':id_registro},
-                    {'$set': {'FRO': nuevo_funcionrol}}
-                )
+                {'_id': documento_id},
+                {'$set': {'registrosInterAltas.$[elem].FRO': nuevo_funcionrol}},
+                array_filters=[{'elem.id': id_registro}]
+            )
+            
+            if (tabla == "BAJAS"):
+                resultado = rfc_collection.update_one(
+                {'_id': documento_id},
+                {'$set': {'registrosInterBajas.$[elem].FRO': nuevo_funcionrol}},
+                array_filters=[{'elem.id': id_registro}]
+            )
 
+            if documento_original:
                 if resultado.modified_count > 0:
-                    return documento_original, 201
+                    print(f"Documento con _id '{documento_id}' actualizado exitosamente.")
+                    #Cambiar para obtener la nueva info
+                    documento_nuevo = rfc_collection.find_one({'_id': documento_id})
+                    return documento_nuevo , 201 # Retornamos el documento original antes de la actualización
                 else:
-                    # Si no se modificó nada (aunque se encontró el documento),
-                    # podría ser un caso a considerar en tu lógica de manejo de errores.
-                    return documento_original, 202
+                    print(f"No se encontró el subdocumento con id '{id_registro}' "
+                        f"en 'registrosInter{tabla}' para el documento con _id '{documento_id}', "
+                        f"o el valor de FRO ya era el mismo.")
+                    #Obtener documento actualizado
+                    documento_nuevo = rfc_collection.find_one({'_id': documento_id})
+                    return documento_nuevo, 202 # Retornamos el original aunque no se modificó el campo
             else:
                 return None, 203 # No se encontró el documento con el ID proporcionado
 
-
-     except Exception as e:
+        except Exception as e:
             print(f"Ocurrió un error: {e}")
             return None, 400
