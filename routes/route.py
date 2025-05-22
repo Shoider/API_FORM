@@ -1235,7 +1235,6 @@ class FileGeneratorRoute(Blueprint):
             nFormato = validated_data.get('numeroFormato')
 
             nRegistro = int(validated_data.get('numeroRegistro'))
-            self.logger.info(f"El valor de nRegistro es: {nRegistro}")
 
             movimiento = validated_data.get('movimientoID')
 
@@ -1245,8 +1244,6 @@ class FileGeneratorRoute(Blueprint):
             if status_code == 201:
                 self.logger.info("Informacion actualizada con exito en la base de datos")
                 # Enviar archivo
-                self.logger.info("Datos en Datos")
-                self.logger.info(Datos)
                 return self.rfc(Datos)
 
             if status_code == 202:

@@ -225,18 +225,36 @@ class Service:
             documento_original = rfc_collection.find_one({'_id': documento_id})
 
             if not documento_original:
-                return jsonify({"error": "No se encontró el documento con el ID proporcionado"}), 404
+                return jsonify({"error": "No se encontró el documento con el ID proporcionado"}), 400
 
-            if tabla == "ALTAS":
+            # Para cambios
+            registrosAltas = len(documento_original['registrosInterAltas'])
+            registrosBajas = len(documento_original['registrosInterBajas'])
+
+            if (tabla == "ALTAS" and registrosAltas >= id_registro):
                 resultado = rfc_collection.update_one(
                     {'_id': documento_id},
                     {'$set': {'registrosInterAltas.$[elem].FRO': nuevo_funcionrol}},
                     array_filters=[{'elem.id': id_registro}]
                 )
-            elif tabla == "BAJAS":
+            elif (tabla == "ALTAS" and registrosAltas < id_registro):
+                id_registro = id_registro - registrosAltas
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'registrosInterCambiosAltas.$[elem].FRO': nuevo_funcionrol}},
+                    array_filters=[{'elem.id': id_registro}]
+                )
+            elif (tabla == "BAJAS" and registrosBajas >= id_registro):
                 resultado = rfc_collection.update_one(
                     {'_id': documento_id},
                     {'$set': {'registrosInterBajas.$[elem].FRO': nuevo_funcionrol}},
+                    array_filters=[{'elem.id': id_registro}]
+                )
+            elif (tabla == "BAJAS" and registrosBajas < id_registro):
+                id_registro = id_registro - registrosBajas
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'registrosInterCambiosBajas.$[elem].FRO': nuevo_funcionrol}},
                     array_filters=[{'elem.id': id_registro}]
                 )
             else:
