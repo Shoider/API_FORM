@@ -222,12 +222,17 @@ class Service:
      try:
             rfc_collection = self.db_conn.db['rfc']
             # Buscar el documento por su ID
-            documento_original = rfc_collection.find_one({'_id': documento_id}) 
+            #documento_original = rfc_collection.find_one({'_id': documento_id}).find_one({'registrosInterAltas':registro_altas}).find_one({'id':id_registro})
+            documento_original = rfc_collection.find_one({'_id': documento_id})
 
             if documento_original:
                 # Actualizar el campo 'memorando'
+                #id_valor = documento_original['registroInterAltas'].get('id','valor no encontrado')
+                #print(f"Valor id: {id_valor}")
                 resultado = rfc_collection.update_one(
                     {'_id': documento_id},
+                    #{'registrosInterAltas':registro_altas},
+                    #{'id':id_registro},
                     {'$set': {'FRO': nuevo_funcionrol}}
                 )
 

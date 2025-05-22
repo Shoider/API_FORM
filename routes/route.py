@@ -625,12 +625,14 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-    def rfc(self):
+    def rfc(self, data=None):
         try:
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
             data = request.get_json()
+            if data is None:
+                data = request.get_json()
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
@@ -921,7 +923,10 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
           # self.logger('prueba')
-            shutil.rmtree(temp_dir)
+           # shutil.rmtree(temp_dir)
+           print("Directorio temporal:")
+           print(temp_dir)
+
 
     def inter(self):
         try: 
@@ -1178,29 +1183,31 @@ class FileGeneratorRoute(Blueprint):
 
             funcionrol = validated_data.get('funcionrol')
             nFormato = validated_data.get('numeroFormato')
+            nRegistro = validated_data ('numeroRegistro')
+            movimiento = validated_data('movimiento')
 
             # Llamada al servicio de actualizacion de datos
-            DatosRFC, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol)
+            Datos, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol, movimiento, nRegistro)
 
             if status_code == 201:
                 self.logger.info("Informacion actualizada con exito en la base de datos")
-                # Agregar o actualizar el campo 'memorando' en DatosRFC
-                DatosRFC['funcionrol'] = funcionrol
+                # Agregar o actualizar el campo 'memorando' en Datos
+                #Datos['funcionrol'] = funcionrol
                 # Enviar archivo
-                return self.rfc(DatosRFC)
+                #return self.rfc(Datos)
 
             if status_code == 202:
                 self.logger.info("No se logro actualizar el memorando")
-                return jsonify(DatosRFC), status_code
+                return jsonify(Datos), status_code
             if status_code == 400:
                 self.logger.error("Ocurrio un error")
-                return jsonify(DatosRFC), status_code
+                return jsonify(Datos), status_code
             if status_code == 203:
                 self.logger.error("No se encontro el Numero de Formato para editar")
-                return jsonify(DatosRFC), status_code
+                return jsonify(Datos), status_code
             else:
                 self.logger.error("Ocurrio otro error aqui")
-                return jsonify(DatosRFC), status_code
+                return jsonify(Datos), status_code
 
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
