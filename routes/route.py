@@ -13,7 +13,7 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo):
+    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
@@ -22,6 +22,7 @@ class FileGeneratorRoute(Blueprint):
         self.forms_schemaRFC = forms_schemaRFC
         self.forms_schemaInter = forms_schemaInter
         self.actualizarMemo = actualizarMemo
+        self.actualizarFuncionRol = actualizarFuncionRol
         self.service = service
         self.register_routes()
 
@@ -30,6 +31,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
         self.route("/api/v2/vpn", methods=["POST"])(self.vpnmayo)
         self.route("/api/v2/vpnActualizar", methods=["POST"])(self.vpnMemorando)
+        self.route("/api/v2/rfcActualizar", methods=["POST"])(self.rfcFuncionORol)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
@@ -68,17 +70,40 @@ class FileGeneratorRoute(Blueprint):
             for registro in registros:
                 registro.pop('isNew', None)
                 if "IPO" in registro:
+                    ip=registro["IPO"]
+                    ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
+                    registro["IPO"] = ip_modificada
                     registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
                 if "IPD" in registro:
+                    ip=registro["IPD"]
+                    ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
+                    registro["IPD"] = ip_modificada
                     registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
                 if "SO" in registro:
-                    registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                    sistema=registro["SO"]
+                    sistema_modificado = '\\\\'.join([sistema[i:i+8] for i in range(0, len(sistema), 8)])
+                    registro["SO"] = sistema_modificado
+                    #registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "SD" in registro:
-                    registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                    sistema=registro["SD"]
+                    sistema_modificado = '\\\\'.join([sistema[i:i+8] for i in range(0, len(sistema), 8)])
+                    registro["SD"] = sistema_modificado
+                    #registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRO" in registro:
-                    registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
+                    funcionrol=registro["FRO"]
+                    funcionrol_modificado = '\\\\'.join([funcionrol[i:i+10] for i in range(0, len(funcionrol), 10)])
+                    registro["FRO"] = funcionrol_modificado
+                    #registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "FRD" in registro:
-                    registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                    funcionrol=registro["FRD"]
+                    funcionrol_modificado = '\\\\'.join([funcionrol[i:i+6] for i in range(0, len(funcionrol), 6)])
+                    registro["FRD"] = funcionrol_modificado
+                    # registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                if "PUER" in registro:
+                    puertos=registro["PUER"]
+                    puertos_modificado = '\\\\'.join([puertos[i:i+4] for i in range(0, len(puertos), 4)])
+                    registro["PUER"] = puertos_modificado
+                    registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
 
                 # TEMPORALIDAD
                 cambio = ""  # Inicializa la variable cambio
@@ -214,8 +239,7 @@ class FileGeneratorRoute(Blueprint):
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
 
         except Exception as e:
-            print(f"Ocurrió un error al crear el archivo CSV: {e}")
-
+            print(f"Ocurrió un error al crear el archivo CSV: {e}") 
     def modificar_registros_id(self, registros):
         """
         Modifica el array de registros para concatenar "*C" y un salto de línea a la columna "id".
@@ -521,9 +545,7 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)        
-            print("Directorio temporal:")
-            print(temp_dir)
+            shutil.rmtree(temp_dir)        
 
     def tel(self):
         try:
@@ -666,26 +688,37 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-    def rfc(self):
+    def rfc(self, data=None):
         try:
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
-            data = request.get_json()
+            if data is None:
+                data = request.get_json()
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
 
             # Validacion
-            validated_data = self.forms_schemaRFC.load(data)     
+            validated_data = self.forms_schemaRFC.load(data)    
 
-            # Guardar en BD
-            new_rfc_data = validated_data
-            rfc_registro, status_code = self.service.add_RFC(new_rfc_data)
+            # memorando NO viene o está vacío
+            if not validated_data.get('_id'):
+                self.logger.info("El campo memorando está vacío o no fue enviado")
+                # Guardar en BD
+                new_rfc_data = validated_data
+                rfc_registro, status_code = self.service.add_RFC(new_rfc_data)
+                if status_code == 201:
+                    noformato = rfc_registro.get('_id')
+                    self.logger.info(f"Registro RFC agregado con ID: {noformato}")
+            else:
+                self.logger.info("El campo _id ya esta disponible")
+                noformato=validated_data.get('_id')
+                self.logger.info(f"Registro RFC actualizado con ID: {noformato}")
+                self.logger.warning("No se actualizara la base de datos")
+                status_code = 201 
 
-            if status_code == 201:
-                noformato = rfc_registro.get('_id')
-                self.logger.info(f"Registro RFC agregado con ID: {noformato}")    
+            if status_code == 201:    
 
                  # Booleanos para   Quien solicita
                 solicitante = "true" if validated_data.get('soli') == True else "false"
@@ -961,8 +994,11 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-          # self.logger('prueba')
-            shutil.rmtree(temp_dir)
+            # self.logger('prueba')
+            # shutil.rmtree(temp_dir)
+            print("Directorio temporal:")
+            print(temp_dir)
+
 
     def inter(self):
         try: 
@@ -1205,10 +1241,54 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
+    
+    def rfcFuncionORol(self):
+        try: 
+            # Recibimos datos
+            data = request.get_json()
 
+            # Validamos que existan datos
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            
+            # Validacion
+            validated_data = self.actualizarFuncionRol.load(data)
 
+            funcionrol = validated_data.get('funcionrol')
+            nFormato = validated_data.get('numeroFormato')
 
+            nRegistro = int(validated_data.get('numeroRegistro'))
 
+            movimiento = validated_data.get('movimientoID')
+
+            # Llamada al servicio de actualizacion de datos
+            Datos, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol, nRegistro, movimiento)
+
+            if status_code == 201:
+                self.logger.info("Informacion actualizada con exito en la base de datos")
+                # Enviar archivo
+                return self.rfc(Datos)
+
+            if status_code == 202:
+                self.logger.info("No se logro actualizar el FRO")
+                return jsonify(Datos), status_code
+            if status_code == 203:
+                self.logger.error("No se encontro formato con  el ID especifico")
+                return jsonify(Datos), status_code
+            if status_code == 400:
+                self.logger.error("Ocurrio un error")
+                return jsonify(Datos), status_code
+            else:
+                self.logger.error("Ocurrio otro error aqui")
+                return jsonify(Datos), status_code
+
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+    
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
         return jsonify({"status": "Up"}), 200

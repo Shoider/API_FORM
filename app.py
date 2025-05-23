@@ -7,6 +7,7 @@ from routes.route import FileGeneratorRoute
 from schemas.schemaTel import RegistroSchemaTel
 from schemas.schemaInter import RegistroSchemaInter
 from schemas.schemaActualizarMemo import ActualizacionMemorando
+from schemas.schemaActualizarFuncionRol import ActualizacionFuncionRol
 from services.service import Service
 from models.model import BDModel
 
@@ -24,6 +25,7 @@ form_schemaRFC = RegistroSchemaRFC()
 forms_schemaInter = RegistroSchemaInter()
 
 actualizarMemo = ActualizacionMemorando()
+actualizarFuncionRol = ActualizacionFuncionRol()
 
 # Model
 db_conn = BDModel()
@@ -33,7 +35,7 @@ db_conn.connect_to_database()
 service = Service(db_conn)
 
 # Routes
-form_routes = FileGeneratorRoute(service, form_schemaVPN, form_schemaVPNMayo, form_schemaTel, form_schemaRFC, forms_schemaInter, actualizarMemo)
+form_routes = FileGeneratorRoute(service, form_schemaVPN, form_schemaVPNMayo, form_schemaTel, form_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol)
 
 #Blueprint
 app.register_blueprint(form_routes)

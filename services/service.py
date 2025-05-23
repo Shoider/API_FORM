@@ -211,7 +211,68 @@ class Service:
                     return documento_original, 202
             else:
                 return None, 203 # No se encontró el documento con el ID proporcionado
-
+            
         except Exception as e:
             print(f"Ocurrió un error: {e}")
+            return None, 400
+            
+
+    def actualizar_funcionrol_rfc(self, documento_id, nuevo_funcionrol, id_registro, tabla) -> dict:
+
+        try:
+            rfc_collection = self.db_conn.db['rfc']
+            # Buscar el documento por su ID
+            documento_original = rfc_collection.find_one({'_id': documento_id})
+
+            if not documento_original:
+                return jsonify({"error": "No se encontró el documento con el ID proporcionado"}), 400
+
+            # Para cambios
+            registrosAltas = len(documento_original['registrosInterAltas'])
+            registrosBajas = len(documento_original['registrosInterBajas'])
+
+            if (tabla == "ALTAS" and registrosAltas >= id_registro):
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'registrosInterAltas.$[elem].FRO': nuevo_funcionrol}},
+                    array_filters=[{'elem.id': id_registro}]
+                )
+            elif (tabla == "ALTAS" and registrosAltas < id_registro):
+                id_registro = id_registro - registrosAltas
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'registrosInterCambiosAltas.$[elem].FRO': nuevo_funcionrol}},
+                    array_filters=[{'elem.id': id_registro}]
+                )
+            elif (tabla == "BAJAS" and registrosBajas >= id_registro):
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'registrosInterBajas.$[elem].FRO': nuevo_funcionrol}},
+                    array_filters=[{'elem.id': id_registro}]
+                )
+            elif (tabla == "BAJAS" and registrosBajas < id_registro):
+                id_registro = id_registro - registrosBajas
+                resultado = rfc_collection.update_one(
+                    {'_id': documento_id},
+                    {'$set': {'registrosInterCambiosBajas.$[elem].FRO': nuevo_funcionrol}},
+                    array_filters=[{'elem.id': id_registro}]
+                )
+            else:
+                return None, 400
+            
+            documento_nuevo = rfc_collection.find_one({'_id': documento_id})
+
+            if resultado.modified_count > 0:
+                self.logger.info(f"Documento con _id '{documento_id}' actualizado exitosamente.")
+                return documento_nuevo, 201
+            else:
+                self.logger.info(
+                    f"No se encontró el subdocumento con id '{id_registro}' "
+                    f"en 'registrosInter{tabla}' para el documento con _id '{documento_id}', "
+                    f"o el valor de FRO ya era el mismo."
+                )
+                return documento_nuevo, 202
+
+        except Exception as e:
+            self.logger.info(f"Ocurrió un error: {e}")
             return None, 400
