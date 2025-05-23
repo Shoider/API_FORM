@@ -1268,19 +1268,18 @@ class FileGeneratorRoute(Blueprint):
                 self.logger.info("Informacion actualizada con exito en la base de datos")
                 # Enviar archivo
                 return self.rfc(Datos)
-
             if status_code == 202:
                 self.logger.info("No se logro actualizar el FRO")
                 return jsonify(Datos), status_code
             if status_code == 203:
                 self.logger.error("No se encontro formato con  el ID especifico")
-                return jsonify(Datos), status_code
+                return jsonify({"error": "No se encontro el ID de registro"}), status_code
             if status_code == 400:
                 self.logger.error("Ocurrio un error")
-                return jsonify(Datos), status_code
+                return jsonify({"error": "Error nuevo"}), status_code
             else:
                 self.logger.error("Ocurrio otro error aqui")
-                return jsonify(Datos), status_code
+                return jsonify({"error": "Error diferente"}), status_code
 
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")

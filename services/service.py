@@ -225,7 +225,7 @@ class Service:
             documento_original = rfc_collection.find_one({'_id': documento_id})
 
             if not documento_original:
-                return jsonify({"error": "No se encontró el documento con el ID proporcionado"}), 400
+                return jsonify({"error": "No se encontró el documento con el ID proporcionado"}), 203
 
             # Para cambios
             registrosAltas = len(documento_original['registrosInterAltas'])
