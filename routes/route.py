@@ -71,39 +71,38 @@ class FileGeneratorRoute(Blueprint):
                 registro.pop('isNew', None)
                 if "IPO" in registro:
                     ip=registro["IPO"]
-                    ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
-                    registro["IPO"] = ip_modificada
+                    #ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
+                    #registro["IPO"] = ip_modificada
                     registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
                 if "IPD" in registro:
                     ip=registro["IPD"]
-                    ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
-                    registro["IPD"] = ip_modificada
+                    #ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
+                    #registro["IPD"] = ip_modificada
                     registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                if "SO" in registro:
-                    sistema=registro["SO"]
-                    sistema_modificado = '\\\\'.join([sistema[i:i+8] for i in range(0, len(sistema), 8)])
-                    registro["SO"] = sistema_modificado
+                #if "SO" in registro:
+                 #   sistema=registro["SO"]
+                    ##registro["SO"] = sistema_modificado
                     #registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "SD" in registro:
-                    sistema=registro["SD"]
-                    sistema_modificado = '\\\\'.join([sistema[i:i+8] for i in range(0, len(sistema), 8)])
-                    registro["SD"] = sistema_modificado
+                #if "SD" in registro:
+                 #   sistema=registro["SD"]
+                    #sistema_modificado = '\\\\'.join([sistema[i:i+8] for i in range(0, len(sistema), 8)])
+                    #registro["SD"] = sistema_modificado
                     #registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRO" in registro:
-                    funcionrol=registro["FRO"]
-                    funcionrol_modificado = '\\\\'.join([funcionrol[i:i+10] for i in range(0, len(funcionrol), 10)])
-                    registro["FRO"] = funcionrol_modificado
+                #if "FRO" in registro:
+                 #   funcionrol=registro["FRO"]
+                    #funcionrol_modificado = '\\\\'.join([funcionrol[i:i+10] for i in range(0, len(funcionrol), 10)])
+                    #registro["FRO"] = funcionrol_modificado
                     #registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                if "FRD" in registro:
-                    funcionrol=registro["FRD"]
-                    funcionrol_modificado = '\\\\'.join([funcionrol[i:i+6] for i in range(0, len(funcionrol), 6)])
-                    registro["FRD"] = funcionrol_modificado
+                #if "FRD" in registro:
+                 #   funcionrol=registro["FRD"]
+                    #funcionrol_modificado = '\\\\'.join([funcionrol[i:i+6] for i in range(0, len(funcionrol), 6)])
+                    #registro["FRD"] = funcionrol_modificado
                     # registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "PUER" in registro:
                     puertos=registro["PUER"]
-                    puertos_modificado = '\\\\'.join([puertos[i:i+4] for i in range(0, len(puertos), 4)])
+                    puertos_modificado = '\\\\'.join([puertos[i:i+5] for i in range(0, len(puertos), 5)])
                     registro["PUER"] = puertos_modificado
-                    registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    #registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
 
                 # TEMPORALIDAD
                 cambio = ""  # Inicializa la variable cambio
