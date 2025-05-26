@@ -73,12 +73,12 @@ class FileGeneratorRoute(Blueprint):
                     ip=registro["IPO"]
                     #ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
                     #registro["IPO"] = ip_modificada
-                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/").replace(",", "\\\\")
                 if "IPD" in registro:
                     ip=registro["IPD"]
                     #ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
                     #registro["IPD"] = ip_modificada
-                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/").replace(",", "\\\\")
                 #if "SO" in registro:
                  #   sistema=registro["SO"]
                     ##registro["SO"] = sistema_modificado
@@ -102,7 +102,7 @@ class FileGeneratorRoute(Blueprint):
                     #puertos=registro["PUER"]
                    # puertos_modificado = '\\\\'.join([puertos[i:i+5] for i in range(0, len(puertos), 5)])
                    # registro["PUER"] = puertos_modificado
-                    registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/").replace(",", "\\\\")
 
                 # TEMPORALIDAD
                 cambio = ""  # Inicializa la variable cambio
