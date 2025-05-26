@@ -47,7 +47,10 @@ class RegistroSchemaVPNMayo(Schema):
     accesoWeb = fields.Boolean(required=True)
     accesoRemoto = fields.Boolean(required=True)
 
+    politicasaceptadas = fields.Boolean(required=True)
+
     # INCISO B)
     registrosWeb = fields.List(fields.Nested(TablasSchemaSitios))
     # INCISO C)
     registrosRemoto = fields.List(fields.Nested(TablasSchemasAcceso))
+    
