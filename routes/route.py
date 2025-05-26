@@ -99,10 +99,10 @@ class FileGeneratorRoute(Blueprint):
                     #registro["FRD"] = funcionrol_modificado
                     # registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
                 if "PUER" in registro:
-                    puertos=registro["PUER"]
-                    puertos_modificado = '\\\\'.join([puertos[i:i+5] for i in range(0, len(puertos), 5)])
-                    registro["PUER"] = puertos_modificado
-                    #registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    #puertos=registro["PUER"]
+                   # puertos_modificado = '\\\\'.join([puertos[i:i+5] for i in range(0, len(puertos), 5)])
+                   # registro["PUER"] = puertos_modificado
+                    registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
 
                 # TEMPORALIDAD
                 cambio = ""  # Inicializa la variable cambio
