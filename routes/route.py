@@ -847,7 +847,7 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
                 registros.extend(registrosAltas)                            # Unir registros de altas y cambios
-                tempInter, hayTemporal = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
+                tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosInterBajas', [])   # Obtiene array de los datos
                 registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
