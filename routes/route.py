@@ -847,7 +847,7 @@ class FileGeneratorRoute(Blueprint):
                 # Altas
                 registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
                 registros.extend(registrosAltas)                            # Unir registros de altas y cambios
-                tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
+                tempInter, hayTemporal = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
                 registros = validated_data.get('registrosInterBajas', [])   # Obtiene array de los datos
                 registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
@@ -917,6 +917,13 @@ class FileGeneratorRoute(Blueprint):
                 registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros, False) #Se cambia el nombre de la columna
 
+                # Validar si hay temporales
+                tempInterBool = tempInter != ""
+                tempAdminBool = tempAdmin != ""
+                tempDesBool = tempDes != ""
+                tempUsuaBool = tempUsua != ""
+                tempOtroBool = tempOtro != ""
+
                 # Temporalidades
                 with open(datos_txt_path, 'a') as file: 
                     file.write("\\newcommand{\\TEMPOINTER}{"+ tempInter +"}"+ os.linesep)
@@ -930,7 +937,12 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\TEMPODESBOOL}{" + AltaDes + "}" + os.linesep)
                     file.write("\\newcommand{\\TEMPOUSUABOOL}{" + AltaUsua + "}" + os.linesep)
                     file.write("\\newcommand{\\TEMPOOTROBOOL}{" + AltaOtro + "}" + os.linesep)
-
+                    #Booleanos para tabla de temporalidades
+                    file.write("\\newcommand{\\HAYTEMPORALINTER}{" + tempInterBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALADMIN}{" + tempAdminBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALDES}{" + tempDesBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALUSUA}{" + tempUsuaBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALOTRO}{" + tempOtroBool + "}" + os.linesep)
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
