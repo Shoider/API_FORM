@@ -421,7 +421,8 @@ class FileGeneratorRoute(Blueprint):
                 conagua = "true" if validated_data.get('solicitante') == "CONAGUA" else "false"
 
                 ###PARA BOOLEANOS DE FIRMA
-                conaguafirma = "false" if conagua == "true" else "false"
+                #conaguafirma = "true" if conagua == "true" else "false"
+                conaguafirma = "true" if validated_data.get('solicitante') == "EXTERNO" else "false"
                 sistemas = "true" if validated_data.get('subgerencia')== "Subgerencia de Sistemas"  else "false"
                 otrasub = "true" if sistemas == "false" else "false"
 
