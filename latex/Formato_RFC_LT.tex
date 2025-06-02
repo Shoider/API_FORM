@@ -266,6 +266,9 @@ headheight = 28mm
 \newboolean{bajasusua}
 \setboolean{bajasusua}{\BAJASUSUA} 
 
+%% Para Temporalidades
+\newboolean{haytemporal}
+
 \clearpage
 %%%%%%%
 %%%%INTERSISTEMAS
@@ -325,11 +328,12 @@ headheight = 28mm
 \No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+}%%FIN CONDICIONAL IF
+
 %%%%%TEMPORALIDAD INTERSISTEMAS 
-\newboolean{haytemporalinter}
-\setboolean{haytemporalinter}{\HAYTEMPORALINTER} 
-%\ifthenelse{\boolean{haytemporalinter}}
-%{
+\setboolean{haytemporal}{\HAYTEMPORALINTER} 
+\ifthenelse{\boolean{haytemporal}}
+{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -345,12 +349,10 @@ headheight = 28mm
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOINTER
 \end{longtblr}
-%}%%%TEMPORALIDAD
-}%%FIN CONDICIONAL IF
+}%%%TEMPORALIDAD
 
 %%%%%%%%
 %%BAJAS INTERSISTEMAS
-
 \ifthenelse{\boolean{bajasinter}}
 {
 \vspace{-25pt}
@@ -462,10 +464,9 @@ headheight = 28mm
 \No&\NombreAdmin&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
-\newboolean{haytemporaladmin}
-\setboolean{haytemporaladmin}{\HAYTEMPORALADMIN} 
-%\ifthenelse{\boolean{haytemporaladmin}}
-%{
+\setboolean{haytemporal}{\HAYTEMPORALADMIN} 
+\ifthenelse{\boolean{haytemporal}}
+{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -481,9 +482,7 @@ headheight = 28mm
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOADMIN
 \end{longtblr}
-%}%%TEMPORALIDADES 
-}
-%%%%%%%%
+}%%TEMPORALIDADES 
 
 %%BAJASADMIN
 \ifthenelse{\boolean{bajasadmin}}
@@ -597,11 +596,13 @@ vlines,
 \No&\NombreDes&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+}
+%%%%%%%%
+
 %%%%%TEMPORALIDAD DESARROLLADORES 
-\newboolean{haytemporaldes}
-\setboolean{haytemporaldes}{\HAYTEMPORALDES} 
-%\ifthenelse{\boolean{haytemporaldes}}
-%{
+\setboolean{haytemporal}{\HAYTEMPORALDES} 
+\ifthenelse{\boolean{haytemporal}}
+{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -617,9 +618,7 @@ vlines,
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPODES
 \end{longtblr}
-%} %TEMPORALIDAD 
-}
-%%%%%%%%
+} %TEMPORALIDAD 
 
 %%BAJAS DES
 \ifthenelse{\boolean{bajasdes}}
@@ -682,7 +681,6 @@ vlines,
 \ifthenelse{\boolean{usua}}
 {
 %%ALTAS USUA
-
 \ifthenelse{\boolean{altasusua}}
 {
 \vspace{-25pt}
@@ -716,6 +714,7 @@ vlines,
 \textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
 \textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
+
 %%%%USUARIO
 \DTLforeach*{ALTASUSUA}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
@@ -733,11 +732,12 @@ vlines,
 \No&\NombreUsua&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+}
+
 %%%%%TEMPORALIDAD USUARIOS 
-\newboolean{haytemporalusua}
-\setboolean{haytemporalusua}{\HAYTEMPORALUSUA} 
-%\ifthenelse{\boolean{haytemporalusua}}
-%{
+\setboolean{haytemporal}{\HAYTEMPORALUSUA} 
+\ifthenelse{\boolean{haytemporal}}
+{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -753,9 +753,7 @@ vlines,
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOUSUA
 \end{longtblr}%%fin de tempo usua
-%} %% TEMPORAL
-}
-%%%%%%%%
+} %% TEMPORAL
 
 %%BAJASUSUA
 \ifthenelse{\boolean{bajasusua}}
