@@ -924,6 +924,12 @@ class FileGeneratorRoute(Blueprint):
                 tempUsuaBool = tempUsua != ""
                 tempOtroBool = tempOtro != ""
 
+                tempInterBool2 = "true" if tempInterBool == True else "false"
+                tempAdminBool2 = "true" if tempAdminBool == True else "false"
+                tempDesBool2 = "true" if tempDesBool == True else "false"
+                tempUsuaBool2 = "true" if tempUsuaBool == True else "false"
+                tempOtroBool2 = "true" if tempOtroBool == True else "false"
+
                 # Temporalidades
                 with open(datos_txt_path, 'a') as file: 
                     file.write("\\newcommand{\\TEMPOINTER}{"+ tempInter +"}"+ os.linesep)
@@ -938,11 +944,11 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\TEMPOUSUABOOL}{" + AltaUsua + "}" + os.linesep)
                     file.write("\\newcommand{\\TEMPOOTROBOOL}{" + AltaOtro + "}" + os.linesep)
                     #Booleanos para tabla de temporalidades
-                    file.write("\\newcommand{\\HAYTEMPORALINTER}{" + tempInterBool + "}" + os.linesep)
-                    file.write("\\newcommand{\\HAYTEMPORALADMIN}{" + tempAdminBool + "}" + os.linesep)
-                    file.write("\\newcommand{\\HAYTEMPORALDES}{" + tempDesBool + "}" + os.linesep)
-                    file.write("\\newcommand{\\HAYTEMPORALUSUA}{" + tempUsuaBool + "}" + os.linesep)
-                    file.write("\\newcommand{\\HAYTEMPORALOTRO}{" + tempOtroBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALINTER}{" + tempInterBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALADMIN}{" + tempAdminBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALDES}{" + tempDesBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALUSUA}{" + tempUsuaBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALOTRO}{" + tempOtroBool2 + "}" + os.linesep)
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
