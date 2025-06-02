@@ -937,12 +937,6 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\TEMPOADMIN}{"+ tempAdmin +"}"+ os.linesep)
                     file.write("\\newcommand{\\TEMPODES}{"+ tempDes +"}"+ os.linesep)
                     file.write("\\newcommand{\\TEMPOOTRO}{"+ tempOtro +"}"+ os.linesep)
-                    #Booleanos para Temporalidades
-                    file.write("\\newcommand{\\TEMPOINTERBOOL}{" + AltaInter + "}" + os.linesep)
-                    file.write("\\newcommand{\\TEMPOADMINBOOL}{" + AltaAdmin + "}" + os.linesep)
-                    file.write("\\newcommand{\\TEMPODESBOOL}{" + AltaDes + "}" + os.linesep)
-                    file.write("\\newcommand{\\TEMPOUSUABOOL}{" + AltaUsua + "}" + os.linesep)
-                    file.write("\\newcommand{\\TEMPOOTROBOOL}{" + AltaOtro + "}" + os.linesep)
                     #Booleanos para tabla de temporalidades
                     file.write("\\newcommand{\\HAYTEMPORALINTER}{" + tempInterBool2 + "}" + os.linesep)
                     file.write("\\newcommand{\\HAYTEMPORALADMIN}{" + tempAdminBool2 + "}" + os.linesep)

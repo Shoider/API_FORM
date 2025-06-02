@@ -328,8 +328,8 @@ headheight = 28mm
 %%%%%TEMPORALIDAD INTERSISTEMAS 
 \newboolean{haytemporalinter}
 \setboolean{haytemporalinter}{\HAYTEMPORALINTER} 
-\ifthenelse{\boolean{haytemporalinter}}
-{
+%\ifthenelse{\boolean{haytemporalinter}}
+%{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -345,7 +345,7 @@ headheight = 28mm
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOINTER
 \end{longtblr}
-}%%%TEMPORALIDAD
+%}%%%TEMPORALIDAD
 }%%FIN CONDICIONAL IF
 
 %%%%%%%%
@@ -464,8 +464,8 @@ headheight = 28mm
 }
 \newboolean{haytemporaladmin}
 \setboolean{haytemporaladmin}{\HAYTEMPORALADMIN} 
-\ifthenelse{\boolean{haytemporaladmin}}
-{
+%\ifthenelse{\boolean{haytemporaladmin}}
+%{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -481,7 +481,7 @@ headheight = 28mm
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOADMIN
 \end{longtblr}
-}%%TEMPORALIDADES 
+%}%%TEMPORALIDADES 
 }
 %%%%%%%%
 
@@ -600,8 +600,8 @@ vlines,
 %%%%%TEMPORALIDAD DESARROLLADORES 
 \newboolean{haytemporaldes}
 \setboolean{haytemporaldes}{\HAYTEMPORALDES} 
-\ifthenelse{\boolean{haytemporaldes}}
-{
+%\ifthenelse{\boolean{haytemporaldes}}
+%{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -617,7 +617,7 @@ vlines,
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPODES
 \end{longtblr}
-} %TEMPORALIDAD 
+%} %TEMPORALIDAD 
 }
 %%%%%%%%
 
@@ -736,8 +736,8 @@ vlines,
 %%%%%TEMPORALIDAD USUARIOS 
 \newboolean{haytemporalusua}
 \setboolean{haytemporalusua}{\HAYTEMPORALUSUA} 
-\ifthenelse{\boolean{haytemporalusua}}
-{
+%\ifthenelse{\boolean{haytemporalusua}}
+%{
 \vspace{-20pt}
 \begin{longtblr}[
 	label = none,
@@ -753,7 +753,7 @@ vlines,
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOUSUA
 \end{longtblr}%%fin de tempo usua
-} %% TEMPORAL
+%} %% TEMPORAL
 }
 %%%%%%%%
 
