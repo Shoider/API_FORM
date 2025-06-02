@@ -333,6 +333,8 @@ headheight = 28mm
 %%%%%TEMPORALIDAD INTERSISTEMAS 
 \setboolean{haytemporal}{\HAYTEMPORALINTER} 
 \ifthenelse{\boolean{haytemporal}}
+\setboolean{haytemporal}{\HAYTEMPORALINTER} 
+\ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
 \begin{longtblr}[
@@ -464,9 +466,6 @@ headheight = 28mm
 \No&\NombreAdmin&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
-}
-%%%%%%%%
-
 \setboolean{haytemporal}{\HAYTEMPORALADMIN} 
 \ifthenelse{\boolean{haytemporal}}
 {
@@ -739,8 +738,6 @@ vlines,
 
 %%%%%TEMPORALIDAD USUARIOS 
 \setboolean{haytemporal}{\HAYTEMPORALUSUA} 
-%% Aqui hace algo extraño, imprime "haytemporaltrue" antes de la tabla de temporal
-\ifthenelse{\boolean{haytemporal}}{\textbf{Hola}} % Para ver que pasa :)
 \ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
