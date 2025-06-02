@@ -266,6 +266,9 @@ headheight = 28mm
 \newboolean{bajasusua}
 \setboolean{bajasusua}{\BAJASUSUA} 
 
+%% Para Temporalidades
+\newboolean{haytemporal}
+
 \clearpage
 %%%%%%%
 %%%%INTERSISTEMAS
@@ -326,9 +329,8 @@ headheight = 28mm
 \end{longtblr}
 }
 %%%%%TEMPORALIDAD INTERSISTEMAS 
-\newboolean{haytemporalinter}
-\setboolean{haytemporalinter}{\HAYTEMPORALINTER} 
-\ifthenelse{\boolean{haytemporalinter}}
+\setboolean{haytemporal}{\HAYTEMPORALINTER} 
+\ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
 \begin{longtblr}[
@@ -462,9 +464,8 @@ headheight = 28mm
 \No&\NombreAdmin&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
-\newboolean{haytemporaladmin}
-\setboolean{haytemporaladmin}{\HAYTEMPORALADMIN} 
-\ifthenelse{\boolean{haytemporaladmin}}
+\setboolean{haytemporal}{\HAYTEMPORALADMIN} 
+\ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
 \begin{longtblr}[
@@ -598,9 +599,8 @@ vlines,
 \end{longtblr}
 }
 %%%%%TEMPORALIDAD DESARROLLADORES 
-\newboolean{haytemporaldes}
-\setboolean{haytemporaldes}{\HAYTEMPORALDES} 
-\ifthenelse{\boolean{haytemporaldes}}
+\setboolean{haytemporal}{\HAYTEMPORALDES} 
+\ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
 \begin{longtblr}[
@@ -734,9 +734,8 @@ vlines,
 \end{longtblr}
 }
 %%%%%TEMPORALIDAD USUARIOS 
-\newboolean{haytemporalusua}
-\setboolean{haytemporalusua}{\HAYTEMPORALUSUA} 
-\ifthenelse{\boolean{haytemporalusua}}
+\setboolean{haytemporal}{\HAYTEMPORALUSUA} 
+\ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
 \begin{longtblr}[
