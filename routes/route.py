@@ -780,7 +780,19 @@ class FileGeneratorRoute(Blueprint):
                 justifica2 = validated_data.get('justifica2')
                 justifica3 = validated_data.get('justifica3')
 
-                justifica_combined = justifica1 + ". " + justifica2 + ". " + justifica3  # Concatenar con espacios
+                # Validar si hay temporales
+                if (justifica1 != ""): 
+                    justEsp1 = "////"
+                else:
+                    justEsp1 = ""
+
+                if (justifica2 != ""): 
+                    justEsp2 = "////"
+                else:
+                    justEsp2 = ""
+
+                # Concatenar con espacios y saltos de linea
+                justifica_combined = justifica1 + justEsp1 + justifica2 + justEsp2 + justifica3  
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
