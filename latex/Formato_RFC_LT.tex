@@ -218,30 +218,30 @@ headheight = 28mm
 		cells = {c},
                      row{1}={dorado}, 
 		row{3}={dorado},
-		row{2} = {j},
-		row{4}={j},
+		%row{2} = {j},
+		%row{4}={j},
 		hlines,
 		vlines,
 	}
-	\textbf{Descripción detallada} \\ \DESDET  \\
-            \textbf{Justificación}\\           \JUSTIFICA
+	\textbf{Descripción detallada} \\ \DESDET  
+           % \textbf{Justificación}\\           \JUSTIFICA
 \end{longtblr}
 %%%%%JUSTIFICACION
-%\vspace{-15pt}
-%\begin{longtblr}[
-%	label = none,
-%	entry = none,
-%	]{
-%		width = \linewidth,
-%		colspec = {Q[935]},
-%		cells = {c},
- %                    row{1}={dorado},
-%		row{2} = {j},
-%		hlines,
-%		vlines,
-%	}
-%	\textbf{Justificación} \\ \JUSTIFICA
-%\end{longtblr}
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+                    row{1}={dorado},
+		row{2} = {j},
+		hlines,
+		vlines,
+	}
+	\textbf{Justificación} \\ \JUSTIFICA
+\end{longtblr}
 
 
 %%%TABLAS DE ALTAS BAJAS Y CAMBIOS
@@ -464,6 +464,8 @@ headheight = 28mm
 \No&\NombreAdmin&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
+} 
+%%%%TEMPORALIDADES ADMIN
 \setboolean{haytemporal}{\HAYTEMPORALADMIN} 
 \ifthenelse{\boolean{haytemporal}}
 {
