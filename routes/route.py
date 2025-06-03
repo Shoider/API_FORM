@@ -722,11 +722,11 @@ class FileGeneratorRoute(Blueprint):
 
                 # Booleanos para   Quien solicita
                 if (validated_data.get('region') == "central"):
-                    solicitante = True
-                    enlacein = False
+                    solicitante = "true"
+                    enlacein = "false"
                 else:
-                    solicitante = True
-                    enlacein = True
+                    solicitante = "true"
+                    enlacein = "true"
                 
                 #solicitante = "true" if validated_data.get('soli') == True else "false"
                 #enlacein = "true" if validated_data.get('enlace') == True else "false"
