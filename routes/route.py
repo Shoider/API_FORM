@@ -1024,10 +1024,7 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            # self.logger('prueba')
-            # shutil.rmtree(temp_dir)
-            print("Directorio temporal:")
-            print(temp_dir)
+            shutil.rmtree(temp_dir)
 
 
     def inter(self):
