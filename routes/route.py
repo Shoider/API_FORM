@@ -720,14 +720,21 @@ class FileGeneratorRoute(Blueprint):
 
             if status_code == 201:    
 
-                 # Booleanos para   Quien solicita
-                solicitante = "true" if validated_data.get('soli') == True else "false"
-                enlacein = "true" if validated_data.get('enlace') == True else "false"
+                # Booleanos para   Quien solicita
+                if (validated_data.get('region') == "central"):
+                    solicitante = True
+                    enlacein = False
+                else:
+                    solicitante = True
+                    enlacein = True
+                
+                #solicitante = "true" if validated_data.get('soli') == True else "false"
+                #enlacein = "true" if validated_data.get('enlace') == True else "false"
 
                 ##IF DE PRUEBA
-                enlacesolibool="true" if solicitante == "true" and enlacein == "true" else "false"
-                solicitantebool = "true" if solicitante == "true" and enlacesolibool == "false" else "false"
-                enlaceinbool = "true" if enlacein == "true" and enlacesolibool == "false" else "false"
+                #enlacesolibool="true" if solicitante == "true" and enlacein == "true" else "false"
+                #solicitantebool = "true" if solicitante == "true" and enlacesolibool == "false" else "false"
+                #enlaceinbool = "true" if enlacein == "true" and enlacesolibool == "false" else "false"
 
                 # Transformar valores "X" y " " para Tipo de Movimiento
                 intersistemas = "x" if validated_data.get('intersistemas') == True else " "
@@ -800,10 +807,9 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\SOLI}{" + solicitante + "}" + os.linesep)
                     file.write("\\newcommand{\\ENLACE}{" + enlacein + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\ENLACESOLIBOOL}{" + enlacesolibool + "}" + os.linesep)
-
-                    file.write("\\newcommand{\\SOLIBOOL}{" + solicitantebool + "}" + os.linesep)
-                    file.write("\\newcommand{\\ENLACEBOOL}{" + enlaceinbool + "}" + os.linesep)
+                    #file.write("\\newcommand{\\ENLACESOLIBOOL}{" + enlacesolibool + "}" + os.linesep)
+                    #file.write("\\newcommand{\\SOLIBOOL}{" + solicitantebool + "}" + os.linesep)
+                    #file.write("\\newcommand{\\ENLACEBOOL}{" + enlaceinbool + "}" + os.linesep)
 
                     file.write("\\newcommand{\\NOTICKET}{"+ validated_data.get('noticket')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
