@@ -539,10 +539,10 @@ class FileGeneratorRoute(Blueprint):
 
         except ValidationError as err:
             status_code = 422
-            if 'url' in err.messages:
+            if 'registrosWeb' in err.messages:
                 status_code = 423
                 self.logger.error(f"Error de validación: 'url'")
-            if 'direccion' in err.messages:
+            if 'registrosRemoto' in err.messages:
                 status_code = 424
                 self.logger.error(f"Error de validación: 'url'")
             self.logger.error(f"Error de validación: {err.messages}")
