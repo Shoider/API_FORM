@@ -16,7 +16,7 @@ class RegistroSchemaVPNMayo(Schema):
     nombreInterno=fields.String(required=False)
     puestoInterno= fields.String(required=False)
     correoInterno=fields.String(required=False)
-    telefonoInterno=fields.String(required=False, validate=validate.Length(min=8, max=20))
+    telefonoInterno=fields.String(required=False)
 
     nombreExterno=fields.String(required=False)
     correoExterno=fields.String(required=False)
@@ -27,7 +27,7 @@ class RegistroSchemaVPNMayo(Schema):
     nombreResponsable=fields.String(required=False)
     puestoResponsable=fields.String(required=False)
     unidadAdministrativaResponsable=fields.String(required=False)
-    telefonoResponsable=fields.String(required=False, validate=validate.Length(min=8, max=20))
+    telefonoResponsable=fields.String(required=False)
 
     tipoEquipo=fields.String(required=True)
     sistemaOperativo=fields.String(required=True)
