@@ -538,15 +538,14 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify(vpnmayo_registro), status_code
 
         except ValidationError as err:
-            status_code = 422
             if 'registrosWeb' in err.messages:
-                status_code = 423
-                self.logger.error(f"Error de validación: 'url'")
+                self.logger.error(f"Error de validación: 'url/ip'")
+                return jsonify({"message": "Datos inválidos"}), 208
             if 'registrosRemoto' in err.messages:
-                status_code = 424
-                self.logger.error(f"Error de validación: 'url'")
+                self.logger.error(f"Error de validación: 'direccion ip'")
+                return jsonify({"message": "Datos inválidos"}), 209
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), status_code
+            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 422
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
