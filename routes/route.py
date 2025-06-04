@@ -728,8 +728,6 @@ class FileGeneratorRoute(Blueprint):
                     solicitante = "true"
                     enlacein = "true"
                 
-
-
                 ##IF DE PRUEBA
                 enlacesolibool = "true" if solicitante == "true" and enlacein == "true" else "false"
                 solicitantebool = "true" if solicitante == "true" and enlacesolibool == "false" else "false"
@@ -1022,8 +1020,15 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify(rfc_registro), status_code
             
         except ValidationError as err:
+            status_code = 422
+            if 'url' in err.messages:
+                status_code = 423
+                self.logger.error(f"Error de validación: 'url'")
+            if 'direccion' in err.messages:
+                status_code = 424
+                self.logger.error(f"Error de validación: 'direccion'")
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), status_code
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
