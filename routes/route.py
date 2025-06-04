@@ -546,7 +546,7 @@ class FileGeneratorRoute(Blueprint):
                 status_code = 424
                 self.logger.error(f"Error de validación: 'url'")
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 400
+            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), status_code
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
