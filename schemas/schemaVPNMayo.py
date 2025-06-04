@@ -11,12 +11,12 @@ class RegistroSchemaVPNMayo(Schema):
     areaAdscripcion = fields.String(required=True)
     subgerencia = fields.String(required=True)
     nombreEnlace = fields.String(required=True)
-    telefonoEnlace = fields.String(required=True)
+    telefonoEnlace = fields.String(required=True, validate=validate.Length(min=8, max=20))
     
     nombreInterno=fields.String(required=False)
     puestoInterno= fields.String(required=False)
     correoInterno=fields.String(required=False)
-    telefonoInterno=fields.String(required=False)
+    telefonoInterno=fields.String(required=False, validate=validate.Length(min=8, max=20))
 
     nombreExterno=fields.String(required=False)
     correoExterno=fields.String(required=False)
@@ -27,7 +27,7 @@ class RegistroSchemaVPNMayo(Schema):
     nombreResponsable=fields.String(required=False)
     puestoResponsable=fields.String(required=False)
     unidadAdministrativaResponsable=fields.String(required=False)
-    telefonoResponsable=fields.String(required=False)
+    telefonoResponsable=fields.String(required=False, validate=validate.Length(min=8, max=20))
 
     tipoEquipo=fields.String(required=True)
     sistemaOperativo=fields.String(required=True)
@@ -39,7 +39,7 @@ class RegistroSchemaVPNMayo(Schema):
     puestoAutoriza=fields.String(required=True)
 
     movimiento =fields.String(required=False)
-    justificacion=fields.String(required=True)
+    justificacion=fields.String(required=True, validate=validate.Length(min=50, max=256))
 
     # Booleanos
     solicitante = fields.String(required=True)
