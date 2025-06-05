@@ -606,9 +606,9 @@ class FileGeneratorRoute(Blueprint):
             if 'telefonoInterno' in err.messages:
                 self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
                 return jsonify({"message": "Datos invalidos"}), 208
-            # TELEFONO EXTERNO
-            if 'telefonoExterno' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono usuario externo'")
+            # TELEFONO RESPONSABLE
+            if 'telefonoResponsable' in err.messages:
+                self.logger.error(f"Error de validación: 'teléfono usuario responsable'")
                 return jsonify({"message": "Datos invalidos"}), 209
             
             # EMPLEADO RESPONSABLE
