@@ -612,7 +612,7 @@ class FileGeneratorRoute(Blueprint):
                         # nombreSistema
                         if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
                             self.logger.error(f"Error de validación: 'nombreSistema'")
-                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 212
+                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 211
             
             # REGISTROS REMOTO C)
             if 'registrosRemoto' in messages:
@@ -622,11 +622,15 @@ class FileGeneratorRoute(Blueprint):
                         # nomeclatura
                         if isinstance(errores_del_item, dict) and 'nomenclatura' in errores_del_item:
                             self.logger.error(f"Error de validación: 'nomenclatura'")
-                            return jsonify({"message": "Datos invalidos: 'nomenclatura'"}), 211
+                            return jsonify({"message": "Datos invalidos: 'nomenclatura'"}), 220
+                        # nombreSistema
+                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
+                            self.logger.error(f"Error de validación: 'nombreSistema'")
+                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 221
                         # direccion
                         if isinstance(errores_del_item, dict) and 'direccion' in errores_del_item:
                             self.logger.error(f"Error de validación: 'direccion'")
-                            return jsonify({"message": "Datos invalidos: 'direccion'"}), 213
+                            return jsonify({"message": "Datos invalidos: 'direccion'"}), 222
             
             # Otro error de validacion
             return jsonify({"error": "Datos invalidos", "Detalles": err.messages}), 422
