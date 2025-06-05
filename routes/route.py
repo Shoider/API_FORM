@@ -590,11 +590,18 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error("Ocurrieron errores de validación")
             self.logger.error(f"Errores de validación completos: {messages}")
 
-            # TELEFONO INTERNO
+            # CORREO INTERNO Y EXTERNO
+            if 'correoInterno' in err.messages:
+                self.logger.error(f"Error de validación: 'Correo interno invalido'")
+                return jsonify({"message": "Datos invalidos"}), 207
+            if 'correoExterno' in err.messages:
+                self.logger.error(f"Error de validación: 'Correo externo invalido'")
+                return jsonify({"message": "Datos invalidos"}), 207
+            
+             # TELEFONO INTERNO
             if 'telefonoInterno' in err.messages:
                 self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
                 return jsonify({"message": "Datos invalidos"}), 208
-
             # TELEFONO RESPONSABLE
             if 'telefonoExterno' in err.messages:
                 self.logger.error(f"Error de validación: 'teléfono responsable CONAGUA'")
