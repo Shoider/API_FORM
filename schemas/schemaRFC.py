@@ -35,9 +35,9 @@ class RegistroSchemaRFC(Schema):
     justifica3 = fields.String(required=False) 
 
     # Quien lo solicita
-    soli = fields.Boolean(required=False)
-    enlace = fields.Boolean(required=False)
-
+    #soli = fields.Boolean(required=False)
+    #enlace = fields.Boolean(required=False)
+    region = fields.String(required=True) 
 
     # Tablas y Tipos de Cambio #
 

@@ -538,8 +538,14 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify(vpnmayo_registro), status_code
 
         except ValidationError as err:
+            if 'registrosWeb' in err.messages:
+                self.logger.error(f"Error de validación: 'url/ip'")
+                return jsonify({"message": "Datos inválidos"}), 208
+            if 'registrosRemoto' in err.messages:
+                self.logger.error(f"Error de validación: 'direccion ip'")
+                return jsonify({"message": "Datos inválidos"}), 209
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 400
+            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 422
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
@@ -720,12 +726,16 @@ class FileGeneratorRoute(Blueprint):
 
             if status_code == 201:    
 
-                 # Booleanos para   Quien solicita
-                solicitante = "true" if validated_data.get('soli') == True else "false"
-                enlacein = "true" if validated_data.get('enlace') == True else "false"
-
+                # Booleanos para   Quien solicita
+                if (validated_data.get('region') == "central"):
+                    solicitante = "true"
+                    enlacein = "false"
+                else:
+                    solicitante = "true"
+                    enlacein = "true"
+                
                 ##IF DE PRUEBA
-                enlacesolibool="true" if solicitante == "true" and enlacein == "true" else "false"
+                enlacesolibool = "true" if solicitante == "true" and enlacein == "true" else "false"
                 solicitantebool = "true" if solicitante == "true" and enlacesolibool == "false" else "false"
                 enlaceinbool = "true" if enlacein == "true" and enlacesolibool == "false" else "false"
 
@@ -801,7 +811,6 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\ENLACE}{" + enlacein + "}" + os.linesep)
 
                     file.write("\\newcommand{\\ENLACESOLIBOOL}{" + enlacesolibool + "}" + os.linesep)
-
                     file.write("\\newcommand{\\SOLIBOOL}{" + solicitantebool + "}" + os.linesep)
                     file.write("\\newcommand{\\ENLACEBOOL}{" + enlaceinbool + "}" + os.linesep)
 
@@ -1018,7 +1027,7 @@ class FileGeneratorRoute(Blueprint):
             
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), status_code
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
