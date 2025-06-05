@@ -538,12 +538,37 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify(vpnmayo_registro), status_code
 
         except ValidationError as err:
+            ###TELEFONO INTERNO
+            if 'telefonoInterno' in err.messages:
+                self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
+                return jsonify({"message": "Datos inválidos"}), 208
+
+            ###TELEFONO RESPONSABLE
+            #if 'telefonoExterno' in err.messages:
+            #    self.logger.error(f"Error de validación: 'teléfono responsable CONAGUA'")
+            #    return jsonify({"message": "Datos inválidos"}), 209
+
+            ## REGISTROS WEB B)
             if 'registrosWeb' in err.messages:
                 self.logger.error(f"Error de validación: 'url/ip'")
-                return jsonify({"message": "Datos inválidos"}), 208
+                return jsonify({"message": "Datos inválidos"}), 210
+            
+            ##REGISTROS REMOTO C)
+            ##NOMENCLATURA
+            if 'registrosRemoto' in err.messages:
+                self.logger.error(f"Error de validación: 'nomenclatura'")
+                return jsonify({"message": "Datos inválidos"}), 211
+
+            ##NOMBRE SISTEMA
+            #if 'registrosRemoto' in err.messages:
+             #   self.logger.error(f"Error de validación: 'nombre de Sistema'")
+             #   return jsonify({"message": "Datos inválidos"}), 212
+
+            ##IP
             if 'registrosRemoto' in err.messages:
                 self.logger.error(f"Error de validación: 'direccion ip'")
-                return jsonify({"message": "Datos inválidos"}), 209
+                return jsonify({"message": "Datos inválidos"}), 213
+            
             self.logger.error(f"Error de validación: {err.messages}")
             return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 422
         except Exception as e:

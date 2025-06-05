@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, validate, validates, validates_schema, ValidationError
 from schemas.schemaTablasVPN import TablasSchemaSitios
 from schemas.schemaTablasVPN import TablasSchemasAcceso
 
@@ -18,6 +18,13 @@ class RegistroSchemaVPNMayo(Schema):
     correoInterno=fields.String(required=False)
     telefonoInterno=fields.String(required=False)
 
+    @validates('telefonoInterno')
+    def validate_telefonoInterno(self, value):
+        if value is None:
+            return
+        if len(value) < 8:
+           raise ValidationError ("Debe de ser un teléfono de 8 caracteres mínimo")
+
     nombreExterno=fields.String(required=False)
     correoExterno=fields.String(required=False)
     empresaExterno=fields.String(required=False)
@@ -29,6 +36,14 @@ class RegistroSchemaVPNMayo(Schema):
     unidadAdministrativaResponsable=fields.String(required=False)
     telefonoResponsable=fields.String(required=False)
 
+    #@validates('telefonoResponsable')
+    #def validate_telefonoResponsable(self, value):
+    #    if value is None:
+    #        return
+    #    if len(value) < 8:
+    #       raise ValidationError ("Debe de ser un teléfono de 8 caracteres mínimo")
+
+    
     tipoEquipo=fields.String(required=True)
     sistemaOperativo=fields.String(required=True)
     marca=fields.String(required=True)
@@ -52,5 +67,4 @@ class RegistroSchemaVPNMayo(Schema):
     # INCISO B)
     registrosWeb = fields.List(fields.Nested(TablasSchemaSitios))
     # INCISO C)
-    registrosRemoto = fields.List(fields.Nested(TablasSchemasAcceso))
-    
+    registrosRemoto = fields.List(fields.Nested(TablasSchemasAcceso))  

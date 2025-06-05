@@ -37,7 +37,23 @@ class TablasSchemasAcceso (Schema):
      id =fields.Integer(required=False)
      movimiento =fields.String(required=False)
      nomenclatura =fields.String(required=False)
+
+     @validates('nomenclatura')
+     def validate_nomenclatura(self, value):
+        if value is None:
+            return
+        if len(value) < 8:
+           raise ValidationError ("Debe contener 8 caracteres mínimo")
+
      nombreSistema =fields.String(required=False)
+
+    # @validates('nombreSistema')
+    # def validate_nombreSistema(self, value):
+    #    if value is None:
+    #        return
+    #    if len(value) < 11:
+    #       raise ValidationError ("Debe contener 11 caracteres mínimo")
+        
      direccion =fields.String(required=False)
 
      @validates('direccion')
