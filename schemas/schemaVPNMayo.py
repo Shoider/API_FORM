@@ -22,7 +22,8 @@ class RegistroSchemaVPNMayo(Schema):
     empresaExterno=fields.String(required=False)
     equipoExterno=fields.String(required=False)
 
-    numeroEmpleadoResponsable=fields.String(required=False)
+    numeroEmpleadoResponsable=fields.String(required=False, validate=validate.Length(5))
+    
     nombreResponsable=fields.String(required=False)
     puestoResponsable=fields.String(required=False)
     unidadAdministrativaResponsable=fields.String(required=False)

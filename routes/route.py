@@ -598,14 +598,23 @@ class FileGeneratorRoute(Blueprint):
                 self.logger.error(f"Error de validación: 'Correo externo invalido'")
                 return jsonify({"message": "Datos invalidos"}), 207
             
-             # TELEFONO INTERNO
+            # TELEFONO ENLACE
+            if 'telefonoEnlace' in err.messages:
+                self.logger.error(f"Error de validación: 'teléfono enlace/contacto'")
+                return jsonify({"message": "Datos invalidos"}), 206
+            # TELEFONO INTERNO
             if 'telefonoInterno' in err.messages:
                 self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
                 return jsonify({"message": "Datos invalidos"}), 208
-            # TELEFONO RESPONSABLE
+            # TELEFONO EXTERNO
             if 'telefonoExterno' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono responsable CONAGUA'")
+                self.logger.error(f"Error de validación: 'teléfono usuario externo'")
                 return jsonify({"message": "Datos invalidos"}), 209
+            
+            # EMPLEADO RESPONSABLE
+            if 'numeroEmpleadoResponsable' in err.messages:
+                self.logger.error(f"Error de validación: 'número de empleado responsable'")
+                return jsonify({"message": "Datos invalidos"}), 230
 
             # REGISTROS WEB B)
             if 'registrosWeb' in messages:
