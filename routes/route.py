@@ -48,6 +48,49 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
         
+    def eliminar_campos_vacios(self, datos):
+        """
+        Elimina recursivamente los campos (pares clave-valor) de los diccionarios
+        donde el valor es una cadena vacía ("") ó ("null").
+
+        Procesa diccionarios anidados y diccionarios dentro de listas.
+        Las cadenas vacías que sean elementos directos de una lista (ej: ["a", "", "b"])
+        NO se eliminan de la lista, ya que no son "campos" de un diccionario.
+        Otros tipos de datos (números, booleanos, None, cadenas no vacías) se conservan.
+
+        Args:
+            datos: Puede ser un diccionario o una lista para limpiar.
+
+        Returns:
+            Una nueva estructura de datos (diccionario o lista) sin los campos
+            que contenían cadenas vacías.
+        """
+        if isinstance(datos, dict):
+            # Crear un nuevo diccionario para los datos limpios
+            diccionario_limpio = {}
+            for clave, valor in datos.items():
+                if valor == "":
+                    # Si el valor es una cadena vacía, omitir este campo
+                    continue
+                if valor == "null":
+                    continue
+                elif isinstance(valor, dict):
+                    # Si el valor es un diccionario, aplicar la función recursivamente
+                    diccionario_limpio[clave] = self.eliminar_campos_vacios(valor)
+                elif isinstance(valor, list):
+                    # Si el valor es una lista, aplicar la función recursivamente a cada elemento
+                    diccionario_limpio[clave] = [self.eliminar_campos_vacios(item) for item in valor]
+                else:
+                    # Para cualquier otro valor, conservarlo
+                    diccionario_limpio[clave] = valor
+            return diccionario_limpio
+        elif isinstance(datos, list):
+            # Si la estructura de datos es una lista, aplicar la función a cada elemento
+            return [self.eliminar_campos_vacios(item) for item in datos]
+        else:
+            # Si no es un diccionario ni una lista (ej: string, int, None), devolverlo tal cual
+            return datos
+        
     def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros, Alta):
         """
         Crea un archivo CSV a partir de un array de registros,
@@ -391,9 +434,14 @@ class FileGeneratorRoute(Blueprint):
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
+            
+            datosParaValidacion = self.eliminar_campos_vacios(data)
+            self.logger.info(f"Datos despues de limpieza: {datosParaValidacion}")
+            self.forms_schemaVPNMayo.load(datosParaValidacion)
+            self.logger.info("Ya se validaron correctamente")
 
             # Validacion
-            validated_data = self.forms_schemaVPNMayo.load(data)
+            validated_data = data
             
             # memorando NO viene o está vacío
             if not validated_data.get('memorando'):
@@ -538,14 +586,70 @@ class FileGeneratorRoute(Blueprint):
                 return jsonify(vpnmayo_registro), status_code
 
         except ValidationError as err:
-            if 'registrosWeb' in err.messages:
-                self.logger.error(f"Error de validación: 'url/ip'")
-                return jsonify({"message": "Datos inválidos"}), 208
-            if 'registrosRemoto' in err.messages:
-                self.logger.error(f"Error de validación: 'direccion ip'")
-                return jsonify({"message": "Datos inválidos"}), 209
-            self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "Detalles": err.messages}), 422
+            messages = err.messages
+            self.logger.error("Ocurrieron errores de validación")
+            self.logger.error(f"Errores de validación completos: {messages}")
+
+            # CORREO INTERNO Y EXTERNO
+            if 'correoInterno' in err.messages:
+                self.logger.error(f"Error de validación: 'Correo interno invalido'")
+                return jsonify({"message": "Datos invalidos"}), 207
+            if 'correoExterno' in err.messages:
+                self.logger.error(f"Error de validación: 'Correo externo invalido'")
+                return jsonify({"message": "Datos invalidos"}), 207
+            
+            # TELEFONO ENLACE
+            if 'telefonoEnlace' in err.messages:
+                self.logger.error(f"Error de validación: 'teléfono enlace/contacto'")
+                return jsonify({"message": "Datos invalidos"}), 206
+            # TELEFONO INTERNO
+            if 'telefonoInterno' in err.messages:
+                self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
+                return jsonify({"message": "Datos invalidos"}), 208
+            # TELEFONO RESPONSABLE
+            if 'telefonoResponsable' in err.messages:
+                self.logger.error(f"Error de validación: 'teléfono usuario responsable'")
+                return jsonify({"message": "Datos invalidos"}), 209
+            
+            # EMPLEADO RESPONSABLE
+            if 'numeroEmpleadoResponsable' in err.messages:
+                self.logger.error(f"Error de validación: 'número de empleado responsable'")
+                return jsonify({"message": "Datos invalidos"}), 230
+
+            # REGISTROS WEB B)
+            if 'registrosWeb' in messages:
+                web = messages['registrosWeb']
+                if isinstance(web, dict):
+                    for indice_item_str, errores_del_item in web.items():
+                        # url
+                        if isinstance(errores_del_item, dict) and 'url' in errores_del_item:
+                            self.logger.error(f"Error de validación: 'url'")
+                            return jsonify({"message": "Datos invalidos: 'url'"}), 210
+                        # nombreSistema
+                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
+                            self.logger.error(f"Error de validación: 'nombreSistema'")
+                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 211
+            
+            # REGISTROS REMOTO C)
+            if 'registrosRemoto' in messages:
+                remoto = messages['registrosRemoto']
+                if isinstance(remoto, dict):
+                    for indice_item_str, errores_del_item in remoto.items():
+                        # nomeclatura
+                        if isinstance(errores_del_item, dict) and 'nomenclatura' in errores_del_item:
+                            self.logger.error(f"Error de validación: 'nomenclatura'")
+                            return jsonify({"message": "Datos invalidos: 'nomenclatura'"}), 220
+                        # nombreSistema
+                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
+                            self.logger.error(f"Error de validación: 'nombreSistema'")
+                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 221
+                        # direccion
+                        if isinstance(errores_del_item, dict) and 'direccion' in errores_del_item:
+                            self.logger.error(f"Error de validación: 'direccion'")
+                            return jsonify({"message": "Datos invalidos: 'direccion'"}), 222
+            
+            # Otro error de validacion
+            return jsonify({"error": "Datos invalidos", "Detalles": err.messages}), 422
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
