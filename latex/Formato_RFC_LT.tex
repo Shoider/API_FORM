@@ -122,9 +122,7 @@ headheight = 28mm
 \begin{document}
 \sloppy
 %%%INFORMACIÓN DEL SOLICITANTE Y ENLACE INFORMATICO 
-\newboolean{soli}
-\setboolean{soli}{\SOLI}
-\ifthenelse{\boolean{soli}}{
+
 \vspace{-30pt}
 \begin{longtblr}[
 	label = none,
@@ -146,7 +144,7 @@ headheight = 28mm
    \textbf{Información del solicitante:} &  &      &  \\
              Nombre:                &    \NOMS &   {Teléfono/Extensión:}&\EXTS\\
              Puesto:&\PUESTOS\\  Área: &\AREAS            
-\end{longtblr}}
+\end{longtblr}
 
 \newboolean{enlace}
 \setboolean{enlace}{\ENLACE}
@@ -828,17 +826,12 @@ vlines,
 			\item Al firmar el solicitante se da por enterado de las políticas del servicio y acepta la responsabilidad de cualquier materialización de los riesgos derivados de las aperturas de comunicaciones asociadas al presente control de cambios.
 
 \end{itemize}
-\newboolean{enlacebool}
-\setboolean{enlacebool}{\ENLACEBOOL}
+\newboolean{regional}
+\setboolean{regional}{\REGIONAL}
 
-\newboolean{solibool}
-\setboolean{solibool}{\SOLIBOOL}
-
-\newboolean{enlacesolibool}
-\setboolean{enlacesolibool}{\ENLACESOLIBOOL}
 
 %%AMBOS
-\ifthenelse{\boolean{enlacesolibool}}{
+\ifthenelse{\boolean{regional}}{
          
            %\vspace{-7pt}
 	\begin{longtblr}[
@@ -860,12 +853,8 @@ vlines,
                    {\normalsize Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} &
                    {\normalsize Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
 	\end{longtblr}
-}
-
-%%SOLI
-          \ifthenelse{\boolean{solibool}}{
-           %\vspace{-7pt}
-	\begin{longtblr}[
+}{
+\begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
@@ -883,30 +872,9 @@ vlines,
 		{\normalsize Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
                    {\normalsize Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} 
                   % {Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
-	\end{longtblr}
-}
+	\end{longtblr}}
 
-\ifthenelse{\boolean{enlacebool}}{         
-           %\vspace{-7pt}
-	\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-			width = \linewidth,
-			colspec = {Q[200]Q[200]Q[200]},
-			%row{1} = {gris},
-			row{1} = {c},
-                                row{2}={c},
-			%cell{1}{1} = {c=2}{0.942\linewidth},
-                                cell{2}{1} = {c=2}{0.942\linewidth},
-			%hlines,
-			%vlines,
-		}
-		%Fecha: \today                      &                                                                                                       \\
-		{\normalsize Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
-                  % {Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} &
-                   {\normalsize Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
-	\end{longtblr}
-}
+
+
 
 \end{document}
