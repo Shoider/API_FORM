@@ -35,8 +35,8 @@ class RegistroSchemaVPNMayo(Schema):
     modelo=fields.String(required=True)
     serie=fields.String(required=True)
 
-    nombreAutoriza=fields.String(required=True)
-    puestoAutoriza=fields.String(required=True)
+    nombreAutoriza=fields.String(required=False)
+    puestoAutoriza=fields.String(required=False)
 
     movimiento =fields.String(required=False)
     justificacion=fields.String(required=True, validate=validate.Length(min=50, max=256))
