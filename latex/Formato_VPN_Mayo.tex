@@ -100,7 +100,7 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	Número de memorando:  &   \NOMEMO  & Fecha de la solicitud:   & \FECHA
+	Número de memorando:  &   \NOMEMO   & Fecha de la solicitud:   & \FECHA
 \end{longtblr}
 \textbf{1. Datos de identificación del área solicitante}
 \vspace{-15pt}
@@ -112,7 +112,7 @@ headheight = 28mm
 		width = \linewidth,
 		colspec = {Q[200]Q[300]},
                      column{1}={r},
-                     column{2}={l},
+                     column{2}={j},
                       row{4} = {c},
 		cell{4}{1} = {c=2}{0.874\linewidth},
 		hlines,
@@ -142,6 +142,7 @@ Número de teléfono y/o extensión: & \EXTENLACE
 		colspec = {Q[200]Q[300]},
                      column{1}={r},
                       row{1} = {c},
+					  row{2}={l},
 		cell{1}{1} = {c=2}{0.874\linewidth},
 		hlines,
 		vlines,
@@ -162,6 +163,7 @@ Número de teléfono y/o extensión: & \EXTCONAGUA
 		colspec = {Q[200]Q[300]},
                      column{1}={r},
                       row{1} = {c},
+					  row{2}={l},
 		cell{1}{1} = {c=2}{0.874\linewidth},
                      row{6} = {c},
 		cell{6}{1} = {c=2}{0.874\linewidth},
@@ -177,7 +179,7 @@ Equipo de desarrollo:   & \EQUIPODES    \\
 Número de empleado: &\NOEMPLEADO\\
 Nombre Completo:&\NOMBREEMPLEADO\\
 Puesto o cargo:&\PUESTOEMPLEADO\\
-Área de adscripción:&\UAEMPLEADO\\
+Unidad Administrativa:&\UAEMPLEADO\\
 Número de teléfono o extensión:&\EXTEMPLEADO
 \end{longtblr}
 }
@@ -196,14 +198,15 @@ Número de teléfono o extensión:&\EXTEMPLEADO
                      column{3}={r},
                       row{1} = {c},
 		cell{1}{1} = {c=4}{0.874\linewidth},
-                     cell{4}{2} = {c=3}{0.644\linewidth},
+                     %cell{4}{2} = {c=3}{0.644\linewidth},
 		hlines,
 		vlines,
 	}
 \textbf{Datos del equipo de origen}&&&\\
-Tipo de Equipo:                     &\TIPOEQUIPO &Sistema Operativo:&\SO \\
-Marca: &   \MARCA  & Modelo: & \MODELO\\
-Número de serie:&\NOSERIE
+Tipo de Equipo: & \TIPOEQUIPO & Marca: &\MARCA \\
+Modelo: &\MODELO& Número de serie:&\NOSERIE\\
+Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
+
 \end{longtblr}
 
 \newboolean{cuentausuario}
@@ -357,7 +360,7 @@ Número de serie:&\NOSERIE
 \end{longtblr}
 
 \textbf{ Términos y condiciones de uso del servicio:}
-{ \begin{enumerate}
+{ \small \begin{enumerate}
 	\item El usuario solicitante puede tramitar este formato las veces que sea necesario, según sus necesidades. Los servicios solicitados son acumulados a los existentes. Es responsabilidad del solicitante, indicar correctamente el movimiento (A, B, C) de los servicios especificados tomando en cuenta su historial de solicitudes.
 	\item El Enlace Informático de la unidad administrativa solicitante, será quien gestione y de seguimiento a la solicitud de servicios de Red Privada Virtual (VPN) del personal de su unidad. 
 	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad única y exclusivamente proveerá el servicio de acceso remoto por VPN al usuario solicitante autorizado por el titular de su unidad administrativa previa presentación del formato debidamente llenado.

@@ -31,6 +31,7 @@ class RegistroSchemaVPNMayo(Schema):
 
     tipoEquipo=fields.String(required=True)
     sistemaOperativo=fields.String(required=True)
+    versionSO=fields.String(required=True)
     marca=fields.String(required=True)
     modelo=fields.String(required=True)
     serie=fields.String(required=True)

@@ -511,6 +511,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\EXTEMPLEADO}{"+ validated_data.get('telefonoResponsable')+"}"+ os.linesep)
                     file.write("\\newcommand{\\TIPOEQUIPO}{"+ validated_data.get('tipoEquipo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\SO}{"+ validated_data.get('sistemaOperativo')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\VERSIONSO}{"+ validated_data.get('versionSO')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MARCA}{"+ validated_data.get('marca')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MODELO}{"+ validated_data.get('modelo')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOSERIE}{"+ validated_data.get('serie')+"}"+ os.linesep)
