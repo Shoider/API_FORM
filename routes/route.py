@@ -594,7 +594,7 @@ class FileGeneratorRoute(Blueprint):
             # CORREO INTERNO Y EXTERNO
             if 'correoInterno' in err.messages:
                 self.logger.error(f"Error de validación: 'Correo interno invalido'")
-                return jsonify({"message": "Datos invalidos"}), 207
+                return jsonify({"message": "Datos invalidos"}), 205
             if 'correoExterno' in err.messages:
                 self.logger.error(f"Error de validación: 'Correo externo invalido'")
                 return jsonify({"message": "Datos invalidos"}), 207
