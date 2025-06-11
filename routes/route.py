@@ -13,7 +13,7 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol):
+    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol, forms_schema):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
         self.forms_schemaVPN = forms_schemaVPN
@@ -23,6 +23,7 @@ class FileGeneratorRoute(Blueprint):
         self.forms_schemaInter = forms_schemaInter
         self.actualizarMemo = actualizarMemo
         self.actualizarFuncionRol = actualizarFuncionRol
+        self.forms_schema = forms_schema #ESQUEMA NUEVO
         self.service = service
         self.register_routes()
 
@@ -30,6 +31,7 @@ class FileGeneratorRoute(Blueprint):
         """Function to register the routes for file generation"""
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
         self.route("/api/v2/vpn", methods=["POST"])(self.vpnmayo)
+        self.route("/api/v3/vpn", methods=["POST"])(self.vpnmayo2)
         self.route("/api/v2/vpnActualizar", methods=["POST"])(self.vpnMemorando)
         self.route("/api/v2/rfcActualizar", methods=["POST"])(self.rfcFuncionORol)
         self.route("/api/v1/tel", methods=["POST"])(self.tel)
@@ -656,7 +658,158 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)        
+            shutil.rmtree(temp_dir)  
+
+    def vpnmayo2(self):
+        try:
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            
+            # Validacion
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
+
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('vpn', validated_data.get('id'))
+
+            if status_code == 201:
+            
+                # Transformar valores "SI" y "NO"
+                altausuario = "x" if datosRegistro.get('movimiento') == "ALTA" else " "
+                bajausuario = "x" if datosRegistro.get('movimiento') == "BAJA" else " "
+
+                # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
+                conagua = "true" if datosRegistro.get('solicitante') == "CONAGUA" else "false"
+
+                # PARA BOOLEANOS DE FIRMA
+                conaguafirma = "true" if datosRegistro.get('solicitante') == "EXTERNO" else "false"
+                sistemas = "true" if datosRegistro.get('subgerencia')== "Subgerencia de Sistemas"  else "false"
+                otrasub = "true" if sistemas == "false" else "false"
+
+                # Opcion seleccionada
+                cuentaUsuario = "true" if datosRegistro.get('cuentaUsuario') == True else "false"
+                accesoWeb = "true" if datosRegistro.get('accesoWeb') == True else "false"
+                accesoRemoto = "true" if datosRegistro.get('accesoRemoto') == True else "false"
+
+                nombreusuario= datosRegistro.get('nombreInterno') if conagua == "true" else datosRegistro.get('nombreExterno')
+                puestousuario= datosRegistro.get('puestoInterno') if conagua == "true" else ""
+
+                # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
+                with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\UA}{"+ datosRegistro.get('unidadAdministrativa', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEMO}{"+ datosRegistro.get('memorando', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHA}{"+ datosRegistro.get('fecha', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\AREA}{"+ datosRegistro.get('areaAdscripcion', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SUBGERENCIA}{"+ datosRegistro.get('subgerencia', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTENLACE}{"+ datosRegistro.get('telefonoEnlace', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBRECONAGUA}{"+ datosRegistro.get('nombreInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOCONAGUA}{"+ datosRegistro.get('puestoInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOCONAGUA}{"+ datosRegistro.get('correoInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTCONAGUA}{"+ datosRegistro.get('telefonoInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEXTERNO}{"+ datosRegistro.get('nombreExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOEXTERNO}{"+ datosRegistro.get('correoExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPRESA}{"+ datosRegistro.get('empresaExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EQUIPODES}{"+ datosRegistro.get('equipoExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOEMPLEADO}{"+ datosRegistro.get('numeroEmpleadoResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPLEADO}{"+ datosRegistro.get('nombreResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UAEMPLEADO}{"+ datosRegistro.get('unidadAdministrativaResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEMPLEADO}{"+ datosRegistro.get('telefonoResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TIPOEQUIPO}{"+ datosRegistro.get('tipoEquipo', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SO}{"+ datosRegistro.get('sistemaOperativo', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\VERSIONSO}{"+ datosRegistro.get('versionSO', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MARCA}{"+ datosRegistro.get('marca', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MODELO}{"+ datosRegistro.get('modelo', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOSERIE}{"+ datosRegistro.get('serie', ' ')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ nombreusuario+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ puestousuario+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreAutoriza', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoAutoriza', ' ')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\ALTAUSUARIO}{" + altausuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJAUSUARIO}{" + bajausuario + "}" + os.linesep)
+
+                    # Booleanos para las opciones necesarias de mostrar tablas o no
+                    file.write("\\newcommand{\\CONAGUA}{" + conagua + "}" + os.linesep)
+
+                    ##BOOLEANOS PARA FIRMAS 
+                    file.write("\\newcommand{\\CONAGUAFIRMA}{" + conaguafirma + "}" + os.linesep)
+                    file.write("\\newcommand{\\SISTEMAS}{" + sistemas + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRA}{" + otrasub + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\CUENTAUSUARIO}{" + cuentaUsuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\ACCESOWEB}{" + accesoWeb + "}" + os.linesep)
+                    file.write("\\newcommand{\\ACCESOREMOTO}{" + accesoRemoto + "}" + os.linesep)
+
+                    # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', ' ') + "}" + os.linesep)
+
+                # Archivos .csv para las tablas
+                # b) Acceso a sitios Web
+                registros = datosRegistro.get('registrosWeb', [])       # Obtiene array de los datos
+                self.crear_csv_VPN_Web(temp_dir, "SITIOSWEB.csv", registros)   # Se crea el .csv
+
+                # c) Acceso a escritorio remoto
+                registros = datosRegistro.get('registrosRemoto', []) 
+                self.crear_csv_VPN_Remoto(temp_dir, "REMOTOESC.csv", registros)
+
+                # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_VPN_Mayo.pdf")
+
+                # Copia Formato_VPN_Mayo.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_VPN_Mayo.tex", archivo_tex)
+
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
+
+                # Compilar XeLaTeX
+                try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
+                
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
+
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="Registro_VPN_Mayo.pdf",
+                    as_attachment=True,
+                )
+        
+            else:
+                return jsonify(datosRegistro), status_code
+
+        except ValidationError as err:
+            self.logger.error("Ocurrieron errores de validación")
+            self.logger.error(f"Errores de validación completos: {err.messages}")
+            return jsonify({"error": "Datos invalidos", "message": err.messages}), 422
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)       
 
     def tel(self):
         try:

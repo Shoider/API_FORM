@@ -42,7 +42,7 @@ class BDModel:
                 authMechanism="SCRAM-SHA-256",
                 serverSelectionTimeoutMS=5000,
             )
-            self.db = self.client["project"]
+            self.db = self.client["formularios"]
 
             if self.db.list_collection_names():
                 self.logger.info("Connected to MongoDB successfully")
