@@ -206,7 +206,7 @@ class FileGeneratorRoute(Blueprint):
                 if "url" in registro:
                     ##PARA url
                     url=registro["url"]
-                    url_modificada = '\\\\'.join([url[i:i+24] for i in range(0, len(url), 24)])
+                    url_modificada = '\\\\'.join([url[i:i+15] for i in range(0, len(url), 15)])
                     registro["url"] = url_modificada
             #    if "puertosServicios" in registro:
             #        ##PARA puertos, aqui modifique para que fuera cada 3 caracteres 
