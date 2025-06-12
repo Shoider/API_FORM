@@ -142,7 +142,7 @@ Número de teléfono y/o extensión: & \EXTENLACE
 		colspec = {Q[200]Q[300]},
                      column{1}={r},
 		column{2}={l},
-                     row{2}={j},
+		cell{1}{1}={c},                 	
 		cell{1}{1} = {c=2}{0.874\linewidth},
 		hlines,
 		vlines,
@@ -228,17 +228,18 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 \end{longtblr}
 }
 
-
+%%%%tablas de acceso web
 \newboolean{accesoweb}
 \setboolean{accesoweb}{\ACCESOWEB}
 \ifthenelse{\boolean{accesoweb}}
 {
-\clearpage
-\textbf{b) Accesos a sitios Web o Equipo}
+\ifthenelse{\boolean{conagua}}
+{.}{\clearpage}
+\textbf{b) Accesos a sitios Web o Equipo\\}
 %%%%%%%
 %%%%ACCESOS A SITIOS
-\vspace{-10pt}
-\begin{longtblr}[
+%\vspace{-10pt}
+\begin{tblr}[
 	label = none,
 	entry = none,
 	]{
@@ -249,15 +250,15 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 		vlines,
 	}
 	\textbf{Acceso a sitios Web o Equipo}
-\end{longtblr}
+\end{tblr}
 %%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
-\vspace{-35pt}
- \begin{longtblr}[
+\vspace{-1pt}
+ \begin{tblr}[
  label = none,
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[1]Q[1]Q[2]Q[2]Q[2]Q[2]},                     
+  colspec = {Q[5]Q[6]Q[30]Q[14]Q[25]Q[30]},                     
   hlines,
   vlines,
                      cells={c},
@@ -265,22 +266,22 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 \textbf{\footnotesize ID}&\textbf {\footnotesize A|B|C}&\textbf{\footnotesize Nombre Sistema/Servicio}&
 \textbf{\footnotesize Sigla}&\textbf{\footnotesize URL/IP del Equipo} &
 \textbf{\footnotesize Puerto o Servicio \\adicionales}
-\end{longtblr}
+\end{tblr}
 %%%%SITIOSWEB
 \DTLforeach*{SITIOSWEB}{\ID=ID, \ABC=ABC, \SIST=SIST, \SIGLAS=SIGLAS, \URL=URL, \PUERTOS=PUERTOS}
 {
-\vspace{-37pt}
- \begin{longtblr}[
+\vspace{-1pt}
+ \begin{tblr}[
  label = none,
  entry = none,
  ]{
-                      colspec = {Q[1]Q[1]Q[2]Q[2]Q[2]Q[2]},                     
+                      colspec = {Q[5]Q[6]Q[30]Q[14]Q[25]Q[30]},                      
                       hlines,
                      vlines,
                     cells={c},                                
  }
 {\ID}&{\ABC}&{\SIST}&{\SIGLAS}&{\URL}&{ \PUERTOS}
-\end{longtblr}
+\end{tblr}
 }
 }
 
@@ -288,6 +289,9 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 \setboolean{accesoremoto}{\ACCESOREMOTO}
 \ifthenelse{\boolean{accesoremoto}}
 {
+\ifthenelse{\boolean{conagua}}{.}
+{\ifthenelse{\boolean{accesoweb}}{:}{\clearpage}}
+
 
 \textbf{c)Acceso a escritorios remoto}
 %%%%%%%
@@ -426,8 +430,8 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 			colspec = {Q[200]Q[200]Q[200]},
                                 row{1}={c},
 		}                                                                                            
-		{\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize \NOMBREUSUARIO\\ \footnotesize \PUESTOUSUARIO} & 
-                   {\footnotesize Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\ \footnotesize M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
+		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBREUSUARIO\\  \PUESTOUSUARIO} & 
+                   { Autoriza Servicios\\[1cm] \rule{5cm}{0.5mm}\\  M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
 	\end{longtblr}
 }
 

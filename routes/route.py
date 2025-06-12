@@ -190,8 +190,8 @@ class FileGeneratorRoute(Blueprint):
             if not registros:
                 df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nombreSistema', 'siglas', 'url', 'puertosServicios'])
 
-            #for registro in registros:
-            #    registro.pop('isNew', None)
+            for registro in registros:
+                registro.pop('isNew', None)
             #    if "nombreSistema" in registro:
                     ##AGREGA UN SALTO DE LINEA CADA XX CARÁCTERES PARA EVITAR LO QUE EL FORMATO DE LaTeX NO HACE
                     ##PARA nombresistema
@@ -203,11 +203,11 @@ class FileGeneratorRoute(Blueprint):
             #        siglas=registro["siglas"]
             #        siglas_modificado = '\\\\'.join([siglas[i:i+8] for i in range(0, len(siglas), 8)])
             #        registro["siglas"] = siglas_modificado
-            #    if "url" in registro:
-            #        ##PARA url
-            #        url=registro["url"]
-            #        url_modificada = '\\\\'.join([url[i:i+24] for i in range(0, len(url), 24)])
-            #        registro["url"] = url_modificada
+                if "url" in registro:
+                    ##PARA url
+                    url=registro["url"]
+                    url_modificada = '\\\\'.join([url[i:i+24] for i in range(0, len(url), 24)])
+                    registro["url"] = url_modificada
             #    if "puertosServicios" in registro:
             #        ##PARA puertos, aqui modifique para que fuera cada 3 caracteres 
             #        puertos=registro["puertosServicios"]
