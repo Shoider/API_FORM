@@ -34,7 +34,7 @@ class TablasSchemaSitios(Schema):
 class TablasSchemasAcceso (Schema):
     id =fields.Integer(required=False)
     movimiento =fields.String(required=False)
-    nomenclatura =fields.String(required=False, validate=validate.Length(min=8))
+    nomenclatura =fields.String(required=False, validate=validate.Length(min=7))
 
     nombreSistema =fields.String(required=False, validate=validate.Length(min=11))
         
