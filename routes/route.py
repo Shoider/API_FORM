@@ -592,64 +592,6 @@ class FileGeneratorRoute(Blueprint):
             messages = err.messages
             self.logger.error("Ocurrieron errores de validación")
             self.logger.error(f"Errores de validación completos: {messages}")
-
-            # CORREO INTERNO Y EXTERNO
-            if 'correoInterno' in err.messages:
-                self.logger.error(f"Error de validación: 'Correo interno invalido'")
-                return jsonify({"message": "Datos invalidos"}), 207
-            if 'correoExterno' in err.messages:
-                self.logger.error(f"Error de validación: 'Correo externo invalido'")
-                return jsonify({"message": "Datos invalidos"}), 207
-            
-            # TELEFONO ENLACE
-            if 'telefonoEnlace' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono enlace/contacto'")
-                return jsonify({"message": "Datos invalidos"}), 206
-            # TELEFONO INTERNO
-            if 'telefonoInterno' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
-                return jsonify({"message": "Datos invalidos"}), 208
-            # TELEFONO RESPONSABLE
-            if 'telefonoResponsable' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono usuario responsable'")
-                return jsonify({"message": "Datos invalidos"}), 209
-            
-            # EMPLEADO RESPONSABLE
-            if 'numeroEmpleadoResponsable' in err.messages:
-                self.logger.error(f"Error de validación: 'número de empleado responsable'")
-                return jsonify({"message": "Datos invalidos"}), 230
-
-            # REGISTROS WEB B)
-            if 'registrosWeb' in messages:
-                web = messages['registrosWeb']
-                if isinstance(web, dict):
-                    for indice_item_str, errores_del_item in web.items():
-                        # url
-                        if isinstance(errores_del_item, dict) and 'url' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'url'")
-                            return jsonify({"message": "Datos invalidos: 'url'"}), 210
-                        # nombreSistema
-                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'nombreSistema'")
-                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 211
-            
-            # REGISTROS REMOTO C)
-            if 'registrosRemoto' in messages:
-                remoto = messages['registrosRemoto']
-                if isinstance(remoto, dict):
-                    for indice_item_str, errores_del_item in remoto.items():
-                        # nomeclatura
-                        if isinstance(errores_del_item, dict) and 'nomenclatura' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'nomenclatura'")
-                            return jsonify({"message": "Datos invalidos: 'nomenclatura'"}), 220
-                        # nombreSistema
-                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'nombreSistema'")
-                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 221
-                        # direccion
-                        if isinstance(errores_del_item, dict) and 'direccion' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'direccion'")
-                            return jsonify({"message": "Datos invalidos: 'direccion'"}), 222
             
             # Otro error de validacion
             return jsonify({"error": "Datos invalidos", "Detalles": err.messages}), 422

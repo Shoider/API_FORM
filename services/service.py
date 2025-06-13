@@ -2,8 +2,8 @@ import datetime
 from flask import jsonify
 from pymongo import ReturnDocument
 from logger.logger import Logger
-from bson import ObjectId
-from bson import InvalidId 
+from bson.objectid import ObjectId
+from bson.errors import InvalidId
 
 class Service:
     """Service class to that implements the logic of the CRUD operations for tickets"""
