@@ -13,16 +13,9 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol, forms_schema):
+    def __init__(self, service, forms_schema):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
-        self.forms_schemaVPN = forms_schemaVPN
-        self.forms_schemaVPNMayo = forms_schemaVPNMayo
-        self.forms_schemaTel = forms_schemaTel
-        self.forms_schemaRFC = forms_schemaRFC
-        self.forms_schemaInter = forms_schemaInter
-        self.actualizarMemo = actualizarMemo
-        self.actualizarFuncionRol = actualizarFuncionRol
         self.forms_schema = forms_schema #ESQUEMA NUEVO
         self.service = service
         self.register_routes()
