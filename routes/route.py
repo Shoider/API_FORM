@@ -788,6 +788,7 @@ class FileGeneratorRoute(Blueprint):
             
             else:
                 return jsonify(tel_registro), status_code
+            
 
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
@@ -1153,9 +1154,14 @@ class FileGeneratorRoute(Blueprint):
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
+            
+            datosParaValidacion = self.eliminar_campos_vacios(data)
+            self.logger.info(f"Datos despues de limpieza: {datosParaValidacion}")
+            self.forms_schemaInter.load(datosParaValidacion)
+            self.logger.info("Ya se validaron correctamente")
 
             # Validacion
-            validated_data = self.forms_schemaInter.load(data)
+            validated_data = data
 
             # Guardar en BD
             new_inter_data = validated_data
@@ -1333,7 +1339,11 @@ class FileGeneratorRoute(Blueprint):
 
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+            #return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        # CORREO INTERNO Y EXTERNO
+            if 'urlDescarga' in err.messages:
+                self.logger.error(f"Error de validación: 'Correo interno invalido'")
+                return jsonify({"message": "Datos invalidos"}), 250
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500

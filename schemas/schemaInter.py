@@ -32,13 +32,13 @@ class RegistroSchemaInter(Schema):
     onedrive= fields.Boolean(required=True)
 
     urlDescarga= fields.String(required=False)
-    #@validates('urlDescarga')
-    #def validate_url(self, value):
-    #    if value is None or value == "":
-    #        return  # Campo opcional, permite vacío
-    #    if value.lower().startswith("http"):
-    #        return
-    #    raise ValidationError("Debe comenzar con 'http'")
+    @validates('urlDescarga')
+    def validate_url(self, value):
+        if value is None or value == "":
+            return  # Campo opcional, permite vacío
+        if value.lower().startswith("http"):
+            return
+        raise ValidationError("Debe comenzar con 'http'")
     justificaDescarga= fields.String(required=False)
     urlForos= fields.String(required=False)
     justificaForos= fields.String(required=False)
