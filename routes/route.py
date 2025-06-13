@@ -748,6 +748,7 @@ class FileGeneratorRoute(Blueprint):
 
     def tel(self):
         try:
+
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
@@ -755,42 +756,43 @@ class FileGeneratorRoute(Blueprint):
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
-
+            
             # Validacion
-            validated_data = self.forms_schemaTel.load(data)
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
 
-            # Guardar en BD
-            new_tel_data = validated_data
-            tel_registro, status_code = self.service.add_tel(new_tel_data)
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('tel', validated_data.get('id'))
+
 
             if status_code == 201:
-                noformato = tel_registro.get('_id')
+                noformato = datosRegistro.get('_id', ' ')
                 self.logger.info(f"Registro TELEFONIA agregado con ID: {noformato}")
             
                 # Tipo de Movimiento
-                alta = "X" if validated_data.get('movimiento') == "ALTA" else " "
-                baja = "X" if validated_data.get('movimiento') == "BAJA" else " "
-                cambio = "X" if validated_data.get('movimiento') == "CAMBIO" else " "
+                alta = "X" if datosRegistro.get('movimiento') == "ALTA" else " "
+                baja = "X" if datosRegistro.get('movimiento') == "BAJA" else " "
+                cambio = "X" if datosRegistro.get('movimiento') == "CAMBIO" else " "
 
                 # Direccion
-                direcion = validated_data.get('direccion') + ", " + validated_data.get('piso') + ", " + validated_data.get('ala')
+                direcion = datosRegistro.get('direccion', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
 
                 # Traducir valores true y false #PENDIGN
-                externo = "true" if validated_data.get('usuaExterno') == True else "false"
+                externo = "true" if datosRegistro.get('usuaExterno') == True else "false"
 
                 # Transformar valores "X" y " "
-                siMundo = "X" if validated_data.get('mundo') == "SI" else " "
-                noMundo = "X" if validated_data.get('mundo') == "NO" else " "
-                siLocal = "X" if validated_data.get('local') == "SI" else " "
-                noLocal = "X" if validated_data.get('local') == "NO" else " "
-                sicLocal = "X" if validated_data.get('cLocal') == "SI" else " "
-                nocLocal = "X" if validated_data.get('cLocal') == "NO" else " "
-                siNacional = "X" if validated_data.get('nacional') == "SI" else " "
-                noNacional = "X" if validated_data.get('nacional') == "NO" else " "
-                sicNacional = "X" if validated_data.get('cNacional') == "SI" else " "
-                nocNacional = "X" if validated_data.get('cNacional') == "NO" else " "
-                siEua = "X" if validated_data.get('eua') == "SI" else " "
-                noEua = "X" if validated_data.get('eua') == "NO" else " "
+                siMundo = "X" if datosRegistro.get('mundo') == "SI" else " "
+                noMundo = "X" if datosRegistro.get('mundo') == "NO" else " "
+                siLocal = "X" if datosRegistro.get('local') == "SI" else " "
+                noLocal = "X" if datosRegistro.get('local') == "NO" else " "
+                sicLocal = "X" if datosRegistro.get('cLocal') == "SI" else " "
+                nocLocal = "X" if datosRegistro.get('cLocal') == "NO" else " "
+                siNacional = "X" if datosRegistro.get('nacional') == "SI" else " "
+                noNacional = "X" if datosRegistro.get('nacional') == "NO" else " "
+                sicNacional = "X" if datosRegistro.get('cNacional') == "SI" else " "
+                nocNacional = "X" if datosRegistro.get('cNacional') == "NO" else " "
+                siEua = "X" if datosRegistro.get('eua') == "SI" else " "
+                noEua = "X" if datosRegistro.get('eua') == "NO" else " "
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
@@ -800,19 +802,19 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
                     file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\TIPOUSUARIO}{"+ validated_data.get('tipoUsuario')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TIPOUSUARIO}{"+ datosRegistro.get('tipoUsuario', ' ')+"}"+ os.linesep)
 
-                    file.write("\\newcommand{\\ACTIVACION}{"+ validated_data.get('activacion') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXPIRACION}{" + validated_data.get('expiracion') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correoUsuario') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\ACTIVACION}{"+ datosRegistro.get('activacion', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXPIRACION}{" + datosRegistro.get('expiracion', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOUSUARIO}{" + datosRegistro.get('correoUsuario', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRECCION}{" + direcion + "}"+ os.linesep)
-                    file.write("\\newcommand{\\UAUSUARIO}{" + validated_data.get('uaUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEMPLEADO}{" + validated_data.get('nombreEmpleado')+ "}"+ os.linesep)
-                    file.write("\\newcommand{\\IDEMPLEADO}{" + validated_data.get('idEmpleado') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTEMPLEADO}{" + validated_data.get('extEmpleado') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOEMPLEADO}{"+ validated_data.get('correoEmpleado') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoEmpleado') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\UAUSUARIO}{" + datosRegistro.get('uaUsuario', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPLEADO}{" + datosRegistro.get('nombreEmpleado', ' ')+ "}"+ os.linesep)
+                    file.write("\\newcommand{\\IDEMPLEADO}{" + datosRegistro.get('idEmpleado', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEMPLEADO}{" + datosRegistro.get('extEmpleado', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOEMPLEADO}{"+ datosRegistro.get('correoEmpleado', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoEmpleado', ' ') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
@@ -827,16 +829,16 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\SIEUA}{" + siEua + "}" + os.linesep)
                     file.write("\\newcommand{\\NOEUA}{" + noEua + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep) 
+                    file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ datosRegistro.get('puestoUsuario', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{" + datosRegistro.get('nombreJefe', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{" + datosRegistro.get('puestoJefe', ' ') + "}"+ os.linesep) 
 
                     file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
-                    file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}" + os.linesep)
-                    file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}" + os.linesep)
-                    file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
-                    file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
+                    file.write("\\newcommand{\\MARCA}{" + datosRegistro.get('marca', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\MODELO}{" + datosRegistro.get('modelo', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\SERIE}{" + datosRegistro.get('serie', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
 
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
 
@@ -875,7 +877,7 @@ class FileGeneratorRoute(Blueprint):
                 )
             
             else:
-                return jsonify(tel_registro), status_code
+                return jsonify(datosRegistro), status_code
 
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
