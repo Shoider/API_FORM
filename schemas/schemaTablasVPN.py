@@ -10,23 +10,22 @@ class TablasSchemaSitios(Schema):
 
     @validates('url')
     def validate_url_or_ip(self, value):
-        if value is None:
-            # Si el campo es opcional y no se proporciona, no hay nada que validar
+        if value is None or value == "":
+            return  # Campo opcional, permite vacío
+
+        # Si comienza con http o https, es válido
+        if value.lower().startswith("http"):
             return
-        # Intentar validar como IP
+
+        # Si es una IP válida y comienza con 172.
         try:
-            ipaddress.ip_address(value)
-            return  # Es una IP válida
+            ip = ipaddress.ip_address(value)
+            if str(ip).startswith("172."):
+                return
         except ValueError:
-            pass  # No es una IP, continuar con otras validaciones
-        # Intentar validar como URL completa (con http/https)
-        try:
-            validate.URL(schemes=['http', 'https'])(value)
-            return # Es una URL completa válida
-        except ValidationError:
-            pass # No es una URL completa
-        # Si ninguna de las anteriores coincide, lanza un error
-        raise ValidationError("Debe ser una dirección IP, un nombre de dominio o una URL válida (con http/https).")
+            pass  # No es una IP, continuar
+
+        raise ValidationError("Debe comenzar con 'http' o ser una IP que inicie con '172.'")
      
     puertosServicios=fields.String(required=False)
     isNew=fields.Boolean(required=False)
@@ -34,7 +33,7 @@ class TablasSchemaSitios(Schema):
 class TablasSchemasAcceso (Schema):
     id =fields.Integer(required=False)
     movimiento =fields.String(required=False)
-    nomenclatura =fields.String(required=False, validate=validate.Length(min=8))
+    nomenclatura =fields.String(required=False, validate=validate.Length(min=7))
 
     nombreSistema =fields.String(required=False, validate=validate.Length(min=11))
         
@@ -47,12 +46,13 @@ class TablasSchemasAcceso (Schema):
             return
         # Intentar validar como IP
         try:
-            ipaddress.ip_address(value)
-            return  # Es una IP válida
+            ip = ipaddress.ip_address(value)
+            if str(ip).startswith("172."):
+                return  # Es una IP válida
         except ValueError:
             pass  # No es una IP, continuar con otras validaciones
         # Si ninguna de las anteriores coincide, lanza un error
-        raise ValidationError("Debe ser una dirección IP.")
+        raise ValidationError("Debe ser una IP que inicie con '172..")
      
     sistemaOperativo =fields.String(required=False)
     isNew=fields.Boolean(required=False)

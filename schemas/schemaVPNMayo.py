@@ -14,8 +14,15 @@ class RegistroSchemaVPNMayo(Schema):
     telefonoEnlace = fields.String(required=True, validate=validate.Length(min=8, max=20))
     nombreInterno=fields.String(required=False)
     puestoInterno= fields.String(required=False)
-    #correoInterno=fields.String(required=False)
-    correoInterno=fields.Email(required=False)
+    correoInterno=fields.String(required=False)
+    @validates('correoInterno')
+    def validate_correo_interno(self, value):
+        if value is None or value == "":
+            return  # Campo opcional, permite vacío
+        if not isinstance(value, str) or not value.lower().endswith("@conagua.gob.mx"):
+            raise ValidationError("Debe ser un correo institucional que termine en @conagua.gob.mx.")
+
+    #correoInterno=fields.Email(required=False)
     telefonoInterno=fields.String(required=False, validate=validate.Length(min=8, max=20))
     nombreExterno=fields.String(required=False)
     correoExterno=fields.Email(required=False)
@@ -53,4 +60,4 @@ class RegistroSchemaVPNMayo(Schema):
     # INCISO B)
     registrosWeb = fields.List(fields.Nested(TablasSchemaSitios))
     # INCISO C)
-    registrosRemoto = fields.List(fields.Nested(TablasSchemasAcceso))  
+    registrosRemoto = fields.List(fields.Nested(TablasSchemasAcceso))
