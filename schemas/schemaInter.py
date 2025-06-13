@@ -70,6 +70,7 @@ class RegistroSchemaInter(Schema):
 
     ala= fields.String(required=False)
     piso= fields.String(required=False)
+    politicasaceptadas = fields.Boolean(required=True)
 
 
     
