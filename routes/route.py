@@ -29,7 +29,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v3/rfc", methods=["POST"])(self.rfc2)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
-        self.route("/api/v3/internet", methods=["POST"])(self.internet)
+        self.route("/api/v3/internet", methods=["POST"])(self.inter2)
         self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -1566,7 +1566,7 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-    def internet(self):
+    def inter2(self):
 
         try: 
 
