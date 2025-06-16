@@ -29,6 +29,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v3/rfc", methods=["POST"])(self.rfc2)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
+        self.route("/api/v3/internet", methods=["POST"])(self.internet)
         self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -585,7 +586,6 @@ class FileGeneratorRoute(Blueprint):
 
             # Hacemos la busqueda en la base de datos para tener los registros
             datosRegistro, status_code = self.service.obtener_datos_por_id('tel', validated_data.get('id'))
-
 
             if status_code == 201:
                 noformato = datosRegistro.get('_id', ' ')
@@ -1369,7 +1369,6 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-
     def inter(self):
         try: 
             # Crear directorio temporal único
@@ -1566,6 +1565,199 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
+
+    def internet(self):
+
+        try: 
+
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            
+            # Validacion
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
+
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('internet', validated_data.get('id'))
+
+            if status_code == 201:
+            
+                # Transformar valores "SI" y "NO"
+                descarga = "x" if datosRegistro.get('descarga') == True else " "
+                foros = "x" if datosRegistro.get('foros') == True else " "
+                comercio = "x" if datosRegistro.get('comercio') == True else " "
+                redes = "x" if datosRegistro.get('redes') == True else " "
+                videos = "x" if datosRegistro.get('videos') == True else " "
+                whats = "x" if datosRegistro.get('whats') == True else " "
+                dropbox = "x" if datosRegistro.get('dropbox') == True else " "
+                onedrive = "x" if datosRegistro.get('onedrive') == True else " "
+                skype = "x" if datosRegistro.get('skype') == True else " "
+                wetransfer = "x" if datosRegistro.get('wetransfer') == True else " "
+                team = "x" if datosRegistro.get('team') == True else " "
+                otra = "x" if datosRegistro.get('otra') == True else " "
+                otra2 = "x" if datosRegistro.get('otra2') == True else " "
+                otra3 = "x" if datosRegistro.get('otra3') == True else " "
+                otra4 = "x" if datosRegistro.get('otra4') == True else " "
+
+                descargabool = "true" if datosRegistro.get('descarga') == True else "false"
+                forosbool = "true" if datosRegistro.get('foros') == True else "false"
+                comerciobool = "true" if datosRegistro.get('comercio') == True else "false"
+                redesbool = "true" if datosRegistro.get('redes') == True else "false"
+                videosbool = "true" if datosRegistro.get('videos') == True else "false"
+                whatsbool = "true" if datosRegistro.get('whats') == True else "false"
+                dropboxbool = "true" if datosRegistro.get('dropbox') == True else "false"
+                onedrivebool = "true" if datosRegistro.get('onedrive') == True else "false"
+                skypebool = "true" if datosRegistro.get('skype') == True else "false"
+                wetransferbool = "true" if datosRegistro.get('wetransfer') == True else "false"
+                teambool = "true" if datosRegistro.get('team') == True else "false"
+                otrabool = "true" if datosRegistro.get('otra') == True else "false"
+                otrabool2 = "true" if datosRegistro.get('otra2') == True else "false"
+                otrabool3 = "true" if datosRegistro.get('otra3') == True else "false"
+                otrabool4 = "true" if datosRegistro.get('otra4') == True else "false"
+
+                direcConAla = datosRegistro.get("direccion") + ", "+ datosRegistro.get("piso") + ", " + datosRegistro.get("ala")
+
+                # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+                with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\FECHASOLI}{"+ datosRegistro.get('fechasoli', '')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UAUSUARIO}{"+ datosRegistro.get('uaUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAUSUARIO}{"+ datosRegistro.get('areaUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{" + datosRegistro.get('puestoUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\IPUSUARIO}{" + datosRegistro.get('ipUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOUSUARIO}{" + datosRegistro.get('correoUsuario', '')+ "}"+ os.linesep)
+                    file.write("\\newcommand{\\TELUSUARIO}{" + datosRegistro.get('teleUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTUSUARIO}{" + datosRegistro.get('extUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreJefe', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoJefe', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIRECCION}{"+ direcConAla +  "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
+                    file.write("\\newcommand{\\FOROS}{" + foros + "}" + os.linesep)
+                    file.write("\\newcommand{\\COMERCIO}{" + comercio + "}" + os.linesep)
+                    file.write("\\newcommand{\\REDES}{" + redes + "}" + os.linesep)
+                    file.write("\\newcommand{\\VIDEOS}{" + videos + "}" + os.linesep)
+                    file.write("\\newcommand{\\WHATS}{" + whats + "}" + os.linesep)
+                    file.write("\\newcommand{\\DROPBOX}{" + dropbox + "}" + os.linesep)
+                    file.write("\\newcommand{\\ONEDRIVE}{" + onedrive + "}" + os.linesep)
+                    file.write("\\newcommand{\\SKYPE}{" + skype + "}" + os.linesep)
+                    file.write("\\newcommand{\\WETRANSFER}{" + wetransfer + "}" + os.linesep)
+                    file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\OTRAdos}{" + otra2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRAtres}{" + otra3 + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRAcuatro}{" + otra4 + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\OTRAC}{"+ datosRegistro.get('otraC', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\OTRACdos}{"+ datosRegistro.get('otraC2', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\OTRACtres}{"+ datosRegistro.get('otraC3', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\OTRACcuatro}{"+ datosRegistro.get('otraC4', '') + "}"+ os.linesep)
+                    
+                    file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
+                    file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\COMERCIOBOOL}{" + comerciobool + "}" + os.linesep)
+                    file.write("\\newcommand{\\REDESBOOL}{" + redesbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\VIDEOSBOOL}{" + videosbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\WHATSBOOL}{" + whatsbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\DROPBOXBOOL}{" + dropboxbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\ONEDRIVEBOOL}{" + onedrivebool + "}" + os.linesep)
+                    file.write("\\newcommand{\\SKYPEBOOL}{" + skypebool + "}" + os.linesep)
+                    file.write("\\newcommand{\\WETRANSFERBOOL}{" + wetransferbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\TEAMBOOL}{" + teambool + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRABOOL}{" + otrabool + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\OTRABOOLdos}{" + otrabool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRABOOLtres}{" + otrabool3 + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRABOOLcuatro}{" + otrabool4 + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\URLDESCARGA}{"+ datosRegistro.get('urlDescarga', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLFOROS}{"+ datosRegistro.get('urlForos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLREDES}{"+ datosRegistro.get('urlRedes', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLCOMERCIO}{"+ datosRegistro.get('urlComercio', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLVIDEOS}{"+ datosRegistro.get('urlVideos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLWHATS}{"+ datosRegistro.get('urlWhats', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLDROPBOX}{"+ datosRegistro.get('urlDropbox', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLONEDRIVE}{"+ datosRegistro.get('urlOnedrive', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLSKYPE}{"+ datosRegistro.get('urlSkype', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLWETRANSFER}{"+ datosRegistro.get('urlWetransfer', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLTEAM}{"+ datosRegistro.get('urlTeam', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRA}{"+ datosRegistro.get('urlOtra', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\URLOTRAdos}{"+ datosRegistro.get('urlOtra2', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRAtres}{"+ datosRegistro.get('urlOtra3', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRAcuatro}{"+ datosRegistro.get('urlOtra4', '') + "}"+ os.linesep)
+
+
+                    file.write("\\newcommand{\\JUSTIFICADESCARGA}{"+ datosRegistro.get('justificaDescarga', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAFOROS}{"+ datosRegistro.get('justificaForos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAREDES}{"+ datosRegistro.get('justificaRedes', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACOMERCIO}{"+ datosRegistro.get('justificaComercio', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAVIDEOS}{"+ datosRegistro.get('justificaVideos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAWHATS}{"+ datosRegistro.get('justificaWhats', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICADROPBOX}{"+ datosRegistro.get('justificaDropbox', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAONEDRIVE}{"+ datosRegistro.get('justificaOnedrive', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICASKYPE}{"+ datosRegistro.get('justificaSkype', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAWETRANSFER}{"+ datosRegistro.get('justificaWetransfer', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICATEAM}{"+ datosRegistro.get('justificaTeam', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRA}{"+ datosRegistro.get('justificaOtra', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ datosRegistro.get('justificaOtra2', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ datosRegistro.get('justificaOtra3', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ datosRegistro.get('justificaOtra4', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '') + "}" + os.linesep)
+
+                # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_INTERNET.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_INTERNET.pdf")
+
+                # Copia Formato_VPN_241105.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_INTERNET.tex", archivo_tex)
+
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
+
+                 # Compilar XeLaTeX
+                try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar XeLaTeX: {e}"}), 500
+                
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
+
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="RegistroInternet.pdf",
+                    as_attachment=True,
+                )
+            
+            else:
+                return jsonify(datosRegistro), status_code
+            
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
 
     # Actualizar memorandos
     def vpnMemorando(self):
