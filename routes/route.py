@@ -3,7 +3,6 @@ import pandas as pd
 import tempfile
 import shutil
 import os
-import datetime
 
 from flask import Blueprint, request, jsonify, send_file
 from io import BytesIO
@@ -28,6 +27,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v2/rfcActualizar", methods=["POST"])(self.rfcFuncionORol)
         self.route("/api/v3/telefonia", methods=["POST"])(self.tel)
         self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
+        self.route("/api/v3/rfc", methods=["POST"])(self.rfc2)
         self.route("/api/v1/inter", methods=["POST"])(self.inter)
         self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
@@ -1044,6 +1044,320 @@ class FileGeneratorRoute(Blueprint):
             
             else:
                 return jsonify(rfc_registro), status_code
+            
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), status_code
+        except Exception as e:
+            self.logger.error(f"Error generando PDF: {e}")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
+
+    def rfc2(self):
+        try:
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            
+            # Validacion
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
+
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('rfc', validated_data.get('id'))
+
+            if status_code == 201:    
+
+                # Booleanos para   Quien solicita
+                if (datosRegistro.get('region') == "central"):
+                    #solicitante = "true"
+                    enlacein = "false"
+                else:
+                    #solicitante = "true"
+                    enlacein = "true"
+                
+                ##IF DE PRUEBA
+                enlacein = "true" if datosRegistro.get ('region') == 'regional' else "false"
+                #enlacesolibool = "true" if solicitante == "true" and enlacein == "true" else "false"
+                #solicitantebool = "true" if solicitante == "true" and enlacesolibool == "false" else "false"
+                #enlaceinbool = "true" if enlacein == "true" and enlacesolibool == "false" else "false"
+
+                # Transformar valores "X" y " " para Tipo de Movimiento
+                intersistemas = "x" if datosRegistro.get('intersistemas') == True else " "
+                administrador = "x" if datosRegistro.get('administrador') == True else " "
+                desarrollador = "x" if datosRegistro.get('desarrollador') == True else " "
+                usuario = "x" if datosRegistro.get('usuario') == True else " "
+                otro = "x" if datosRegistro.get('otro') == True else " "
+
+                # Booleanos para Tipo de Movimiento
+                intersistemasBool = "true" if datosRegistro.get('intersistemas') == True else "false"
+                administradorBool = "true" if datosRegistro.get('administrador') == True else "false"
+                desarrolladorBool = "true" if datosRegistro.get('desarrollador') == True else "false"
+                usuarioBool = "true" if datosRegistro.get('usuario') == True else "false"
+                otroBool = "true" if datosRegistro.get('otro') == True else "false"
+
+                # Booleanos para Generacion de tablas
+                AltaInter = "true" if datosRegistro.get('AltaInter') == True else "false"
+                BajaInter = "true" if datosRegistro.get('BajaInter') == True else "false"
+                AltaAdmin = "true" if datosRegistro.get('AltaAdmin') == True else "false"
+                BajaAdmin = "true" if datosRegistro.get('BajaAdmin') == True else "false"
+                AltaDes = "true" if datosRegistro.get('AltaDes') == True else "false"
+                BajaDes = "true" if datosRegistro.get('BajaDes') == True else "false"
+                AltaUsua = "true" if datosRegistro.get('AltaUsua') == True else "false"
+                BajaUsua = "true" if datosRegistro.get('BajaUsua') == True else "false"
+                AltaOtro = "true" if datosRegistro.get('AltaOtro') == True else "false"
+                BajaOtro = "true" if datosRegistro.get('BajaOtro') == True else "false"
+
+                # En caso de cambios
+                if datosRegistro.get('CambioInter') == True:
+                    AltaInter = "true"
+                    BajaInter = "true"
+                if datosRegistro.get('CambioAdmin') == True:
+                    AltaAdmin = "true"
+                    BajaAdmin = "true"
+                if datosRegistro.get('CambioDes') == True:
+                    AltaDes = "true"
+                    BajaDes = "true"
+                if datosRegistro.get('CambioUsua') == True:
+                    AltaUsua = "true"
+                    BajaUsua = "true"
+                if datosRegistro.get('CambioOtro') == True:
+                    AltaOtro = "true"
+                    BajaOtro = "true"
+
+                # Desotro valor default
+                desotro_value = datosRegistro.get('desotro', '')
+
+                # Unir Justificaciones
+                justifica1 = datosRegistro.get('justifica', '')
+                justifica2 = datosRegistro.get('justifica2', '')
+                justifica3 = datosRegistro.get('justifica3', '')
+
+                # Validar si hay temporales
+                if (justifica1 != ""): 
+                    justEsp1 = "////"
+                else:
+                    justEsp1 = ""
+
+                if (justifica2 != ""): 
+                    justEsp2 = "////"
+                else:
+                    justEsp2 = ""
+
+                # Concatenar con espacios y saltos de linea
+                justifica_combined = justifica1 + justEsp1 + justifica2 + justEsp2 + justifica3  
+
+                # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+                with open(datos_txt_path, 'w') as file: 
+                   # file.write("\\newcommand{\\SOLI}{" + solicitante + "}" + os.linesep)
+                    file.write("\\newcommand{\\ENLACE}{" + enlacein + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\REGIONAL}{" + enlacein + "}" + os.linesep)
+
+                    #file.write("\\newcommand{\\ENLACESOLIBOOL}{" + enlacesolibool + "}" + os.linesep)
+                    #file.write("\\newcommand{\\SOLIBOOL}{" + solicitantebool + "}" + os.linesep)
+                    #file.write("\\newcommand{\\ENLACEBOOL}{" + enlaceinbool + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\NOTICKET}{"+ datosRegistro.get('noticket', '')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MEMO}{"+ datosRegistro.get('memo', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DESCBREVE}{" + datosRegistro.get('descbreve', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEI}{"+ datosRegistro.get('nomei', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEI}{"+ datosRegistro.get('extei', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMS}{"+ datosRegistro.get('noms', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTS}{" + datosRegistro.get('exts', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOS}{" + datosRegistro.get('puestos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAS}{" + datosRegistro.get('areas', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DESDET}{" + datosRegistro.get('desdet', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICA}{" + justifica_combined + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{" + datosRegistro.get('nombreJefe', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{" + datosRegistro.get('puestoJefe', '') + "}"+ os.linesep)
+
+                    # Tablas
+                    file.write("\\newcommand{\\INTER}{" + intersistemas + "}" + os.linesep)
+                    file.write("\\newcommand{\\ADMIN}{" + administrador + "}" + os.linesep)
+                    file.write("\\newcommand{\\DES}{" + desarrollador + "}" + os.linesep)
+                    file.write("\\newcommand{\\USUA}{" + usuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTRO}{" + otro + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\INTERBOOL}{" + intersistemasBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\ADMINBOOL}{" + administradorBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\DESBOOL}{" + desarrolladorBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\USUABOOL}{" + usuarioBool + "}" + os.linesep)
+                    file.write("\\newcommand{\\OTROBOOL}{" + otroBool + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\DESOTRO}{"+ desotro_value + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\ALTASINTER}{" + AltaInter + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJASINTER}{" + BajaInter + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALTASADMIN}{" + AltaAdmin + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJASADMIN}{" + BajaAdmin + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALTASDES}{" + AltaDes + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJASDES}{" + BajaDes + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALTASUSUA}{" + AltaUsua + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJASUSUA}{" + BajaUsua + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '') + "}" + os.linesep)
+
+                # Tablas csv
+
+                # Intersistemas
+                # Cambios
+                registrosAltas = datosRegistro.get('registrosInterCambiosAltas', [])  # Obtiene array de los datos
+                registrosBajas = datosRegistro.get('registrosInterCambiosBajas', [])  # Obtiene array de los datos
+                # Añadir que viene de Cambios "C*"
+                self.modificar_registros_id(registrosAltas)
+                self.modificar_registros_id(registrosBajas)            
+                # Altas
+                registros = datosRegistro.get('registrosInterAltas', [])   # Obtiene array de los datos
+                registros.extend(registrosAltas)                            # Unir registros de altas y cambios
+                tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
+                # Bajas
+                registros = datosRegistro.get('registrosInterBajas', [])   # Obtiene array de los datos
+                registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
+                self.crear_csv_desde_registros(temp_dir, "BAJASINTER.csv", registros, False) #Se cambia el nombre de la columna
+
+                # Administrador
+                # Cambios
+                registrosAltas = datosRegistro.get('registrosAdminCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosAdminCambiosBajas', [])
+                # Añadir que viene de Cambios "C*"
+                self.modificar_registros_id(registrosAltas)
+                self.modificar_registros_id(registrosBajas)
+                # Altas
+                registros = datosRegistro.get('registrosAdminAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas)      
+                tempAdmin = self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros, True) #Se cambia el nombre de la columna
+                # Bajas
+                registros = datosRegistro.get('registrosAdminBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas)   
+                self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros, False) #Se cambia el nombre de la columna
+
+                # Desarrollador
+                # Cambios
+                registrosAltas = datosRegistro.get('registrosDesCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosDesCambiosBajas', [])
+                # Añadir que viene de Cambios "C*"
+                self.modificar_registros_id(registrosAltas)
+                self.modificar_registros_id(registrosBajas)
+                # Altas
+                registros = datosRegistro.get('registrosDesAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas) 
+                tempDes = self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros, True) #Se cambia el nombre de la columna
+                # Bajas
+                registros = datosRegistro.get('registrosDesBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas) 
+                self.crear_csv_desde_registros(temp_dir, "BAJASDES.csv", registros, False) #Se cambia el nombre de la columna
+
+                # Usuario
+                # Cambios
+                registrosAltas = datosRegistro.get('registrosUsuaCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosUsuaCambiosBajas', [])
+                # Añadir que viene de Cambios "C*"
+                self.modificar_registros_id(registrosAltas)
+                self.modificar_registros_id(registrosBajas)
+                # Altas
+                registros = datosRegistro.get('registrosUsuaAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas) 
+                tempUsua = self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros, True) #Se cambia el nombre de la columna
+                # Bajas
+                registros = datosRegistro.get('registrosUsuaBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas) 
+                self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros, False) #Se cambia el nombre de la columna
+
+                # Otro
+                # Cambios
+                registrosAltas = datosRegistro.get('registrosOtroCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosOtroCambiosBajas', [])
+                # Añadir que viene de Cambios "C*"
+                self.modificar_registros_id(registrosAltas)
+                self.modificar_registros_id(registrosBajas)
+                # Altas
+                registros = datosRegistro.get('registrosOtroAltas', [])  # Obtiene array de los datos
+                registros.extend(registrosAltas) 
+                tempOtro = self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros, True) #Se cambia el nombre de la columna
+                # Bajas
+                registros = datosRegistro.get('registrosOtroBajas', [])  # Obtiene array de los datos
+                registros.extend(registrosBajas) 
+                self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros, False) #Se cambia el nombre de la columna
+
+                # Validar si hay temporales
+                tempInterBool = tempInter != ""
+                tempAdminBool = tempAdmin != ""
+                tempDesBool = tempDes != ""
+                tempUsuaBool = tempUsua != ""
+                tempOtroBool = tempOtro != ""
+
+                tempInterBool2 = "true" if tempInterBool == True else "false"
+                tempAdminBool2 = "true" if tempAdminBool == True else "false"
+                tempDesBool2 = "true" if tempDesBool == True else "false"
+                tempUsuaBool2 = "true" if tempUsuaBool == True else "false"
+                tempOtroBool2 = "true" if tempOtroBool == True else "false"
+
+                # Temporalidades
+                with open(datos_txt_path, 'a') as file: 
+                    file.write("\\newcommand{\\TEMPOINTER}{"+ tempInter +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOUSUA}{"+ tempUsua +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOADMIN}{"+ tempAdmin +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPODES}{"+ tempDes +"}"+ os.linesep)
+                    file.write("\\newcommand{\\TEMPOOTRO}{"+ tempOtro +"}"+ os.linesep)
+                    #Booleanos para Temporalidades
+                    #file.write("\\newcommand{\\TEMPOINTERBOOL}{" + AltaInter + "}" + os.linesep)
+                    #file.write("\\newcommand{\\TEMPOADMINBOOL}{" + AltaAdmin + "}" + os.linesep)
+                    #file.write("\\newcommand{\\TEMPODESBOOL}{" + AltaDes + "}" + os.linesep)
+                    #file.write("\\newcommand{\\TEMPOUSUABOOL}{" + AltaUsua + "}" + os.linesep)
+                    #file.write("\\newcommand{\\TEMPOOTROBOOL}{" + AltaOtro + "}" + os.linesep)
+                    #Booleanos para tabla de temporalidades
+                    file.write("\\newcommand{\\HAYTEMPORALINTER}{" + tempInterBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALADMIN}{" + tempAdminBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALDES}{" + tempDesBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALUSUA}{" + tempUsuaBool2 + "}" + os.linesep)
+                    file.write("\\newcommand{\\HAYTEMPORALOTRO}{" + tempOtroBool2 + "}" + os.linesep)
+
+                # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_RFC_LT.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_RFC_LT.pdf")
+
+                # Copia Formato_RFC_LT.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_RFC_LT.tex", archivo_tex)
+
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
+
+                # Compilar XeLaTeX
+                try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar XeLaTeX: {e}"}), 500
+
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
+
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="RegistroRFC.pdf",
+                    as_attachment=True,
+                )
+            
+            else:
+                return jsonify(datosRegistro), status_code
             
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
