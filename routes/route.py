@@ -1620,7 +1620,7 @@ class FileGeneratorRoute(Blueprint):
                 otrabool3 = "true" if datosRegistro.get('otra3') == True else "false"
                 otrabool4 = "true" if datosRegistro.get('otra4') == True else "false"
 
-                direcConAla = datosRegistro.get("direccion") + ", "+ datosRegistro.get("piso") + ", " + datosRegistro.get("ala")
+                direcConAla = datosRegistro.get("direccion", ' ') + ", "+ datosRegistro.get("piso", ' ') + ", " + datosRegistro.get("ala", ' ')
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
