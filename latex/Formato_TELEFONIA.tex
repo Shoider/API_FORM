@@ -72,7 +72,7 @@ headheight = 30mm
 	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{COMISIÓN NACIONAL DEL AGUA}\\Gerencia de Tecnologías de Información y Comunicaciones.\\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \footnotesize Página    & {\footnotesize \thepage\ de \pageref{LastPage}} \\
 	&                                                                                       & \footnotesize VERSIÓN   & \footnotesize 5.1 \\
 	&                                                                                       & \footnotesize FECHA & {\footnotesize  Mayo-2025 }    \\
-	& { Solicitud de servicios de telefonía.\\(Alta, Baja, Cambio)}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
+	& {\textbf{ Solicitud de servicios de telefonía.}\\\textbf{(Alta, Baja, Cambio)}}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
 }
 \chead{}
@@ -112,19 +112,16 @@ headheight = 30mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[200]Q[300]Q[90]Q[90]},
-		row{1} = {c},
-                     row{1}={dorado},                    
-		cell{1}{1} = {c=4}{0.874\linewidth},
-		cell{2}{2} = {c=3}{0.674\linewidth},
-		cell{3}{2} = {c=3}{0.674\linewidth},
-		cell{4}{2} = {c=3}{0.674\linewidth},
-		cell{5}{2} = {c=3}{0.674\linewidth},     
-                    cell{6}{2} = {c=3}{0.674\linewidth},   
+		colspec = {Q[5]Q[5]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},
 		hlines,
 		vlines,
 	}
-\textbf{Datos de Usuario (a) que utilizará el servicio (CONAGUA o Externo)} &  &      &  \\
+\textbf{Datos de Usuario (a) que utilizará el servicio (CONAGUA o Externo)} &   \\
 Nombre:                     &  \NOMBREUSUARIO \\
 Correo: &   \CORREOUSUARIO  \\
 Dirección:   &  \textbf  \DIRECCION  \\
@@ -136,37 +133,45 @@ Unidad Aministrativa:           &\UAUSUARIO
 \setboolean{externo}{\EXTERNO}
 \ifthenelse{\boolean{externo}}
 {
-\vspace{-30pt}
+\vspace{-25pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[200]Q[300]Q[90]Q[90]},
+		colspec = {Q[5]Q[5]},
+		column{1}={r},
+		column{2}={l},
 		row{1} = {c},
-                     row{1}={dorado},                    
-		cell{1}{1} = {c=4}{0.874\linewidth},
-		cell{4}{2} = {c=3}{0.674\linewidth},
-		cell{5}{2} = {c=3}{0.674\linewidth},        
+                     %row{1}={dorado},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		%cell{4}{2} = {c=3}{0.674\linewidth},
+		%cell{5}{2} = {c=3}{0.674\linewidth},        
 		hlines,
 		vlines,
 	}
-\textbf{Datos del Empleado(a) de CONAGUA (Responsable, si el usuario es externo)} &  &      &  \\
-Nombre:                     &  \NOMBREEMPLEADO &Número de empleado:&\IDEMPLEADO \\
-Correo: & \CORREOEMPLEADO &Telefóno/Ext: & \EXTEMPLEADO  \\
+\textbf{Datos del Empleado(a) de CONAGUA (Responsable, si el usuario es externo)} &   \\
+Nombre:                     &  \NOMBREEMPLEADO \\
+Número de empleado:&\IDEMPLEADO \\
+Correo: & \CORREOEMPLEADO \\
+Telefóno/Ext: & \EXTEMPLEADO  \\
 Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
 
-\vspace{-30pt}
+\vspace{-25pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[220]Q[160]Q[220]Q[160]},
+		colspec = {Q[3]Q[2]Q[3]Q[2]},		
+                     %row{1}={dorado},
+		column{1}={r},
+		column{2}={c},
+		column{3}={r},
+		column{4}={c},
 		row{1} = {c},
-                     row{1}={dorado},
                     cell{1}{1} = {c=4}{0.874\linewidth},		
                     cell{5}{1}={c=3}{0.674\linewidth},
                      %cell{5}{3}={c=2}{0.374\linewidth},
@@ -174,12 +179,11 @@ Puesto:           &\PUESTOEMPLEADO
 		vlines,
 	}
 \textbf{Caracteristicas del Servicio Solicitado}         \\
-\textbf{Servicio Interno:}       &  Si (X )~ No(~ )  & \textbf{\textbf{Serivicio de Larga \\Distancia\\Resto del Mundo:}}                           & Si (\SIMUNDO )~ No(\NOMUNDO ) \\
-	\textbf{Servicio Local:}      &  Si (\SILOCAL )~ No(\NOLOCAL)  &\textbf {Servicio Celular Local:}    & Si (\SICLOCAL )~ No(\NOCLOCAL ) \\
-	\textbf{Servicio Larga Distancia Nacional:}       &Si (\SINACIONAL )~ No(\NONACIONAL ) & \textbf{Serivicio Celular Larga Distancia:}                                  & Si (\SICNACIONAL )~ No(\NOCNACIONAL ) \\
-	\textbf{Servicio Larga Distancia Estados Unidos y Canadá:} &&& Si (\SIEUA )~ No(\NOEUA)
+\textbf{Servicio Interno:}       &  Si (X)~ No(~ )  & \textbf{\textbf{Serivicio Celular Local y Foráneo:}}                           & Si (\SICELULAR )~ No(\NOCELULAR ) \\
+	\textbf{Servcio Larga Distancia Nacional:}      &  Si (\SINACIONAL )~ No(\NONACIONAL)  &\textbf {Servicio Larga Dsitancia Internacional:}    & Si (\SIMUNDO )~ No(\NOMUNDO ) 
+	
 \end{longtblr}
-\vspace{-30pt}
+\vspace{-25pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -189,7 +193,7 @@ Puesto:           &\PUESTOEMPLEADO
 		row{1} = {c},
                      row{2}={c},
                      row{3}={c},
-                     row{1}={dorado},
+                     %row{1}={dorado},
                      cell{1}{1} = {c=5}{},		
 		hlines,
 		vlines,
@@ -206,7 +210,7 @@ TELÉFONO&\MARCA&\MODELO&\SERIE&\VERSION
 	]{
 		width = \linewidth,
 		colspec = {Q[935]},
-                     row{1}={dorado},
+                    % row{1}={dorado},
 		cells = {c},
 		row{2} = {},
 		hlines,
@@ -216,7 +220,7 @@ TELÉFONO&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 \clearpage
 %\vspace{-20pt}
-\textbf{Políticas del servicio}
+\textbf{Términos y Condiciones del servicio:}
 PENDIENTES
 \begin{longtblr}[
 	label = none,
