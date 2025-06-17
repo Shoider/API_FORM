@@ -1625,7 +1625,7 @@ class FileGeneratorRoute(Blueprint):
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
                 with open(datos_txt_path, 'w') as file: 
-                    file.write("\\newcommand{\\FECHASOLI}{"+ datosRegistro.get('fechasoli', '')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHASOLI}{"+ datosRegistro.get('fecha', '')+"}"+ os.linesep)
                     file.write("\\newcommand{\\UAUSUARIO}{"+ datosRegistro.get('uaUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\AREAUSUARIO}{"+ datosRegistro.get('areaUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', '') + "}"+ os.linesep)
