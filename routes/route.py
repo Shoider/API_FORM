@@ -557,17 +557,11 @@ class FileGeneratorRoute(Blueprint):
 
                 # Transformar valores "X" y " "
                 siMundo = "X" if datosRegistro.get('mundo') == "SI" else " "
-                noMundo = "X" if datosRegistro.get('mundo') == "NO" else " "
-                siLocal = "X" if datosRegistro.get('local') == "SI" else " "
-                noLocal = "X" if datosRegistro.get('local') == "NO" else " "
-                sicLocal = "X" if datosRegistro.get('cLocal') == "SI" else " "
-                nocLocal = "X" if datosRegistro.get('cLocal') == "NO" else " "
+                noMundo = "X" if datosRegistro.get('mundo') == "NO" else " "                
                 siNacional = "X" if datosRegistro.get('nacional') == "SI" else " "
                 noNacional = "X" if datosRegistro.get('nacional') == "NO" else " "
-                sicNacional = "X" if datosRegistro.get('cNacional') == "SI" else " "
-                nocNacional = "X" if datosRegistro.get('cNacional') == "NO" else " "
-                siEua = "X" if datosRegistro.get('eua') == "SI" else " "
-                noEua = "X" if datosRegistro.get('eua') == "NO" else " "
+                siCelular = "X" if datosRegistro.get('celular') == "SI" else " "
+                noCelular = "X" if datosRegistro.get('celular') == "NO" else " "
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
@@ -593,17 +587,11 @@ class FileGeneratorRoute(Blueprint):
 
                     file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
-                    file.write("\\newcommand{\\SILOCAL}{" + siLocal + "}" + os.linesep)
-                    file.write("\\newcommand{\\NOLOCAL}{" + noLocal + "}" + os.linesep)
-                    file.write("\\newcommand{\\SICLOCAL}{" + sicLocal + "}" + os.linesep)
-                    file.write("\\newcommand{\\NOCLOCAL}{" + nocLocal + "}" + os.linesep)
+                    file.write("\\newcommand{\\SICELULAR}{" + siCelular + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOCELULAR}{" + noCelular + "}" + os.linesep)
                     file.write("\\newcommand{\\SINACIONAL}{" + siNacional + "}" + os.linesep)
                     file.write("\\newcommand{\\NONACIONAL}{" + noNacional + "}" + os.linesep)
-                    file.write("\\newcommand{\\SICNACIONAL}{" + sicNacional + "}" + os.linesep)
-                    file.write("\\newcommand{\\NOCNACIONAL}{" + nocNacional + "}" + os.linesep)
-                    file.write("\\newcommand{\\SIEUA}{" + siEua + "}" + os.linesep)
-                    file.write("\\newcommand{\\NOEUA}{" + noEua + "}" + os.linesep)
-
+                    
                     file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOUSUARIO}{"+ datosRegistro.get('puestoUsuario', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREJEFE}{" + datosRegistro.get('nombreJefe', ' ') + "}"+ os.linesep)
