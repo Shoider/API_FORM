@@ -1,8 +1,4 @@
-import datetime
-from flask import jsonify
-from pymongo import ReturnDocument
 from logger.logger import Logger
-from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
 class Service:
