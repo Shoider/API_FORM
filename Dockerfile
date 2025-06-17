@@ -21,9 +21,7 @@ RUN apt-get update && \
     
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
 
-ENV TEXINPUT=".:/app/latex/imagenes/:/app/latex/:/texmf//:$TEXINPUTS"
-
-ENV TEXINPUTS=".:/app/latex/imagenes/:/app/latex/:/texmf//:$TEXINPUTS"
+ENV TEXINPUTS=".:/app/latex/imagenes/:/app/latex/:/texmf//:"
 
 EXPOSE 8000 
 

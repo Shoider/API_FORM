@@ -3,7 +3,6 @@ import pandas as pd
 import tempfile
 import shutil
 import os
-import datetime
 
 from flask import Blueprint, request, jsonify, send_file
 from io import BytesIO
@@ -13,28 +12,20 @@ from marshmallow import ValidationError
 class FileGeneratorRoute(Blueprint):
     """Class to handle the routes for file generation"""
 
-    def __init__(self, service, forms_schemaVPN, forms_schemaVPNMayo, forms_schemaTel, forms_schemaRFC, forms_schemaInter, actualizarMemo, actualizarFuncionRol):
+    def __init__(self, service, forms_schema):
         super().__init__("file_generator", __name__)
         self.logger = Logger()
-        self.forms_schemaVPN = forms_schemaVPN
-        self.forms_schemaVPNMayo = forms_schemaVPNMayo
-        self.forms_schemaTel = forms_schemaTel
-        self.forms_schemaRFC = forms_schemaRFC
-        self.forms_schemaInter = forms_schemaInter
-        self.actualizarMemo = actualizarMemo
-        self.actualizarFuncionRol = actualizarFuncionRol
+        self.forms_schema = forms_schema #ESQUEMA NUEVO
         self.service = service
         self.register_routes()
 
     def register_routes(self):
         """Function to register the routes for file generation"""
         self.route("/api/v1/vpn", methods=["POST"])(self.vpn)
-        self.route("/api/v2/vpn", methods=["POST"])(self.vpnmayo)
-        self.route("/api/v2/vpnActualizar", methods=["POST"])(self.vpnMemorando)
-        self.route("/api/v2/rfcActualizar", methods=["POST"])(self.rfcFuncionORol)
-        self.route("/api/v1/tel", methods=["POST"])(self.tel)
-        self.route("/api/v1/rfc", methods=["POST"])(self.rfc)
-        self.route("/api/v1/inter", methods=["POST"])(self.inter)
+        self.route("/api/v3/vpn", methods=["POST"])(self.vpnmayo)
+        self.route("/api/v3/telefonia", methods=["POST"])(self.tel)
+        self.route("/api/v3/rfc", methods=["POST"])(self.rfc)
+        self.route("/api/v3/internet", methods=["POST"])(self.inter)
         self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -47,49 +38,6 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
-        
-    def eliminar_campos_vacios(self, datos):
-        """
-        Elimina recursivamente los campos (pares clave-valor) de los diccionarios
-        donde el valor es una cadena vacía ("") ó ("null").
-
-        Procesa diccionarios anidados y diccionarios dentro de listas.
-        Las cadenas vacías que sean elementos directos de una lista (ej: ["a", "", "b"])
-        NO se eliminan de la lista, ya que no son "campos" de un diccionario.
-        Otros tipos de datos (números, booleanos, None, cadenas no vacías) se conservan.
-
-        Args:
-            datos: Puede ser un diccionario o una lista para limpiar.
-
-        Returns:
-            Una nueva estructura de datos (diccionario o lista) sin los campos
-            que contenían cadenas vacías.
-        """
-        if isinstance(datos, dict):
-            # Crear un nuevo diccionario para los datos limpios
-            diccionario_limpio = {}
-            for clave, valor in datos.items():
-                if valor == "":
-                    # Si el valor es una cadena vacía, omitir este campo
-                    continue
-                if valor == "null":
-                    continue
-                elif isinstance(valor, dict):
-                    # Si el valor es un diccionario, aplicar la función recursivamente
-                    diccionario_limpio[clave] = self.eliminar_campos_vacios(valor)
-                elif isinstance(valor, list):
-                    # Si el valor es una lista, aplicar la función recursivamente a cada elemento
-                    diccionario_limpio[clave] = [self.eliminar_campos_vacios(item) for item in valor]
-                else:
-                    # Para cualquier otro valor, conservarlo
-                    diccionario_limpio[clave] = valor
-            return diccionario_limpio
-        elif isinstance(datos, list):
-            # Si la estructura de datos es una lista, aplicar la función a cada elemento
-            return [self.eliminar_campos_vacios(item) for item in datos]
-        else:
-            # Si no es un diccionario ni una lista (ej: string, int, None), devolverlo tal cual
-            return datos
         
     def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros, Alta):
         """
@@ -423,104 +371,81 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-
-    def vpnmayo(self, data=None):
+    def vpnmayo(self):
         try:
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
-            if data is None:
-                data = request.get_json()
+            data = request.get_json()
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
             
-            datosParaValidacion = self.eliminar_campos_vacios(data)
-            self.logger.info(f"Datos despues de limpieza: {datosParaValidacion}")
-            self.forms_schemaVPNMayo.load(datosParaValidacion)
+            # Validacion
+            validated_data = self.forms_schema.load(data)
             self.logger.info("Ya se validaron correctamente")
 
-            # Validacion
-            validated_data = data
-            
-            # memorando NO viene o está vacío
-            if not validated_data.get('memorando'):
-                self.logger.info("El campo memorando está vacío o no fue enviado")
-                # Guardar en BD
-                new_vpnmayo_data = validated_data
-                vpnmayo_registro, status_code = self.service.add_VPNMayo(new_vpnmayo_data)
-                if status_code == 201:
-                    noformato = vpnmayo_registro.get('_id')
-                    self.logger.info(f"Registro VPN Mayo agregado con ID: {noformato}")
-            else:
-                self.logger.info("El campo memorando ya esta disponible")
-                noformato=validated_data.get('_id')
-                self.logger.info(f"Registro VPN Mayo actualizado con ID: {noformato}")
-                self.logger.warning("No se actualizara la base de datos")
-                status_code = 201
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('vpnMayo', validated_data.get('id'))
 
             if status_code == 201:
             
                 # Transformar valores "SI" y "NO"
-                altausuario = "x" if validated_data.get('movimiento') == "ALTA" else " "
-                bajausuario = "x" if validated_data.get('movimiento') == "BAJA" else " "
+                altausuario = "x" if datosRegistro.get('movimiento') == "ALTA" else " "
+                bajausuario = "x" if datosRegistro.get('movimiento') == "BAJA" else " "
 
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
-                conagua = "true" if validated_data.get('solicitante') == "CONAGUA" else "false"
+                conagua = "true" if datosRegistro.get('solicitante') == "CONAGUA" else "false"
 
-                ###PARA BOOLEANOS DE FIRMA
-                #conaguafirma = "true" if conagua == "true" else "false"
-                conaguafirma = "true" if validated_data.get('solicitante') == "EXTERNO" else "false"
-                sistemas = "true" if validated_data.get('subgerencia')== "Subgerencia de Sistemas"  else "false"
+                # PARA BOOLEANOS DE FIRMA
+                conaguafirma = "true" if datosRegistro.get('solicitante') == "EXTERNO" else "false"
+                sistemas = "true" if datosRegistro.get('subgerencia')== "Subgerencia de Sistemas"  else "false"
                 otrasub = "true" if sistemas == "false" else "false"
 
                 # Opcion seleccionada
-                cuentaUsuario = "true" if validated_data.get('cuentaUsuario') == True else "false"
-                accesoWeb = "true" if validated_data.get('accesoWeb') == True else "false"
-                accesoRemoto = "true" if validated_data.get('accesoRemoto') == True else "false"
+                cuentaUsuario = "true" if datosRegistro.get('cuentaUsuario') == True else "false"
+                accesoWeb = "true" if datosRegistro.get('accesoWeb') == True else "false"
+                accesoRemoto = "true" if datosRegistro.get('accesoRemoto') == True else "false"
 
-                nombreusuario= validated_data.get('nombreInterno') if conagua == "true" else validated_data.get('nombreExterno')
-                puestousuario= validated_data.get('puestoInterno') if conagua == "true" else ""
-                
-                now = datetime.datetime.now()
-                fecha = now.strftime("%d-%m-%Y")  # Formato: DD-MM-YYYY
+                nombreusuario= datosRegistro.get('nombreInterno') if conagua == "true" else datosRegistro.get('nombreExterno')
+                puestousuario= datosRegistro.get('puestoInterno') if conagua == "true" else ""
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
                 with open(datos_txt_path, 'w') as file: 
-                    file.write("\\newcommand{\\UA}{"+ validated_data.get('unidadAdministrativa')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMEMO}{"+ validated_data.get('memorando', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\FECHA}{"+ fecha +"}"+ os.linesep)
-                    file.write("\\newcommand{\\AREA}{"+ validated_data.get('areaAdscripcion')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\SUBGERENCIA}{"+ validated_data.get('subgerencia')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREENLACE}{"+ validated_data.get('nombreEnlace')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTENLACE}{"+ validated_data.get('telefonoEnlace')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBRECONAGUA}{"+ validated_data.get('nombreInterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOCONAGUA}{"+ validated_data.get('puestoInterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOCONAGUA}{"+ validated_data.get('correoInterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTCONAGUA}{"+ validated_data.get('telefonoInterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEXTERNO}{"+ validated_data.get('nombreExterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOEXTERNO}{"+ validated_data.get('correoExterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEMPRESA}{"+ validated_data.get('empresaExterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EQUIPODES}{"+ validated_data.get('equipoExterno')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOEMPLEADO}{"+ validated_data.get('numeroEmpleadoResponsable')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEMPLEADO}{"+ validated_data.get('nombreResponsable')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoResponsable')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\UAEMPLEADO}{"+ validated_data.get('unidadAdministrativaResponsable')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTEMPLEADO}{"+ validated_data.get('telefonoResponsable')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\TIPOEQUIPO}{"+ validated_data.get('tipoEquipo')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\SO}{"+ validated_data.get('sistemaOperativo')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\VERSIONSO}{"+ validated_data.get('versionSO')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\MARCA}{"+ validated_data.get('marca')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\MODELO}{"+ validated_data.get('modelo')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOSERIE}{"+ validated_data.get('serie')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UA}{"+ datosRegistro.get('unidadAdministrativa', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEMO}{"+ datosRegistro.get('memorando', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHA}{"+ datosRegistro.get('fecha', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\AREA}{"+ datosRegistro.get('areaAdscripcion', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SUBGERENCIA}{"+ datosRegistro.get('subgerencia', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTENLACE}{"+ datosRegistro.get('telefonoEnlace', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBRECONAGUA}{"+ datosRegistro.get('nombreInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOCONAGUA}{"+ datosRegistro.get('puestoInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOCONAGUA}{"+ datosRegistro.get('correoInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTCONAGUA}{"+ datosRegistro.get('telefonoInterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEXTERNO}{"+ datosRegistro.get('nombreExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOEXTERNO}{"+ datosRegistro.get('correoExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPRESA}{"+ datosRegistro.get('empresaExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EQUIPODES}{"+ datosRegistro.get('equipoExterno', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOEMPLEADO}{"+ datosRegistro.get('numeroEmpleadoResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPLEADO}{"+ datosRegistro.get('nombreResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UAEMPLEADO}{"+ datosRegistro.get('unidadAdministrativaResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEMPLEADO}{"+ datosRegistro.get('telefonoResponsable', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TIPOEQUIPO}{"+ datosRegistro.get('tipoEquipo', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SO}{"+ datosRegistro.get('sistemaOperativo', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\VERSIONSO}{"+ datosRegistro.get('versionSO', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MARCA}{"+ datosRegistro.get('marca', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MODELO}{"+ datosRegistro.get('modelo', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOSERIE}{"+ datosRegistro.get('serie', ' ')+"}"+ os.linesep)
 
                     file.write("\\newcommand{\\NOMBREUSUARIO}{"+ nombreusuario+"}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOUSUARIO}{"+ puestousuario+"}"+ os.linesep)
 
-                    file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreAutoriza')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoAutoriza')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreAutoriza', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoAutoriza', ' ')+"}"+ os.linesep)
 
                     file.write("\\newcommand{\\ALTAUSUARIO}{" + altausuario + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJAUSUARIO}{" + bajausuario + "}" + os.linesep)
@@ -538,15 +463,15 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\ACCESOREMOTO}{" + accesoRemoto + "}" + os.linesep)
 
                     # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
-                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', ' ') + "}" + os.linesep)
 
                 # Archivos .csv para las tablas
                 # b) Acceso a sitios Web
-                registros = validated_data.get('registrosWeb', [])       # Obtiene array de los datos
+                registros = datosRegistro.get('registrosWeb', [])       # Obtiene array de los datos
                 self.crear_csv_VPN_Web(temp_dir, "SITIOSWEB.csv", registros)   # Se crea el .csv
 
                 # c) Acceso a escritorio remoto
-                registros = validated_data.get('registrosRemoto', []) 
+                registros = datosRegistro.get('registrosRemoto', []) 
                 self.crear_csv_VPN_Remoto(temp_dir, "REMOTOESC.csv", registros)
 
                 # Preparar archivos en el directorio temporal
@@ -584,82 +509,22 @@ class FileGeneratorRoute(Blueprint):
                 )
         
             else:
-                return jsonify(vpnmayo_registro), status_code
+                return jsonify(datosRegistro), status_code
 
         except ValidationError as err:
-            messages = err.messages
             self.logger.error("Ocurrieron errores de validación")
-            self.logger.error(f"Errores de validación completos: {messages}")
-
-            # CORREO INTERNO Y EXTERNO
-            if 'correoInterno' in err.messages:
-                self.logger.error(f"Error de validación: 'Correo interno invalido'")
-                return jsonify({"message": "Datos invalidos"}), 205
-            if 'correoExterno' in err.messages:
-                self.logger.error(f"Error de validación: 'Correo externo invalido'")
-                return jsonify({"message": "Datos invalidos"}), 207
-            
-            # TELEFONO ENLACE
-            if 'telefonoEnlace' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono enlace/contacto'")
-                return jsonify({"message": "Datos invalidos"}), 206
-            # TELEFONO INTERNO
-            if 'telefonoInterno' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono usuario CONAGUA'")
-                return jsonify({"message": "Datos invalidos"}), 208
-            # TELEFONO RESPONSABLE
-            if 'telefonoResponsable' in err.messages:
-                self.logger.error(f"Error de validación: 'teléfono usuario responsable'")
-                return jsonify({"message": "Datos invalidos"}), 209
-            
-            # EMPLEADO RESPONSABLE
-            if 'numeroEmpleadoResponsable' in err.messages:
-                self.logger.error(f"Error de validación: 'número de empleado responsable'")
-                return jsonify({"message": "Datos invalidos"}), 230
-
-            # REGISTROS WEB B)
-            if 'registrosWeb' in messages:
-                web = messages['registrosWeb']
-                if isinstance(web, dict):
-                    for indice_item_str, errores_del_item in web.items():
-                        # url
-                        if isinstance(errores_del_item, dict) and 'url' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'url'")
-                            return jsonify({"message": "Datos invalidos: 'url'"}), 210
-                        # nombreSistema
-                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'nombreSistema'")
-                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 211
-            
-            # REGISTROS REMOTO C)
-            if 'registrosRemoto' in messages:
-                remoto = messages['registrosRemoto']
-                if isinstance(remoto, dict):
-                    for indice_item_str, errores_del_item in remoto.items():
-                        # nomeclatura
-                        if isinstance(errores_del_item, dict) and 'nomenclatura' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'nomenclatura'")
-                            return jsonify({"message": "Datos invalidos: 'nomenclatura'"}), 220
-                        # nombreSistema
-                        if isinstance(errores_del_item, dict) and 'nombreSistema' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'nombreSistema'")
-                            return jsonify({"message": "Datos invalidos: 'nombreSistema'"}), 221
-                        # direccion
-                        if isinstance(errores_del_item, dict) and 'direccion' in errores_del_item:
-                            self.logger.error(f"Error de validación: 'direccion'")
-                            return jsonify({"message": "Datos invalidos: 'direccion'"}), 222
-            
-            # Otro error de validacion
-            return jsonify({"error": "Datos invalidos", "Detalles": err.messages}), 422
+            self.logger.error(f"Errores de validación completos: {err.messages}")
+            return jsonify({"error": "Datos invalidos", "message": err.messages}), 422
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)        
+            shutil.rmtree(temp_dir)       
 
     def tel(self):
         try:
+
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
@@ -667,42 +532,42 @@ class FileGeneratorRoute(Blueprint):
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
-
+            
             # Validacion
-            validated_data = self.forms_schemaTel.load(data)
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
 
-            # Guardar en BD
-            new_tel_data = validated_data
-            tel_registro, status_code = self.service.add_tel(new_tel_data)
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('tel', validated_data.get('id'))
 
             if status_code == 201:
-                noformato = tel_registro.get('_id')
+                noformato = datosRegistro.get('_id', ' ')
                 self.logger.info(f"Registro TELEFONIA agregado con ID: {noformato}")
             
                 # Tipo de Movimiento
-                alta = "X" if validated_data.get('movimiento') == "ALTA" else " "
-                baja = "X" if validated_data.get('movimiento') == "BAJA" else " "
-                cambio = "X" if validated_data.get('movimiento') == "CAMBIO" else " "
+                alta = "X" if datosRegistro.get('movimiento') == "ALTA" else " "
+                baja = "X" if datosRegistro.get('movimiento') == "BAJA" else " "
+                cambio = "X" if datosRegistro.get('movimiento') == "CAMBIO" else " "
 
                 # Direccion
-                direcion = validated_data.get('direccion') + ", " + validated_data.get('piso') + ", " + validated_data.get('ala')
+                direcion = datosRegistro.get('direccion', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
 
                 # Traducir valores true y false #PENDIGN
-                externo = "true" if validated_data.get('usuaExterno') == True else "false"
+                externo = "true" if datosRegistro.get('usuaExterno') == True else "false"
 
                 # Transformar valores "X" y " "
-                siMundo = "X" if validated_data.get('mundo') == "SI" else " "
-                noMundo = "X" if validated_data.get('mundo') == "NO" else " "
-                siLocal = "X" if validated_data.get('local') == "SI" else " "
-                noLocal = "X" if validated_data.get('local') == "NO" else " "
-                sicLocal = "X" if validated_data.get('cLocal') == "SI" else " "
-                nocLocal = "X" if validated_data.get('cLocal') == "NO" else " "
-                siNacional = "X" if validated_data.get('nacional') == "SI" else " "
-                noNacional = "X" if validated_data.get('nacional') == "NO" else " "
-                sicNacional = "X" if validated_data.get('cNacional') == "SI" else " "
-                nocNacional = "X" if validated_data.get('cNacional') == "NO" else " "
-                siEua = "X" if validated_data.get('eua') == "SI" else " "
-                noEua = "X" if validated_data.get('eua') == "NO" else " "
+                siMundo = "X" if datosRegistro.get('mundo') == "SI" else " "
+                noMundo = "X" if datosRegistro.get('mundo') == "NO" else " "
+                siLocal = "X" if datosRegistro.get('local') == "SI" else " "
+                noLocal = "X" if datosRegistro.get('local') == "NO" else " "
+                sicLocal = "X" if datosRegistro.get('cLocal') == "SI" else " "
+                nocLocal = "X" if datosRegistro.get('cLocal') == "NO" else " "
+                siNacional = "X" if datosRegistro.get('nacional') == "SI" else " "
+                noNacional = "X" if datosRegistro.get('nacional') == "NO" else " "
+                sicNacional = "X" if datosRegistro.get('cNacional') == "SI" else " "
+                nocNacional = "X" if datosRegistro.get('cNacional') == "NO" else " "
+                siEua = "X" if datosRegistro.get('eua') == "SI" else " "
+                noEua = "X" if datosRegistro.get('eua') == "NO" else " "
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
@@ -712,19 +577,19 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
                     file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\TIPOUSUARIO}{"+ validated_data.get('tipoUsuario')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TIPOUSUARIO}{"+ datosRegistro.get('tipoUsuario', ' ')+"}"+ os.linesep)
 
-                    file.write("\\newcommand{\\ACTIVACION}{"+ validated_data.get('activacion') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXPIRACION}{" + validated_data.get('expiracion') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correoUsuario') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\ACTIVACION}{"+ datosRegistro.get('activacion', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXPIRACION}{" + datosRegistro.get('expiracion', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOUSUARIO}{" + datosRegistro.get('correoUsuario', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRECCION}{" + direcion + "}"+ os.linesep)
-                    file.write("\\newcommand{\\UAUSUARIO}{" + validated_data.get('uaUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEMPLEADO}{" + validated_data.get('nombreEmpleado')+ "}"+ os.linesep)
-                    file.write("\\newcommand{\\IDEMPLEADO}{" + validated_data.get('idEmpleado') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTEMPLEADO}{" + validated_data.get('extEmpleado') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOEMPLEADO}{"+ validated_data.get('correoEmpleado') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ validated_data.get('puestoEmpleado') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\UAUSUARIO}{" + datosRegistro.get('uaUsuario', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPLEADO}{" + datosRegistro.get('nombreEmpleado', ' ')+ "}"+ os.linesep)
+                    file.write("\\newcommand{\\IDEMPLEADO}{" + datosRegistro.get('idEmpleado', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEMPLEADO}{" + datosRegistro.get('extEmpleado', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOEMPLEADO}{"+ datosRegistro.get('correoEmpleado', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoEmpleado', ' ') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
@@ -739,18 +604,18 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\SIEUA}{" + siEua + "}" + os.linesep)
                     file.write("\\newcommand{\\NOEUA}{" + noEua + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\JUSTIFICACION}{"+ validated_data.get('justificacion') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ validated_data.get('puestoUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep) 
+                    file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ datosRegistro.get('puestoUsuario', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{" + datosRegistro.get('nombreJefe', ' ') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{" + datosRegistro.get('puestoJefe', ' ') + "}"+ os.linesep) 
 
                     file.write("\\newcommand{\\EXTERNO}{" + externo + "}" + os.linesep)
-                    file.write("\\newcommand{\\MARCA}{" + validated_data.get('marca') + "}" + os.linesep)
-                    file.write("\\newcommand{\\MODELO}{" + validated_data.get('modelo') + "}" + os.linesep)
-                    file.write("\\newcommand{\\SERIE}{" + validated_data.get('serie') + "}" + os.linesep)
-                    file.write("\\newcommand{\\VERSION}{" + validated_data.get('version') + "}" + os.linesep)
+                    file.write("\\newcommand{\\MARCA}{" + datosRegistro.get('marca', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\MODELO}{" + datosRegistro.get('modelo', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\SERIE}{" + datosRegistro.get('serie', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_TELEFONIA.tex")
@@ -787,7 +652,7 @@ class FileGeneratorRoute(Blueprint):
                 )
             
             else:
-                return jsonify(tel_registro), status_code
+                return jsonify(datosRegistro), status_code
 
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
@@ -799,40 +664,27 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-    def rfc(self, data=None):
+    def rfc(self):
         try:
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
-            if data is None:
-                data = request.get_json()
+            data = request.get_json()
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
-
+            
             # Validacion
-            validated_data = self.forms_schemaRFC.load(data)    
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
 
-            # memorando NO viene o está vacío
-            if not validated_data.get('_id'):
-                self.logger.info("El campo memorando está vacío o no fue enviado")
-                # Guardar en BD
-                new_rfc_data = validated_data
-                rfc_registro, status_code = self.service.add_RFC(new_rfc_data)
-                if status_code == 201:
-                    noformato = rfc_registro.get('_id')
-                    self.logger.info(f"Registro RFC agregado con ID: {noformato}")
-            else:
-                self.logger.info("El campo _id ya esta disponible")
-                noformato=validated_data.get('_id')
-                self.logger.info(f"Registro RFC actualizado con ID: {noformato}")
-                self.logger.warning("No se actualizara la base de datos")
-                status_code = 201 
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('rfc', validated_data.get('id'))
 
             if status_code == 201:    
 
                 # Booleanos para   Quien solicita
-                if (validated_data.get('region') == "central"):
+                if (datosRegistro.get('region') == "central"):
                     #solicitante = "true"
                     enlacein = "false"
                 else:
@@ -840,61 +692,61 @@ class FileGeneratorRoute(Blueprint):
                     enlacein = "true"
                 
                 ##IF DE PRUEBA
-                enlacein = "true" if validated_data.get ('region') == 'regional' else "false"
+                enlacein = "true" if datosRegistro.get ('region') == 'regional' else "false"
                 #enlacesolibool = "true" if solicitante == "true" and enlacein == "true" else "false"
                 #solicitantebool = "true" if solicitante == "true" and enlacesolibool == "false" else "false"
                 #enlaceinbool = "true" if enlacein == "true" and enlacesolibool == "false" else "false"
 
                 # Transformar valores "X" y " " para Tipo de Movimiento
-                intersistemas = "x" if validated_data.get('intersistemas') == True else " "
-                administrador = "x" if validated_data.get('administrador') == True else " "
-                desarrollador = "x" if validated_data.get('desarrollador') == True else " "
-                usuario = "x" if validated_data.get('usuario') == True else " "
-                otro = "x" if validated_data.get('otro') == True else " "
+                intersistemas = "x" if datosRegistro.get('intersistemas') == True else " "
+                administrador = "x" if datosRegistro.get('administrador') == True else " "
+                desarrollador = "x" if datosRegistro.get('desarrollador') == True else " "
+                usuario = "x" if datosRegistro.get('usuario') == True else " "
+                otro = "x" if datosRegistro.get('otro') == True else " "
 
                 # Booleanos para Tipo de Movimiento
-                intersistemasBool = "true" if validated_data.get('intersistemas') == True else "false"
-                administradorBool = "true" if validated_data.get('administrador') == True else "false"
-                desarrolladorBool = "true" if validated_data.get('desarrollador') == True else "false"
-                usuarioBool = "true" if validated_data.get('usuario') == True else "false"
-                otroBool = "true" if validated_data.get('otro') == True else "false"
+                intersistemasBool = "true" if datosRegistro.get('intersistemas') == True else "false"
+                administradorBool = "true" if datosRegistro.get('administrador') == True else "false"
+                desarrolladorBool = "true" if datosRegistro.get('desarrollador') == True else "false"
+                usuarioBool = "true" if datosRegistro.get('usuario') == True else "false"
+                otroBool = "true" if datosRegistro.get('otro') == True else "false"
 
                 # Booleanos para Generacion de tablas
-                AltaInter = "true" if validated_data.get('AltaInter') == True else "false"
-                BajaInter = "true" if validated_data.get('BajaInter') == True else "false"
-                AltaAdmin = "true" if validated_data.get('AltaAdmin') == True else "false"
-                BajaAdmin = "true" if validated_data.get('BajaAdmin') == True else "false"
-                AltaDes = "true" if validated_data.get('AltaDes') == True else "false"
-                BajaDes = "true" if validated_data.get('BajaDes') == True else "false"
-                AltaUsua = "true" if validated_data.get('AltaUsua') == True else "false"
-                BajaUsua = "true" if validated_data.get('BajaUsua') == True else "false"
-                AltaOtro = "true" if validated_data.get('AltaOtro') == True else "false"
-                BajaOtro = "true" if validated_data.get('BajaOtro') == True else "false"
+                AltaInter = "true" if datosRegistro.get('AltaInter') == True else "false"
+                BajaInter = "true" if datosRegistro.get('BajaInter') == True else "false"
+                AltaAdmin = "true" if datosRegistro.get('AltaAdmin') == True else "false"
+                BajaAdmin = "true" if datosRegistro.get('BajaAdmin') == True else "false"
+                AltaDes = "true" if datosRegistro.get('AltaDes') == True else "false"
+                BajaDes = "true" if datosRegistro.get('BajaDes') == True else "false"
+                AltaUsua = "true" if datosRegistro.get('AltaUsua') == True else "false"
+                BajaUsua = "true" if datosRegistro.get('BajaUsua') == True else "false"
+                AltaOtro = "true" if datosRegistro.get('AltaOtro') == True else "false"
+                BajaOtro = "true" if datosRegistro.get('BajaOtro') == True else "false"
 
                 # En caso de cambios
-                if validated_data.get('CambioInter') == True:
+                if datosRegistro.get('CambioInter') == True:
                     AltaInter = "true"
                     BajaInter = "true"
-                if validated_data.get('CambioAdmin') == True:
+                if datosRegistro.get('CambioAdmin') == True:
                     AltaAdmin = "true"
                     BajaAdmin = "true"
-                if validated_data.get('CambioDes') == True:
+                if datosRegistro.get('CambioDes') == True:
                     AltaDes = "true"
                     BajaDes = "true"
-                if validated_data.get('CambioUsua') == True:
+                if datosRegistro.get('CambioUsua') == True:
                     AltaUsua = "true"
                     BajaUsua = "true"
-                if validated_data.get('CambioOtro') == True:
+                if datosRegistro.get('CambioOtro') == True:
                     AltaOtro = "true"
                     BajaOtro = "true"
 
                 # Desotro valor default
-                desotro_value = validated_data.get('desotro', '')
+                desotro_value = datosRegistro.get('desotro', '')
 
                 # Unir Justificaciones
-                justifica1 = validated_data.get('justifica')
-                justifica2 = validated_data.get('justifica2')
-                justifica3 = validated_data.get('justifica3')
+                justifica1 = datosRegistro.get('justifica', '')
+                justifica2 = datosRegistro.get('justifica2', '')
+                justifica3 = datosRegistro.get('justifica3', '')
 
                 # Validar si hay temporales
                 if (justifica1 != ""): 
@@ -922,19 +774,19 @@ class FileGeneratorRoute(Blueprint):
                     #file.write("\\newcommand{\\SOLIBOOL}{" + solicitantebool + "}" + os.linesep)
                     #file.write("\\newcommand{\\ENLACEBOOL}{" + enlaceinbool + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\NOTICKET}{"+ validated_data.get('noticket')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\MEMO}{"+ validated_data.get('memo') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\DESCBREVE}{" + validated_data.get('descbreve') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMEI}{"+ validated_data.get('nomei') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTEI}{"+ validated_data.get('extei') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMS}{"+ validated_data.get('noms') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTS}{" + validated_data.get('exts') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOS}{" + validated_data.get('puestos') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\AREAS}{" + validated_data.get('areas') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\DESDET}{" + validated_data.get('desdet') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOTICKET}{"+ datosRegistro.get('noticket', '')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MEMO}{"+ datosRegistro.get('memo', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DESCBREVE}{" + datosRegistro.get('descbreve', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEI}{"+ datosRegistro.get('nomei', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEI}{"+ datosRegistro.get('extei', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMS}{"+ datosRegistro.get('noms', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTS}{" + datosRegistro.get('exts', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOS}{" + datosRegistro.get('puestos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAS}{" + datosRegistro.get('areas', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DESDET}{" + datosRegistro.get('desdet', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICA}{" + justifica_combined + "}" + os.linesep)
-                    file.write("\\newcommand{\\NOMBREJEFE}{" + validated_data.get('nombreJefe') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOJEFE}{" + validated_data.get('puestoJefe') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{" + datosRegistro.get('nombreJefe', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{" + datosRegistro.get('puestoJefe', '') + "}"+ os.linesep)
 
                     # Tablas
                     file.write("\\newcommand{\\INTER}{" + intersistemas + "}" + os.linesep)
@@ -962,87 +814,87 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\ALTASOTRO}{" + AltaOtro + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJASOTRO}{" + BajaOtro + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '') + "}" + os.linesep)
 
                 # Tablas csv
 
                 # Intersistemas
                 # Cambios
-                registrosAltas = validated_data.get('registrosInterCambiosAltas', [])  # Obtiene array de los datos
-                registrosBajas = validated_data.get('registrosInterCambiosBajas', [])  # Obtiene array de los datos
+                registrosAltas = datosRegistro.get('registrosInterCambiosAltas', [])  # Obtiene array de los datos
+                registrosBajas = datosRegistro.get('registrosInterCambiosBajas', [])  # Obtiene array de los datos
                 # Añadir que viene de Cambios "C*"
                 self.modificar_registros_id(registrosAltas)
                 self.modificar_registros_id(registrosBajas)            
                 # Altas
-                registros = validated_data.get('registrosInterAltas', [])   # Obtiene array de los datos
+                registros = datosRegistro.get('registrosInterAltas', [])   # Obtiene array de los datos
                 registros.extend(registrosAltas)                            # Unir registros de altas y cambios
                 tempInter = self.crear_csv_desde_registros(temp_dir, "ALTASINTER.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
-                registros = validated_data.get('registrosInterBajas', [])   # Obtiene array de los datos
+                registros = datosRegistro.get('registrosInterBajas', [])   # Obtiene array de los datos
                 registros.extend(registrosBajas)                            # Unir registros de bajas y cambios
                 self.crear_csv_desde_registros(temp_dir, "BAJASINTER.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Administrador
                 # Cambios
-                registrosAltas = validated_data.get('registrosAdminCambiosAltas', [])
-                registrosBajas = validated_data.get('registrosAdminCambiosBajas', [])
+                registrosAltas = datosRegistro.get('registrosAdminCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosAdminCambiosBajas', [])
                 # Añadir que viene de Cambios "C*"
                 self.modificar_registros_id(registrosAltas)
                 self.modificar_registros_id(registrosBajas)
                 # Altas
-                registros = validated_data.get('registrosAdminAltas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosAdminAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas)      
                 tempAdmin = self.crear_csv_desde_registros(temp_dir, "ALTASADMIN.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
-                registros = validated_data.get('registrosAdminBajas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosAdminBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas)   
                 self.crear_csv_desde_registros(temp_dir, "BAJASADMIN.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Desarrollador
                 # Cambios
-                registrosAltas = validated_data.get('registrosDesCambiosAltas', [])
-                registrosBajas = validated_data.get('registrosDesCambiosBajas', [])
+                registrosAltas = datosRegistro.get('registrosDesCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosDesCambiosBajas', [])
                 # Añadir que viene de Cambios "C*"
                 self.modificar_registros_id(registrosAltas)
                 self.modificar_registros_id(registrosBajas)
                 # Altas
-                registros = validated_data.get('registrosDesAltas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosDesAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
                 tempDes = self.crear_csv_desde_registros(temp_dir, "ALTASDES.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
-                registros = validated_data.get('registrosDesBajas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosDesBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASDES.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Usuario
                 # Cambios
-                registrosAltas = validated_data.get('registrosUsuaCambiosAltas', [])
-                registrosBajas = validated_data.get('registrosUsuaCambiosBajas', [])
+                registrosAltas = datosRegistro.get('registrosUsuaCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosUsuaCambiosBajas', [])
                 # Añadir que viene de Cambios "C*"
                 self.modificar_registros_id(registrosAltas)
                 self.modificar_registros_id(registrosBajas)
                 # Altas
-                registros = validated_data.get('registrosUsuaAltas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosUsuaAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
                 tempUsua = self.crear_csv_desde_registros(temp_dir, "ALTASUSUA.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
-                registros = validated_data.get('registrosUsuaBajas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosUsuaBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASUSUA.csv", registros, False) #Se cambia el nombre de la columna
 
                 # Otro
                 # Cambios
-                registrosAltas = validated_data.get('registrosOtroCambiosAltas', [])
-                registrosBajas = validated_data.get('registrosOtroCambiosBajas', [])
+                registrosAltas = datosRegistro.get('registrosOtroCambiosAltas', [])
+                registrosBajas = datosRegistro.get('registrosOtroCambiosBajas', [])
                 # Añadir que viene de Cambios "C*"
                 self.modificar_registros_id(registrosAltas)
                 self.modificar_registros_id(registrosBajas)
                 # Altas
-                registros = validated_data.get('registrosOtroAltas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosOtroAltas', [])  # Obtiene array de los datos
                 registros.extend(registrosAltas) 
                 tempOtro = self.crear_csv_desde_registros(temp_dir, "ALTASOTRO.csv", registros, True) #Se cambia el nombre de la columna
                 # Bajas
-                registros = validated_data.get('registrosOtroBajas', [])  # Obtiene array de los datos
+                registros = datosRegistro.get('registrosOtroBajas', [])  # Obtiene array de los datos
                 registros.extend(registrosBajas) 
                 self.crear_csv_desde_registros(temp_dir, "BAJASOTRO.csv", registros, False) #Se cambia el nombre de la columna
 
@@ -1090,24 +942,7 @@ class FileGeneratorRoute(Blueprint):
                 imagenes_dir = os.path.join(temp_dir, "imagenes")
                 shutil.copytree("/app/latex/imagenes", imagenes_dir)
 
-                # Compilar latex Aux
-                #try:
-                 #   subprocess.run(['latex',  "-output-directory",  temp_dir, archivo_tex], check=True)
-                  #  self.logger.info(f"Archivo .aux generado para {archivo_tex}")
-                #except:
-                   
-                   # self.logger.error(f"Error generando archivo .aux: {e}")
-                    #return jsonify({"error": f"Error al compilar LaTeX Aux: {e}"}), 500
-
-                # Compilar latex PDF
-                #try:
-                 #   subprocess.run(["pdflatex", "-output-directory", temp_dir, archivo_tex], check=True)
-                  #  self.logger.info(f"Archivo PDF generado para {archivo_tex}")
-                #except:
-                 #   self.logger.error(f"Error generando PDF: {e}")
-                  #  return jsonify({"error": f"Error al compilar LaTeX PDF: {e}"}), 500
-                
-                 # Compilar XeLaTeX
+                # Compilar XeLaTeX
                 try:
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
@@ -1131,7 +966,7 @@ class FileGeneratorRoute(Blueprint):
                 )
             
             else:
-                return jsonify(rfc_registro), status_code
+                return jsonify(datosRegistro), status_code
             
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
@@ -1143,9 +978,10 @@ class FileGeneratorRoute(Blueprint):
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
 
-
     def inter(self):
+
         try: 
+
             # Crear directorio temporal único
             temp_dir = tempfile.mkdtemp()
 
@@ -1153,67 +989,65 @@ class FileGeneratorRoute(Blueprint):
 
             if not data:
                 return jsonify({"error": "Invalid data"}), 400
-
+            
             # Validacion
-            validated_data = self.forms_schemaInter.load(data)
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
 
-            # Guardar en BD
-            new_inter_data = validated_data
-            inter_registro, status_code = self.service.add_internet(new_inter_data)
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('internet', validated_data.get('id'))
 
             if status_code == 201:
-                noformato = inter_registro.get('_id')
-                self.logger.info(f"Registro INTERNET agregado con ID: {noformato}")
             
                 # Transformar valores "SI" y "NO"
-                descarga = "x" if validated_data.get('descarga') == True else " "
-                foros = "x" if validated_data.get('foros') == True else " "
-                comercio = "x" if validated_data.get('comercio') == True else " "
-                redes = "x" if validated_data.get('redes') == True else " "
-                videos = "x" if validated_data.get('videos') == True else " "
-                whats = "x" if validated_data.get('whats') == True else " "
-                dropbox = "x" if validated_data.get('dropbox') == True else " "
-                onedrive = "x" if validated_data.get('onedrive') == True else " "
-                skype = "x" if validated_data.get('skype') == True else " "
-                wetransfer = "x" if validated_data.get('wetransfer') == True else " "
-                team = "x" if validated_data.get('team') == True else " "
-                otra = "x" if validated_data.get('otra') == True else " "
-                otra2 = "x" if validated_data.get('otra2') == True else " "
-                otra3 = "x" if validated_data.get('otra3') == True else " "
-                otra4 = "x" if validated_data.get('otra4') == True else " "
+                descarga = "x" if datosRegistro.get('descarga') == True else " "
+                foros = "x" if datosRegistro.get('foros') == True else " "
+                comercio = "x" if datosRegistro.get('comercio') == True else " "
+                redes = "x" if datosRegistro.get('redes') == True else " "
+                videos = "x" if datosRegistro.get('videos') == True else " "
+                whats = "x" if datosRegistro.get('whats') == True else " "
+                dropbox = "x" if datosRegistro.get('dropbox') == True else " "
+                onedrive = "x" if datosRegistro.get('onedrive') == True else " "
+                skype = "x" if datosRegistro.get('skype') == True else " "
+                wetransfer = "x" if datosRegistro.get('wetransfer') == True else " "
+                team = "x" if datosRegistro.get('team') == True else " "
+                otra = "x" if datosRegistro.get('otra') == True else " "
+                otra2 = "x" if datosRegistro.get('otra2') == True else " "
+                otra3 = "x" if datosRegistro.get('otra3') == True else " "
+                otra4 = "x" if datosRegistro.get('otra4') == True else " "
 
-                descargabool = "true" if validated_data.get('descarga') == True else "false"
-                forosbool = "true" if validated_data.get('foros') == True else "false"
-                comerciobool = "true" if validated_data.get('comercio') == True else "false"
-                redesbool = "true" if validated_data.get('redes') == True else "false"
-                videosbool = "true" if validated_data.get('videos') == True else "false"
-                whatsbool = "true" if validated_data.get('whats') == True else "false"
-                dropboxbool = "true" if validated_data.get('dropbox') == True else "false"
-                onedrivebool = "true" if validated_data.get('onedrive') == True else "false"
-                skypebool = "true" if validated_data.get('skype') == True else "false"
-                wetransferbool = "true" if validated_data.get('wetransfer') == True else "false"
-                teambool = "true" if validated_data.get('team') == True else "false"
-                otrabool = "true" if validated_data.get('otra') == True else "false"
-                otrabool2 = "true" if validated_data.get('otra2') == True else "false"
-                otrabool3 = "true" if validated_data.get('otra3') == True else "false"
-                otrabool4 = "true" if validated_data.get('otra4') == True else "false"
+                descargabool = "true" if datosRegistro.get('descarga') == True else "false"
+                forosbool = "true" if datosRegistro.get('foros') == True else "false"
+                comerciobool = "true" if datosRegistro.get('comercio') == True else "false"
+                redesbool = "true" if datosRegistro.get('redes') == True else "false"
+                videosbool = "true" if datosRegistro.get('videos') == True else "false"
+                whatsbool = "true" if datosRegistro.get('whats') == True else "false"
+                dropboxbool = "true" if datosRegistro.get('dropbox') == True else "false"
+                onedrivebool = "true" if datosRegistro.get('onedrive') == True else "false"
+                skypebool = "true" if datosRegistro.get('skype') == True else "false"
+                wetransferbool = "true" if datosRegistro.get('wetransfer') == True else "false"
+                teambool = "true" if datosRegistro.get('team') == True else "false"
+                otrabool = "true" if datosRegistro.get('otra') == True else "false"
+                otrabool2 = "true" if datosRegistro.get('otra2') == True else "false"
+                otrabool3 = "true" if datosRegistro.get('otra3') == True else "false"
+                otrabool4 = "true" if datosRegistro.get('otra4') == True else "false"
 
-                direcConAla = validated_data.get("direccion") + ", "+ validated_data.get("piso") + ", " + validated_data.get("ala")
+                direcConAla = datosRegistro.get("direccion", ' ') + ", "+ datosRegistro.get("piso", ' ') + ", " + datosRegistro.get("ala", ' ')
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
                 with open(datos_txt_path, 'w') as file: 
-                    file.write("\\newcommand{\\FECHASOLI}{"+ validated_data.get('fechasoli')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\UAUSUARIO}{"+ validated_data.get('uaUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\AREAUSUARIO}{"+ validated_data.get('areaUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + validated_data.get('nombreUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{" + validated_data.get('puestoUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\IPUSUARIO}{" + validated_data.get('ipUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOUSUARIO}{" + validated_data.get('correoUsuario')+ "}"+ os.linesep)
-                    file.write("\\newcommand{\\TELUSUARIO}{" + validated_data.get('teleUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTUSUARIO}{" + validated_data.get('extUsuario') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREJEFE}{"+ validated_data.get('nombreJefe') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOJEFE}{"+ validated_data.get('puestoJefe') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHASOLI}{"+ datosRegistro.get('fecha', '')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UAUSUARIO}{"+ datosRegistro.get('uaUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAUSUARIO}{"+ datosRegistro.get('areaUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{" + datosRegistro.get('puestoUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\IPUSUARIO}{" + datosRegistro.get('ipUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOUSUARIO}{" + datosRegistro.get('correoUsuario', '')+ "}"+ os.linesep)
+                    file.write("\\newcommand{\\TELUSUARIO}{" + datosRegistro.get('teleUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTUSUARIO}{" + datosRegistro.get('extUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreJefe', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoJefe', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRECCION}{"+ direcConAla +  "}"+ os.linesep)
 
                     file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
@@ -1233,11 +1067,11 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\OTRAtres}{" + otra3 + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRAcuatro}{" + otra4 + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\OTRAC}{"+ validated_data.get('otraC') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\OTRAC}{"+ datosRegistro.get('otraC', '') + "}"+ os.linesep)
 
-                    file.write("\\newcommand{\\OTRACdos}{"+ validated_data.get('otraC2') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\OTRACtres}{"+ validated_data.get('otraC3') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\OTRACcuatro}{"+ validated_data.get('otraC4') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\OTRACdos}{"+ datosRegistro.get('otraC2', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\OTRACtres}{"+ datosRegistro.get('otraC3', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\OTRACcuatro}{"+ datosRegistro.get('otraC4', '') + "}"+ os.linesep)
                     
                     file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
                     file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
@@ -1256,43 +1090,42 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\OTRABOOLtres}{" + otrabool3 + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRABOOLcuatro}{" + otrabool4 + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\URLDESCARGA}{"+ validated_data.get('urlDescarga') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLFOROS}{"+ validated_data.get('urlForos') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLREDES}{"+ validated_data.get('urlRedes') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLCOMERCIO}{"+ validated_data.get('urlComercio') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLVIDEOS}{"+ validated_data.get('urlVideos') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLWHATS}{"+ validated_data.get('urlWhats') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLDROPBOX}{"+ validated_data.get('urlDropbox') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLONEDRIVE}{"+ validated_data.get('urlOnedrive') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLSKYPE}{"+ validated_data.get('urlSkype') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLWETRANSFER}{"+ validated_data.get('urlWetransfer') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLTEAM}{"+ validated_data.get('urlTeam') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLOTRA}{"+ validated_data.get('urlOtra') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLDESCARGA}{"+ datosRegistro.get('urlDescarga', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLFOROS}{"+ datosRegistro.get('urlForos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLREDES}{"+ datosRegistro.get('urlRedes', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLCOMERCIO}{"+ datosRegistro.get('urlComercio', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLVIDEOS}{"+ datosRegistro.get('urlVideos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLWHATS}{"+ datosRegistro.get('urlWhats', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLDROPBOX}{"+ datosRegistro.get('urlDropbox', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLONEDRIVE}{"+ datosRegistro.get('urlOnedrive', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLSKYPE}{"+ datosRegistro.get('urlSkype', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLWETRANSFER}{"+ datosRegistro.get('urlWetransfer', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLTEAM}{"+ datosRegistro.get('urlTeam', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRA}{"+ datosRegistro.get('urlOtra', '') + "}"+ os.linesep)
 
-                    file.write("\\newcommand{\\URLOTRAdos}{"+ validated_data.get('urlOtra2') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLOTRAtres}{"+ validated_data.get('urlOtra3') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLOTRAcuatro}{"+ validated_data.get('urlOtra4') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRAdos}{"+ datosRegistro.get('urlOtra2', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRAtres}{"+ datosRegistro.get('urlOtra3', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\URLOTRAcuatro}{"+ datosRegistro.get('urlOtra4', '') + "}"+ os.linesep)
 
 
-                    file.write("\\newcommand{\\JUSTIFICADESCARGA}{"+ validated_data.get('justificaDescarga') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAFOROS}{"+ validated_data.get('justificaForos') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAREDES}{"+ validated_data.get('justificaRedes') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICACOMERCIO}{"+ validated_data.get('justificaComercio') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAVIDEOS}{"+ validated_data.get('justificaVideos') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAWHATS}{"+ validated_data.get('justificaWhats') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICADROPBOX}{"+ validated_data.get('justificaDropbox') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAONEDRIVE}{"+ validated_data.get('justificaOnedrive') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICASKYPE}{"+ validated_data.get('justificaSkype') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAWETRANSFER}{"+ validated_data.get('justificaWetransfer') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICATEAM}{"+ validated_data.get('justificaTeam') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAOTRA}{"+ validated_data.get('justificaOtra') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICADESCARGA}{"+ datosRegistro.get('justificaDescarga', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAFOROS}{"+ datosRegistro.get('justificaForos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAREDES}{"+ datosRegistro.get('justificaRedes', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACOMERCIO}{"+ datosRegistro.get('justificaComercio', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAVIDEOS}{"+ datosRegistro.get('justificaVideos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAWHATS}{"+ datosRegistro.get('justificaWhats', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICADROPBOX}{"+ datosRegistro.get('justificaDropbox', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAONEDRIVE}{"+ datosRegistro.get('justificaOnedrive', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICASKYPE}{"+ datosRegistro.get('justificaSkype', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAWETRANSFER}{"+ datosRegistro.get('justificaWetransfer', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICATEAM}{"+ datosRegistro.get('justificaTeam', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRA}{"+ datosRegistro.get('justificaOtra', '') + "}"+ os.linesep)
 
-                    file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ validated_data.get('justificaOtra2') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ validated_data.get('justificaOtra3') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ validated_data.get('justificaOtra4') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ datosRegistro.get('justificaOtra2', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRAtres}{"+ datosRegistro.get('justificaOtra3', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAOTRAcuatro}{"+ datosRegistro.get('justificaOtra4', '') + "}"+ os.linesep)
 
-                    file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)##PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
-
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '') + "}" + os.linesep)
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_INTERNET.tex")
@@ -1329,102 +1162,8 @@ class FileGeneratorRoute(Blueprint):
                 )
             
             else:
-                return jsonify(inter_registro), status_code
-
-        except ValidationError as err:
-            self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
-        except Exception as e:
-            self.logger.error(f"Error generando PDF: {e}")
-            return jsonify({"error": "Error generando PDF"}), 500
-        finally:
-            # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
-
-    # Actualizar memorandos
-    def vpnMemorando(self):
-        try: 
-            # Recibimos datos
-            data = request.get_json()
-
-            # Validamos que existan datos
-            if not data:
-                return jsonify({"error": "Invalid data"}), 400
-            # Validacion
-            validated_data = self.actualizarMemo.load(data)
-
-            memorando = validated_data.get('memorando')
-            nFormato = validated_data.get('numeroFormato')
-
-            # Llamada al servicio de actualizacion de datos
-            DatosVPN, status_code = self.service.actualizar_memorando_vpn(nFormato, memorando)
-
-            if status_code == 201:
-                self.logger.info("Informacion actualizada con exito en la base de datos")
-                # Agregar o actualizar el campo 'memorando' en DatosVPN
-                DatosVPN['memorando'] = memorando
-                # Enviar archivo
-                return self.vpnmayo(DatosVPN)
-
-            if status_code == 202:
-                self.logger.info("No se logro actualizar el memorando")
-                return jsonify(DatosVPN), status_code
-            if status_code == 400:
-                self.logger.error("Ocurrio un error")
-                return jsonify(DatosVPN), status_code
-            if status_code == 203:
-                self.logger.error("No se encontro el Numero de Formato para editar")
-                return jsonify(DatosVPN), status_code
-            else:
-                self.logger.error("Ocurrio otro error aqui")
-                return jsonify(DatosVPN), status_code
-
-        except ValidationError as err:
-            self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
-        except Exception as e:
-            self.logger.error(f"Error generando PDF: {e}")
-            return jsonify({"error": "Error generando PDF"}), 500
-    
-    def rfcFuncionORol(self):
-        try: 
-            # Recibimos datos
-            data = request.get_json()
-
-            # Validamos que existan datos
-            if not data:
-                return jsonify({"error": "Invalid data"}), 400
+                return jsonify(datosRegistro), status_code
             
-            # Validacion
-            validated_data = self.actualizarFuncionRol.load(data)
-
-            funcionrol = validated_data.get('funcionrol')
-            nFormato = validated_data.get('numeroFormato')
-
-            nRegistro = int(validated_data.get('numeroRegistro'))
-
-            movimiento = validated_data.get('movimientoID')
-
-            # Llamada al servicio de actualizacion de datos
-            Datos, status_code = self.service.actualizar_funcionrol_rfc(nFormato, funcionrol, nRegistro, movimiento)
-
-            if status_code == 201:
-                self.logger.info("Informacion actualizada con exito en la base de datos")
-                # Enviar archivo
-                return self.rfc(Datos)
-            if status_code == 202:
-                self.logger.info("No se logro actualizar el FRO")
-                return jsonify(Datos), status_code
-            if status_code == 203:
-                self.logger.error("No se encontro formato con  el ID especifico")
-                return jsonify({"error": "No se encontro el ID de registro"}), status_code
-            if status_code == 400:
-                self.logger.error("Ocurrio un error")
-                return jsonify({"error": "Error nuevo"}), status_code
-            else:
-                self.logger.error("Ocurrio otro error aqui")
-                return jsonify({"error": "Error diferente"}), status_code
-
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
             return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
