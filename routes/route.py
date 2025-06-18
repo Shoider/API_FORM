@@ -391,15 +391,15 @@ class FileGeneratorRoute(Blueprint):
             if status_code == 201:
             
                 # Transformar valores "SI" y "NO"
-                altausuario = "x" if datosRegistro.get('movimiento') == "ALTA" else " "
-                bajausuario = "x" if datosRegistro.get('movimiento') == "BAJA" else " "
+                altausuario = "x" if datosRegistro.get('movimiento', ' ') == "ALTA" else " "
+                bajausuario = "x" if datosRegistro.get('movimiento', ' ') == "BAJA" else " "
 
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
-                conagua = "true" if datosRegistro.get('solicitante') == "CONAGUA" else "false"
+                conagua = "true" if datosRegistro.get('solicitante' , ' ') == "CONAGUA" else "false"
 
                 # PARA BOOLEANOS DE FIRMA
-                conaguafirma = "true" if datosRegistro.get('solicitante') == "EXTERNO" else "false"
-                sistemas = "true" if datosRegistro.get('subgerencia')== "Subgerencia de Sistemas"  else "false"
+                conaguafirma = "true" if datosRegistro.get('solicitante', ' ') == "EXTERNO" else "false"
+                sistemas = "true" if datosRegistro.get('subgerencia', ' ')== "Subgerencia de Sistemas"  else "false"
                 otrasub = "true" if sistemas == "false" else "false"
 
                 # Opcion seleccionada
@@ -407,8 +407,8 @@ class FileGeneratorRoute(Blueprint):
                 accesoWeb = "true" if datosRegistro.get('accesoWeb') == True else "false"
                 accesoRemoto = "true" if datosRegistro.get('accesoRemoto') == True else "false"
 
-                nombreusuario= datosRegistro.get('nombreInterno') if conagua == "true" else datosRegistro.get('nombreExterno')
-                puestousuario= datosRegistro.get('puestoInterno') if conagua == "true" else ""
+                nombreusuario= datosRegistro.get('nombreInterno', ' ') if conagua == "true" else datosRegistro.get('nombreExterno', ' ')
+                puestousuario= datosRegistro.get('puestoInterno', ' ') if conagua == "true" else ""
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
