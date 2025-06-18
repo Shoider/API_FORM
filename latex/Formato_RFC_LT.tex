@@ -123,14 +123,16 @@ headheight = 28mm
 \sloppy
 %%%INFORMACIÓN DEL SOLICITANTE Y ENLACE INFORMATICO 
 
-\vspace{-30pt}
+\vspace{-25pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
 		colspec = {Q[100]Q[300]Q[90]Q[90]},
-                    % row{1}={dorado},                    
+                    % row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},                 
 		row{1}={c},
                      cell{1}{1} = {c=4}{0.874\linewidth},	
                      cell{2}{3}={r},
@@ -149,14 +151,16 @@ headheight = 28mm
 \newboolean{enlace}
 \setboolean{enlace}{\ENLACE}
 \ifthenelse{\boolean{enlace}}{
-\vspace{-40pt}
+\vspace{-37pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
 		colspec = {Q[100]Q[300]Q[90]Q[90]},
-                    % row{1}={dorado},                    
+                    % row{1}={dorado},          
+		column{1}={r},
+		column{2}={l},             
 		row{1}={c},
                      cell{1}{1} = {c=4}{0.874\linewidth},	
                      cell{2}{3}={r},                     
@@ -176,6 +180,8 @@ headheight = 28mm
 		width = \linewidth,
 		colspec = {Q[203]Q[200]Q[200]Q[200]},
                     %  row{1}={dorado},
+		column{1}={r},
+		column{2}={l},   
 		row{1}={c},
                     %  row{5}={dorado},
 		row{5}={c},
@@ -287,8 +293,8 @@ headheight = 28mm
 		colspec = {Q[935]},
 		cells = {c},
                    %   row{1}={dorado},                     
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{ALTAS} \\Sección A.- Comunicación intersistemas
 \end{longtblr}
@@ -299,7 +305,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[4]Q[6]Q[12]Q[4]Q[6]Q[12]Q[5]Q[4]},                     
+  colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},                     
   hlines,
   vlines,
                      cells={c},
@@ -318,7 +324,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[4]Q[6]Q[12]Q[4]Q[6]Q[12]Q[5]Q[4]},                     
+  colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},                     
   hlines,
   vlines,
                      cells={c},
@@ -362,8 +368,8 @@ headheight = 28mm
 		colspec = {Q[935]},
 		cells = {c},
                  %     row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas
 \end{longtblr}
@@ -374,7 +380,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[4]Q[6]Q[12]Q[4]Q[6]Q[12]Q[5]Q[4]},                     
+  colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -393,7 +399,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[4]Q[6]Q[12]Q[4]Q[6]Q[12]Q[5]Q[4]},                     
+  colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -423,8 +429,8 @@ headheight = 28mm
 		colspec = {Q[935]},
 		cells = {c},
                 %      row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{ALTAS} \\Sección B.- Accesos administrativos
 \end{longtblr}
@@ -435,7 +441,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -454,7 +460,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec ={Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -496,8 +502,8 @@ headheight = 28mm
 		colspec = {Q[935]},
 		cells = {c},
                %       row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{BAJAS} \\Sección B.- Accesos administrativos
 \end{longtblr}
@@ -508,7 +514,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -527,7 +533,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec ={Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -557,8 +563,8 @@ headheight = 28mm
 		colspec = {Q[935]},
 		cells = {c},
                 %      row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{ALTAS} \\Sección C.- Accesos de desarrollador
 \end{longtblr}
@@ -569,7 +575,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -588,7 +594,7 @@ headheight = 28mm
  entry = none,
  ]{
   width = \linewidth,
-  colspec ={Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
 vlines,
                      cells={c},
@@ -632,8 +638,8 @@ vlines,
 		colspec = {Q[935]},
 		cells = {c},
                 %      row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador
 \end{longtblr}
@@ -644,7 +650,7 @@ vlines,
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
   vlines,
                      cells={c},
@@ -663,7 +669,7 @@ vlines,
  entry = none,
  ]{
   width = \linewidth,
-  colspec ={Q[2]Q[7]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -692,8 +698,8 @@ vlines,
 		colspec = {Q[935]},
 		cells = {c},
                 %      row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{ALTAS} \\Sección D.- Accesos de usuario
 \end{longtblr}
@@ -704,7 +710,7 @@ vlines,
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[10]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
@@ -724,7 +730,7 @@ vlines,
  entry = none,
  ]{
   width = \linewidth,
-  colspec ={Q[2]Q[10]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
 vlines,
                      cells={c},
@@ -767,8 +773,8 @@ vlines,
 		colspec = {Q[935]},
 		cells = {c},
                %       row{1}={dorado},
-		%hlines,
-		%vlines,
+		hlines,
+		vlines,
 	}
 	\textbf{BAJAS} \\Sección D.- Accesos de usuarios
 \end{longtblr}
@@ -779,7 +785,7 @@ vlines,
  entry = none,
  ]{
   width = \linewidth,
-  colspec = {Q[2]Q[10]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
   vlines,
                      cells={c},
@@ -798,7 +804,7 @@ vlines,
  entry = none,
  ]{
   width = \linewidth,
-  colspec ={Q[2]Q[10]Q[12]Q[10]Q[8]Q[15]Q[5]Q[5]},                     
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
   hlines,
  vlines,
                      cells={c},
