@@ -135,8 +135,15 @@ class FileGeneratorRoute(Blueprint):
         try:
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
+            columnas = ['id', 'movimiento', 'nombreSistema', 'siglas', 'url', 'puertosServicios']
+            for registro in registros:
+                for col in columnas:
+                    registro.setdefault(col, "")
+
             if not registros:
-                df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nombreSistema', 'siglas', 'url', 'puertosServicios'])
+                df = pd.DataFrame([{}], columns=columnas)
+            else:
+                df = pd.DataFrame(registros)
 
             for registro in registros:
                 registro.pop('isNew', None)
@@ -189,9 +196,18 @@ class FileGeneratorRoute(Blueprint):
         try:
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
-            if not registros:
-                df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo'])
+            #if not registros:
+             #   df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo'])
 
+            columnas = ['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo']
+            for registro in registros:
+                for col in columnas:
+                    registro.setdefault(col, "")
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=columnas)
+            else:
+                df = pd.DataFrame(registros)
             #for registro in registros:
             #    registro.pop('isNew', None)
             #    if "direccion" in registro:
