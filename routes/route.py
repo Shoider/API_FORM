@@ -1004,6 +1004,7 @@ class FileGeneratorRoute(Blueprint):
             if status_code == 201:
             
                 # Transformar valores "SI" y "NO"
+                cambio = "false" if datosRegistro.get('cambio') == "SI" else "true"
                 almacenamiento = "x" if datosRegistro.get('almacenamiento') == True else " "
                 blogs = "x" if datosRegistro.get('blogs') == True else " "
                 shareware = "x" if datosRegistro.get('shareware') == True else " "
@@ -1036,13 +1037,20 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\AREAUSUARIO}{"+ datosRegistro.get('areaUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOUSUARIO}{" + datosRegistro.get('puestoUsuario', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\IPUSUARIO}{" + datosRegistro.get('ipUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\CORREOUSUARIO}{" + datosRegistro.get('correoUsuario', '')+ "}"+ os.linesep)
                     file.write("\\newcommand{\\TELUSUARIO}{" + datosRegistro.get('teleUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\EXTUSUARIO}{" + datosRegistro.get('extUsuario', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreJefe', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoJefe', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRECCION}{"+ direcConAla +  "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMEMO}{" + datosRegistro.get('memo', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOTICKET}{" + datosRegistro.get('noticket', '') + "}"+ os.linesep)
+                    
+                    file.write("\\newcommand{\\IPACTUAL}{" + cambio + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\IPUSUARIO}{" + datosRegistro.get('ipUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\IPANTERIOR}{" + datosRegistro.get('ipAnterior', '') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\ALMACENAMIENTO}{" + almacenamiento + "}" + os.linesep)
                     file.write("\\newcommand{\\BLOGS}{" + blogs + "}" + os.linesep)
