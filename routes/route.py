@@ -1004,33 +1004,23 @@ class FileGeneratorRoute(Blueprint):
             if status_code == 201:
             
                 # Transformar valores "SI" y "NO"
-                descarga = "x" if datosRegistro.get('descarga') == True else " "
-                foros = "x" if datosRegistro.get('foros') == True else " "
-                comercio = "x" if datosRegistro.get('comercio') == True else " "
+                almacenamiento = "x" if datosRegistro.get('almacenamiento') == True else " "
+                blogs = "x" if datosRegistro.get('blogs') == True else " "
+                shareware = "x" if datosRegistro.get('shareware') == True else " "
                 redes = "x" if datosRegistro.get('redes') == True else " "
-                videos = "x" if datosRegistro.get('videos') == True else " "
-                whats = "x" if datosRegistro.get('whats') == True else " "
-                dropbox = "x" if datosRegistro.get('dropbox') == True else " "
-                onedrive = "x" if datosRegistro.get('onedrive') == True else " "
-                skype = "x" if datosRegistro.get('skype') == True else " "
-                wetransfer = "x" if datosRegistro.get('wetransfer') == True else " "
-                team = "x" if datosRegistro.get('team') == True else " "
+                transmision = "x" if datosRegistro.get('transmision') == True else " "
+                
                 otra = "x" if datosRegistro.get('otra') == True else " "
                 otra2 = "x" if datosRegistro.get('otra2') == True else " "
                 otra3 = "x" if datosRegistro.get('otra3') == True else " "
                 otra4 = "x" if datosRegistro.get('otra4') == True else " "
 
-                descargabool = "true" if datosRegistro.get('descarga') == True else "false"
-                forosbool = "true" if datosRegistro.get('foros') == True else "false"
-                comerciobool = "true" if datosRegistro.get('comercio') == True else "false"
+                almacenamientobool = "true" if datosRegistro.get('almacenamiento') == True else "false"
+                blogsbool = "true" if datosRegistro.get('blogs') == True else "false"
+                sharewarebool = "true" if datosRegistro.get('shareware') == True else "false"
                 redesbool = "true" if datosRegistro.get('redes') == True else "false"
-                videosbool = "true" if datosRegistro.get('videos') == True else "false"
-                whatsbool = "true" if datosRegistro.get('whats') == True else "false"
-                dropboxbool = "true" if datosRegistro.get('dropbox') == True else "false"
-                onedrivebool = "true" if datosRegistro.get('onedrive') == True else "false"
-                skypebool = "true" if datosRegistro.get('skype') == True else "false"
-                wetransferbool = "true" if datosRegistro.get('wetransfer') == True else "false"
-                teambool = "true" if datosRegistro.get('team') == True else "false"
+                transmisionbool = "true" if datosRegistro.get('transmision') == True else "false"
+                
                 otrabool = "true" if datosRegistro.get('otra') == True else "false"
                 otrabool2 = "true" if datosRegistro.get('otra2') == True else "false"
                 otrabool3 = "true" if datosRegistro.get('otra3') == True else "false"
@@ -1054,17 +1044,12 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoJefe', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRECCION}{"+ direcConAla +  "}"+ os.linesep)
 
-                    file.write("\\newcommand{\\DESCARGA}{" + descarga + "}" + os.linesep)
-                    file.write("\\newcommand{\\FOROS}{" + foros + "}" + os.linesep)
-                    file.write("\\newcommand{\\COMERCIO}{" + comercio + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALMACENAMIENTO}{" + almacenamiento + "}" + os.linesep)
+                    file.write("\\newcommand{\\BLOGS}{" + blogs + "}" + os.linesep)
+                    file.write("\\newcommand{\\SHAREWARE}{" + shareware + "}" + os.linesep)
                     file.write("\\newcommand{\\REDES}{" + redes + "}" + os.linesep)
-                    file.write("\\newcommand{\\VIDEOS}{" + videos + "}" + os.linesep)
-                    file.write("\\newcommand{\\WHATS}{" + whats + "}" + os.linesep)
-                    file.write("\\newcommand{\\DROPBOX}{" + dropbox + "}" + os.linesep)
-                    file.write("\\newcommand{\\ONEDRIVE}{" + onedrive + "}" + os.linesep)
-                    file.write("\\newcommand{\\SKYPE}{" + skype + "}" + os.linesep)
-                    file.write("\\newcommand{\\WETRANSFER}{" + wetransfer + "}" + os.linesep)
-                    file.write("\\newcommand{\\TEAM}{" + team + "}" + os.linesep)
+                    file.write("\\newcommand{\\TRANSMISION}{" + transmision + "}" + os.linesep)
+                    
                     file.write("\\newcommand{\\OTRA}{" + otra + "}" + os.linesep)
 
                     file.write("\\newcommand{\\OTRAdos}{" + otra2 + "}" + os.linesep)
@@ -1077,34 +1062,17 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\OTRACtres}{"+ datosRegistro.get('otraC3', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\OTRACcuatro}{"+ datosRegistro.get('otraC4', '') + "}"+ os.linesep)
                     
-                    file.write("\\newcommand{\\DESCARGABOOL}{" + descargabool + "}" + os.linesep)
-                    file.write("\\newcommand{\\FOROSBOOL}{" + forosbool + "}" + os.linesep)
-                    file.write("\\newcommand{\\COMERCIOBOOL}{" + comerciobool + "}" + os.linesep)
+                    file.write("\\newcommand{\\ALMACENAMIENTOBOOL}{" + almacenamientobool + "}" + os.linesep)
+                    file.write("\\newcommand{\\BLOGSBOOL}{" + blogsbool + "}" + os.linesep)
+                    file.write("\\newcommand{\\SHAREWAREBOOL}{" + sharewarebool + "}" + os.linesep)
                     file.write("\\newcommand{\\REDESBOOL}{" + redesbool + "}" + os.linesep)
-                    file.write("\\newcommand{\\VIDEOSBOOL}{" + videosbool + "}" + os.linesep)
-                    file.write("\\newcommand{\\WHATSBOOL}{" + whatsbool + "}" + os.linesep)
-                    file.write("\\newcommand{\\DROPBOXBOOL}{" + dropboxbool + "}" + os.linesep)
-                    file.write("\\newcommand{\\ONEDRIVEBOOL}{" + onedrivebool + "}" + os.linesep)
-                    file.write("\\newcommand{\\SKYPEBOOL}{" + skypebool + "}" + os.linesep)
-                    file.write("\\newcommand{\\WETRANSFERBOOL}{" + wetransferbool + "}" + os.linesep)
-                    file.write("\\newcommand{\\TEAMBOOL}{" + teambool + "}" + os.linesep)
+                    file.write("\\newcommand{\\TRANSMISIONBOOL}{" + transmisionbool + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRABOOL}{" + otrabool + "}" + os.linesep)
 
                     file.write("\\newcommand{\\OTRABOOLdos}{" + otrabool2 + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRABOOLtres}{" + otrabool3 + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRABOOLcuatro}{" + otrabool4 + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\URLDESCARGA}{"+ datosRegistro.get('urlDescarga', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLFOROS}{"+ datosRegistro.get('urlForos', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLREDES}{"+ datosRegistro.get('urlRedes', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLCOMERCIO}{"+ datosRegistro.get('urlComercio', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLVIDEOS}{"+ datosRegistro.get('urlVideos', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLWHATS}{"+ datosRegistro.get('urlWhats', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLDROPBOX}{"+ datosRegistro.get('urlDropbox', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLONEDRIVE}{"+ datosRegistro.get('urlOnedrive', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLSKYPE}{"+ datosRegistro.get('urlSkype', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLWETRANSFER}{"+ datosRegistro.get('urlWetransfer', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\URLTEAM}{"+ datosRegistro.get('urlTeam', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\URLOTRA}{"+ datosRegistro.get('urlOtra', '') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\URLOTRAdos}{"+ datosRegistro.get('urlOtra2', '') + "}"+ os.linesep)
@@ -1112,17 +1080,11 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\URLOTRAcuatro}{"+ datosRegistro.get('urlOtra4', '') + "}"+ os.linesep)
 
 
-                    file.write("\\newcommand{\\JUSTIFICADESCARGA}{"+ datosRegistro.get('justificaDescarga', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAFOROS}{"+ datosRegistro.get('justificaForos', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICAALMACENAMIENTO}{"+ datosRegistro.get('justificaAlmacenamiento', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICABLOGS}{"+ datosRegistro.get('justificaBlogs', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICAREDES}{"+ datosRegistro.get('justificaRedes', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICACOMERCIO}{"+ datosRegistro.get('justificaComercio', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAVIDEOS}{"+ datosRegistro.get('justificaVideos', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAWHATS}{"+ datosRegistro.get('justificaWhats', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICADROPBOX}{"+ datosRegistro.get('justificaDropbox', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAONEDRIVE}{"+ datosRegistro.get('justificaOnedrive', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICASKYPE}{"+ datosRegistro.get('justificaSkype', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICAWETRANSFER}{"+ datosRegistro.get('justificaWetransfer', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICATEAM}{"+ datosRegistro.get('justificaTeam', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICASHAREWARE}{"+ datosRegistro.get('justificaShareware', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICATRANSMISION}{"+ datosRegistro.get('justificaTransmision', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICAOTRA}{"+ datosRegistro.get('justificaOtra', '') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\JUSTIFICAOTRAdos}{"+ datosRegistro.get('justificaOtra2', '') + "}"+ os.linesep)
