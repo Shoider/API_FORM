@@ -89,10 +89,13 @@ headheight = 20mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[200]Q[200]},  
-                      row{1}={r}                 
+		colspec = {Q[1]Q[1.6]Q[1]Q[1.6]Q[2]Q[1]},  
+                    %  row{1}={r}   
+ 		cell{1}{2}={c},
+ 		cell{1}{4}={c},
+ 		cell{1}{6}={c},
 	}
-&&{\textbf{Fecha de la solicitud:}} &\FECHASOLI    
+{\textbf{Memorando:}}&\NOMEMO&{\textbf{No. Ticket:}}&\NOTICKET&{\textbf{Fecha de la solicitud:}} &\FECHASOLI    
 \end{longtblr}
 
 \vspace{-30pt}
@@ -102,16 +105,15 @@ headheight = 20mm
 	]{
 		width = \linewidth,
 		colspec = {Q[200]Q[300]Q[90]Q[90]},
-		row{1} = {c},
-                     %row{1}={dorado},                    
+		row{1} = {c},               
 		cell{1}{1} = {c=4}{0.874\linewidth},
 		cell{2}{2} = {c=3}{0.674\linewidth},
 		cell{3}{2} = {c=3}{0.674\linewidth},
 		cell{4}{2} = {c=3}{0.674\linewidth},
 		cell{5}{2} = {c=3}{0.674\linewidth},     
-                      cell{6}{2} = {c=3}{0.674\linewidth},     
+                cell{6}{2} = {c=3}{0.674\linewidth},     
 		cell{7}{2} = {c=3}{0.674\linewidth},     
-                      cell{8}{2} = {c=3}{0.674\linewidth},     
+                cell{8}{2} = {c=3}{0.674\linewidth},     
 		hlines,
 		vlines,
 	}
@@ -120,12 +122,42 @@ Nombre:                     &  \NOMBREUSUARIO \\
 Puesto o Cargo: & \PUESTOUSUARIO\\
 Unidad Aministrativa:           &\UAUSUARIO\\
 Área:&\AREAUSUARIO\\
-IP del equipo asignado: & \IPUSUARIO\\
 Correo: &   \CORREOUSUARIO  \\
 Dirección:   &  \textbf  \DIRECCION  \\
 Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
-
 \end{longtblr}
+\newboolean{ipactual}
+\setboolean{ipactual}{\IPACTUAL}
+\vspace{-37pt}
+\ifthenelse{\boolean{ipactual}}{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]Q[90]Q[90]},          
+		cell{1}{2} = {c=3}{0.674\linewidth}, 
+		hlines,
+		vlines,
+	}
+IP del equipo asignado: & \IPUSUARIO&&
+\end{longtblr}
+}{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]Q[90]Q[90]},	 
+		cell{1}{2} = {c=3}{0.674\linewidth},    
+		cell{2}{2} = {c=3}{0.674\linewidth},      
+		hlines,
+		vlines,
+	}
+IP anterior del equipo: & \IPANTERIOR&&\\
+IP actual del equipo asignado: & \IPUSUARIO
+\end{longtblr}
+}
 
 \vspace{-30pt}
 \begin{longtblr}[
@@ -137,26 +169,26 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 		cell{1}{1} = {c=3}{0.974\linewidth},
                      cell{3}{1} = {c=3}{0.974\linewidth},
 	}
-\textbf{La configuración de navegación del perfil básico contempla las siguientes categorías, necesarias para el desempeño sustantivo y la adecuada gestión de los recursos informáticos.} &  &     \\
-{•	Negocios y economía.\\
-•	Información sobre computadoras e internet .\\
-•	Instituciones educativas.\\
-•	Entretenimiento y artes.\\
-•	Gobierno.\\}
+{\textbf {Perfil básico:}} Contempla las siguientes categorías, necesarias para el desempeño sustantivo y la adecuada gestión de los recursos informáticos &  &     \\
+{•	Negocios y economía\\
+•	Información sobre computadoras \\ \hspace*{2mm} e internet\\
+•	Instituciones educativas\\
+•	Entretenimiento y artes\\
+•	Gobierno\\}
                & 
-{•	Salud y medicina.\\
-•	Portales de internet..\\
-•	Legal.\\
-•	Noticias.\\
-•	Bienes raíces.\\}
+{•	Salud y medicina\\
+•	Portales de internet\\
+•	Legal\\
+•	Noticias\\
+•	Bienes raíces\\}
                 &
-{•Motores de búsqueda.\\
-•	Educación sexual.\\
-•	Compras.\\
-•	Viajar.\\
-•	Correo eletctrónico basado en la web.} \\
+{• Motores de búsqueda\\
+•	Educación sexual\\
+•	Compras\\
+•	Viajar\\
+• Correo electrónico basado \\ \hspace*{3mm}en la web.} \\
 
-{\textbf {Perfil comunicación social:}} Incorpora el perfil básico y contempla opciones adicionales que deberá seleecionar, las cuales serán  justificadas plenamente  y autorizadas por el Director o Gerente del área de adscripción.
+{\textbf {Perfil comunicación social:}} Incorpora el perfil básico y contempla opciones adicionales que deberá selecionar y justificar plenamente, autorizadas por el Director o Gerente del área de adscripción.
 \end{longtblr}
 
 \vspace{-30pt}
@@ -382,11 +414,11 @@ Teléfono: &\TELUSUARIO &Extensión:&\EXTUSUARIO
 \section*{Términos y Condiciones del servicio:}
 {\small \begin{enumerate}
 	\item 	El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedita de las configuraciones solicitadas.
-	\item 	El solicitante deberá presentar este formato adjuntando el memorando y número de caso (ticket) de Mesa de ayuda asociado, sin los cuales no se podrá atender su solicitud.         
+	\item 	El solicitante deberá presentar este formato adjuntando el memorando y número de caso (ticket) de Mesa de Servicio asociado, sin los cuales no se podrá atender su solicitud.         
 	\item  El solicitante deberá proporcionar la dirección IP de su equipo de cómputo para poder aplicar las configuraciones requeridas. Esta información la podrá obtener utilizando el comando “ipconfig /all” en una ventana de línea de comando. En caso de requerir ayuda para ejecutar el comando indicado, favor de contactar al área de Soporte Técnico de la CONAGUA.
 	\item El solicitante deberá agregar en la \textbf {Justificación} si la solicitud se deriva de un cambio de lugar (oficina, mampara o piso) del usuario que a su vez haya derivado en un cambio de dirección IP de su equipo de cómputo.
 	\item  En caso de un cambio de dirección IP, el usuario deberá especificar la dirección IP anterior para eliminar los privilegios en dicha dirección IP. Si el solicitante NO indica que se trata de un cambio de dirección IP, éste será responsable de cualquier acceso no autorizado que se derive de los permisos de la dirección IP anterior al no tramitar la baja correspondiente.
-	\item El usuario es responsable del uso que se otorga con el acceso ampliado otorgado a su equipo de cómputo, por lo que deberá vigilar que el uso sea acorde a las políticas de la Seguridad de la Información definidas por la Gerencia de Tecnología de la Información y Comunicaciones.
+	\item El usuario es responsable del uso que se otorga con el acceso ampliado otorgado a su equipo de cómputo, por lo que deberá vigilar que el uso sea acorde a las Políticas de la Seguridad de la Información definidas por la Gerencia de Tecnología de la Información y Comunicaciones.
 	\item El solicitante deberá conservar el Acuse o copia del formato firmado y sellado, así como el memorando asociado, para posteriores aclaraciones.
 	\item  Es responsabilidad de los gerentes y subgerentes llevar un control de los usuarios y sus direcciones IP’s con accesos de Internet ampliados.
 	\item Al firmar el usuario se da por enterado de las políticas del servicio y acepta la responsabilidad de cualquier uso inadecuado que se le dé a los privilegios de acceso ampliados los cuales haya solicitado.
