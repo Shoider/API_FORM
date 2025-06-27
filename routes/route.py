@@ -98,12 +98,12 @@ class FileGeneratorRoute(Blueprint):
                 # TEMPORALIDAD
                 cambio = ""  # Inicializa la variable cambio
                 if "TEMPO" in registro:
-                    if registro["TEMPO"] == "TEMPORAL":
+                    if registro["TEMPO"] == "Temporal":
                         contador = contador + 1
                         cambio = "T" + str(contador)
                         if "FECHA" in registro:
                             temporalidades += "T" + str(contador) + ": " + str(registro["FECHA"]) + "\\\\"
-                    elif registro["TEMPO"] == "PERMANENTE":
+                    elif registro["TEMPO"] == "Permanente":
                         cambio = "P"
 
                 # Agrega el valor de cambio al campo "id"
