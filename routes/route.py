@@ -246,6 +246,56 @@ class FileGeneratorRoute(Blueprint):
 
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}") 
+
+    def crear_csv_VPN_WebCE(self, temp_dir, nombre_archivo_csv, registros):        
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+            columnas = ['id', 'NOMBRE', 'SIGLAS', 'URL', 'PUERTOS']
+            for registro in registros:
+                for col in columnas:
+                    registro.setdefault(col, "")
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=columnas)
+            else:
+                df = pd.DataFrame(registros)
+            
+
+            df = pd.DataFrame(registros)
+            df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
+             
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}") 
+
+    def crear_csv_VPN_Personal(self, temp_dir, nombre_archivo_csv, registros):        
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+            columnas = ['id', 'NOMBRE', 'CORREO', 'EMPRESA', 'EQUIPO', 'SERVICIOS']
+            for registro in registros:
+                for col in columnas:
+                    registro.setdefault(col, "")
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=columnas)
+            else:
+                df = pd.DataFrame(registros)
+            
+
+            df = pd.DataFrame(registros)
+            df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
+             
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}") 
+
+
     def modificar_registros_id(self, registros):
         """
         Modifica el array de registros para concatenar "*C" y un salto de línea a la columna "id".
@@ -437,6 +487,9 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\SUBGERENCIA}{"+ datosRegistro.get('subgerencia', ' ')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ')+"}"+ os.linesep)
                     file.write("\\newcommand{\\EXTENLACE}{"+ datosRegistro.get('telefonoEnlace', ' ')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\PUESTOENLACE}{"+ datosRegistro.get('puestoEnlace', ' ')+"}"+ os.linesep)
+
                     file.write("\\newcommand{\\NOMBRECONAGUA}{"+ datosRegistro.get('nombreInterno', ' ')+"}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOCONAGUA}{"+ datosRegistro.get('puestoInterno', ' ')+"}"+ os.linesep)
                     file.write("\\newcommand{\\CORREOCONAGUA}{"+ datosRegistro.get('correoInterno', ' ')+"}"+ os.linesep)
@@ -490,6 +543,14 @@ class FileGeneratorRoute(Blueprint):
                 registros = datosRegistro.get('registrosRemoto', []) 
                 self.crear_csv_VPN_Remoto(temp_dir, "REMOTOESC.csv", registros)
 
+                #Relación de personal externo (Caso de Subgerencia de Sistemas)
+                registros = datosRegistro.get('registrosPersonal', [])       # Obtiene array de los datos
+                self.crear_csv_VPN_Personal(temp_dir, "PERSONAL.csv", registros)   # Se crea el .csv
+
+                #Servicios solicitado (Caso de Subgerencia de Sistemas)
+                registros = datosRegistro.get('registrosWebCE', [])       # Obtiene array de los datos
+                self.crear_csv_VPN_WebCE(temp_dir, "SITIOSWEBCE.csv", registros)   # Se crea el .csv               
+
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
                 nombre_pdf = os.path.join(temp_dir, "Formato_VPN_Mayo.pdf")
@@ -506,7 +567,7 @@ class FileGeneratorRoute(Blueprint):
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
-                except:
+                except Exception as e:
                     self.logger.error(f"Error generando PDF: {e}")
                     return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
                 
@@ -536,7 +597,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)       
+            #shutil.rmtree(temp_dir)  
+            self.logger.info(f"Directorio temporal: {temp_dir}")     
 
     def tel(self):
         try:

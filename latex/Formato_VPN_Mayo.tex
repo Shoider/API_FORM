@@ -12,6 +12,8 @@
 \usepackage{datatool}
 \DTLloaddb{SITIOSWEB}{SITIOSWEB.csv}
 \DTLloaddb{REMOTOESC}{REMOTOESC.csv}
+\DTLloaddb{PERSONAL}{PERSONAL.csv}
+\DTLloaddb{SITIOSWEBCE}{SITIOSWEBCE.csv}
 
 % *** Idioma ***
 \usepackage[spanish]{babel}
@@ -86,7 +88,53 @@ headheight = 28mm
 
 \begin{document}
 \sloppy
+
+\newboolean{sistemas}
+\setboolean{sistemas}{\SISTEMAS}
+
 %\vspace{-15pt}
+\ifthenelse{\boolean{sistemas}}{ 
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[200]Q[170]Q[80]},
+		column{1} = {l},
+		column{2} = {c},
+		column{3} = {l},
+		column{4} = {c},
+		hlines,
+		vlines,
+	}
+	Número de memorando:  &   \NOMEMO   & Fecha de la solicitud:   & \FECHA
+\end{longtblr}
+\textbf{1. Datos de identificación del área solicitante}
+\vspace{-15pt}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]},
+                     column{1}={r},
+                     column{2}={l},
+                      row{4} = {c},
+		cell{4}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+Unidad Administrativa:                     &  \UA \\
+Área de adscripción: &   \AREA  \\
+Subgerencia o Subdirección:   & \SUBGERENCIA     \\
+\textbf{Datos de la persona responsable en la CONAGUA de la relación de personal externo} &    \\
+Nombre Completo:   & \NOMBREENLACE     \\
+Puesto o cargo: & \PUESTOENLACE \\
+Número de teléfono y/o extensión: & \EXTENLACE 
+\end{longtblr}
+%INICIA DE SI NO ES DE SISTEMAS
+}{
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -125,13 +173,51 @@ Subgerencia o Subdirección:   & \SUBGERENCIA     \\
 Nombre Completo:   & \NOMBREENLACE     \\
 Número de teléfono y/o extensión: & \EXTENLACE 
 \end{longtblr}
+}%CASO ESPECIAL TERMINADO PRIMERA PARTE
 
-\textbf{2. Datos de identificación del usuario solicitante}
 
-\vspace{-15pt}
-
+%%DESAPARECE PUNTO 2 DE IDENTIFICACIÓN DEL USUARIO SOLICITANTE PARA SISTEMAS
 \newboolean{conagua}
 \setboolean{conagua}{\CONAGUA}
+\ifthenelse{\boolean{sistemas}}{
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[0.3]Q[2.5]Q[3]Q[3]Q[0.7]Q[0.5]},
+		cell{1}{1} = {c=6}{0.874\linewidth},
+		row{2}={c},
+		cell{1}{1}={c},
+		hlines,
+		vlines,
+	}
+{\textbf {Relación de Personal Externo}&&&&&}\\
+IDU&Nombre Completo&Correo Electrónico& Nombre de la Empresa& {Equipo\\/Rol} &{\# Servi\_\\cios}
+\end{longtblr}
+
+%%%%PERSONAL
+\DTLforeach*{PERSONAL}{\IDU=IDU, \NOMBRE=NOMBRE, \CORREO=CORREO, \EMPRESA=EMPRESA, \EQUIPO=EQUIPO, \SERVICIOS=SERVICIOS}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  		width = \linewidth,
+		colspec = {Q[0.3]Q[2.5]Q[3]Q[3]Q[0.7]Q[0.5]},
+		hlines,
+ 		vlines,
+                     cells={c},
+ }
+\IDU&\NOMBRE&\CORREO&\EMPRESA&\EQUIPO& \SERVICIOS
+\end{longtblr}
+}
+
+}{
+\textbf{2. Datos de identificación del usuario solicitante}
+\vspace{-15pt}
 \ifthenelse{\boolean{conagua}}
 {
 \begin{longtblr}[
@@ -183,7 +269,60 @@ Unidad Administrativa:&\UAEMPLEADO\\
 Número de teléfono o extensión:&\EXTEMPLEADO
 \end{longtblr}
 }
+}%%FIN DE NO SISTEMAS, PARTE 2.
 
+
+
+%%CASO ESPECIAL QUITA ESTA PARTE 3
+\newboolean{cuentausuario}
+\setboolean{cuentausuario}{\CUENTAUSUARIO}
+\newboolean{accesoweb}
+\setboolean{accesoweb}{\ACCESOWEB}
+\newboolean{accesoremoto}
+\setboolean{accesoremoto}{\ACCESOREMOTO}
+
+\ifthenelse{\boolean{sistemas}}{
+\textbf{2.Servicios solicitados}\\
+\textbf{a) Acceso a sitios Web o Equipo}
+%\vspace{-15pt}
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[0.3]Q[3]Q[2]Q[3]Q[1.7]},
+		cell{1}{1} = {c=5}{0.874\linewidth},
+		row{2}={c},
+		cell{1}{1}={c},
+		hlines,
+		vlines,
+	}
+{\textbf {Acceso a sitios Web o Equipo}&&&&}\\
+IDU&Nombre Sistema/Servicio&Siglas& URL/IP Equipo&Puertos o Servicios
+\end{longtblr}
+
+%%%%
+\DTLforeach*{SITIOSWEBCE}{\IDU=IDU, \NOMBRE=NOMBRE, \SIGLAS=SIGLAS, \URL=URL, \PUERTOS=PUERTOS}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  		width = \linewidth,
+		colspec = {Q[0.3]Q[3]Q[2]Q[3]Q[1.7]},
+		hlines,
+ 		vlines,
+                     cells={c},
+ }
+\IDU&\NOMBRE&\SIGLAS&\URL& \PUERTOS
+\end{longtblr}
+}
+
+
+
+}{
 \textbf{3.Servicios solicitados}
 
 \vspace{-15pt}
@@ -209,8 +348,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 
 \end{longtblr}
 
-\newboolean{cuentausuario}
-\setboolean{cuentausuario}{\CUENTAUSUARIO}
+
 \ifthenelse{\boolean{cuentausuario}}
 {
 \textbf{a)Cuenta de usuario}
@@ -229,8 +367,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 }
 
 %%%%tablas de acceso web
-\newboolean{accesoweb}
-\setboolean{accesoweb}{\ACCESOWEB}
+
 \ifthenelse{\boolean{accesoweb}}
 {
 \ifthenelse{\boolean{conagua}}
@@ -285,14 +422,13 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 }
 }
 
-\newboolean{accesoremoto}
-\setboolean{accesoremoto}{\ACCESOREMOTO}
+
 \ifthenelse{\boolean{accesoremoto}}
 {
 \ifthenelse{\boolean{conagua}}{.}
 {\ifthenelse{\boolean{accesoweb}}{:}{\clearpage}}
 
-
+%%tavka de acceso remoto
 \textbf{c)Acceso a escritorios remoto}
 %%%%%%%
 %%%%ACCESOS A SITIOS
@@ -345,6 +481,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 \end{longtblr}
 }
 }
+}%%%conidicion de no sistemas terminado
 
 \vspace{-15pt}
 \begin{longtblr}[
@@ -373,8 +510,8 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 	\item El servicio de VPN, solo permitirá por cada usuario, una conexión desde un dispositivo remoto, por lo que no será posible tener 2 o más conexiones simultáneas para una misma cuenta.
 	\item La sesión establecida será automáticamente cerrada transcurridos 10 minutos de inactividad. El usuario deberá repetir el proceso de inicio de sesión para conectarse a la red de la CONAGUA. Está prohibido usar cualquier proceso o software para mantener la sesión activa.
 	\item El usuario autorizado de VPN acepta que al hacer uso del servicio de VPN mediante cualquier tipo de conexión, es de su exclusiva responsabilidad el costo que ello genere.
-           \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren actualizados. En el caso de equipo personal, es responsabilidad del usuario autorizado ejecutar y mantener actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de aplicaciones y exploradores entre otros que ofrezca el sistema operativo o sean instalados de manera independiente.
-            \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en materia de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
+    \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren actualizados. En el caso de equipo personal, es responsabilidad del usuario autorizado ejecutar y mantener actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de aplicaciones y exploradores entre otros que ofrezca el sistema operativo o sean instalados de manera independiente.
+    \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en materia de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
 
 \end{enumerate}}
 
@@ -417,8 +554,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 }
 }
 
-\newboolean{sistemas}
-\setboolean{sistemas}{\SISTEMAS}
+
 \ifthenelse{\boolean{sistemas}}
 {
 %\ul{\textbf {Formalización exclusiva para personal externo de la Subgerencia de Sistemas}}
