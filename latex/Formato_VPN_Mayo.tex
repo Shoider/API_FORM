@@ -89,11 +89,14 @@ headheight = 28mm
 \begin{document}
 \sloppy
 
-\newboolean{sistemas}
-\setboolean{sistemas}{\SISTEMAS}
+\newboolean{casoespecialgrupal}
+\setboolean{casoespecialgrupal}{\CASOESPECIALGRUPAL}
+
+
+
 
 %\vspace{-15pt}
-\ifthenelse{\boolean{sistemas}}{ 
+\ifthenelse{\boolean{casoespecialgrupal}}{ 
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -179,7 +182,7 @@ Número de teléfono y/o extensión: & \EXTENLACE
 %%DESAPARECE PUNTO 2 DE IDENTIFICACIÓN DEL USUARIO SOLICITANTE PARA SISTEMAS
 \newboolean{conagua}
 \setboolean{conagua}{\CONAGUA}
-\ifthenelse{\boolean{sistemas}}{
+\ifthenelse{\boolean{casoespecialgrupal}}{
 \vspace{-15pt}
 \begin{longtblr}[
 	label = none,
@@ -281,7 +284,7 @@ Número de teléfono o extensión:&\EXTEMPLEADO
 \newboolean{accesoremoto}
 \setboolean{accesoremoto}{\ACCESOREMOTO}
 
-\ifthenelse{\boolean{sistemas}}{
+\ifthenelse{\boolean{casoespecialgrupal}}{
 \textbf{2.Servicios solicitados}\\
 \textbf{a) Acceso a sitios Web o Equipo}
 %\vspace{-15pt}
@@ -510,12 +513,13 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 	\item El servicio de VPN, solo permitirá por cada usuario, una conexión desde un dispositivo remoto, por lo que no será posible tener 2 o más conexiones simultáneas para una misma cuenta.
 	\item La sesión establecida será automáticamente cerrada transcurridos 10 minutos de inactividad. El usuario deberá repetir el proceso de inicio de sesión para conectarse a la red de la CONAGUA. Está prohibido usar cualquier proceso o software para mantener la sesión activa.
 	\item El usuario autorizado de VPN acepta que al hacer uso del servicio de VPN mediante cualquier tipo de conexión, es de su exclusiva responsabilidad el costo que ello genere.
-    \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren actualizados. En el caso de equipo personal, es responsabilidad del usuario autorizado ejecutar y mantener actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de aplicaciones y exploradores entre otros que ofrezca el sistema operativo o sean instalados de manera independiente.
-    \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en materia de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
+           \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren actualizados. En el caso de equipo personal, es responsabilidad del usuario autorizado ejecutar y mantener actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de aplicaciones y exploradores entre otros que ofrezca el sistema operativo o sean instalados de manera independiente.
+            \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en materia de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
 
 \end{enumerate}}
 
-
+\newboolean{sistemas}
+\setboolean{sistemas}{\SISTEMAS}
 \newboolean{otra}
 \setboolean{otra}{\OTRA}
 \ifthenelse{\boolean{otra}}
@@ -553,7 +557,6 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 	\end{longtblr}
 }
 }
-
 
 \ifthenelse{\boolean{sistemas}}
 {

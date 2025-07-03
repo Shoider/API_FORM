@@ -465,6 +465,9 @@ class FileGeneratorRoute(Blueprint):
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
                 conagua = "true" if datosRegistro.get('solicitante' , '~') == "CONAGUA" else "false"
 
+                #Caso especial grupal
+                casoespecialgrupal = "true" if datosRegistro.get('casoespecial' , '~') == "Grupal" else "false"
+
                 # PARA BOOLEANOS DE FIRMA
                 conaguafirma = "true" if datosRegistro.get('solicitante', '~') == "EXTERNO" else "false"
                 sistemas = "true" if datosRegistro.get('subgerencia', '~')== "Subgerencia de Sistemas"  else "false"
@@ -534,6 +537,9 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\CONAGUAFIRMA}{" + conaguafirma + "}" + os.linesep)
                     file.write("\\newcommand{\\SISTEMAS}{" + sistemas + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRA}{" + otrasub + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\CASOESPECIALGRUPAL}{" + casoespecialgrupal + "}" + os.linesep)
+
 
                 # Archivos .csv para las tablas
                 # b) Acceso a sitios Web
