@@ -201,6 +201,7 @@ class FileGeneratorRoute(Blueprint):
 
             columnas = ['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo']
             for registro in registros:
+                registro.pop('isNew', None)
                 for col in columnas:
                     registro.setdefault(col, "")
 
@@ -250,8 +251,9 @@ class FileGeneratorRoute(Blueprint):
     def crear_csv_VPN_WebCE(self, temp_dir, nombre_archivo_csv, registros):        
         try:
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
-            columnas = ['id', 'NOMBRE', 'SIGLAS', 'URL', 'PUERTOS']
+            columnas = ['IDU', 'NOMBRE', 'SIGLAS', 'URL', 'PUERTOS']
             for registro in registros:
+                registro.pop('isNew', None)
                 for col in columnas:
                     registro.setdefault(col, "")
 
@@ -262,7 +264,7 @@ class FileGeneratorRoute(Blueprint):
             
 
             df = pd.DataFrame(registros)
-            df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
+            #df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
              
             df.to_csv(out_csv_path, index=False, mode='x')
 
@@ -276,6 +278,7 @@ class FileGeneratorRoute(Blueprint):
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
             columnas = ['id', 'NOMBRE', 'CORREO', 'EMPRESA', 'EQUIPO', 'SERVICIOS']
             for registro in registros:
+                registro.pop('isNew', None)
                 for col in columnas:
                     registro.setdefault(col, "")
 
