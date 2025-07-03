@@ -560,6 +560,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 
 \ifthenelse{\boolean{sistemas}}
 {
+\ifthenelse{\boolean{casoespecialgrupal}}{
 %\ul{\textbf {Formalización exclusiva para personal externo de la Subgerencia de Sistemas}}
 \begin{longtblr}[
 	label = none,
@@ -569,9 +570,23 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 			colspec = {Q[200]Q[200]Q[200]},
                                 row{1}={c},
 		}                                                                                            
-		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBREUSUARIO\\  \PUESTOUSUARIO} & 
+		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBREENLACE\\  \PUESTOENLACE} & 
                    { Autoriza Servicios\\[1cm] \rule{5cm}{0.5mm}\\  M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
 	\end{longtblr}
+}{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+                                row{1}={c},
+		}                                                                                            
+		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBRECONAGUA\\  \PUESTOCONAGUA} & 
+                   { Autoriza Servicios\\[1cm] \rule{5cm}{0.5mm}\\  M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
+	\end{longtblr}
+
+}
 }
 
 {\tiny {\textbf{\\Nota:}} El memorando se debe dirigir al Titular de la Gerencia de Tecnología de la Información y Comunicaciones con copia al Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad. En caso de no recibir el memorando y esta solicitud en original en un lapso de 15 días hábiles para los Organismos de Cuenca o Direcciones Locales; o en un lapso no mayor a 3 días hábiles para otras unidades administrativas, se deshabilitará la cuenta del usuario y solo será reactivada hasta la recepción de ambos documentos.}
