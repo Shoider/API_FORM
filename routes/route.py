@@ -287,6 +287,14 @@ class FileGeneratorRoute(Blueprint):
             else:
                 df = pd.DataFrame(registros)
             
+            for registro in registros:
+                registro.pop('isNew', None)
+                if "CORREO" in registro:
+                    #Agrega un salto de línea en cada renglón
+                    #Para CORREO
+                    sistema=registro["CORREO"]
+                    sistema_modificado = '\\\\'.join([sistema[i:i+20] for i in range(0, len(sistema), 20)]) #cada 1
+                    registro["CORREO"] = sistema_modificado
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
