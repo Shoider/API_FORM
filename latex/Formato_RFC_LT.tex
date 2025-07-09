@@ -11,7 +11,6 @@
 \usepackage{booktabs}
 
 \usepackage{datatool}
-%\DTLloaddb{ALTAS}{ALTAS.csv}
 
 \DTLloaddb{ALTASINTER}{ALTASINTER.csv}
 \DTLloaddb{ALTASDES}{ALTASDES.csv}
@@ -26,7 +25,7 @@
 \DTLloaddb{BAJASUSUA}{BAJASUSUA.csv}
 \DTLloaddb{BAJASADMIN}{BAJASADMIN.csv}
 \DTLloaddb{BAJASOTRO}{BAJASOTRO.csv}
-%\DTLloaddb{CAMBIOS}{CAMBIOS.csv}
+
 \usepackage{ifthen}
 \usepackage{filecontents}
 \usepackage{setspace}
@@ -34,13 +33,10 @@
 
 
 % *** Idioma ***
-\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 
 % *** Fuente ***
-%\usepackage{lmodern}
-%\usepackage[T1]{fontenc}
-%%FUENTE NOTO
 \usepackage{fontspec}
 \setmainfont{Noto Sans}
 
@@ -74,6 +70,18 @@ headheight = 28mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
+%OJO con esta línea
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
+
+\SetTblrTemplate{contfoot-text}{default}
+\SetTblrTemplate{conthead-text}{default}
+\SetTblrTemplate{capcont}{default}
+
 
 % *** Fecha ***
 \usepackage[useregional]{datetime2}
@@ -96,7 +104,6 @@ headheight = 28mm
 		cell{1}{4} = {c},
                      cell{4}{3} = {c},
                      cell{4}{4} = {c},
-		%cell{4}{3} = {c=2}{c},
 		vlines,
 		hline{1,5} = {-}{},
 		hline{2-3} = {3-4}{},
@@ -111,7 +118,6 @@ headheight = 28mm
 \chead{}
 \rhead{}
 % *** Pie de Pagina
-%\renewcommand{\footrulewidth}{0.5pt}
 \lfoot{}
 \cfoot{}
 \rfoot{}
@@ -121,8 +127,7 @@ headheight = 28mm
 \usepackage[none]{hyphenat}
 \begin{document}
 \sloppy
-%%%INFORMACIÓN DEL SOLICITANTE Y ENLACE INFORMATICO 
-
+%%%INFORMACIÓN DEL SOLICITANTE Y ENLACE INFORMATICO
 \vspace{-25pt}
 \begin{longtblr}[
 	label = none,
@@ -141,8 +146,7 @@ headheight = 28mm
                      cell{4}{2} = {c=3}{0.679\linewidth},                     
 		hlines,
 		vlines,
-	}
-        
+	}        
    \textbf{Información del solicitante:} &  &      &  \\
              Nombre:                &    \NOMS &   {Teléfono/Extensión:}&\EXTS\\
              Puesto:&\PUESTOS\\  Área: &\AREAS            
@@ -210,7 +214,6 @@ headheight = 28mm
                  
 \end{longtblr}
 
-
 %%DESCRIPCIÓN DETALLADA
 \vspace{-15pt}
 \begin{longtblr}[
@@ -220,16 +223,12 @@ headheight = 28mm
 		width = \linewidth,
 		colspec = {Q[100]},
 		cells = {c},
-                    %  row{1}={dorado}, 
-		% row{3}={dorado},
-		%row{2} = {j},
-		%row{4}={j},
 		hlines,
 		vlines,
 	}
 	\textbf{Descripción detallada} \\ \DESDET  
-           % \textbf{Justificación}\\           \JUSTIFICA
 \end{longtblr}
+
 %%%%%JUSTIFICACION
 \vspace{-15pt}
 \begin{longtblr}[
@@ -239,7 +238,6 @@ headheight = 28mm
 		width = \linewidth,
 		colspec = {Q[935]},
 		cells = {c},
-                   %  row{1}={dorado},
 		row{2} = {j},
 		hlines,
 		vlines,
@@ -250,7 +248,6 @@ headheight = 28mm
 
 %%%TABLAS DE ALTAS BAJAS Y CAMBIOS
 %%%PARA ALTAS
-
 \newboolean{altasinter}
 \setboolean{altasinter}{\ALTASINTER} 
 \newboolean{altasadmin}
@@ -280,8 +277,7 @@ headheight = 28mm
 \setboolean{inter}{\INTERBOOL} 
 \ifthenelse{\boolean{inter}}
 {
-%%ALTASINTERSISTEMAS
-
+%%ALTASINTERSISTEMAS ENCABEZADO
 \ifthenelse{\boolean{altasinter}}
 {
 \vspace{-25pt}
@@ -290,32 +286,22 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
+		colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},
 		cells = {c},
-                   %   row{1}={dorado},                     
+                   %   row{1}={dorado},       
+		cell{1}{1}={c=9}{0.978\linewidth},          
+		cell{2}{1}={c=9}{0.978\linewidth},        
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección A.- Comunicación intersistemas
+	\textbf{ALTAS} \\Sección A.- Comunicación intersistemas\\
+	\textbf{No°}&\textbf {Sistema Origen}&\textbf{Función o rol de \\dipositivo(s) \\origen}&
+	\textbf{IP/NAT dispositivo(s) \\origen}&\textbf{Sistema\\ Destino} &
+	\textbf{Función o rol de \\dispositivo(s) \\destino}&\textbf{IP/NAT dispositivo(s) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},                     
-  hlines,
-  vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Sistema Origen}&\textbf{Función o rol de \\dipositivo(s) \\origen}&
-\textbf{IP/NAT dispositivo(s) \\origen}&\textbf{Sistema\\ Destino} &
-\textbf{Función o rol de \\dispositivo(s) \\destino}&\textbf{IP/NAT dispositivo(s) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%INTERSISTEMAS
+
+%ALTASINTERSISTEMAS CONTENIDO DE TABLA
 \DTLforeach*{ALTASINTER}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -328,6 +314,7 @@ headheight = 28mm
   hlines,
   vlines,
                      cells={c},
+	%rowhead = 1,
  }
 \No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
@@ -344,9 +331,7 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		%colspec = {Q[935]},
 		cells = {c},
-                  %    row{1}={dorado},
 		row{2} = {},
 		hlines,
 		vlines,
@@ -356,7 +341,7 @@ headheight = 28mm
 }%%%TEMPORALIDAD
 
 %%%%%%%%
-%%BAJAS INTERSISTEMAS
+%%BAJAS INTERSISTEMAS ENCABEZADO
 \ifthenelse{\boolean{bajasinter}}
 {
 \vspace{-25pt}
@@ -365,32 +350,21 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
+		colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},
+		cells = {c},		
+		cell{1}{1}={c=9}{0.978\linewidth},          
+		cell{2}{1}={c=9}{0.978\linewidth},    
                  %     row{1}={dorado},
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas
+	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas\\
+	\textbf{No°}&\textbf {Sistema\\ Origen}&\textbf{Función o rol de \\dipositivo(s) \\origen}&
+	\textbf{IP/NAT dispositivo(s) \\origen}&\textbf{Sistema\\ Destino} &
+	\textbf{Función o rol de \\dispositivo(s) \\destino}&\textbf{IP/NAT dispositivo(s) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%BAJASintersistemas
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[0.7]Q[1.15]Q[1.85]Q[0.7]Q[1.15]Q[1.85]Q[1]Q[0.7]},                     
-  hlines,
- vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Sistema\\ Origen}&\textbf{Función o rol de \\dipositivo(s) \\origen}&
-\textbf{IP/NAT dispositivo(s) \\origen}&\textbf{Sistema\\ Destino} &
-\textbf{Función o rol de \\dispositivo(s) \\destino}&\textbf{IP/NAT dispositivo(s) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%INTERSISTEMAS
+%%BAJASINTERSISTEMAS CONTENIDO DE TABLA
 \DTLforeach*{BAJASINTER}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -416,42 +390,32 @@ headheight = 28mm
 \setboolean{admin}{\ADMINBOOL} 
 \ifthenelse{\boolean{admin}}
 {
-%%ALTASADMIN
-
+%%ALTASADMIN ENCABEZADO
 \ifthenelse{\boolean{altasadmin}}
 {
+\setboolean{haytemporal}{\HAYTEMPORALADMIN} 
 \vspace{-25pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
+		cells = {c},	
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
                 %      row{1}={dorado},
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección B.- Accesos administrativos
+	\textbf{ALTAS} \\Sección B.- Accesos administrativos\\
+	\textbf{No°}&\textbf {Nombre(s) de \\ administrador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
+	\textbf{Sistema asociado a \\ anfitrión(es) destino}&
+	\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
-  hlines,
- vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Nombre(s) de \\ administrador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
-\textbf{Sistema asociado a \\ anfitrión(es) destino}&
-\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%ADMINISTRATIVOS
+
+% ALTAS ADMINISTRATIVOS CONTENIDO DE LA TABLA
 \DTLforeach*{ALTASADMIN}{\No=N, \NombreAdmin=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -470,7 +434,7 @@ headheight = 28mm
 }
 } 
 %%%%TEMPORALIDADES ADMIN
-\setboolean{haytemporal}{\HAYTEMPORALADMIN} 
+
 \ifthenelse{\boolean{haytemporal}}
 {
 \vspace{-20pt}
@@ -479,18 +443,16 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		%colspec = {Q[935]},
 		cells = {c},
-                   %   row{1}={dorado},
 		row{2} = {},
 		hlines,
 		vlines,
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOADMIN
 \end{longtblr}
-}%%TEMPORALIDADES 
+}%%TEMPORALID ADMIN
 
-%%BAJASADMIN
+%%BAJASADMIN ENCABEZADO
 \ifthenelse{\boolean{bajasadmin}}
 {
 \vspace{-25pt}
@@ -499,32 +461,22 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
 		cells = {c},
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
                %       row{1}={dorado},
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección B.- Accesos administrativos
+	\textbf{BAJAS} \\Sección B.- Accesos administrativos\\
+	\textbf{No°}&\textbf {Nombre(s) de \\ administrador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
+	\textbf{Sistema asociado a \\ anfitrión(es) destino}&
+	\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
-  hlines,
- vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Nombre(s) de \\ administrador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
-\textbf{Sistema asociado a \\ anfitrión(es) destino}&
-\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%ADMINISTRATIVOS
+
+%% BAJAS ADMIN CONTENIDO DE LA TABLA
 \DTLforeach*{BAJASADMIN}{\No=N, \NombreAdmin=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -550,8 +502,7 @@ headheight = 28mm
 \setboolean{des}{\DESBOOL} 
 \ifthenelse{\boolean{des}}
 {
-%%ALTASDES
-
+%%ALTASDES ENCABEZADO
 \ifthenelse{\boolean{altasdes}}
 {
 \vspace{-25pt}
@@ -560,32 +511,21 @@ headheight = 28mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
-                %      row{1}={dorado},
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
+		cells = {c},	
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección C.- Accesos de desarrollador
+	\textbf{ALTAS} \\Sección C.- Accesos de desarrollador\\
+	\textbf{No°}&\textbf {Nombre(s) de \\ desarrollador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
+	\textbf{Sistema asociado a \\ anfitrión(es) destino}&
+	\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
-  hlines,
- vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Nombre(s) de \\ desarrollador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
-\textbf{Sistema asociado a \\ anfitrión(es) destino}&
-\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%DESARROLLADORES
+
+% ALTASDESARROLLADORES CONTENIDO DE LA TABLA
 \DTLforeach*{ALTASDES}{\No=N, \NombreDes=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -626,7 +566,7 @@ vlines,
 \end{longtblr}
 } %TEMPORALIDAD 
 
-%%BAJAS DES
+%%BAJAS DES ENCABEZADO
 \ifthenelse{\boolean{bajasdes}}
 {
 \vspace{-25pt}
@@ -635,32 +575,21 @@ vlines,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
 		cells = {c},
-                %      row{1}={dorado},
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador
+	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador\\
+	\textbf{No°}&\textbf {Nombre(s) de \\ desarrollador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
+	\textbf{Sistema asociado a \\ anfitrión(es) destino}&
+	\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
-  hlines,
-  vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Nombre(s) de \\ desarrollador\\(es)}&\textbf{IP anfitrión(es) \\origen}&
-\textbf{Sistema asociado a \\ anfitrión(es) destino}&
-\textbf{Función o rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%DESARROLLADORES
+
+% BAJAS DESARROLLADORES CONTENIDO DE LA TABLA
 \DTLforeach*{BAJASDES}{\No=N, \NombreDes=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -686,7 +615,7 @@ vlines,
 \setboolean{usua}{\USUABOOL} 
 \ifthenelse{\boolean{usua}}
 {
-%%ALTAS USUA
+%%ALTAS USUA ENCABEZADO
 \ifthenelse{\boolean{altasusua}}
 {
 \vspace{-25pt}
@@ -695,33 +624,21 @@ vlines,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
 		cells = {c},
-                %      row{1}={dorado},
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección D.- Accesos de usuario
-\end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
-  hlines,
- vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s)\\zona(s)\\origen}&\textbf{Segmento(s)/IP(s) \\origen}&
-\textbf{Sistema asociado a \\ anfitrión(es) destino}&
-\textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
+	\textbf{ALTAS} \\Sección D.- Accesos de usuario\\
+	\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s)\\zona(s)\\origen}&\textbf{Segmento(s)/IP(s) \\origen}&
+	\textbf{Sistema asociado a \\ anfitrión(es) destino}&
+	\textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
 
-%%%%USUARIO
+%ALTASUSUARIO CONTENIDO DE LA TABLA
 \DTLforeach*{ALTASUSUA}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -758,10 +675,10 @@ vlines,
 		vlines,
 	}
 	\textbf{Temporalidad de los cambios} \\ \TEMPOUSUA
-\end{longtblr}%%fin de tempo usua
+\end{longtblr}
 } %% TEMPORAL
 
-%%BAJASUSUA
+%%BAJASUSUA ENCABEZADO
 \ifthenelse{\boolean{bajasusua}}
 {
 \vspace{-25pt}
@@ -770,32 +687,21 @@ vlines,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
 		cells = {c},
-               %       row{1}={dorado},
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección D.- Accesos de usuarios
+	\textbf{BAJAS} \\Sección D.- Accesos de usuarios\\
+	\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s)\\zona(s)\\origen}&\textbf{Segmento(s)/IP(s) \\origen}&
+	\textbf{Sistema asociado a \\ anfitrión(es) destino}&
+	\textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
 \end{longtblr}
-%%%PARA PODER ALMACENAR TODAS LAS FILAS DEL DOCUMENTOS CSV ES NECESARIO TODO ESTO
-\vspace{-30pt}
- \begin{longtblr}[
- label = none,
- entry = none,
- ]{
-  width = \linewidth,
-  colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
-  hlines,
-  vlines,
-                     cells={c},
- }
-\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s)\\zona(s)\\origen}&\textbf{Segmento(s)/IP(s) \\origen}&
-\textbf{Sistema asociado a \\ anfitrión(es) destino}&
-\textbf{Rol de \\anfitrión(es) \\destino}&\textbf{IP/NAT anfitrión(es) \\destino}&
-\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
-\end{longtblr}
-%%%%USUARIO
+
+%BAJASUSUARIO CONTENIDO DE LA TABLA
 \DTLforeach*{BAJASUSUA}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
@@ -815,11 +721,7 @@ vlines,
 }
 }%%FIN DE USUARIOS
 
-
-%\end{landscape}
 \clearpage
-
-
 %%%..... POLÍTICAS
 \textbf{\large Términos y Condiciones del servicio:}
 { \small \begin{enumerate}
