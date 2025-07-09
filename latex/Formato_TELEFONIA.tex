@@ -37,6 +37,13 @@ headheight = 30mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
+%OJO con esta línea
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
 
 % *** Fecha ***
 %\usepackage[useregional]{datetime2}

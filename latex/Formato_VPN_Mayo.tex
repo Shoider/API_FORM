@@ -43,6 +43,14 @@ headheight = 28mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
+%OJO con esta línea
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
+
 %No cortar palabras
 \usepackage[none]{hyphenat}
 
@@ -286,7 +294,7 @@ Número de teléfono o extensión:&\EXTEMPLEADO
 
 \ifthenelse{\boolean{casoespecialgrupal}}{
 \textbf{2.Servicios solicitados}\\
-\textbf{a) Acceso a sitios Web o Equipo}
+\textbf{~~a) Acceso a sitios Web o Equipo}
 %\vspace{-15pt}
 \vspace{-15pt}
 \begin{longtblr}[
@@ -297,7 +305,7 @@ Número de teléfono o extensión:&\EXTEMPLEADO
 		colspec = {Q[0.3]Q[3]Q[2]Q[3]Q[1.7]},
 		cell{1}{1} = {c=5}{0.874\linewidth},
 		row{2}={c},
-		cell{1}{1}={c},
+		cell{1}{1}={c},		
 		hlines,
 		vlines,
 	}
