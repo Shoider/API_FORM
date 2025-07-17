@@ -681,6 +681,9 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\CORREOEMPLEADO}{"+ datosRegistro.get('correoEmpleado', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoEmpleado', ' ') + "}"+ os.linesep)
 
+                    file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ') + "}"+ os.linesep)
+
+
                     file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\SICELULAR}{" + siCelular + "}" + os.linesep)
@@ -697,7 +700,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MARCA}{" + datosRegistro.get('marca', ' ') + "}" + os.linesep)
                     file.write("\\newcommand{\\MODELO}{" + datosRegistro.get('modelo', ' ') + "}" + os.linesep)
                     file.write("\\newcommand{\\SERIE}{" + datosRegistro.get('serie', ' ') + "}" + os.linesep)
-                    file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
+                    #file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
 
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 
