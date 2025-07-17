@@ -12,6 +12,8 @@
 \usepackage{datatool}
 \DTLloaddb{SITIOSWEB}{SITIOSWEB.csv}
 \DTLloaddb{REMOTOESC}{REMOTOESC.csv}
+\DTLloaddb{PERSONAL}{PERSONAL.csv}
+\DTLloaddb{SITIOSWEBCE}{SITIOSWEBCE.csv}
 
 % *** Idioma ***
 \usepackage[spanish]{babel}
@@ -41,6 +43,14 @@ headheight = 28mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
+%OJO con esta línea
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
+
 %No cortar palabras
 \usepackage[none]{hyphenat}
 
@@ -86,7 +96,56 @@ headheight = 28mm
 
 \begin{document}
 \sloppy
+
+\newboolean{casoespecialgrupal}
+\setboolean{casoespecialgrupal}{\CASOESPECIALGRUPAL}
+
+
+
+
 %\vspace{-15pt}
+\ifthenelse{\boolean{casoespecialgrupal}}{ 
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[200]Q[170]Q[80]},
+		column{1} = {l},
+		column{2} = {c},
+		column{3} = {l},
+		column{4} = {c},
+		hlines,
+		vlines,
+	}
+	Número de memorando:  &   \NOMEMO   & Fecha de la solicitud:   & \FECHA
+\end{longtblr}
+\textbf{1. Datos de identificación del área solicitante}
+\vspace{-15pt}
+
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[200]Q[300]},
+                     column{1}={r},
+                     column{2}={l},
+                      row{4} = {c},
+		cell{4}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+Unidad Administrativa:                     &  \UA \\
+Área de adscripción: &   \AREA  \\
+Subgerencia o Subdirección:   & \SUBGERENCIA     \\
+\textbf{Datos de la persona responsable en la CONAGUA de la relación de personal externo} &    \\
+Nombre Completo:   & \NOMBREENLACE     \\
+Puesto o cargo: & \PUESTOENLACE \\
+Número de teléfono y/o extensión: & \EXTENLACE 
+\end{longtblr}
+%INICIA DE SI NO ES DE SISTEMAS
+}{
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -125,13 +184,51 @@ Subgerencia o Subdirección:   & \SUBGERENCIA     \\
 Nombre Completo:   & \NOMBREENLACE     \\
 Número de teléfono y/o extensión: & \EXTENLACE 
 \end{longtblr}
+}%CASO ESPECIAL TERMINADO PRIMERA PARTE
 
-\textbf{2. Datos de identificación del usuario solicitante}
 
-\vspace{-15pt}
-
+%%DESAPARECE PUNTO 2 DE IDENTIFICACIÓN DEL USUARIO SOLICITANTE PARA SISTEMAS
 \newboolean{conagua}
 \setboolean{conagua}{\CONAGUA}
+\ifthenelse{\boolean{casoespecialgrupal}}{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[0.3]Q[2.5]Q[3]Q[3]Q[0.7]Q[0.5]},
+		cell{1}{1} = {c=6}{0.874\linewidth},
+		row{2}={c},
+		cell{1}{1}={c},
+		hlines,
+		vlines,
+	}
+{\textbf {Relación de Personal Externo}&&&&&}\\
+IDU&Nombre Completo&Correo Electrónico& Nombre de la Empresa& {Equipo\\/Rol} &{\# Servi\_\\cios}
+\end{longtblr}
+
+%%%%PERSONAL
+\DTLforeach*{PERSONAL}{\IDU=IDU, \NOMBRE=NOMBRE, \CORREO=CORREO, \EMPRESA=EMPRESA, \EQUIPO=EQUIPO, \SERVICIOS=SERVICIOS}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  		width = \linewidth,
+		colspec = {Q[0.3]Q[2.5]Q[3]Q[3]Q[0.7]Q[0.5]},
+		hlines,
+ 		vlines,
+                     cells={c},
+ }
+\IDU&\NOMBRE&\CORREO&\EMPRESA&\EQUIPO& \SERVICIOS
+\end{longtblr}
+}
+
+}{
+\textbf{2. Datos de identificación del usuario solicitante}
+\vspace{-15pt}
 \ifthenelse{\boolean{conagua}}
 {
 \begin{longtblr}[
@@ -183,7 +280,60 @@ Unidad Administrativa:&\UAEMPLEADO\\
 Número de teléfono o extensión:&\EXTEMPLEADO
 \end{longtblr}
 }
+}%%FIN DE NO SISTEMAS, PARTE 2.
 
+
+
+%%CASO ESPECIAL QUITA ESTA PARTE 3
+\newboolean{cuentausuario}
+\setboolean{cuentausuario}{\CUENTAUSUARIO}
+\newboolean{accesoweb}
+\setboolean{accesoweb}{\ACCESOWEB}
+\newboolean{accesoremoto}
+\setboolean{accesoremoto}{\ACCESOREMOTO}
+
+\ifthenelse{\boolean{casoespecialgrupal}}{
+\textbf{2.Servicios solicitados}\\
+\textbf{~~a) Acceso a sitios Web o Equipo}
+%\vspace{-15pt}
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[0.3]Q[3]Q[2]Q[3]Q[1.7]},
+		cell{1}{1} = {c=5}{0.874\linewidth},
+		row{2}={c},
+		cell{1}{1}={c},		
+		hlines,
+		vlines,
+	}
+{\textbf {Acceso a sitios Web o Equipo}&&&&}\\
+IDU&Nombre Sistema/Servicio&Sigla& URL/IP Equipo&Puerto o Servicio
+\end{longtblr}
+
+%%%%
+\DTLforeach*{SITIOSWEBCE}{\IDU=IDU, \NOMBRE=NOMBRE, \SIGLAS=SIGLAS, \URL=URL, \PUERTOS=PUERTOS}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  		width = \linewidth,
+		colspec = {Q[0.3]Q[3]Q[2]Q[3]Q[1.7]},
+		hlines,
+ 		vlines,
+                     cells={c},
+ }
+\IDU&\NOMBRE&\SIGLAS&\URL& \PUERTOS
+\end{longtblr}
+}
+
+
+
+}{
 \textbf{3.Servicios solicitados}
 
 \vspace{-15pt}
@@ -209,8 +359,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 
 \end{longtblr}
 
-\newboolean{cuentausuario}
-\setboolean{cuentausuario}{\CUENTAUSUARIO}
+
 \ifthenelse{\boolean{cuentausuario}}
 {
 \textbf{a)Cuenta de usuario}
@@ -229,8 +378,7 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 }
 
 %%%%tablas de acceso web
-\newboolean{accesoweb}
-\setboolean{accesoweb}{\ACCESOWEB}
+
 \ifthenelse{\boolean{accesoweb}}
 {
 \ifthenelse{\boolean{conagua}}
@@ -285,14 +433,13 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 }
 }
 
-\newboolean{accesoremoto}
-\setboolean{accesoremoto}{\ACCESOREMOTO}
+
 \ifthenelse{\boolean{accesoremoto}}
 {
 \ifthenelse{\boolean{conagua}}{.}
 {\ifthenelse{\boolean{accesoweb}}{:}{\clearpage}}
 
-
+%%tavka de acceso remoto
 \textbf{c)Acceso a escritorios remoto}
 %%%%%%%
 %%%%ACCESOS A SITIOS
@@ -345,40 +492,74 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 \end{longtblr}
 }
 }
+}%%%conidicion de no sistemas terminado
 
-\vspace{-15pt}
-\begin{longtblr}[
+%\vspace{-15pt}
+~ \\
+\begin{tblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[935]},
+		colspec = {Q[1]},
 		cells = {c},
 		row{2} = {},
 		hlines,
 		vlines,
 	}
 	\textbf{Justificación de la necesidad del servicio} \\\JUSTIFICACION
-\end{longtblr}
+\end{tblr}
 \clearpage
 %%%%TERMINOS Y CONDICIONES
-\textbf{ \large Términos y condiciones del servicio:}
+\textbf{ \large Políticas y Lineamientos:}
 {  \footnotesize\begin{enumerate}
-	\item El usuario solicitante puede tramitar este formato las veces que sea necesario, según sus necesidades. Los servicios solicitados son acumulados a los existentes. Es responsabilidad del solicitante, indicar correctamente el movimiento (A, B, C) de los servicios especificados tomando en cuenta su historial de solicitudes.
-	\item El Enlace Informático de la unidad administrativa solicitante, será quien gestione y de seguimiento a la solicitud de servicios de Red Privada Virtual (VPN) del personal de su unidad. 
-	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad única y exclusivamente proveerá el servicio de acceso remoto por VPN al usuario solicitante autorizado por el titular de su unidad administrativa previa presentación del formato debidamente llenado.
-	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad, le proveerá al usuario autorizado la credencial de acceso, manual de instalación y configuración del software de cliente de VPN de usuario mediante correo electrónico personalizado.
-	\item El acceso a los servicios de red interna mediante el servicio de VPN, será con el uso de una contraseña que cumpla con la política correspondiente y el envío por correo electrónico al usuario de una clave de 6 dígitos como doble factor de autenticación. Es responsabilidad única y exclusiva del usuario autorizado a conservar en secreto, no proporcionar a terceros su contraseña y no permitir el acceso a su cuenta de correo electrónico para la obtención de la clave de 6 dígitos a terceros.
-	\item Posterior al proceso de autorización de acceso al usuario y ya establecido el túnel de VPN, solo el tráfico que se identifique que tiene como destino la red interna de la CONAGUA cursará por el túnel de VPN, el resto del tráfico del equipo origen del usuario seguirá las rutas que tenga definidas en su configuración para acceder a otros recursos de red.
-	\item El servicio de VPN, solo permitirá por cada usuario, una conexión desde un dispositivo remoto, por lo que no será posible tener 2 o más conexiones simultáneas para una misma cuenta.
-	\item La sesión establecida será automáticamente cerrada transcurridos 10 minutos de inactividad. El usuario deberá repetir el proceso de inicio de sesión para conectarse a la red de la CONAGUA. Está prohibido usar cualquier proceso o software para mantener la sesión activa.
-	\item El usuario autorizado de VPN acepta que al hacer uso del servicio de VPN mediante cualquier tipo de conexión, es de su exclusiva responsabilidad el costo que ello genere.
-           \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren actualizados. En el caso de equipo personal, es responsabilidad del usuario autorizado ejecutar y mantener actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de aplicaciones y exploradores entre otros que ofrezca el sistema operativo o sean instalados de manera independiente.
-            \item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en materia de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
-
+	\item La persona responsable en la CONAGUA es responsable de hacer del 
+              conocimiento al personal externo las políticas y lineamientos que se detallan a continuación:
+	\item El usuario solicitante puede tramitar este formato las veces que sea 
+              necesario, según sus necesidades. Los servicios solicitados son \textbf {acumulados 
+              a los existentes}. Es responsabilidad del solicitante, indicar correctamente 
+              el movimiento (A, B, C) de los servicios especificados tomando en cuenta su 
+              historial de solicitudes.
+	\item El Enlace Informático de la unidad administrativa solicitante, será quien 
+              gestione y de seguimiento a la solicitud de servicios de Red Privada Virtual 
+              (VPN) del personal de su unidad.
+	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad única y 
+              exclusivamente proveerá el servicio de acceso remoto por VPN al usuario solicitante 
+              autorizado por el titular de su unidad administrativa previa presentación del formato 
+              debidamente llenado.
+	\item La Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad, le proveerá al 
+              usuario autorizado la credencial de acceso, manual de instalación y configuración del 
+              software de cliente de VPN de usuario mediante correo electrónico personalizado.
+	\item El acceso a los servicios de red interna mediante el servicio de VPN, será con el 
+              uso de una contraseña que cumpla con la política correspondiente y el envío por correo 
+              electrónico al usuario de una clave de 6 dígitos como doble factor de autenticación. 
+              Es responsabilidad única y exclusiva del usuario autorizado a conservar en secreto, no 
+              proporcionar a terceros su contraseña y no permitir el acceso a su cuenta de correo electrónico 
+              para la obtención de la clave de 6 dígitos a terceros.
+	\item Posterior al proceso de autorización de acceso al usuario y ya establecido el túnel de VPN, 
+              solo el tráfico que se identifique que tiene como destino la red interna de la CONAGUA cursará 
+              por el túnel de VPN, el resto del tráfico del equipo origen del usuario seguirá las rutas que tenga 
+              definidas en su configuración para acceder a otros recursos de red.
+	\item El servicio de VPN, solo permitirá por cada usuario, una conexión desde un dispositivo remoto,
+               por lo que no será posible tener 2 o más conexiones simultáneas para una misma cuenta.
+	\item  La sesión establecida será automáticamente cerrada transcurridos 10 minutos de inactividad. 
+              El usuario deberá repetir el proceso de inicio de sesión para conectarse a la red de la CONAGUA. 
+              Está prohibido usar cualquier proceso o software para mantener la sesión activa.
+           \item El usuario autorizado de VPN acepta que al hacer uso del servicio de VPN mediante cualquier 
+              tipo de conexión, es de su exclusiva responsabilidad el costo que ello genere.
+            \item El equipo proporcionado por la CONAGUA ya cuenta con los elementos de seguridad necesarios para 
+              operar dentro de la red interna (actualizaciones del sistema operativo, actualizaciones de aplicaciones, 
+              software antimalware), pero es obligación del usuario autorizado verificar que estos elementos se encuentren 
+              actualizados. En el caso de equipo personal, es responsabilidad del usuario autorizado ejecutar y mantener 
+              actualizado el sistema operativo, las aplicaciones instaladas y tener activos los elementos de seguridad como: 
+              Antivirus/Antimalware, corta fuego o firewall, protección de cuentas, seguridad del dispositivo, control de 
+              aplicaciones y exploradores entre otros que ofrezca el sistema ope-rativo o sean instalados de manera 				independiente.
+	\item Si el usuario autorizado hace uso de su equipo personal para acceder a los servicios de la red interna de 
+              la CONAGUA mediante el uso de los servicios de VPN, acepta conocer y cumplir con las políticas, normas y disposiciones en materia de seguridad de la información que aplican para los equipos que proporciona la CONAGUA.
 \end{enumerate}}
 
-
+\newboolean{sistemas}
+\setboolean{sistemas}{\SISTEMAS}
 \newboolean{otra}
 \setboolean{otra}{\OTRA}
 \ifthenelse{\boolean{otra}}
@@ -396,9 +577,9 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 			colspec = {Q[200]Q[200]Q[200]},
                                 row{1}={c},
 		}                                                                                            
-		{ Acepto los Términos y Condiciones \\de Uso del Servicio\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO} & 
-                   { Autoriza Servicios\\~\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE\\  \PUESTOJEFE} &
-                   { Servidor Público Responsable en CONAGUA\\[1.5cm] \rule{5cm}{0.5mm}\\  \NOMBREEMPLEADO\\  \PUESTOEMPLEADO}
+		{ Acepto las Políticas y Lineamientos\\[1.3cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO} & 
+                   { Autoriza Servicios\\~\\[1.3cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE\\  \PUESTOJEFE} &
+                   { Servidor Público Responsable en CONAGUA\\[1.3cm] \rule{5cm}{0.5mm}\\  \NOMBREEMPLEADO\\  \PUESTOEMPLEADO}
 	\end{longtblr}
 }
 {
@@ -411,16 +592,15 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 			colspec = {Q[200]Q[200]Q[200]},
                                 row{1}={c},
 		}                                                                                            
-		{ Acepto los Términos y Condiciones\\de Uso del Servicio\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO} & 
-                   { Autoriza Servicios\\~\\[1.5cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE\\  \PUESTOJEFE} 
+		{ Acepto las Políticas y Lineamientos\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO} & 
+                   { Autoriza Servicios\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE\\  \PUESTOJEFE} 
 	\end{longtblr}
 }
 }
 
-\newboolean{sistemas}
-\setboolean{sistemas}{\SISTEMAS}
 \ifthenelse{\boolean{sistemas}}
 {
+\ifthenelse{\boolean{casoespecialgrupal}}{
 %\ul{\textbf {Formalización exclusiva para personal externo de la Subgerencia de Sistemas}}
 \begin{longtblr}[
 	label = none,
@@ -430,10 +610,26 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
 			colspec = {Q[200]Q[200]Q[200]},
                                 row{1}={c},
 		}                                                                                            
-		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBREUSUARIO\\  \PUESTOUSUARIO} & 
+		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBREENLACE\\  \PUESTOENLACE} & 
                    { Autoriza Servicios\\[1cm] \rule{5cm}{0.5mm}\\  M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
 	\end{longtblr}
+}{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+                                row{1}={c},
+		}                                                                                            
+		{Servidor Público Responsable en CONAGUA\\[1cm] \rule{5cm}{0.5mm}\\  \NOMBRECONAGUA\\  \PUESTOCONAGUA} & 
+                   { Autoriza Servicios\\[1cm] \rule{5cm}{0.5mm}\\  M. en C. Juan Carlos Manríquez Chacón\\Subgerente de Sistemas}
+	\end{longtblr}
+
 }
+}
+
+\vspace{-15pt}
 
 {\tiny {\textbf{\\Nota:}} El memorando se debe dirigir al Titular de la Gerencia de Tecnología de la Información y Comunicaciones con copia al Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad. En caso de no recibir el memorando y esta solicitud en original en un lapso de 15 días hábiles para los Organismos de Cuenca o Direcciones Locales; o en un lapso no mayor a 3 días hábiles para otras unidades administrativas, se deshabilitará la cuenta del usuario y solo será reactivada hasta la recepción de ambos documentos.}
 

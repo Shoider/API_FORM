@@ -37,6 +37,13 @@ headheight = 30mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
+%OJO con esta línea
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
 
 % *** Fecha ***
 %\usepackage[useregional]{datetime2}
@@ -70,7 +77,7 @@ headheight = 30mm
                       hlines,
 	}
 	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{COMISIÓN NACIONAL DEL AGUA}\\Gerencia de Tecnologías de Información y Comunicaciones.\\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \footnotesize Página    & {\footnotesize \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \footnotesize VERSIÓN   & \footnotesize 5.1 \\
+	&                                                                                       & \footnotesize VERSIÓN   & \footnotesize Pendiente \\
 	&                                                                                       & \footnotesize FECHA & {\footnotesize  Mayo-2025 }    \\
 	& {\textbf{ Solicitud de servicios de telefonía.}\\\textbf{(Alta, Baja, Cambio)}}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
@@ -80,7 +87,7 @@ headheight = 30mm
 
 % *** Pie de Pagina
 %\renewcommand{\footrulewidth}{0.5pt}
-\lfoot{\tiny Notas: a) La información de este documento implica conocer y acepatr la normatividad vigente, así como el compromiso de uso ético y racional de los servicios asignados. b)En caso de impresiones en hojas separadas, todas deben venir rubrica. }
+\lfoot{\tiny Notas: a) La información de este documento implica conocer y aceptar la normatividad vigente, así como el compromiso de uso ético y racional de los servicios asignados. b)En caso de impresiones en hojas separadas, todas deben venir rubrica. }
 \cfoot{}
 %\rfoot{}
 
@@ -112,7 +119,7 @@ headheight = 30mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[5]Q[5]},
+		colspec = {Q[30]Q[70]},
                      %row{1}={dorado},   
 		column{1}={r},
 		column{2}={l},    
@@ -139,7 +146,7 @@ Unidad Aministrativa:           &\UAUSUARIO
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[5]Q[5]},
+		colspec = {Q[30]Q[70]},
 		column{1}={r},
 		column{2}={l},
 		row{1} = {c},
@@ -154,7 +161,7 @@ Unidad Aministrativa:           &\UAUSUARIO
 Nombre:                     &  \NOMBREEMPLEADO \\
 Número de empleado:&\IDEMPLEADO \\
 Correo: & \CORREOEMPLEADO \\
-Telefóno/Ext: & \EXTEMPLEADO  \\
+Teléfono/Ext: & \EXTEMPLEADO  \\
 Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
@@ -178,9 +185,9 @@ Puesto:           &\PUESTOEMPLEADO
 		hlines,
 		vlines,
 	}
-\textbf{Caracteristicas del Servicio Solicitado}         \\
+\textbf{Características del Servicio Solicitado}         \\
 \textbf{Servicio Interno:}       &  Si (X)~ No(~ )  & \textbf{\textbf{Servicio Celular Local y Foráneo:}}                           & Si (\SICELULAR )~ No(\NOCELULAR ) \\
-	\textbf{Servcio Larga Distancia Nacional:}      &  Si (\SINACIONAL )~ No(\NONACIONAL)  &\textbf {Servicio Larga Dsitancia Internacional:}    & Si (\SIMUNDO )~ No(\NOMUNDO ) 
+	\textbf{Servicio Larga Distancia Nacional:}      &  Si (\SINACIONAL )~ No(\NONACIONAL)  &\textbf {Servicio Larga Distancia Internacional:}    & Si (\SIMUNDO )~ No(\NOMUNDO ) 
 	
 \end{longtblr}
 \vspace{-25pt}
@@ -189,21 +196,21 @@ Puesto:           &\PUESTOEMPLEADO
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[50]Q[50]Q[50]Q[50]Q[50]},
+		colspec = {Q[33.33]Q[33.33]Q[33.33]},
 		row{1} = {c},
                      row{2}={c},
                      row{3}={c},
                      %row{1}={dorado},
-                     cell{1}{1} = {c=5}{},		
+                     cell{1}{1} = {c=3}{},		
 		hlines,
 		vlines,
 	}
-\textbf{Caracteristicas del Equipo donde se configura la cuenta de Red}         \\
- \textbf {Tipo Equipo}&\textbf {Marca}&\textbf {Modelo}&\textbf {Serie}&\textbf {Versión de sistema operativo}\\
-TELÉFONO&\MARCA&\MODELO&\SERIE&\VERSION
+\textbf{Características del Equipo donde se configura la cuenta de Red}         \\
+\textbf {Marca}&\textbf {Modelo}&\textbf {Serie}\\
+\MARCA&\MODELO&\SERIE
 \end{longtblr}
 
-\vspace{-30pt}
+\vspace{-25pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -220,14 +227,24 @@ TELÉFONO&\MARCA&\MODELO&\SERIE&\VERSION
 \end{longtblr}
 \clearpage
 %\vspace{-20pt}
-\textbf{Términos y Condiciones del servicio:}
-PENDIENTES
+\textbf{\small Políticas y lineamientos:}
+{  \small\begin{enumerate}
+\item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedida de las configuraciones solicitadas
+\item El solicitante deberá presentar este formato adjuntando el memorando, sin los cuales no se podrá atender su solicitud
+\item El solicitante deberá agregar en la Justificación si la solicitud ser deriva de un cambio de lugar (oficina, mampara o piso) del usuario que a su vez haya derivado en un cambio de equipo o de servicios de telefonía
+\item A todo solicitante que llene la solicitud se le otorga el acceso a “Servicio Interno” sin necesidad de marcar la casilla
+\item El solicitante deberá conservar el acuse o copia del formato firmado y sellado, así como el memorando asociado, para posteriores aclaraciones. 
+\item Al firmar el usuario se da por enterado de las políticas y lineamientos y acepta la responsabilidad de cualquier uso inadecuado que se le dé a los privilegios de acceso los cuales se haya solicitado
+\item Al firmar el Gerente, Subgerente o Director Local que autoriza se da por enterado de las políticas y lineamientos y acepta la corresponsabilidad del uso que el usuario que le dé el usuario al acceso otorgado.
+
+\end{enumerate}}
+\vspace{250pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 			width = \linewidth,
-			colspec = {Q[400]Q[400]},
+			colspec = {Q[200]Q[200]Q[200]},
 			%row{1} = {gris},
 			row{1} = {c},
 			%cell{1}{1} = {c=2}{0.874\linewidth},
@@ -235,10 +252,12 @@ PENDIENTES
 			%vlines,
 		}
 	%	Nombres Cargos y Firmas                      &                                                                                                       \\
-		{Usuario(a) del servicio\\{ \tiny He leído y acepto la normatividad vigente}
-                      \\[0.5cm] \rule{6cm}{0.5mm}\\\NOMBREUSUARIO\\\PUESTOUSUARIO} & 
-                      {Autoriza \\{ \tiny  \PUESTOJEFE}
-                      \\[0.5cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} 
+		{Firma
+                      \\[1cm] \rule{5cm}{0.5mm}\\\NOMBREUSUARIO\\\PUESTOUSUARIO} & 
+                      {Firma
+                      \\[1cm] \rule{5cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} &
+		{Firma
+		\\[1cm] \rule{5cm}{0.5mm}\\\NOMBREENLACE\\ Enlace Administrativo} 
 \end{longtblr}
 
 \end{document}

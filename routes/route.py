@@ -201,6 +201,7 @@ class FileGeneratorRoute(Blueprint):
 
             columnas = ['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo']
             for registro in registros:
+                registro.pop('isNew', None)
                 for col in columnas:
                     registro.setdefault(col, "")
 
@@ -246,6 +247,66 @@ class FileGeneratorRoute(Blueprint):
 
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}") 
+
+    def crear_csv_VPN_WebCE(self, temp_dir, nombre_archivo_csv, registros):        
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+            columnas = ['IDU', 'NOMBRE', 'SIGLAS', 'URL', 'PUERTOS']
+            for registro in registros:
+                registro.pop('isNew', None)
+                for col in columnas:
+                    registro.setdefault(col, "")
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=columnas)
+            else:
+                df = pd.DataFrame(registros)
+            
+
+            df = pd.DataFrame(registros)
+            #df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
+             
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}") 
+
+    def crear_csv_VPN_Personal(self, temp_dir, nombre_archivo_csv, registros):        
+        try:
+            out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
+            columnas = ['id', 'NOMBRE', 'CORREO', 'EMPRESA', 'EQUIPO', 'SERVICIOS']
+            for registro in registros:
+                registro.pop('isNew', None)
+                for col in columnas:
+                    registro.setdefault(col, "")
+
+            if not registros:
+                df = pd.DataFrame([{}], columns=columnas)
+            else:
+                df = pd.DataFrame(registros)
+            
+            for registro in registros:
+                registro.pop('isNew', None)
+                if "CORREO" in registro:
+                    #Agrega un salto de línea en cada renglón
+                    #Para CORREO
+                    sistema=registro["CORREO"]
+                    sistema_modificado = '\\\\'.join([sistema[i:i+20] for i in range(0, len(sistema), 20)]) #cada 1
+                    registro["CORREO"] = sistema_modificado
+
+            df = pd.DataFrame(registros)
+            df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
+             
+            df.to_csv(out_csv_path, index=False, mode='x')
+
+            print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
+
+        except Exception as e:
+            print(f"Ocurrió un error al crear el archivo CSV: {e}") 
+
+
     def modificar_registros_id(self, registros):
         """
         Modifica el array de registros para concatenar "*C" y un salto de línea a la columna "id".
@@ -404,18 +465,23 @@ class FileGeneratorRoute(Blueprint):
             # Hacemos la busqueda en la base de datos para tener los registros
             datosRegistro, status_code = self.service.obtener_datos_por_id('vpnMayo', validated_data.get('id'))
 
+            self.logger.info(f"Datos obtenidos de Mongo {datosRegistro}")
+
             if status_code == 201:
             
                 # Transformar valores "SI" y "NO"
-                altausuario = "x" if datosRegistro.get('movimiento', ' ') == "ALTA" else " "
-                bajausuario = "x" if datosRegistro.get('movimiento', ' ') == "BAJA" else " "
+                altausuario = "x" if datosRegistro.get('movimiento', '~') == "ALTA" else " "
+                bajausuario = "x" if datosRegistro.get('movimiento', '~') == "BAJA" else " "
 
                 # Tipo de solicitante booleano. Esto es para que puedas manejar las tablas de la opcion 2
-                conagua = "true" if datosRegistro.get('solicitante' , ' ') == "CONAGUA" else "false"
+                conagua = "true" if datosRegistro.get('solicitante' , '~') == "CONAGUA" else "false"
+
+                #Caso especial grupal
+                casoespecialgrupal = "true" if datosRegistro.get('casoespecial' , '~') == "Grupal" else "false"
 
                 # PARA BOOLEANOS DE FIRMA
-                conaguafirma = "true" if datosRegistro.get('solicitante', ' ') == "EXTERNO" else "false"
-                sistemas = "true" if datosRegistro.get('subgerencia', ' ')== "Subgerencia de Sistemas"  else "false"
+                conaguafirma = "true" if datosRegistro.get('solicitante', '~') == "EXTERNO" else "false"
+                sistemas = "true" if datosRegistro.get('subgerencia', '~')== "Subgerencia de Sistemas"  else "false"
                 otrasub = "true" if sistemas == "false" else "false"
 
                 # Opcion seleccionada
@@ -423,63 +489,68 @@ class FileGeneratorRoute(Blueprint):
                 accesoWeb = "true" if datosRegistro.get('accesoWeb') == True else "false"
                 accesoRemoto = "true" if datosRegistro.get('accesoRemoto') == True else "false"
 
-                nombreusuario= datosRegistro.get('nombreInterno', ' ') if conagua == "true" else datosRegistro.get('nombreExterno', ' ')
-                puestousuario= datosRegistro.get('puestoInterno', ' ') if conagua == "true" else ""
+                nombreusuario= datosRegistro.get('nombreInterno', '~') if conagua == "true" else datosRegistro.get('nombreExterno', '~')
+                puestousuario= datosRegistro.get('puestoInterno', '~') if conagua == "true" else ""
 
                 # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "DatosVPN.txt")
                 with open(datos_txt_path, 'w') as file: 
-                    file.write("\\newcommand{\\UA}{"+ datosRegistro.get('unidadAdministrativa', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMEMO}{"+ datosRegistro.get('memorando', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\FECHA}{"+ datosRegistro.get('fecha', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\AREA}{"+ datosRegistro.get('areaAdscripcion', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\SUBGERENCIA}{"+ datosRegistro.get('subgerencia', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTENLACE}{"+ datosRegistro.get('telefonoEnlace', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBRECONAGUA}{"+ datosRegistro.get('nombreInterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOCONAGUA}{"+ datosRegistro.get('puestoInterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOCONAGUA}{"+ datosRegistro.get('correoInterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTCONAGUA}{"+ datosRegistro.get('telefonoInterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEXTERNO}{"+ datosRegistro.get('nombreExterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\CORREOEXTERNO}{"+ datosRegistro.get('correoExterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEMPRESA}{"+ datosRegistro.get('empresaExterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EQUIPODES}{"+ datosRegistro.get('equipoExterno', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOEMPLEADO}{"+ datosRegistro.get('numeroEmpleadoResponsable', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOMBREEMPLEADO}{"+ datosRegistro.get('nombreResponsable', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoResponsable', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\UAEMPLEADO}{"+ datosRegistro.get('unidadAdministrativaResponsable', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\EXTEMPLEADO}{"+ datosRegistro.get('telefonoResponsable', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\TIPOEQUIPO}{"+ datosRegistro.get('tipoEquipo', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\SO}{"+ datosRegistro.get('sistemaOperativo', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\VERSIONSO}{"+ datosRegistro.get('versionSO', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\MARCA}{"+ datosRegistro.get('marca', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\MODELO}{"+ datosRegistro.get('modelo', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\NOSERIE}{"+ datosRegistro.get('serie', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UA}{"+ datosRegistro.get('unidadAdministrativa', '~')+"}"+ os.linesep)
+                    # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '~') + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ nombreusuario+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ puestousuario+"}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{"+ datosRegistro.get('justificacion', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMEMO}{"+ datosRegistro.get('memorando', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\FECHA}{"+ datosRegistro.get('fecha', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\AREA}{"+ datosRegistro.get('areaAdscripcion', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SUBGERENCIA}{"+ datosRegistro.get('subgerencia', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOENLACE}{"+ datosRegistro.get('puestoEnlace', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTENLACE}{"+ datosRegistro.get('telefonoEnlace', '~')+"}"+ os.linesep)
 
-                    file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreAutoriza', ' ')+"}"+ os.linesep)
-                    file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoAutoriza', ' ')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBRECONAGUA}{"+ datosRegistro.get('nombreInterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOCONAGUA}{"+ datosRegistro.get('puestoInterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOCONAGUA}{"+ datosRegistro.get('correoInterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTCONAGUA}{"+ datosRegistro.get('telefonoInterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEXTERNO}{"+ datosRegistro.get('nombreExterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\CORREOEXTERNO}{"+ datosRegistro.get('correoExterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPRESA}{"+ datosRegistro.get('empresaExterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EQUIPODES}{"+ datosRegistro.get('equipoExterno', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOEMPLEADO}{"+ datosRegistro.get('numeroEmpleadoResponsable', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREEMPLEADO}{"+ datosRegistro.get('nombreResponsable', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoResponsable', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\UAEMPLEADO}{"+ datosRegistro.get('unidadAdministrativaResponsable', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEMPLEADO}{"+ datosRegistro.get('telefonoResponsable', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\TIPOEQUIPO}{"+ datosRegistro.get('tipoEquipo', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\SO}{"+ datosRegistro.get('sistemaOperativo', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\VERSIONSO}{"+ datosRegistro.get('versionSO', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MARCA}{"+ datosRegistro.get('marca', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\MODELO}{"+ datosRegistro.get('modelo', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\NOSERIE}{"+ datosRegistro.get('serie', '~')+"}"+ os.linesep)
 
                     file.write("\\newcommand{\\ALTAUSUARIO}{" + altausuario + "}" + os.linesep)
                     file.write("\\newcommand{\\BAJAUSUARIO}{" + bajausuario + "}" + os.linesep)
 
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{"+ nombreusuario+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{"+ puestousuario+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREJEFE}{"+ datosRegistro.get('nombreAutoriza', '~')+"}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOJEFE}{"+ datosRegistro.get('puestoAutoriza', '~')+"}"+ os.linesep)
+
                     # Booleanos para las opciones necesarias de mostrar tablas o no
                     file.write("\\newcommand{\\CONAGUA}{" + conagua + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\CUENTAUSUARIO}{" + cuentaUsuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\ACCESOWEB}{" + accesoWeb + "}" + os.linesep)
+                    file.write("\\newcommand{\\ACCESOREMOTO}{" + accesoRemoto + "}" + os.linesep)
 
                     ##BOOLEANOS PARA FIRMAS 
                     file.write("\\newcommand{\\CONAGUAFIRMA}{" + conaguafirma + "}" + os.linesep)
                     file.write("\\newcommand{\\SISTEMAS}{" + sistemas + "}" + os.linesep)
                     file.write("\\newcommand{\\OTRA}{" + otrasub + "}" + os.linesep)
 
-                    file.write("\\newcommand{\\CUENTAUSUARIO}{" + cuentaUsuario + "}" + os.linesep)
-                    file.write("\\newcommand{\\ACCESOWEB}{" + accesoWeb + "}" + os.linesep)
-                    file.write("\\newcommand{\\ACCESOREMOTO}{" + accesoRemoto + "}" + os.linesep)
+                    file.write("\\newcommand{\\CASOESPECIALGRUPAL}{" + casoespecialgrupal + "}" + os.linesep)
 
-                    # PARA AGREGAR NUMERO DE FORMATO EN TXT YYMMDD----
-                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', ' ') + "}" + os.linesep)
 
                 # Archivos .csv para las tablas
                 # b) Acceso a sitios Web
@@ -489,6 +560,14 @@ class FileGeneratorRoute(Blueprint):
                 # c) Acceso a escritorio remoto
                 registros = datosRegistro.get('registrosRemoto', []) 
                 self.crear_csv_VPN_Remoto(temp_dir, "REMOTOESC.csv", registros)
+
+                #Relación de personal externo (Caso de Subgerencia de Sistemas)
+                registros = datosRegistro.get('registrosPersonal', [])       # Obtiene array de los datos
+                self.crear_csv_VPN_Personal(temp_dir, "PERSONAL.csv", registros)   # Se crea el .csv
+
+                #Servicios solicitado (Caso de Subgerencia de Sistemas)
+                registros = datosRegistro.get('registrosWebCE', [])       # Obtiene array de los datos
+                self.crear_csv_VPN_WebCE(temp_dir, "SITIOSWEBCE.csv", registros)   # Se crea el .csv               
 
                 # Preparar archivos en el directorio temporal
                 archivo_tex = os.path.join(temp_dir, "Formato_VPN_Mayo.tex")
@@ -506,7 +585,7 @@ class FileGeneratorRoute(Blueprint):
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
-                except:
+                except Exception as e:
                     self.logger.error(f"Error generando PDF: {e}")
                     return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
                 
@@ -536,7 +615,8 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)       
+            #shutil.rmtree(temp_dir)  
+            self.logger.info(f"Directorio temporal: {temp_dir}")        
 
     def tel(self):
         try:
@@ -601,6 +681,9 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\CORREOEMPLEADO}{"+ datosRegistro.get('correoEmpleado', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOEMPLEADO}{"+ datosRegistro.get('puestoEmpleado', ' ') + "}"+ os.linesep)
 
+                    file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ') + "}"+ os.linesep)
+
+
                     file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\SICELULAR}{" + siCelular + "}" + os.linesep)
@@ -617,7 +700,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MARCA}{" + datosRegistro.get('marca', ' ') + "}" + os.linesep)
                     file.write("\\newcommand{\\MODELO}{" + datosRegistro.get('modelo', ' ') + "}" + os.linesep)
                     file.write("\\newcommand{\\SERIE}{" + datosRegistro.get('serie', ' ') + "}" + os.linesep)
-                    file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
+                    #file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
 
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 

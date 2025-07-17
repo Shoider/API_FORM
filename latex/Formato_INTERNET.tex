@@ -34,6 +34,13 @@ headheight = 20mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
+%OJO con esta línea
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
 
 % *** Fecha ***
 %\usepackage[useregional]{datetime2}
@@ -104,14 +111,16 @@ headheight = 20mm
 	]{
 		width = \linewidth,
 		colspec = {Q[200]Q[300]Q[90]Q[90]},
-		row{1} = {c},               
+   		column{1} = {r},   
+		cell{1}{1}={c},            
 		cell{1}{1} = {c=4}{0.874\linewidth},
 		cell{2}{2} = {c=3}{0.674\linewidth},
 		cell{3}{2} = {c=3}{0.674\linewidth},
 		cell{4}{2} = {c=3}{0.674\linewidth},
 		cell{5}{2} = {c=3}{0.674\linewidth},     
 		cell{6}{2} = {c=3}{0.674\linewidth},     
-		cell{7}{2} = {c=3}{0.674\linewidth},     
+		cell{7}{2} = {c=3}{0.674\linewidth},    
+		cell{8}{3}={r}, 
 		%cell{8}{2} = {c=3}{0.674\linewidth},     
 		hlines,
 		vlines,
@@ -147,6 +156,7 @@ IP del equipo asignado: & \IPUSUARIO&&
 	entry = none,
 	]{
 		width = \linewidth,
+		column{1} = {r},
 		colspec = {Q[200]Q[300]Q[90]Q[90]},	 
 		cell{1}{2} = {c=3}{0.674\linewidth},    
 		cell{2}{2} = {c=3}{0.674\linewidth},      
@@ -207,6 +217,7 @@ IP actual del equipo asignado: & \IPUSUARIO
  (\ALMACENAMIENTO )& \textbf{Almacenamiento y copia de seguridad en línea}  & (\BLOGS )& \textbf{Sitios personales y blogs} & (\SHAREWARE)& \textbf{Descarga de software/drivers}  \\
 (\REDES)& \textbf{Redes sociales}  & (\TRANSMISION )& \textbf{Transmisión de medios} & (\OTRA)& \textbf{Otra}  
 \end{longtblr}
+\vspace{-5mm}
 
 {\textbf{\\Importante:}} En la(s) siguiente(s) tabla(s) deberá JUSTIFICAR cada una de las opciones seleccionadas; considerando en lo particular las solicitudes deben estar asociadas a requerimientos específicos de las funciones encomendadas e información institucional y NO para fines ni servicios personales. 
 
@@ -230,11 +241,11 @@ IP actual del equipo asignado: & \IPUSUARIO
 \newboolean{otra4}
 \setboolean{otra4}{\OTRABOOLcuatro}
 
-
+\vspace{-3mm}
 \textbf {\\JUSTIFICACIONES\\}
 %%%ALMACENAMIENTO
 \ifthenelse{\boolean{almacenamiento}}{
-\vspace{3mm}
+\vspace{2mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -253,7 +264,7 @@ IP actual del equipo asignado: & \IPUSUARIO
 }{~}
 %%BLOGS
 \ifthenelse{\boolean{blogs}}{
-\vspace{3mm}
+\vspace{2mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -272,7 +283,7 @@ IP actual del equipo asignado: & \IPUSUARIO
 }{~}
 %%SHAREWARE
 \ifthenelse{\boolean{shareware}}{
-\vspace{3mm}
+\vspace{2mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -291,7 +302,7 @@ IP actual del equipo asignado: & \IPUSUARIO
 }{~}
 %%%REDES
 \ifthenelse{\boolean{redes}}{
-\vspace{3mm}
+\vspace{2mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -308,11 +319,10 @@ IP actual del equipo asignado: & \IPUSUARIO
 \JUSTIFICAREDES
 \end{tblr}
 }{~}
-\noindent
 
 %%TRANSMISION DE MEDIOS
 \ifthenelse{\boolean{transmision}}{
-\vspace{3mm}
+\vspace{2mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -332,7 +342,7 @@ IP actual del equipo asignado: & \IPUSUARIO
 
 %%OTRA
 \ifthenelse{\boolean{otra}}{
-\vspace{3mm}
+\vspace*{3mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -352,7 +362,8 @@ IP actual del equipo asignado: & \IPUSUARIO
 }{~}
 %%otra2
 \ifthenelse{\boolean{otra2}}{
-\vspace{3mm}
+\par
+\vspace*{3mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -372,7 +383,8 @@ IP actual del equipo asignado: & \IPUSUARIO
 }{~}
 %%otra3
 \ifthenelse{\boolean{otra3}}{
-\vspace{3mm}
+\par
+\vspace*{3mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -392,7 +404,8 @@ IP actual del equipo asignado: & \IPUSUARIO
 }{~}
 %%otra4
 \ifthenelse{\boolean{otra4}}{
-\vspace{3mm}
+\par
+\vspace*{3mm}
 \noindent
 \begin{tblr}[
 	label = none,
@@ -413,7 +426,7 @@ IP actual del equipo asignado: & \IPUSUARIO
 
 \clearpage
 %%%..... POLITICAS
-\section*{Términos y Condiciones del servicio:}
+\section*{Políticas y lineamientos:}
 {\small \begin{enumerate}
 	\item 	El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedita de las configuraciones solicitadas.
 	\item 	El solicitante deberá presentar este formato adjuntando el memorando y número de caso (ticket) de Mesa de Servicio asociado, sin los cuales no se podrá atender su solicitud.         
