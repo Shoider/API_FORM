@@ -15,7 +15,7 @@ RUN mkdir -p /app/data && \
     chmod -R 777 /app/data
 
 RUN apt-get update && \
-    apt-get install -y curl texlive texlive-xetex  texlive-latex-extra fonts-noto && \
+    apt-get install -y curl texlive texlive-xetex  fonts-noto && \
     texhash && \
     rm -rf /var/lib/apt/lists/*
     
