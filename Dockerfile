@@ -14,14 +14,16 @@ RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 777 /app/data
 
-RUN apk update && \
-    apk add --no-cache tzdata curl && \
-    rm -rf /var/cache/apk/*
-
-RUN apk update && \
-    apk add --no-cache texlive texlive-xetex && \
-    fonts-noto texhash && \
-    rm -rf /var/cache/apk/*
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache \
+        texlive \
+        texlive-xetex \
+        font-noto \
+        tzdata \
+        curl \
+    && texhash \
+    && rm -rf /var/cache/apk/*
 
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
 
