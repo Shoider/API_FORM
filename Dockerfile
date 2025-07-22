@@ -19,6 +19,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repo
     apk add --no-cache \
         texlive \
         texlive-xetex \
+        texmf-dist-full \
         font-noto \
         tzdata \
         curl \
