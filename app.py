@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask
 from logger.logger import Logger
 from routes.route import FileGeneratorRoute  
 from schemas.schemaPDF import CrearPDF
