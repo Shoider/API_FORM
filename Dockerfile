@@ -9,7 +9,7 @@ COPY --chown=app . .
 RUN mkdir -p /app/logs && \
     chown -R app:app /app/logs && \
     chmod -R 775 /app/logs
-
+    
 RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 777 /app/data
@@ -19,6 +19,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repo
     apk add --no-cache \
         texlive \
         texlive-xetex \
+        texmf-dist-most \
         font-noto \
         tzdata \
         curl \
