@@ -14,8 +14,9 @@ RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 777 /app/data
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories && \
-    apk update && \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories
+
+RUN apk update && \
     apk add --no-cache \
         texlive \
         texlive-xetex \
@@ -24,6 +25,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repo
         tzdata \
         curl \
     && texhash \
+    && rm -f /usr/share/texmf-dist/scripts/tlcockpit/tlcockpit.jar \
+    && rm -f /usr/share/texmf-dist/scripts/latex2nemeth/latex2nemeth.jar \
+    && rm -f /usr/share/texmf-dist/scripts/texplate/texplate.jar \
+    && rm -f /usr/share/texmf-dist/scripts/latex2nemeth/latex2nemeth.jar \
+    && rm -f /usr/share/texmf-dist/scripts/arara/arara.jar \
     && rm -rf /var/cache/apk/*
 
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
