@@ -9,21 +9,27 @@ COPY --chown=app . .
 RUN mkdir -p /app/logs && \
     chown -R app:app /app/logs && \
     chmod -R 775 /app/logs
-
+    
 RUN mkdir -p /app/data && \
     chown -R app:app /app/data && \
     chmod -R 777 /app/data
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories && \
-    apk update && \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories
+
+RUN apk update && \
     apk add --no-cache \
         texlive \
         texlive-xetex \
-        texmf-dist-full \
+        texmf-dist-most \
         font-noto \
         tzdata \
         curl \
     && texhash \
+    && rm -f /usr/share/texmf-dist/scripts/tlcockpit/tlcockpit.jar \
+    && rm -f /usr/share/texmf-dist/scripts/latex2nemeth/latex2nemeth.jar \
+    && rm -f /usr/share/texmf-dist/scripts/texplate/texplate.jar \
+    && rm -f /usr/share/texmf-dist/scripts/latex2nemeth/latex2nemeth.jar \
+    && rm -f /usr/share/texmf-dist/scripts/arara/arara.jar \
     && rm -rf /var/cache/apk/*
 
 RUN pip install --no-cache-dir --upgrade pip && pip install -r requirements.txt
