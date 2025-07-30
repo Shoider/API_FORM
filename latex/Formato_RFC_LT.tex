@@ -694,7 +694,7 @@ vlines,
 \newboolean{regional}
 \setboolean{regional}{\REGIONAL}
 
-
+\vspace{60pt}
 %%AMBOS
 \ifthenelse{\boolean{regional}}{
          	\begin{longtblr}[
@@ -707,7 +707,6 @@ vlines,
                                 row{2}={c},
                                 cell{2}{1} = {c=2}{0.942\linewidth},
 		}
-		%Fecha: \today                      &                                                                                                       \\
 		{\normalsize Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
                    {\normalsize Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} &
                    {\normalsize Enlace Informático\\[1cm] \rule{6cm}{0.5mm}\\\NOMEI}
@@ -720,10 +719,10 @@ vlines,
 			width = \linewidth,
 			colspec = {Q[200]Q[200]Q[200]},
 			row{1} = {c},
-                                row{2}={c},
-                                cell{2}{1} = {c=2}{0.942\linewidth},
-		}                                                                                                   \\
+            row{2}={c},
+            cell{2}{1} = {c=2}{0.942\linewidth},
+		}                                                                                                   
 		{\normalsize Gerente o director local que autoriza\\[1cm] \rule{6cm}{0.5mm}\\\NOMBREJEFE\\\PUESTOJEFE} & 
-                   {\normalsize Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} 
+        {\normalsize Usuario que acepta.\\[1cm] \rule{6cm}{0.5mm}\\\NOMS\\\PUESTOS} 
 	\end{longtblr}}
 \end{document}
