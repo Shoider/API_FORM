@@ -1,21 +1,10 @@
-%\textbf{\emph{ejemplo}}
 \input{Datos.txt}
 \documentclass[letterpaper,9pt]{article}
 \usepackage{ifthen}
 
-% *** Idioma ***
-%\usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[utf8]{inputenc}
-
 % *** Fuente ***
 \usepackage{fontspec}
 \setmainfont{Noto Sans}
-
-
-% *** Colores ***
-\usepackage{xcolor}
-\definecolor{dorado}{RGB}{190,150,91} 
-\definecolor{gris}{rgb}{0.752,0.752,0.752}
 
 % *** Margenes y Tamaño de Hoja
 \usepackage{geometry}
@@ -43,7 +32,6 @@ headheight = 20mm
 \DefTblrTemplate{capcont}{default}{}
 
 % *** Fecha ***
-%\usepackage[useregional]{datetime2}
 \usepackage{datetime2}
 \DTMsetdatestyle{ddmmyyyy}
 
@@ -72,11 +60,11 @@ headheight = 20mm
 		cell{4}{3} = {c},
 		cell{4}{4} = {c},
 		vlines,
-                      hlines,
+        hlines,
 	}
 	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{COMISIÓN NACIONAL DEL AGUA.}\\Gerencia de Tecnologías de Información y Comunicaciones.\\ Subgerencia de Soporte Técnico,  Telecomunicaciones y Seguridad.} & \footnotesize Página   & {\footnotesize \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \footnotesize Versión   & \footnotesize Pendiente \\
-	&                                                                                       & \footnotesize Fecha & {\footnotesize Pendiente }    \\
+	&                                                                                       & \footnotesize Versión   & \footnotesize 2507 \\
+	&                                                                                       & \footnotesize Fecha & {\footnotesize 2025 }    \\
 	&\ { \textbf{ Solicitud de Ampliación del Servicio de Internet }}                                       &  \footnotesize No. de formato      &  \footnotesize \NOFORMATO        
 \end{tblr}
 }
@@ -95,8 +83,7 @@ headheight = 20mm
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[1]Q[1.6]Q[1]Q[1.6]Q[2]Q[1]},  
-                    %  row{1}={r}   
+		colspec = {Q[1]Q[1.6]Q[1]Q[1.6]Q[2]Q[1]},   
  		cell{1}{2}={c},
  		cell{1}{4}={c},
  		cell{1}{6}={c},
@@ -120,8 +107,7 @@ headheight = 20mm
 		cell{5}{2} = {c=3}{0.674\linewidth},     
 		cell{6}{2} = {c=3}{0.674\linewidth},     
 		cell{7}{2} = {c=3}{0.674\linewidth},    
-		cell{8}{3}={r}, 
-		%cell{8}{2} = {c=3}{0.674\linewidth},     
+		cell{8}{3}={r},     
 		hlines,
 		vlines,
 	}
@@ -439,6 +425,7 @@ IP actual del equipo asignado: & \IPUSUARIO
 	\item 	Al firmar el usuario se da por enterado de las Políticas del servicio y acepta la responsabilidad de cualquier uso inadecuado que se le dé a los privilegios de acceso ampliados los cuales haya solicitado.
 	\item 	Al firmar el Gerente o Director que autoriza se da por enterado de las Políticas del servicio y acepta la corresponsabilidad del uso que le dé el usuario al acceso ampliado otorgado.
 \end{enumerate}
+\vspace{95pt}
 %%nombres y firmas
 \begin{longtblr}[
 	label = none,
@@ -448,13 +435,12 @@ IP actual del equipo asignado: & \IPUSUARIO
 			colspec = {Q[100]Q[100]Q[100]},
 			row{1} = {c},
                                 row{2}={c},
-		}
-		%Fecha: \today                      &                                                                                                       \\
+		}                                                                                                     \\
 		{Usuario que acepta\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREUSUARIO \\~\\ \PUESTOUSUARIO} &
                      {Gerente o Director Local que Autoriza\\~\\[1cm] \rule{5cm}{0.5mm}\\ \NOMBREJEFE \\~ \\ \PUESTOJEFE}
 	\end{longtblr}
+
 {\textbf{Nota:}}
 Este formato debe ser entregado a través del servicio de Mesa de Servicio, acompañado de un Memorando dirigido al {\textbf {Gerente de Tecnologías de la Información y Comunicaciones}} con copia a {\textbf {Subgerente de Soporte Técnico, Telecomunicaciones y Seguridad}}.
 De no recibir dichos formatos en original en un lapso no mayor a 5 días hábiles se retirarán los permisos solicitados y se otorgará el acceso a navegación básico.
-
 \end{document}

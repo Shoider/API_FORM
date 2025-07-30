@@ -3,22 +3,9 @@
 \documentclass[letterpaper,11pt]{article}
 \usepackage{ifthen}
 
-% *** Idioma ***
-%\usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[utf8]{inputenc}
-
 % *** Fuente ***
-%\usepackage{lmodern}
-%\usepackage[T1]{fontenc}
-%%%FUENTE NOTO SANS
 \usepackage{fontspec}
 \setmainfont{Noto Sans}
-
-
-% *** Colores ***
-\usepackage{xcolor}
-\definecolor{dorado}{RGB}{190,150,91} 
-\definecolor{gris}{rgb}{0.752,0.752,0.752}
 
 % *** Margenes y Tamaño de Hoja
 \usepackage{geometry}
@@ -37,7 +24,7 @@ headheight = 30mm
 \usepackage{subcaption}
 \usepackage{wrapfig}
 \usepackage{tabularray}
-%OJO con esta línea
+
 \UseTblrLibrary{booktabs}
 
 % Quita las leyenda de longtblr
@@ -77,8 +64,8 @@ headheight = 30mm
                       hlines,
 	}
 	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{COMISIÓN NACIONAL DEL AGUA}\\Gerencia de Tecnologías de Información y Comunicaciones.\\ Subgerencia de Soporte Técnico, Telecomunicaciones y Seguridad.} & \footnotesize Página    & {\footnotesize \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \footnotesize VERSIÓN   & \footnotesize Pendiente \\
-	&                                                                                       & \footnotesize FECHA & {\footnotesize  Mayo-2025 }    \\
+	&                                                                                       & \footnotesize Versión   & \footnotesize 2507 \\
+	&                                                                                       & \footnotesize Fecha & {\footnotesize  2025 }    \\
 	& {\textbf{ Solicitud de servicios de telefonía.}\\\textbf{(Alta, Baja, Cambio)}}                                       &  \includegraphics[width=0.05\textwidth]{imagenes/Logo_Octubre_2024}       &           
 \end{tblr}
 }
@@ -86,10 +73,8 @@ headheight = 30mm
 \rhead{}
 
 % *** Pie de Pagina
-%\renewcommand{\footrulewidth}{0.5pt}
 \lfoot{\tiny Notas: a) La información de este documento implica conocer y aceptar la normatividad vigente, así como el compromiso de uso ético y racional de los servicios asignados. b)En caso de impresiones en hojas separadas, todas deben venir rubrica. }
 \cfoot{}
-%\rfoot{}
 
 \begin{document}
 \sloppy
@@ -149,11 +134,8 @@ Unidad Aministrativa:           &\UAUSUARIO
 		colspec = {Q[30]Q[70]},
 		column{1}={r},
 		column{2}={l},
-		row{1} = {c},
-                     %row{1}={dorado},                    
-		cell{1}{1} = {c=2}{0.874\linewidth},
-		%cell{4}{2} = {c=3}{0.674\linewidth},
-		%cell{5}{2} = {c=3}{0.674\linewidth},        
+		row{1} = {c},                    
+		cell{1}{1} = {c=2}{0.874\linewidth},       
 		hlines,
 		vlines,
 	}
@@ -172,16 +154,14 @@ Puesto:           &\PUESTOEMPLEADO
 	entry = none,
 	]{
 		width = \linewidth,
-		colspec = {Q[3]Q[2]Q[3]Q[2]},		
-                     %row{1}={dorado},
+		colspec = {Q[3]Q[2]Q[3]Q[2]},
 		column{1}={r},
 		column{2}={c},
 		column{3}={r},
 		column{4}={c},
 		row{1} = {c},
-                    cell{1}{1} = {c=4}{0.874\linewidth},		
-                    cell{5}{1}={c=3}{0.674\linewidth},
-                     %cell{5}{3}={c=2}{0.374\linewidth},
+        cell{1}{1} = {c=4}{0.874\linewidth},		
+        cell{5}{1}={c=3}{0.674\linewidth},
 		hlines,
 		vlines,
 	}
@@ -198,10 +178,9 @@ Puesto:           &\PUESTOEMPLEADO
 		width = \linewidth,
 		colspec = {Q[33.33]Q[33.33]Q[33.33]},
 		row{1} = {c},
-                     row{2}={c},
-                     row{3}={c},
-                     %row{1}={dorado},
-                     cell{1}{1} = {c=3}{},		
+		row{2}={c},
+		row{3}={c},
+		cell{1}{1} = {c=3}{},		
 		hlines,
 		vlines,
 	}
@@ -217,7 +196,6 @@ Puesto:           &\PUESTOEMPLEADO
 	]{
 		width = \linewidth,
 		colspec = {Q[935]},
-                    % row{1}={dorado},
 		cells = {c},
 		row{2} = {},
 		hlines,
@@ -226,7 +204,6 @@ Puesto:           &\PUESTOEMPLEADO
 	\textbf{Justificación de los Servicios Solicitados} \\\JUSTIFICACION
 \end{longtblr}
 \clearpage
-%\vspace{-20pt}
 \textbf{\small Políticas y lineamientos:}
 {  \small\begin{enumerate}
 \item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedida de las configuraciones solicitadas
@@ -245,11 +222,7 @@ Puesto:           &\PUESTOEMPLEADO
 	]{
 			width = \linewidth,
 			colspec = {Q[200]Q[200]Q[200]},
-			%row{1} = {gris},
 			row{1} = {c},
-			%cell{1}{1} = {c=2}{0.874\linewidth},
-			%hlines,
-			%vlines,
 		}
 	%	Nombres Cargos y Firmas                      &                                                                                                       \\
 		{Firma
