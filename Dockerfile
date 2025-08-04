@@ -1,4 +1,4 @@
-FROM python:3.14.0rc1-alpine3.22
+FROM python:3.13.5-alpine3.22
 
 WORKDIR /app
 
@@ -18,7 +18,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repo
 
 RUN apk update && \
     apk add --no-cache \
-        build-base \
         texlive \
         texlive-xetex \
         texmf-dist-most \
