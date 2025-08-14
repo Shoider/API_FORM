@@ -1,5 +1,6 @@
 from logger.logger import Logger
 from bson.errors import InvalidId
+from bson import ObjectId
 
 class Service:
     """Service class to that implements the logic of the CRUD operations for tickets"""
@@ -45,3 +46,25 @@ class Service:
             # Manejar otros posibles errores (ej. de conexión)
             print(f"Ocurrió un error inesperado: {e}")
             return None, 500
+    
+    def borrar_registro(self, noFormato, collection_name):
+        
+        collection = self.db_conn.db[collection_name]
+        resultado = collection.delete_one({'_id': noFormato})
+
+        if resultado:
+            return {"mensaje":"registro eliminado con exito"},404
+        else:
+            return {"mensaje":"id no encontrado"},400
+        
+    def borrar_contador(self, noFormato, collection_name_counter):
+        
+        id_documento = noFormato[:6]
+        collection = self.db_conn.db[collection_name_counter]
+        resultado = collection.update_one({'_id': id_documento}, {'$inc':{'seq':-1}})
+        if resultado:
+            return {"mensaje":"contador eliminado con exito"},404
+        else:
+            return {"mensaje":"id no encontrado"},400
+        
+    

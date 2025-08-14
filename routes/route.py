@@ -1057,9 +1057,14 @@ class FileGeneratorRoute(Blueprint):
             
         except ValidationError as err:
             self.logger.error(f"Error de validación: {err.messages}")
-            return jsonify({"error": "Datos inválidos", "details": err.messages}), status_code
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
+            noformato = datosRegistro.get('_id')
+            self.logger.debug(f"Fallo en generacion de formato #{noformato}")
+            self.service.borrar_registro(noformato,"rfc")
+            self.logger.debug(f"Fallo generando counter")
+            self.service.borrar_contador(noformato,"rfcCounters")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
