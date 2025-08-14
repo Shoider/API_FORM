@@ -587,6 +587,9 @@ class FileGeneratorRoute(Blueprint):
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
                 except Exception as e:
                     self.logger.error(f"Error generando PDF: {e}")
+                    noformato = datosRegistro.get('_id')
+                    self.service.borrar_registro(noformato,"vpnMayo")
+                    self.service.borrar_contador(noformato,"vpnMayoCounters")
                     return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
                 
                 # Cargar pdf
@@ -745,7 +748,10 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error(f"Error de validación: {err.messages}")
             return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
         except Exception as e:
-            self.logger.error(f"Error generando PDF: {e}")
+            self.logger.error(f"Error generando PDF")
+            noformato = datosRegistro.get('_id')
+            self.service.borrar_registro(noformato,"tel")
+            self.service.borrar_contador(noformato,"telCounters")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
@@ -1061,9 +1067,9 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
             noformato = datosRegistro.get('_id')
-            self.logger.debug(f"Fallo en generacion de formato #{noformato}")
+            #self.logger.debug(f"Fallo en generacion de formato #{noformato}")
             self.service.borrar_registro(noformato,"rfc")
-            self.logger.debug(f"Fallo generando counter")
+            #self.logger.debug(f"Fallo generando counter")
             self.service.borrar_contador(noformato,"rfcCounters")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
@@ -1230,7 +1236,10 @@ class FileGeneratorRoute(Blueprint):
             self.logger.error(f"Error de validación: {err.messages}")
             return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
         except Exception as e:
-            self.logger.error(f"Error generando PDF: {e}")
+            self.logger.error(f"Error generando PDF")
+            noformato = datosRegistro.get('_id')
+            self.service.borrar_registro(noformato,"internet")
+            self.service.borrar_contador(noformato,"internetCounters")
             return jsonify({"error": "Error generando PDF"}), 500
     
     def healthcheck(self):
