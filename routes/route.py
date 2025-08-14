@@ -41,86 +41,83 @@ class FileGeneratorRoute(Blueprint):
         
     def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros, Alta):
         """
-        Crea un archivo CSV a partir de un array de registros,
-        con la columna 'id' siempre renombrada a 'No'.
+        Crea un archivo CSV desde registros, asegurando que todas las columnas requeridas estén presentes.
 
         Args:
             temp_dir (str): Directorio temporal donde se guardará el CSV.
             nombre_archivo_csv (str): Nombre del archivo CSV a crear.
             registros (list): Array de diccionarios con los registros.
+            Alta (bool): Indica si es un alta o no.
         """
         try:
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
-
-            if not registros:
-                df = pd.DataFrame([{}], columns=['id', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER'])
-
+            
+            # Columnas requeridas en el orden deseado
+            columnas_requeridas = ['N', 'SO', 'FRO', 'IPO', 'SD', 'FRD', 'IPD', 'PRO', 'PUER']
+            
+            # Procesar cada registro
             contador = 0
             temporalidades = ""
+            registros_procesados = []
 
             for registro in registros:
+                registro_procesado = {}
+                
+                # Eliminar campo 'isNew' si existe
                 registro.pop('isNew', None)
+                
+                # Procesar cada campo según sea necesario
                 if "IPO" in registro:
-                    ip=registro["IPO"]
-                    #ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
-                    #registro["IPO"] = ip_modificada
-                    registro["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    registro_procesado["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                
                 if "IPD" in registro:
-                    ip=registro["IPD"]
-                    #ip_modificada = '\\\\'.join([ip[i:i+20] for i in range(0, len(ip), 20)])
-                    #registro["IPD"] = ip_modificada
-                    registro["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                #if "SO" in registro:
-                 #   sistema=registro["SO"]
-                    ##registro["SO"] = sistema_modificado
-                    #registro["SO"] = registro["SO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                #if "SD" in registro:
-                 #   sistema=registro["SD"]
-                    #sistema_modificado = '\\\\'.join([sistema[i:i+8] for i in range(0, len(sistema), 8)])
-                    #registro["SD"] = sistema_modificado
-                    #registro["SD"] = registro["SD"].replace(" ", "\\\\").replace(", ", "\\\\")
-                #if "FRO" in registro:
-                 #   funcionrol=registro["FRO"]
-                    #funcionrol_modificado = '\\\\'.join([funcionrol[i:i+10] for i in range(0, len(funcionrol), 10)])
-                    #registro["FRO"] = funcionrol_modificado
-                    #registro["FRO"] = registro["FRO"].replace(" ", "\\\\").replace(", ", "\\\\")
-                #if "FRD" in registro:
-                 #   funcionrol=registro["FRD"]
-                    #funcionrol_modificado = '\\\\'.join([funcionrol[i:i+6] for i in range(0, len(funcionrol), 6)])
-                    #registro["FRD"] = funcionrol_modificado
-                    # registro["FRD"] = registro["FRD"].replace(" ", "\\\\").replace(", ", "\\\\")
+                    registro_procesado["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                
                 if "PUER" in registro:
-                    #puertos=registro["PUER"]
-                   # puertos_modificado = '\\\\'.join([puertos[i:i+5] for i in range(0, len(puertos), 5)])
-                   # registro["PUER"] = puertos_modificado
-                    registro["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-
-                # TEMPORALIDAD
-                cambio = ""  # Inicializa la variable cambio
+                    registro_procesado["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                
+                # Procesar temporalidad
+                cambio = ""
                 if "TEMPO" in registro:
                     if registro["TEMPO"] == "Temporal":
-                        contador = contador + 1
+                        contador += 1
                         cambio = "T" + str(contador)
                         if "FECHA" in registro:
                             temporalidades += "T" + str(contador) + ": " + str(registro["FECHA"]) + "\\\\"
                     elif registro["TEMPO"] == "Permanente":
                         cambio = "P"
-
-                # Agrega el valor de cambio al campo "id"
-                if Alta == True:
-                    if "id" in registro:
-                        registro["id"] = str(registro["id"]) + "\\\\" + str(cambio)
-
-            df = pd.DataFrame(registros)
-            df = df.rename(columns={'id': 'N'})  # Siempre renombra 'id' a 'N'
+                
+                # Procesar ID
+                if "id" in registro:
+                    registro_procesado["N"] = str(registro["id"]) + ("\\\\" + str(cambio) if Alta else "")
+                
+                # Añadir todos los campos posibles (aunque estén vacíos)
+                for col in ['SO', 'FRO', 'SD', 'FRD', 'PRO']:
+                    if col in registro:
+                        registro_procesado[col] = registro[col]
+                
+                registros_procesados.append(registro_procesado)
+            
+            # Crear DataFrame asegurando todas las columnas
+            df = pd.DataFrame(registros_procesados)
+            
+            # Asegurar que todas las columnas requeridas estén presentes
+            for col in columnas_requeridas:
+                if col not in df.columns:
+                    df[col] = ""  # O podrías usar None o np.nan
+            
+            # Reordenar columnas según el orden requerido
+            df = df[columnas_requeridas]
+            
+            # Guardar el CSV
             df.to_csv(out_csv_path, index=False, mode='x')
-
+            
             print(f"Archivo CSV '{nombre_archivo_csv}' creado exitosamente.")
-
             return temporalidades
 
         except Exception as e:
             print(f"Ocurrió un error al crear el archivo CSV: {e}")
+            return ""
 
     def crear_csv_VPN_Web(self, temp_dir, nombre_archivo_csv, registros):
         """
@@ -843,12 +840,12 @@ class FileGeneratorRoute(Blueprint):
 
                 # Validar si hay temporales
                 if (justifica1 != ""): 
-                    justEsp1 = "////"
+                    justEsp1 = "\\\\"
                 else:
                     justEsp1 = ""
 
                 if (justifica2 != ""): 
-                    justEsp2 = "////"
+                    justEsp2 = "\\\\"
                 else:
                     justEsp2 = ""
 
