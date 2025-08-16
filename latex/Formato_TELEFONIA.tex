@@ -113,7 +113,7 @@ headheight = 30mm
 		hlines,
 		vlines,
 	}
-\textbf{Datos de Usuario (a) que utilizará el servicio (CONAGUA o Externo)} &   \\
+\textbf{Datos de usuario (a) que utilizará el servicio (CONAGUA o externo)} &   \\
 Nombre:                     &  \NOMBREUSUARIO \\
 Correo: &   \CORREOUSUARIO  \\
 Dirección:   &  \textbf  \DIRECCION  \\
@@ -139,7 +139,7 @@ Unidad Aministrativa:           &\UAUSUARIO
 		hlines,
 		vlines,
 	}
-\textbf{Datos del Empleado(a) de CONAGUA (Responsable, si el usuario es externo)} &   \\
+\textbf{Datos del empleado(a) de CONAGUA (Responsable, si el usuario es externo)} &   \\
 Nombre:                     &  \NOMBREEMPLEADO \\
 Número de empleado:&\IDEMPLEADO \\
 Correo: & \CORREOEMPLEADO \\
@@ -148,6 +148,11 @@ Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
 
+
+\newboolean{movalta}
+\setboolean{movalta}{\MOVALTA}
+\ifthenelse{\boolean{movalta}}
+{
 \vspace{-25pt}
 \begin{longtblr}[
 	label = none,
@@ -165,11 +170,19 @@ Puesto:           &\PUESTOEMPLEADO
 		hlines,
 		vlines,
 	}
-\textbf{Características del Servicio Solicitado}         \\
+\textbf{Características del servicio solicitado}         \\
 \textbf{Servicio Interno:}       &  Si (X)~ No(~ )  & \textbf{\textbf{Servicio Celular Local y Foráneo:}}                           & Si (\SICELULAR )~ No(\NOCELULAR ) \\
 	\textbf{Servicio Larga Distancia Nacional:}      &  Si (\SINACIONAL )~ No(\NONACIONAL)  &\textbf {Servicio Larga Distancia Internacional:}    & Si (\SIMUNDO )~ No(\NOMUNDO ) 
 	
 \end{longtblr}
+}{}
+
+
+%\newboolean{movalta}
+%\setboolean{movalta}{\MOVALTA}
+\ifthenelse{\boolean{movalta}}
+{}
+{
 \vspace{-25pt}
 \begin{longtblr}[
 	label = none,
@@ -184,10 +197,11 @@ Puesto:           &\PUESTOEMPLEADO
 		hlines,
 		vlines,
 	}
-\textbf{Características del Equipo donde se configura la cuenta de Red}         \\
+\textbf{Características del equipo donde se configura la cuenta de red}         \\
 \textbf {Marca}&\textbf {Modelo}&\textbf {Serie}\\
 \MARCA&\MODELO&\SERIE
 \end{longtblr}
+}
 
 \vspace{-25pt}
 \begin{longtblr}[
@@ -201,7 +215,7 @@ Puesto:           &\PUESTOEMPLEADO
 		hlines,
 		vlines,
 	}
-	\textbf{Justificación de los Servicios Solicitados} \\\JUSTIFICACION
+	\textbf{Justificación del servicio solicitado} \\\JUSTIFICACION
 \end{longtblr}
 \clearpage
 \textbf{\small Políticas y lineamientos:}
@@ -215,7 +229,6 @@ Puesto:           &\PUESTOEMPLEADO
 \item Al firmar el Gerente, Subgerente o Director Local que autoriza se da por enterado de las políticas y lineamientos y acepta la corresponsabilidad del uso que el usuario que le dé el usuario al acceso otorgado.
 
 \end{enumerate}}
-
 \begin{longtblr}[
 	label = none,
 	entry = none,

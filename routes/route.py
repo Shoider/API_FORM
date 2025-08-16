@@ -642,6 +642,7 @@ class FileGeneratorRoute(Blueprint):
             
                 # Tipo de Movimiento
                 alta = "X" if datosRegistro.get('movimiento') == "ALTA" else " "
+                movalta = "true" if datosRegistro.get('movimiento') == "ALTA" else "false"
                 baja = "X" if datosRegistro.get('movimiento') == "BAJA" else " "
                 cambio = "X" if datosRegistro.get('movimiento') == "CAMBIO" else " "
 
@@ -701,6 +702,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MODELO}{" + datosRegistro.get('modelo', ' ') + "}" + os.linesep)
                     file.write("\\newcommand{\\SERIE}{" + datosRegistro.get('serie', ' ') + "}" + os.linesep)
                     #file.write("\\newcommand{\\VERSION}{" + datosRegistro.get('version', ' ') + "}" + os.linesep)
+                    file.write("\\newcommand{\\MOVALTA}{" + movalta + "}" + os.linesep)
 
                     file.write("\\newcommand{\\NOFORMATO}{" + noformato + "}" + os.linesep)
 
