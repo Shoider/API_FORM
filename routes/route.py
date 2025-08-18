@@ -651,9 +651,8 @@ class FileGeneratorRoute(Blueprint):
                 direcion = datosRegistro.get('direccion', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
 
                 # Traducir valores true y false #PENDIGN
-                #externo = "true" if datosRegistro.get('usuaExterno') == True else "false"
-
                 externo= "true" if datosRegistro.get('tipoUsuario') == "Externo" else "false"
+                
                 # Transformar valores "X" y " "
                 siMundo = "X" if datosRegistro.get('mundo') == "SI" else " "
                 noMundo = "X" if datosRegistro.get('mundo') == "NO" else " "                
