@@ -148,10 +148,13 @@ Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
 
+\newboolean{movcambio}
+\setboolean{movcambio}{\MOVCAMBIO}
+\newboolean{movbaja}
+\setboolean{movbaja}{\MOVBAJA}
 
-\newboolean{movalta}
-\setboolean{movalta}{\MOVALTA}
-\ifthenelse{\boolean{movalta}}
+
+\ifthenelse{\boolean{movcambio}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -173,15 +176,37 @@ Puesto:           &\PUESTOEMPLEADO
 \textbf{Características del servicio solicitado}         \\
 \textbf{Servicio Interno:}       &  Si (X)~ No(~ )  & \textbf{\textbf{Servicio Celular Local y Foráneo:}}                           & Si (\SICELULAR )~ No(\NOCELULAR ) \\
 	\textbf{Servicio Larga Distancia Nacional:}      &  Si (\SINACIONAL )~ No(\NONACIONAL)  &\textbf {Servicio Larga Distancia Internacional:}    & Si (\SIMUNDO )~ No(\NOMUNDO ) 
-	
 \end{longtblr}
-}{}
-
-
-%\newboolean{movalta}
-%\setboolean{movalta}{\MOVALTA}
-\ifthenelse{\boolean{movalta}}
+}{
+\ifthenelse{\boolean{movbaja}}
 {}
+{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[3]Q[2]Q[3]Q[2]},
+		column{1}={r},
+		column{2}={c},
+		column{3}={r},
+		column{4}={c},
+		row{1} = {c},
+        cell{1}{1} = {c=4}{0.874\linewidth},		
+        cell{5}{1}={c=3}{0.674\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Características del servicio solicitado}         \\
+\textbf{Servicio Interno:}       &  Si (X)~ No(~ )  & \textbf{\textbf{Servicio Celular Local y Foráneo:}}                           & Si (\SICELULAR )~ No(\NOCELULAR ) \\
+	\textbf{Servicio Larga Distancia Nacional:}      &  Si (\SINACIONAL )~ No(\NONACIONAL)  &\textbf {Servicio Larga Distancia Internacional:}    & Si (\SIMUNDO )~ No(\NOMUNDO ) 
+\end{longtblr}
+}
+}
+
+
+\ifthenelse{\boolean{movcambio}}
 {
 \vspace{-25pt}
 \begin{longtblr}[
@@ -201,6 +226,30 @@ Puesto:           &\PUESTOEMPLEADO
 \textbf {Marca}&\textbf {Modelo}&\textbf {Serie}\\
 \MARCA&\MODELO&\SERIE
 \end{longtblr}
+}
+{
+\ifthenelse{\boolean{movbaja}}
+{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[33.33]Q[33.33]Q[33.33]},
+		row{1} = {c},
+		row{2}={c},
+		row{3}={c},
+		cell{1}{1} = {c=3}{},		
+		hlines,
+		vlines,
+	}
+\textbf{Características del equipo donde se configura la cuenta de red}         \\
+\textbf {Marca}&\textbf {Modelo}&\textbf {Serie}\\
+\MARCA&\MODELO&\SERIE
+\end{longtblr}
+}
+{}
 }
 
 \vspace{-25pt}
@@ -229,6 +278,7 @@ Puesto:           &\PUESTOEMPLEADO
 \item Al firmar el Gerente, Subgerente o Director Local que autoriza se da por enterado de las políticas y lineamientos y acepta la corresponsabilidad del uso que el usuario que le dé el usuario al acceso otorgado.
 
 \end{enumerate}}
+
 \begin{longtblr}[
 	label = none,
 	entry = none,
