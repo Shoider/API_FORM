@@ -156,6 +156,10 @@ headheight = 28mm
 		column{2}={l},   
 		row{1}={c},
 		row{5}={c},
+		row{8}={c},
+		row{9}={l},
+		row{10}={c},
+		row{11}={l},
                      cell{1}{1} = {c=4}{0.679\linewidth},
 		cell{2}{3} = {r},
 		cell{2}{4} = {c},
@@ -165,50 +169,26 @@ headheight = 28mm
                      cell{4}{2} = {c=3}{0.679\linewidth},
                      row{6}={c},
                      cell{7}{1}={c},
-                     cell{7}{2}={c},                     
+                     cell{7}{2}={c},    
+		cell{8}{1} = {c=4}{0.679\linewidth}, 
+		cell{9}{1} = {c=4}{0.679\linewidth},      
+		cell{10}{1} = {c=4}{0.679\linewidth}, 
+		cell{11}{1} = {c=4}{0.679\linewidth},               
                      	hlines,
 		vlines,
 	}
           
-          \textbf{Información para el registro de solicitud:} &  &      &  \\
+          \textbf{Información de la solicitud:} &  &      &  \\
 	Numero de ticket: & \NOTICKET & {Fecha de solicitud:}   & \today       \\
           {Memorando / Atenta nota:}&\MEMO\\
          Descripción breve:&  \DESCBREVE\\
             \textbf {Tipo de Cambio:} &\\
             Intersistemas (\INTER) & Administrativo (\ADMIN) & Desarrollador (\DES )& Usuario(\USUA)\\
            Otro (\OTRO )& Describa brevemente:&\DESOTRO\\   
+           \textbf{Descripción detallada:} \\ \DESDET\\
+	\textbf{Justificación:} \\ \JUSTIFICA  
+           
                  
-\end{longtblr}
-
-%%DESCRIPCIÓN DETALLADA
-\vspace{-15pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[100]},
-		cells = {c},
-		hlines,
-		vlines,
-	}
-	\textbf{Descripción detallada de la solicitud} \\ \DESDET  
-\end{longtblr}
-
-%%%%%JUSTIFICACION
-\vspace{-15pt}
-\begin{longtblr}[
-	label = none,
-	entry = none,
-	]{
-		width = \linewidth,
-		colspec = {Q[935]},
-		cells = {c},
-		row{2} = {j},
-		hlines,
-		vlines,
-	}
-	\textbf{Justificación de la solicitud} \\ \JUSTIFICA
 \end{longtblr}
 
 %%%TABLAS DE ALTAS BAJAS Y CAMBIOS
@@ -221,6 +201,9 @@ headheight = 28mm
 \setboolean{altasdes}{\ALTASDES} 
 \newboolean{altasusua}
 \setboolean{altasusua}{\ALTASUSUA} 
+\newboolean{altasotro}
+\setboolean{altasotro}{\ALTASOTRO} 
+
 
 %%PARA BAJAS
 \newboolean{bajasinter}
@@ -231,6 +214,8 @@ headheight = 28mm
 \setboolean{bajasdes}{\BAJASDES} 
 \newboolean{bajasusua}
 \setboolean{bajasusua}{\BAJASUSUA} 
+\newboolean{bajasotro}
+\setboolean{bajasotro}{\BAJASOTRO} 
 
 %% Para Temporalidades
 \newboolean{haytemporal}
@@ -258,7 +243,9 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección A.- Comunicación intersistemas\\
+	
+           \textbf {Sección A.- Comunicación intersistemas}\\
+	\textbf{ALTAS} \\
 	\textbf{No°}&\textbf {Sistema Origen}&\textbf{Función o rol de \\servidor(es) \\origen}&
 	\textbf{Dirección(es) IP/NAT servidor(es) \\origen}&\textbf{Sistema\\ Destino} &
 	\textbf{Función o rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -320,7 +307,8 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección A.- Comunicación intersistemas\\
+	\textbf{Sección A.- Comunicación intersistemas}\\
+	\textbf{BAJAS} \\	
 	\textbf{No°}&\textbf {Sistema Origen}&\textbf{Función o rol de \\servidor(es) \\origen}&
 	\textbf{Dirección(es) IP/NAT servidor(es) \\origen}&\textbf{Sistema\\ Destino} &
 	\textbf{Función o rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -369,7 +357,8 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección B.- Accesos administrativos\\
+	\textbf{Sección B.- Accesos administrativos}\\
+	\textbf{ALTAS} \\
 	\textbf{No°}&\textbf {Nombre(s) de \\ administrador\\(es)}&\textbf{Dirección(es) IP servidor(es) \\origen}&
 	\textbf{Sistema asociado a \\ servidor(es) destino}&
 	\textbf{Función o rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -429,7 +418,9 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección B.- Accesos administrativos\\
+	\textbf{Sección B.- Accesos administrativos}\\
+	\textbf{BAJAS} \\
+
 	\textbf{No°}&\textbf {Nombre(s) de \\ administrador\\(es)}&\textbf{Dirección(es) IP servidor(es) \\origen}&
 	\textbf{Sistema asociado a \\ servidor(es) destino}&
 	\textbf{Función o rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -478,7 +469,8 @@ headheight = 28mm
 		hlines,
 		vlines,
 	}
-	\textbf{ALTAS} \\Sección C.- Accesos de desarrollador\\
+	\textbf{Sección C.- Accesos de desarrollador}\\
+	\textbf{ALTAS} \\
 	\textbf{No°}&\textbf {Nombre(s) de \\ desarrollador\\(es)}&\textbf{Dirección(es) IP dispositivo(s) \\origen}&
 	\textbf{Sistema asociado a \\ servidor(es) destino}&
 	\textbf{Función o rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -539,8 +531,9 @@ vlines,
 		cell{2}{1}={c=8}{0.978\linewidth},    
 		hlines,
 		vlines,
-	}
-	\textbf{BAJAS} \\Sección C.- Accesos de desarrollador\\
+	}	
+	\textbf{Sección C.- Accesos de desarrollador}\\
+	\textbf{BAJAS} \\
 	\textbf{No°}&\textbf {Nombre(s) de \\ desarrollador\\(es)}&\textbf{Dirección(es) IP dispositivo(s) \\origen}&
 	\textbf{Sistema asociado a \\ servidor(es) destino}&
 	\textbf{Función o rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -588,8 +581,9 @@ vlines,
 		cell{2}{1}={c=8}{0.978\linewidth},    
 		hlines,
 		vlines,
-	}
-	\textbf{ALTAS} \\Sección D.- Accesos de usuario\\
+	}	
+	\textbf{Sección D.- Accesos de usuario}\\
+	\textbf{ALTAS} \\
 	\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s) \\o zona(s)\\origen}&\textbf{Segmento(s)/\\dirección(es)IP(s) \\origen}&
 	\textbf{Sistema asociado a \\ servidor(es) destino}&
 	\textbf{Rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -650,7 +644,8 @@ vlines,
 		hlines,
 		vlines,
 	}
-	\textbf{BAJAS} \\Sección D.- Accesos de usuarios\\
+	\textbf{Sección D.- Accesos de usuario}\\
+	\textbf{BAJAS} \\
 	\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s) \\o zona(s)\\origen}&\textbf{Segmento(s)/\\dirección(es)IP(s) \\origen}&
 	\textbf{Sistema asociado a \\ servidor(es) destino}&
 	\textbf{Rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
@@ -676,6 +671,119 @@ vlines,
 }
 }
 }%%FIN DE USUARIOS
+
+%%%%OTRO
+
+\setboolean{usua}{\OTROBOOL} 
+\ifthenelse{\boolean{usua}}
+{
+%%ALTAS OTRO ENCABEZADO
+\ifthenelse{\boolean{altasotro}}
+{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
+		cells = {c},
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
+		hlines,
+		vlines,
+	}	
+	\textbf{Sección E.- Otros}\\
+	\textbf{ALTAS} \\
+	\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s) \\o zona(s)\\origen}&\textbf{Segmento(s)/\\dirección(es)IP(s) \\origen}&
+	\textbf{Sistema asociado a \\ servidor(es) destino}&
+	\textbf{Rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
+\end{longtblr}
+
+%ALTASUSUARIO CONTENIDO DE LA TABLA
+\DTLforeach*{ALTASOTRO}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
+  hlines,
+vlines,
+                     cells={c},
+ }
+\No&\NombreUsua&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
+\end{longtblr}
+}
+}
+
+%%%%%TEMPORALIDAD OTRO
+\setboolean{haytemporal}{\HAYTEMPORALOTRO} 
+\ifthenelse{\boolean{haytemporal}}
+{
+\vspace{-20pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		cells = {c},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Temporalidad de los cambios} \\ \TEMPOOTRO
+\end{longtblr}
+} %% TEMPORAL
+
+%%BAJAS OTRO ENCABEZADO
+\ifthenelse{\boolean{bajasotro}}
+{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},
+		cells = {c},
+		cell{1}{1}={c=8}{0.978\linewidth},          
+		cell{2}{1}={c=8}{0.978\linewidth},    
+		hlines,
+		vlines,
+	}
+	\textbf{Sección E.- Otros}\\
+	\textbf{BAJAS} \\
+	\textbf{No°}&\textbf {Nombre(s) de \\ usuario(s) \\o zona(s)\\origen}&\textbf{Segmento(s)/\\dirección(es)IP(s) \\origen}&
+	\textbf{Sistema asociado a \\ servidor(es) destino}&
+	\textbf{Rol de \\servidor(es) \\destino}&\textbf{Dirección(es) IP/NAT servidor(es) \\destino}&
+	\textbf{Protocolo\\ TCP o UDP}&\textbf{Puertos}
+\end{longtblr}
+
+%BAJAS OTRO CONTENIDO DE LA TABLA
+\DTLforeach*{BAJASOTRO}{\No=N, \NombreUsua=SO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
+{
+\vspace{-37pt}
+ \begin{longtblr}[
+ label = none,
+ entry = none,
+ ]{
+  width = \linewidth,
+  colspec ={Q[0.5]Q[1.25]Q[2]Q[1.25]Q[1.3]Q[2]Q[1]Q[0.7]},                     
+  hlines,
+ vlines,
+                     cells={c},
+ }
+\No&\NombreUsua&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
+\end{longtblr}
+}
+}
+}%%FIN DE OTRO
+
+
 
 \par 
 \clearpage
