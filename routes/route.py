@@ -685,6 +685,8 @@ class FileGeneratorRoute(Blueprint):
 
                     file.write("\\newcommand{\\NOMBREENLACE}{"+ datosRegistro.get('nombreEnlace', ' ') + "}"+ os.linesep)
 
+                    file.write("\\newcommand{\\EXTINTERNO}{" + datosRegistro.get('extinterno', ' ') + "}"+ os.linesep)
+
 
                     file.write("\\newcommand{\\SIMUNDO}{" + siMundo + "}" + os.linesep)
                     file.write("\\newcommand{\\NOMUNDO}{" + noMundo + "}" + os.linesep)

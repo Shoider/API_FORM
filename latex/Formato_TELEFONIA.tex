@@ -78,7 +78,10 @@ headheight = 30mm
 
 \begin{document}
 \sloppy
-
+\newboolean{movcambio}
+\setboolean{movcambio}{\MOVCAMBIO}
+\newboolean{movbaja}
+\setboolean{movbaja}{\MOVBAJA}
 \begin{longtblr}[
 	label = none,
 	entry = none,          
@@ -121,6 +124,47 @@ Puesto: & \PUESTOUSUARIO\\
 Unidad Aministrativa:           &\UAUSUARIO
 \end{longtblr}
 
+
+\ifthenelse{\boolean{movcambio}}
+{
+\vspace{-37pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[30]Q[70]},
+		column{1}={r},
+		column{2}={l},    
+		hlines,
+		vlines,
+	}
+Extensión:                     &  \EXTINTERNO
+
+\end{longtblr}
+}{
+\ifthenelse{\boolean{movbaja}}
+{
+\vspace{-37pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[30]Q[70]},  
+		column{1}={r},
+		column{2}={l},    
+		hlines,
+		vlines,
+	}
+Extensión:                     &  \EXTINTERNO
+
+\end{longtblr}
+}{}
+}
+
+
+
 \newboolean{externo}
 \setboolean{externo}{\EXTERNO}
 \ifthenelse{\boolean{externo}}
@@ -148,11 +192,10 @@ Puesto:           &\PUESTOEMPLEADO
 \end{longtblr}
 }
 
-\newboolean{movcambio}
-\setboolean{movcambio}{\MOVCAMBIO}
-\newboolean{movbaja}
-\setboolean{movbaja}{\MOVBAJA}
-
+%\newboolean{movcambio}
+%\setboolean{movcambio}{\MOVCAMBIO}
+%\newboolean{movbaja}
+%\setboolean{movbaja}{\MOVBAJA}
 
 \ifthenelse{\boolean{movcambio}}
 {
