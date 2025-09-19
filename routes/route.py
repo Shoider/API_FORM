@@ -145,36 +145,12 @@ class FileGeneratorRoute(Blueprint):
 
             for registro in registros:
                 registro.pop('isNew', None)
-            #    if "nombreSistema" in registro:
-                    ##AGREGA UN SALTO DE LINEA CADA XX CARÁCTERES PARA EVITAR LO QUE EL FORMATO DE LaTeX NO HACE
-                    ##PARA nombresistema
-            #        sistema=registro["nombreSistema"]
-            #        sistema_modificado = '\\\\'.join([sistema[i:i+13] for i in range(0, len(sistema), 13)])
-            #        registro["nombreSistema"] = sistema_modificado
-            #    if "siglas" in registro:
-                    ##PARA siglas
-            #        siglas=registro["siglas"]
-            #        siglas_modificado = '\\\\'.join([siglas[i:i+8] for i in range(0, len(siglas), 8)])
-            #        registro["siglas"] = siglas_modificado
                 if "url" in registro:
                     url = registro["url"]
-                    
-                    # Verifica si comienza con http:// o https://
-                    #if url.startswith("http://") or url.startswith("https://"):
-                        #url_modificada = f"\\url{{{url}}}"
+                    # Reemplaza los caracteres específicos por su versión con "\"
+                    url = url.replace("%", "\%").replace("#", "\#").replace("^^", "\^^")
                     url_modificada = "\\url{" + url + "}"
-
-                    #else:
-                        # Si no es una URL válida, puedes decidir cómo formatearla
-                        #url_modificada = url  
-                    
                     registro["url"] = url_modificada
-
-            #    if "puertosServicios" in registro:
-            #        ##PARA puertos, aqui modifique para que fuera cada 3 caracteres 
-            #        puertos=registro["puertosServicios"]
-            #        puertos_modificado = '\\\\'.join([puertos[i:i+8] for i in range(0, len(puertos), 8)])
-            #        registro["puertosServicios"] = puertos_modificado
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
@@ -203,9 +179,6 @@ class FileGeneratorRoute(Blueprint):
         try:
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
-            #if not registros:
-             #   df = pd.DataFrame([{}], columns=['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo'])
-
             columnas = ['id', 'movimiento', 'nomenclatura', 'nombreSistema', 'direccion', 'sistemaOperativo']
             for registro in registros:
                 registro.pop('isNew', None)
@@ -215,31 +188,7 @@ class FileGeneratorRoute(Blueprint):
             if not registros:
                 df = pd.DataFrame([{}], columns=columnas)
             else:
-                df = pd.DataFrame(registros)
-            #for registro in registros:
-            #    registro.pop('isNew', None)
-            #    if "direccion" in registro:
-                    ##AGREGA UN SALTO DE LINEA CADA XX CARÁCTERES PARA EVITAR LO QUE EL FORMATO DE LaTeX NO HACE
-                    ##PARA DIRECCION
-            #        direccion=registro["direccion"]
-            #        direccion_modificada = '\\\\'.join([direccion[i:i+14] for i in range(0, len(direccion), 14)])
-            #        registro["direccion"] = direccion_modificada
-            #    if "nomenclatura" in registro:
-                    ##NOMENCLATURA
-            #        nomenclatura=registro["nomenclatura"]
-            #        nomenclatura_modificada = '\\\\'.join([nomenclatura[i:i+14] for i in range(0, len(nomenclatura), 14)])
-            #        registro["nomenclatura"] = nomenclatura_modificada
-            #    if "nombreSistema" in registro:
-                    ##NOMBRESISTEMA
-            #        nombresistema=registro["nombreSistema"]
-            #        nombresistema_modificado = '\\\\'.join([nombresistema[i:i+14] for i in range(0, len(nombresistema), 14)])
-            #        registro["nombreSistema"] = nombresistema_modificado
-            #    if "sistemaOperativo" in registro:
-                    #SISTEMAOPERATIVO
-            #        sistemaoperativo=registro["sistemaOperativo"]
-            #        sistema_modificado = '\\\\'.join([sistemaoperativo[i:i+14] for i in range(0, len(sistemaoperativo), 14)])
-            #        registro["sistemaOperativo"] = sistema_modificado
-   
+                df = pd.DataFrame(registros)           
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
@@ -268,7 +217,15 @@ class FileGeneratorRoute(Blueprint):
                 df = pd.DataFrame([{}], columns=columnas)
             else:
                 df = pd.DataFrame(registros)
-            
+
+            for registro in registros:
+                registro.pop('isNew', None)
+                if "URL" in registro:
+                    url = registro["URL"] 
+                    # Reemplaza los caracteres específicos por su versión con "\"
+                    url = url.replace("%", "\%").replace("#", "\#").replace("^^", "\^^")                   
+                    url_modificada = "\\url{" + url + "}"
+                    registro["URL"] = url_modificada            
 
             df = pd.DataFrame(registros)
             #df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
