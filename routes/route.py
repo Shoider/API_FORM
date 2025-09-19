@@ -3,6 +3,7 @@ import pandas as pd
 import tempfile
 import shutil
 import os
+import re
 
 from flask import Blueprint, request, jsonify, send_file
 from io import BytesIO
@@ -38,7 +39,7 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error fetching request data: {e}")
             return 500, "Error fetching request data", None
-        
+    
     def crear_csv_desde_registros(self, temp_dir, nombre_archivo_csv, registros, Alta):
         """
         Crea un archivo CSV desde registros, asegurando que todas las columnas requeridas estén presentes.
@@ -132,7 +133,7 @@ class FileGeneratorRoute(Blueprint):
         try:
             out_csv_path = os.path.join(temp_dir, nombre_archivo_csv)
 
-            columnas = ['id', 'movimiento', 'nombreSistema', 'siglas', 'url', 'puertosServicios']
+            columnas = ['id', 'movimiento', 'nombreSistema', 'siglas', 'puertosServicios','url']
             for registro in registros:
                 for col in columnas:
                     registro.setdefault(col, "")
@@ -156,10 +157,19 @@ class FileGeneratorRoute(Blueprint):
             #        siglas_modificado = '\\\\'.join([siglas[i:i+8] for i in range(0, len(siglas), 8)])
             #        registro["siglas"] = siglas_modificado
                 if "url" in registro:
-                    ##PARA url
-                    url=registro["url"]
-                    url_modificada = '\\\\'.join([url[i:i+15] for i in range(0, len(url), 15)])
+                    url = registro["url"]
+                    
+                    # Verifica si comienza con http:// o https://
+                    #if url.startswith("http://") or url.startswith("https://"):
+                        #url_modificada = f"\\url{{{url}}}"
+                    url_modificada = "\\url{" + url + "}"
+
+                    #else:
+                        # Si no es una URL válida, puedes decidir cómo formatearla
+                        #url_modificada = url  
+                    
                     registro["url"] = url_modificada
+
             #    if "puertosServicios" in registro:
             #        ##PARA puertos, aqui modifique para que fuera cada 3 caracteres 
             #        puertos=registro["puertosServicios"]

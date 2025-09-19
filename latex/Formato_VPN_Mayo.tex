@@ -5,6 +5,7 @@
 
 \usepackage{array}
 \usepackage{soul}
+\usepackage{url} 
 
 \usepackage{graphicx}
 \usepackage{longtable}
@@ -405,16 +406,14 @@ Sistema Operativo:&\SO& Versión del S.O. :&\VERSIONSO
  label = none,
  entry = none,
  ]{
-		colspec = {Q[5]Q[6]Q[30]Q[14]Q[25]Q[30]},                      
+		colspec = {Q[5,c]Q[6,c]Q[30,c]Q[14,c]Q[25,l]Q[30,c]},                      
 		hlines,
-		vlines,
-		cells={c},                                
+		vlines,                               
  }
 {\ID}&{\ABC}&{\SIST}&{\SIGLAS}&{\URL}&{ \PUERTOS}
 \end{tblr}
 }
 }
-
 
 \ifthenelse{\boolean{accesoremoto}}
 {
