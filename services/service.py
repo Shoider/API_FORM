@@ -1,3 +1,4 @@
+import datetime
 from logger.logger import Logger
 from bson.errors import InvalidId
 from bson import ObjectId
@@ -66,5 +67,29 @@ class Service:
             return {"mensaje":"contador eliminado con exito"},404
         else:
             return {"mensaje":"id no encontrado"},400
+    def registrar_error(self,data_collection_name, mensaje):
+        """
+        Guarda un error en la base de datos 'errores'.
+
+        Args:
+            base (str): Nombre de la base de datos relacionada al error.
+            mensaje (str): Mensaje descriptivo del error.
+            detalles (dict, optional): Detalles adicionales del error.
+        """
+        now = datetime.datetime.now()
+        fecha= now.strftime("%d-%m-%Y %H:%M:%S")
+        error_data = {
+            "Base de datos": data_collection_name,
+            "Mensaje": mensaje,
+            "Fecha": fecha
+        }
+        try:
+            # Suponiendo que tienes un cliente MongoDB en self.service.db
+            self.db_conn.db["Errores"].insert_one(error_data)
+        except Exception as e:
+            self.logger.error(f"No se pudo registrar el error.")
+
+    # Ejemplo de uso:
+    # self.registrar_error("vpnMayo", "Error al compilar XeLaTeX", {"trace": str(e)})
         
     

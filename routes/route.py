@@ -554,6 +554,7 @@ class FileGeneratorRoute(Blueprint):
                     noformato = datosRegistro.get('_id')
                     self.service.borrar_registro(noformato,"vpnMayo")
                     self.service.borrar_contador(noformato,"vpnMayoCounters")
+                    self.service.registrar_error("VPN", "Error al compilar XeLaTeX")
                     return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
                 
                 # Cargar pdf
@@ -722,6 +723,7 @@ class FileGeneratorRoute(Blueprint):
             noformato = datosRegistro.get('_id')
             self.service.borrar_registro(noformato,"tel")
             self.service.borrar_contador(noformato,"telCounters")
+            self.service.registrar_error("Telefonia", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
@@ -1041,6 +1043,7 @@ class FileGeneratorRoute(Blueprint):
             self.service.borrar_registro(noformato,"rfc")
             #self.logger.debug(f"Fallo generando counter")
             self.service.borrar_contador(noformato,"rfcCounters")
+            self.service.registrar_error("RFC", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
@@ -1210,6 +1213,7 @@ class FileGeneratorRoute(Blueprint):
             noformato = datosRegistro.get('_id')
             self.service.borrar_registro(noformato,"internet")
             self.service.borrar_contador(noformato,"internetCounters")
+            self.service.registrar_error("Internet", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
     
     def healthcheck(self):
