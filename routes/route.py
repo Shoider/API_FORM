@@ -151,6 +151,14 @@ class FileGeneratorRoute(Blueprint):
                     url = url.replace("%", "\%").replace("#", "\#").replace("^^", "\^^")
                     url_modificada = "\\url{" + url + "}"
                     registro["url"] = url_modificada
+                if "siglas" in registro:
+                    siglas=registro["siglas"]
+                    siglas_modificado = siglas.replace("%", "\%").replace("#", "\#").replace("^^", "\^^").replace("_","\_")
+                    registro["siglas"] = siglas_modificado
+                if "nombreSistema" in registro:
+                    nombre_sistema=registro["nombreSistema"]
+                    nombre_sistema_modificado = nombre_sistema.replace("%", "\%").replace("#", "\#").replace("^^", "\^^").replace("_","\_")
+                    registro["nombreSistema"]=nombre_sistema_modificado
 
             df = pd.DataFrame(registros)
             df = df.rename(columns={'id': 'ID'})  # Siempre renombra 'id' a 'N'
@@ -225,7 +233,15 @@ class FileGeneratorRoute(Blueprint):
                     # Reemplaza los caracteres específicos por su versión con "\"
                     url = url.replace("%", "\%").replace("#", "\#").replace("^^", "\^^")                   
                     url_modificada = "\\url{" + url + "}"
-                    registro["URL"] = url_modificada            
+                    registro["URL"] = url_modificada
+                if "SIGLAS" in registro:  
+                    siglas =registro["SIGLAS"]   
+                    siglas_modificada=siglas.replace("%", "\%").replace("#", "\#").replace("^^", "\^^").replace("_","\_")
+                    registro["SIGLAS"]=siglas_modificada
+                if "NOMBRE" in registro:
+                    nombre_sistema= registro["NOMBRE"]
+                    nombre_sistema_modificado=nombre_sistema.replace("%", "\%").replace("#", "\#").replace("^^", "\^^").replace("_","\_")
+                    registro["NOMBRE"]=nombre_sistema_modificado       
 
             df = pd.DataFrame(registros)
             #df = df.rename(columns={'id': 'IDU'})  # Siempre renombra 'id' a 'N'
