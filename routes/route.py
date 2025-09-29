@@ -565,12 +565,8 @@ class FileGeneratorRoute(Blueprint):
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
                     self.logger.info(f"Archivo PDF generado para {archivo_tex}")
-                except Exception as e:
-                    self.logger.error(f"Error generando PDF: {e}")
-                    noformato = datosRegistro.get('_id')
-                    self.service.borrar_registro(noformato,"vpnMayo")
-                    self.service.borrar_contador(noformato,"vpnMayoCounters")
-                    self.service.registrar_error("VPN", "Error al compilar XeLaTeX")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")                    
                     return jsonify({"error": f"Error al compilar XeTex PDF: {e}"}), 500
                 
                 # Cargar pdf
@@ -596,11 +592,15 @@ class FileGeneratorRoute(Blueprint):
             return jsonify({"error": "Datos invalidos", "message": err.messages}), 422
         except Exception as e:
             self.logger.error(f"Error generando PDF: {e}")
+            noformato = datosRegistro.get('_id')
+            self.service.borrar_registro(noformato,"vpnMayo")
+            self.service.borrar_contador(noformato,"vpnMayoCounters")
+            self.service.registrar_error("VPN", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
         finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)  
-            self.logger.info(f"Directorio temporal: {temp_dir}")        
+            shutil.rmtree(temp_dir)  
+            #self.logger.info(f"Directorio temporal: {temp_dir}")        
 
     def tel(self):
         try:
@@ -1231,6 +1231,9 @@ class FileGeneratorRoute(Blueprint):
             self.service.borrar_contador(noformato,"internetCounters")
             self.service.registrar_error("Internet", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
     
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
