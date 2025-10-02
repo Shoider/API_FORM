@@ -855,6 +855,7 @@ class FileGeneratorRoute(Blueprint):
                     #file.write("\\newcommand{\\SOLIBOOL}{" + solicitantebool + "}" + os.linesep)
                     #file.write("\\newcommand{\\ENLACEBOOL}{" + enlaceinbool + "}" + os.linesep)
 
+                    file.write("\\newcommand{\\FECHASOLI}{"+ datosRegistro.get('fecha', '~')+"}"+ os.linesep)
                     file.write("\\newcommand{\\NOTICKET}{"+ datosRegistro.get('noticket', '')+"}"+ os.linesep)
                     file.write("\\newcommand{\\MEMO}{"+ datosRegistro.get('memo', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DESCBREVE}{" + datosRegistro.get('descbreve', '') + "}"+ os.linesep)
