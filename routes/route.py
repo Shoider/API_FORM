@@ -76,6 +76,10 @@ class FileGeneratorRoute(Blueprint):
                 
                 if "PUER" in registro:
                     registro_procesado["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                if "SO" in registro:
+                    registro_procesado["SO"] = "~" + " "+ registro["SO"]
+                if "SD" in registro:
+                    registro_procesado["SD"] = "~" + " "+ registro["SD"]
                 
                 # Procesar temporalidad
                 cambio = ""
@@ -93,7 +97,7 @@ class FileGeneratorRoute(Blueprint):
                     registro_procesado["N"] = str(registro["id"]) + ("\\\\" + str(cambio) if Alta else "")
                 
                 # Añadir todos los campos posibles (aunque estén vacíos)
-                for col in ['SO', 'FRO', 'SD', 'FRD', 'PRO']:
+                for col in [ 'FRO', 'FRD', 'PRO']:
                     if col in registro:
                         registro_procesado[col] = registro[col]
                 
@@ -1062,9 +1066,9 @@ class FileGeneratorRoute(Blueprint):
             self.service.borrar_contador(noformato,"rfcCounters")
             self.service.registrar_error("RFC", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
-        finally:
-            # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
+        # finally:
+        #     # Eliminar el directorio temporal
+        #     shutil.rmtree(temp_dir)
 
     def inter(self):
 

@@ -21,6 +21,7 @@ RUN apk update && \
         texlive \
         texlive-xetex \
         texmf-dist-most \
+        texmf-dist-langspanish \
         font-noto \
         tzdata \
         curl \

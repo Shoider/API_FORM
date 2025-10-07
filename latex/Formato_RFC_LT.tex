@@ -1,9 +1,10 @@
 \input{Datos.txt}
 %**Giro de página**
 \documentclass[letterpaper,11pt,landscape]{article}
-
+%\usepackage{hyphenat}
 \usepackage{graphicx}
 \usepackage{longtable}
+\usepackage[spanish]{babel}
 
 \usepackage{datatool}
 %%Carga de csv's 
@@ -97,7 +98,7 @@ headheight = 28mm
 \rfoot{}
 
 \begin{document}
-\sloppy
+\fussy
 %%%INFORMACIÓN DEL SOLICITANTE Y ENLACE INFORMATICO
 \vspace{-25pt}
 \begin{longtblr}[
@@ -256,6 +257,7 @@ headheight = 28mm
 \DTLforeach*{ALTASINTER}{\No=N, \SistemaOri=SO, \FuncionOri=FRO, \IPOri=IPO, \SistemaDes=SD, \FuncionDes=FRD, \IPDes=IPD, \Protocolo=PRO, \Puertos=PUER}
 {
 \vspace{-37pt}
+
  \begin{longtblr}[
  label = none,
  entry = none,
@@ -266,7 +268,8 @@ headheight = 28mm
   vlines,
                      cells={c},
  }
-\No&\SistemaOri&\FuncionOri&\IPOri&\SistemaDes& \FuncionDes&\IPDes&\Protocolo& \Puertos
+
+\No&{\SistemaOri}&\FuncionOri&\IPOri&{\SistemaDes}& \FuncionDes&\IPDes&\Protocolo& \Puertos
 \end{longtblr}
 }
 }%%FIN CONDICIONAL IF
