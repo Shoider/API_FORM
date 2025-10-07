@@ -1066,9 +1066,9 @@ class FileGeneratorRoute(Blueprint):
             self.service.borrar_contador(noformato,"rfcCounters")
             self.service.registrar_error("RFC", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
-        # finally:
-        #     # Eliminar el directorio temporal
-        #     shutil.rmtree(temp_dir)
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
 
     def inter(self):
 
