@@ -69,11 +69,15 @@ class FileGeneratorRoute(Blueprint):
                 
                 # Procesar cada campo según sea necesario
                 if "IPO" in registro:
-                    registro_procesado["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                
+                    #registro_procesado["IPO"] = registro["IPO"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    registro_IPO= registro["IPO"]
+                    registro_IPO_modificado="\\url{" + registro_IPO + "}"
+                    registro_procesado["IPO"] = registro_IPO_modificado
                 if "IPD" in registro:
-                    registro_procesado["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
-                
+                    #registro_procesado["IPD"] = registro["IPD"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
+                    registro_IPD=  registro["IPD"]
+                    registro_IPD_modificado="\\url{" + registro_IPD + "}"
+                    registro_procesado["IPD"] = registro_IPD_modificado
                 if "PUER" in registro:
                     registro_procesado["PUER"] = registro["PUER"].replace(" ", "\\\\").replace(", ", "\\\\").replace("/", "\\\\/")
                 if "SO" in registro:
