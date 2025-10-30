@@ -663,6 +663,8 @@ class FileGeneratorRoute(Blueprint):
 
                     file.write("\\newcommand{\\TIPOUSUARIO}{"+ datosRegistro.get('tipoUsuario', ' ')+"}"+ os.linesep)
 
+                    file.write("\\newcommand{\\FECHASOLI}{"+ datosRegistro.get('fecha', '')+"}"+ os.linesep)
+
                     file.write("\\newcommand{\\ACTIVACION}{"+ datosRegistro.get('activacion', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\EXPIRACION}{" + datosRegistro.get('expiracion', ' ') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', ' ') + "}"+ os.linesep)
