@@ -27,6 +27,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v3/telefonia", methods=["POST"])(self.tel)
         self.route("/api/v3/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v3/internet", methods=["POST"])(self.inter)
+        self.route("/api/v3/dns", methods=["POST"])(self.dns)
         self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -1243,7 +1244,119 @@ class FileGeneratorRoute(Blueprint):
         finally:
             # Eliminar el directorio temporal
             shutil.rmtree(temp_dir)
-    
+    def dns(self):
+        try:
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            
+            # Validacion
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
+            
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('dns', validated_data.get('id'))
+
+            if status_code == 201:
+                noformato = datosRegistro.get('_id', ' ')
+                self.logger.info(f"Registro DNS agregado con ID: {noformato}")
+            
+            # Tipo de Movimiento
+                alta = "X" if datosRegistro.get('movimiento') == "ALTA" else " "
+                baja = "X" if datosRegistro.get('movimiento') == "BAJA" else " "
+                cambio = "X" if datosRegistro.get('movimiento') == "CAMBIO" else " "
+
+            #Tipo de registro CNA o CONAGUA
+                cna = "X" if datosRegistro.get('registro') == "CNA" else " "
+                conagua = "X" if datosRegistro.get('registro') == "CONAGUA" else " "
+            
+            # Direccion
+                direcion = datosRegistro.get('direccion', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
+            
+            # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+
+                with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '') + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\FECHASOLICITUD}{"+ datosRegistro.get('fecha', '~')+"}"+ os.linesep)
+
+                    file.write("\\newcommand{\\ALTA}{" + alta + "}" + os.linesep)
+                    file.write("\\newcommand{\\BAJA}{" + baja + "}" + os.linesep)
+                    file.write("\\newcommand{\\CAMBIO}{" + cambio + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\NOMBRERESPONSABLE}{" + datosRegistro.get('nombreResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTORESPONSABLE}{" + datosRegistro.get('puestoResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + datosRegistro.get('nombreUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAUSUARIO}{" + datosRegistro.get('areaUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{" + datosRegistro.get('puestoUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\TELEFONOUSUARIO}{" + datosRegistro.get('telefonoUsuario', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTUSUARIO}{" + datosRegistro.get('extUsuario', '') + "}"+ os.linesep)
+                    
+                    file.write("\\newcommand{\\CNA}{" + cna + "}" + os.linesep)
+                    file.write("\\newcommand{\\CONAGUA}{" + conagua + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREDNS}{" + datosRegistro.get('nombreRegistro', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIRIP}{" + datosRegistro.get('IP', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREAPLICACION}{" + datosRegistro.get('nombreAplicacion', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justfiicacion', '') + "}"+ os.linesep)
+
+
+
+            # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_DNS.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_DNS.pdf")
+
+                # Copia Formato_TELEFONIA.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_DNS.tex", archivo_tex)
+
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
+            # Compilar XeLaTeX
+                try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar XeLaTeX: {e}"}), 500
+                
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
+
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="RegistroTelefonia.pdf",
+                    as_attachment=True,
+                )
+            
+            else:
+                return jsonify(datosRegistro), status_code
+
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF")
+            noformato = datosRegistro.get('_id')
+            self.service.borrar_registro(noformato,"tel")
+            self.service.borrar_contador(noformato,"telCounters")
+            self.service.registrar_error("Telefonia", "Error al compilar XeLaTeX")
+            return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
+
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
         return jsonify({"status": "Up"}), 200

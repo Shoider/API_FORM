@@ -1,0 +1,216 @@
+%\textbf{\emph{ejemplo}}
+\input{Datos.txt}
+\documentclass[letterpaper,11pt]{article}
+\usepackage{ifthen}
+
+% *** Fuente ***
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
+
+% *** Margenes y Tamaño de Hoja
+\usepackage{geometry}
+\geometry{
+left = 15mm,
+right = 15mm,
+top = 45mm,
+bottom = 20mm,
+headheight = 30mm
+}
+
+% *** Imagenes ***
+\usepackage{graphicx}
+\graphicspath{./imagenes}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
+
+% *** Fecha ***
+%\usepackage[useregional]{datetime2}
+\usepackage{datetime2}
+\DTMsetdatestyle{ddmmyyyy}
+
+%No cortar palabras
+\usepackage[none]{hyphenat}
+
+
+% *** Encabezado ***
+\usepackage{lastpage} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+
+\lhead{
+		\begin{tblr}{
+		width = \linewidth,
+		colspec = {Q[120]Q[507]Q[70]Q[70]},
+		row{2} = {c},
+		row{3} = {c},
+        row{4} = {c},
+		column{2} = {c},
+        cell{4}{2} = {h},
+		cell{1}{1} = {r=4}{c},
+		cell{1}{2} = {r=3}{},
+		cell{1}{3} = {c},
+		cell{1}{4} = {c},
+		vlines,
+		hline{1,5} = {-}{},
+		hline{2-3} = {3-4}{},
+		hline{4} = {2-4}{},
+	}
+	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{ COMISIÓN NACIONAL DEL AGUA}\\{\footnotesize SUBDIRECCIÓN GENERAL DE ADMINISTRACIÓN}\\{\footnotesize Gerencia de Tecnologías de Información y Comunicaciones} \\{\footnotesize Subgerencia de Intranet  e Internet.}} & \tiny Página    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \tiny Versión  & \tiny XXXX \\
+	&                                                                                       & \tiny Fecha de Formato & {\tiny 2025 }    \\
+	& { \textbf {Solicitud de registro DNS internos.}         }                              &  \tiny No. Formato & {\tiny \NOFORMATO }
+\end{tblr}
+}
+
+\chead{}
+\rhead{}
+
+% *** Pie de Pagina
+\lfoot{\tiny Nota: La firma de esta solicitud implica conocer y aceptar la normatividad vigente, así como el compromiso de un uso ético y racional de los servicios asignados.  }
+\cfoot{}
+
+\begin{document}
+\sloppy
+
+\begin{longtblr}[
+	label = none,
+	entry = none,          
+	]{
+		width = \linewidth,
+		colspec = {Q[203]Q[200]Q[200]Q[200]},
+		column{2} = {c},
+                     column{4} = {c},
+                     cell{3}{2}={c},
+                     cell{3}{4}={c},
+                     cell{4}{4}={c},
+                     cell{2}{3} = {c},
+		cell{2}{4} = {c},
+	}
+	~  &~         & Fecha de la solicitud:   & \FECHASOLICITUD       \\
+	Tipo de Movimiento: & Alta (\ALTA) & Baja (\BAJA) & Cambio (\CAMBIO) 
+\end{longtblr}
+
+%\vspace{-30pt}
+%\begin{longtblr}[
+%	label = none,
+%	entry = none,
+%	]{
+%		width = \linewidth,
+%		colspec = {Q[30]Q[70]},
+%                     %row{1}={dorado},   
+%		column{1}={r},
+%		column{2}={l},    
+%		row{1} = {c},             
+%		cell{1}{1} = {c=2}{0.874\linewidth},
+%		hlines,
+%		vlines,
+%	}
+%\textbf{Datos de usuario (a) responsable de la aplicación)} &   \\
+%Nombre:                     & NOMBRERESPONSABLE
+%
+%\end{longtblr}
+
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[30]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},
+		row{4} = {c},             
+		cell{4}{1} = {c=2}{0.874\linewidth},
+		hlines,
+		vlines,
+	}
+\textbf{Datos de usuario (a) responsable de la aplicación} &   \\
+Nombre: & \NOMBRERESPONSABLE \\
+Puesto: &\PUESTORESPONSABLE\\
+\textbf{Datos de usuario (a) solicitante} &   \\
+Nombre:                     & \NOMBREUSUARIO \\
+Área: &   \AREAUSUARIO  \\
+Puesto:   & \PUESTOUSUARIO  \\
+Dirección: & Insurgentes Sur 2416, Col Copilco el Bajo, C. P. 04340, Del. Coyoacán\\
+Teléfono y Ext.:           &  \TELEFONOUSUARIO, \EXTUSUARIO
+\end{longtblr}
+\vspace{-15pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,          
+	]{
+		width = \linewidth,
+		colspec = {Q[300]Q[100]Q[300]Q[100]},
+		cell{1}{1} = {c=4}{0.874\linewidth},		
+                     cell{2}{2}={c},
+		cell{2}{4}={c},
+		cell{3}{2} = {c=3}{0.274\linewidth},
+		cell{4}{2} = {c=3}{0.474\linewidth},
+		cell{5}{2} = {c=3}{0.474\linewidth},
+		column{1}={r},
+		column{3}={r},
+		row{1} = {c},      
+		hlines,
+		vlines,
+	}
+	\textbf{Datos del regitro DNS)} &&&   \\
+	Registro cna.gob.mx & (\CNA)         & Registro conagua.gob.mx   & (\CONAGUA)       \\
+	Nombre del registro DNS: & \NOMBREDNS \\
+	Dirección IP:&\DIRIP\\
+	Nombre de la aplicación asociado al DNS solicitado: & \NOMBREAPLICACION
+\end{longtblr}
+
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Justificación del servicio solicitado} \\ \JUSTIFICACION
+\end{longtblr}
+%\clearpage
+%\textbf{\small Políticas y lineamientos:}
+%{  \small\begin{enumerate}
+%\item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedida de las configuraciones solicitadas.
+%
+%\end{enumerate}}
+
+
+\vspace{50pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			row{1} = {c},
+		}
+	%	Nombres Cargos y Firmas                      &                                                                                                       \\
+		{Usuario(a) que acepta
+                      \\[1cm] \rule{5cm}{0.5mm}\\\NOMBREUSUARIO\\\PUESTOUSUARIO} & 
+                      {Responsable de la aplicación
+                      \\[1cm] \rule{5cm}{0.5mm}\\\NOMBRERESPONSABLE\\\PUESTORESPONSABLE} &
+		{Aprobación del servicio
+		\\[1cm] \rule{5cm}{0.5mm}\\\NOMBREAPROBA\\\PUESTOAPROBA} 
+\end{longtblr}
+
+\end{document}
