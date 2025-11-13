@@ -1349,13 +1349,13 @@ class FileGeneratorRoute(Blueprint):
         except Exception as e:
             self.logger.error(f"Error generando PDF")
             noformato = datosRegistro.get('_id')
-            self.service.borrar_registro(noformato,"tel")
-            self.service.borrar_contador(noformato,"telCounters")
-            self.service.registrar_error("Telefonia", "Error al compilar XeLaTeX")
+            #self.service.borrar_registro(noformato,"tel")
+            #self.service.borrar_contador(noformato,"telCounters")
+            #self.service.registrar_error("Telefonia", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
-        finally:
+        #finally:
             # Eliminar el directorio temporal
-            shutil.rmtree(temp_dir)
+            #shutil.rmtree(temp_dir)
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""
