@@ -1305,6 +1305,8 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\NOMBREAPLICACION}{" + datosRegistro.get('nombreAplicacion', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justfiicacion', '') + "}"+ os.linesep)
 
+                    file.write("\\newcommand{\\NOMBREAPROBA}{" + datosRegistro.get('nombreAproba', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOAPROBA}{" + datosRegistro.get('puestoAproba', '') + "}"+ os.linesep)
 
 
             # Preparar archivos en el directorio temporal
