@@ -1303,7 +1303,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\NOMBREDNS}{" + datosRegistro.get('nombreRegistro', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRIP}{" + datosRegistro.get('IP', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBREAPLICACION}{" + datosRegistro.get('nombreAplicacion', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justfiicacion', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justificacion', '') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\NOMBREAPROBA}{" + datosRegistro.get('nombreAproba', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTOAPROBA}{" + datosRegistro.get('puestoAproba', '') + "}"+ os.linesep)
