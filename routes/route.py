@@ -28,6 +28,7 @@ class FileGeneratorRoute(Blueprint):
         self.route("/api/v3/rfc", methods=["POST"])(self.rfc)
         self.route("/api/v3/internet", methods=["POST"])(self.inter)
         self.route("/api/v3/dns", methods=["POST"])(self.dns)
+        self.route("/api/v3/abc", methods=["POST"])(self.abc)
         self.route("/api/healthcheck", methods=["GET"])(self.healthcheck)
 
     def fetch_request_data(self):
@@ -1355,9 +1356,96 @@ class FileGeneratorRoute(Blueprint):
             #self.service.borrar_contador(noformato,"telCounters")
             #self.service.registrar_error("Telefonia", "Error al compilar XeLaTeX")
             return jsonify({"error": "Error generando PDF"}), 500
+        finally:
+            # Eliminar el directorio temporal
+            shutil.rmtree(temp_dir)
+    def abc(self):
+        try:
+            # Crear directorio temporal único
+            temp_dir = tempfile.mkdtemp()
+
+            data = request.get_json()
+
+            if not data:
+                return jsonify({"error": "Invalid data"}), 400
+            
+            # Validacion
+            validated_data = self.forms_schema.load(data)
+            self.logger.info("Ya se validaron correctamente")
+            
+            # Hacemos la busqueda en la base de datos para tener los registros
+            datosRegistro, status_code = self.service.obtener_datos_por_id('abcred', validated_data.get('id'))
+
+            if status_code == 201:
+                noformato = datosRegistro.get('_id', ' ')
+                self.logger.info(f"Registro ABC_RED agregado con ID: {noformato}")
+            
+                movbaja = "true" if datosRegistro.get('solicitud', '~')== "Baja de cuenta de servicio"  else "false"
+                movalta = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de servicio"  else "false"
+
+            # Crear Datos.txt en el directorio temporal
+                datos_txt_path = os.path.join(temp_dir, "Datos.txt")
+
+                with open(datos_txt_path, 'w') as file: 
+                    file.write("\\newcommand{\\NOFORMATO}{" + datosRegistro.get('_id', '') + "}" + os.linesep)
+
+                    file.write("\\newcommand{\\FECHASOLICITUD}{"+ datosRegistro.get('fecha', '~')+"}"+ os.linesep) 
+                    #Booleanos
+                    file.write("\\newcommand{\\MOVBAJA}{" + movbaja + "}" + os.linesep) 
+                    file.write("\\newcommand{\\MOVALTA}{" + movalta + "}" + os.linesep)  
+
+                    file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justificacion', '') + "}"+ os.linesep)  
+                   
+
+            # Preparar archivos en el directorio temporal
+                archivo_tex = os.path.join(temp_dir, "Formato_ABC_RED.tex")
+                nombre_pdf = os.path.join(temp_dir, "Formato_ABC_RED.pdf")
+
+                # Copia Formato_TELEFONIA.tex del directorio /app/data al directorio temporal
+                shutil.copy("/app/latex/Formato_ABC_RED.tex", archivo_tex)
+
+                # Copiar imágenes al directorio temporal
+                imagenes_dir = os.path.join(temp_dir, "imagenes")
+                shutil.copytree("/app/latex/imagenes", imagenes_dir)
+            # Compilar XeLaTeX
+                try:
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    subprocess.run(["xelatex", "-output-directory", temp_dir, archivo_tex], check=True)
+                    self.logger.info(f"Archivo PDF generado para {archivo_tex}")
+                except:
+                    self.logger.error(f"Error generando PDF: {e}")
+                    return jsonify({"error": f"Error al compilar XeLaTeX: {e}"}), 500
+                
+                # Cargar pdf
+                output = BytesIO()
+                with open(nombre_pdf, "rb") as pdf_file:
+                    output.write(pdf_file.read())
+                output.seek(0)
+
+                # Enviar archivo
+                return send_file(
+                    output,
+                    mimetype="application/pdf",
+                    download_name="RegistroABC.pdf",
+                    as_attachment=True,
+                )
+            
+            else:
+                return jsonify(datosRegistro), status_code
+
+        except ValidationError as err:
+            self.logger.error(f"Error de validación: {err.messages}")
+            return jsonify({"error": "Datos inválidos", "details": err.messages}), 400
+        except Exception as e:
+            self.logger.error(f"Error generando PDF")
+            noformato = datosRegistro.get('_id')
+            #self.service.borrar_registro(noformato,"tel")
+            #self.service.borrar_contador(noformato,"telCounters")
+            #self.service.registrar_error("Telefonia", "Error al compilar XeLaTeX")
+            return jsonify({"error": "Error generando PDF"}), 500
         #finally:
             # Eliminar el directorio temporal
-            #shutil.rmtree(temp_dir)
+        #    shutil.rmtree(temp_dir)
 
     def healthcheck(self):
         """Function to check the health of the services API inside the docker container"""

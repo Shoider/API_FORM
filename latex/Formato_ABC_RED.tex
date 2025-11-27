@@ -1,0 +1,347 @@
+%\textbf{\emph{ejemplo}}
+\input{Datos.txt}
+\documentclass[letterpaper,9pt]{article}
+\usepackage{ifthen}
+
+% *** Fuente ***
+\usepackage{fontspec}
+\setmainfont{Noto Sans}
+
+% *** Margenes y Tamaño de Hoja
+\usepackage{geometry}
+\geometry{
+left = 15mm,
+right = 15mm,
+top = 35mm,
+bottom = 10mm,
+headheight = 22mm
+}
+
+% *** Imagenes ***
+\usepackage{graphicx}
+\graphicspath{./imagenes}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{tabularray}
+
+\UseTblrLibrary{booktabs}
+
+% Quita las leyenda de longtblr
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{conthead-text}{default}{}
+\DefTblrTemplate{capcont}{default}{}
+
+% *** Fecha ***
+%\usepackage[useregional]{datetime2}
+\usepackage{datetime2}
+\DTMsetdatestyle{ddmmyyyy}
+
+%No cortar palabras
+\usepackage[none]{hyphenat}
+
+
+% *** Encabezado ***
+\usepackage{lastpage} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+
+\lhead{
+		\begin{tblr}{
+		width = \linewidth,
+		colspec = {Q[120]Q[507]Q[70]Q[70]},
+		row{2} = {c},
+		row{3} = {c},
+        row{4} = {c},
+		column{2} = {c},
+        cell{4}{2} = {h},
+		cell{1}{1} = {r=4}{c},
+		cell{1}{2} = {r=3}{},
+		cell{1}{3} = {c},
+		cell{1}{4} = {c},
+		vlines,
+		hline{1,5} = {-}{},
+		hline{2-3} = {3-4}{},
+		hline{4} = {2-4}{},
+	}
+	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{ \footnotesize{COMISIÓN NACIONAL DEL AGUA}}\\{\footnotesize SUBDIRECCIÓN GENERAL DE ADMINISTRACIÓN}\\{\footnotesize Gerencia de Tecnologías de Información y Comunicaciones} \\{\footnotesize Subgerencia de Intranet  e Internet.}} & \tiny Página    & {\tiny \thepage\ de \pageref{LastPage}} \\
+	&                                                                                       & \tiny Versión  & \tiny XXXX \\
+	&                                                                                       & \tiny Fecha de Formato & {\tiny 2025 }    \\
+	& { \textbf {\footnotesize {FORMATO DE "SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS".} }        }                              &  \tiny No. Formato & {\tiny \NOFORMATO }
+\end{tblr}
+}
+
+\chead{}
+\rhead{}
+
+% *** Pie de Pagina
+\lfoot{}
+\cfoot{}
+
+\begin{document}
+\sloppy
+
+%\begin{longtblr}[
+%	label = none,
+%	entry = none,          
+%	]{
+%		width = \linewidth,
+%		colspec = {Q[203]Q[200]Q[200]Q[200]},
+%		column{2} = {c},
+%                     column{4} = {c},
+%                     cell{3}{2}={c},
+%                     cell{3}{4}={c},
+%                     cell{4}{4}={c},
+%                     cell{2}{3} = {c},
+%		cell{2}{4} = {c},
+%	}
+%	~  &~         & Fecha de la solicitud:   & \FECHASOLICITUD       \\
+%	Tipo de Movimiento: & Alta (\ALTA) & Baja (\BAJA) & Cambio (\CAMBIO) 
+%\end{longtblr}
+
+
+%-----DATOS DE LA SOLICITUD---
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos de la solicitud} &   \\
+Fecha de la solicitud: & \FECHASOLICITUD \\
+Tipo de solicitud: & TIPOSOLICITUD\\
+Reporte de la Mesa de Servicios de TI:                    & REPORTEMESA \\
+Nombre del requisitante: &   NOMBREREQUISITANTE  \\
+Extensión del requisitante:           & EXTREQUISITANTE
+\end{longtblr}
+% --DATOS DEL SOLICITANTE---
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos del solicitante} &   \\
+Nombre: &   NOMBRERESOLI  \\
+Puesto:           & PUESTOSOLI
+\end{longtblr}
+%---DATOS DE AUTORIZACIÓN
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos de autorización} &   \\
+Nombre: &   NOMBREAUTORIZA \\
+Puesto:           & PUESTOAUTORIZA
+\end{longtblr}
+
+\newboolean{movbaja}
+\setboolean{movbaja}{\MOVBAJA}
+\ifthenelse{\boolean{movbaja}}
+{
+%---DATOS DE LA CUENTA DE SERVICIO----
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos de la cuenta de servicio} &   \\
+Nombre de la cuenta de servicio: &   NOMBRECUENTA  \\
+Nombre del responsable de la CONAGUA: & NOMBRERESPONSABLE\\
+Puesto del responsable de la CONAGUA:           & PUESTORESPONSABLE\\
+Ciudad: &CIUDADRESPONSABLE\\
+Estado: &ESTADORESPONSABLE\\
+Código Postal:&CPRESPONSABLE\\
+Dirección:&DIRECCIONRESPONSABLE\\
+
+\end{longtblr}}
+{
+%---DATOS DEL USUARIO INTERNO----
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos del usario interno} &   \\
+Nombre(s): &   NOMBREINTERNO  \\
+Apellidos: & APELLIDOINTERNO\\
+Puesto:           & PUESTOINTERNO\\
+Unidad Administrativa: &UAINTERNO\\
+Área: &AREAINTERNO\\
+CURP:&CURPINTERNO\\
+RFC:&RFCINTERNO\\
+Extensión:&EXTINTERNO\\
+Ciudad:&CIUDADINTERNO\\
+Estado:&ESTADOINTERNO\\
+Ciudad:&CIUDADINTERNO\\
+Estado:&ESTADOINTERNO\\
+Código Postal:&CPINTERNO\\
+Dirección:&DIRINTERNO
+\end{longtblr}}
+
+%%--DATOS ADICIONALES--
+\ifthenelse{\boolean{movbaja}}{}{
+
+\newboolean{movalta}
+\setboolean{movalta}{\MOVALTA}
+\ifthenelse{\boolean{movalta}}{
+%%--DATOS ADICIONALES EN ALTA---
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos adicionales} &   \\
+Inicio de actividades: &   INICIOACTIVIDADES  \\
+Nombre de la cuenta de servicio:           & NOMBRECUENTA
+\end{longtblr}}{
+%---DATOS ADICIONALES EN CAMBIO---
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos adicionales} &   \\
+Nombre de la cuenta de servicio:           & NOMBRECUENTA
+\end{longtblr}
+}}
+
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+		row{2} = {},
+		hlines,
+		vlines,
+	}
+	\textbf{Justificación del servicio solicitado} \\ \JUSTIFICACION
+\end{longtblr}
+
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+			width = \linewidth,
+			colspec = {Q[200]Q[200]Q[200]},
+			row{1} = {c},
+			cells = {c},
+			cell{1}{1} = {c=3}{0.874\linewidth},
+			hlines,
+			vlines,
+		}
+		Nombres Cargos y Firmas                      &                                                                                                       \\
+		{Usuario(a) que acepta
+                      \\[0.7cm] \rule{5cm}{0.5mm}\\NOMBREUSUARIO\\PUESTOUSUARIO} & 
+                      {Responsable de la aplicación
+                      \\[0.7cm] \rule{5cm}{0.5mm}\\NOMBRERESPONSABLE\\PUESTORESPONSABLE} &
+		{Aprobación del servicio
+		\\[0.7cm] \rule{5cm}{0.5mm}\\NOMBREAPROBA\\PUESTOAPROBA} 
+\end{longtblr}
+
+
+
+
+\clearpage
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+		row{2} = {l},
+		hlines,
+		vlines,
+	}
+	\textbf{Responsiva de uso para cuenta y equipo de cómputo de red de la CONAGUA} \\ \small{
+
+Con fundamento en lo dispuesto en el artículo 21 fracciones IV y XIV del Reglamento Interior de la Comisión Nacional del Agua, en vinculación con el contenido del Acuerdo por el que se expide el 
+Marco de Gestión de Seguridad de la Información, publicado en el Diario Oficial de la Federación el 09 de septiembre del 2021, la Gerencia de Tecnología de la Información y Comunicaciones, hace 
+del conocimiento que las y los usuarios de la Comisión Nacional del Agua que soliciten o tengan una cuenta, la cual incluye el usuario y contraseña, para uso de los servicios y sistemas institucionales 
+solicitados en el formato "FORMATO SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS)" deben observar los siguientes términos de uso:
+}
+
+
+\end{longtblr}
+%\textbf{\small Políticas y lineamientos:}
+%{  \small\begin{enumerate}
+%\item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedida de las configuraciones solicitadas.
+%
+%\end{enumerate}}
+\end{document}
