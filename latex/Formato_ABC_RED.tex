@@ -119,10 +119,10 @@ headheight = 22mm
 	}
 \textbf{Datos de la solicitud} &   \\
 Fecha de la solicitud: & \FECHASOLICITUD \\
-Tipo de solicitud: & TIPOSOLICITUD\\
-Reporte de la Mesa de Servicios de TI:                    & REPORTEMESA \\
-Nombre del requisitante: &   NOMBREREQUISITANTE  \\
-Extensión del requisitante:           & EXTREQUISITANTE
+Tipo de solicitud: & \TIPOSOLICITUD\\
+Reporte de la Mesa de Servicios de TI:                    & \REPORTEMESA \\
+Nombre del requisitante: &   \NOMBREREQUISITANTE  \\
+Extensión del requisitante:           & \EXTREQUISITANTE
 \end{longtblr}
 % --DATOS DEL SOLICITANTE---
 \vspace{-25pt}
@@ -141,8 +141,8 @@ Extensión del requisitante:           & EXTREQUISITANTE
 		vlines,
 	}
 \textbf{Datos del solicitante} &   \\
-Nombre: &   NOMBRERESOLI  \\
-Puesto:           & PUESTOSOLI
+Nombre: &   \NOMBRESOLI  \\
+Puesto:           &\PUESTOSOLI
 \end{longtblr}
 %---DATOS DE AUTORIZACIÓN
 \vspace{-25pt}
@@ -161,8 +161,8 @@ Puesto:           & PUESTOSOLI
 		vlines,
 	}
 \textbf{Datos de autorización} &   \\
-Nombre: &   NOMBREAUTORIZA \\
-Puesto:           & PUESTOAUTORIZA
+Nombre: &   \NOMBREAUTORIZA \\
+Puesto:           &\PUESTOAUTORIZA
 \end{longtblr}
 
 \newboolean{movbaja}
@@ -186,13 +186,13 @@ Puesto:           & PUESTOAUTORIZA
 		vlines,
 	}
 \textbf{Datos de la cuenta de servicio} &   \\
-Nombre de la cuenta de servicio: &   NOMBRECUENTA  \\
-Nombre del responsable de la CONAGUA: & NOMBRERESPONSABLE\\
-Puesto del responsable de la CONAGUA:           & PUESTORESPONSABLE\\
-Ciudad: &CIUDADRESPONSABLE\\
-Estado: &ESTADORESPONSABLE\\
-Código Postal:&CPRESPONSABLE\\
-Dirección:&DIRECCIONRESPONSABLE\\
+Nombre de la cuenta de servicio: &   \NOMBRECUENTA  \\
+Nombre del responsable de la CONAGUA: & \NOMBRERESPONSABLE\\
+Puesto del responsable de la CONAGUA:           & \PUESTORESPONSABLE\\
+Ciudad: &\CIUDADRESPONSABLE\\
+Estado: &\ESTADORESPONSABLE\\
+Código Postal:&\CPRESPONSABLE\\
+Dirección:&\DIRECCIONRESPONSABLE\\
 
 \end{longtblr}}
 {
@@ -213,20 +213,18 @@ Dirección:&DIRECCIONRESPONSABLE\\
 		vlines,
 	}
 \textbf{Datos del usario interno} &   \\
-Nombre(s): &   NOMBREINTERNO  \\
-Apellidos: & APELLIDOINTERNO\\
-Puesto:           & PUESTOINTERNO\\
-Unidad Administrativa: &UAINTERNO\\
-Área: &AREAINTERNO\\
-CURP:&CURPINTERNO\\
-RFC:&RFCINTERNO\\
-Extensión:&EXTINTERNO\\
-Ciudad:&CIUDADINTERNO\\
-Estado:&ESTADOINTERNO\\
-Ciudad:&CIUDADINTERNO\\
-Estado:&ESTADOINTERNO\\
-Código Postal:&CPINTERNO\\
-Dirección:&DIRINTERNO
+Nombre Completo: &   \NOMBREINTERNO, \APELLIDOINTERNO  \\
+%Apellidos: & \APELLIDOINTERNO\\
+Puesto:           & \PUESTOINTERNO\\
+Unidad Administrativa: &\UAINTERNO\\
+Área: &\AREAINTERNO\\
+CURP:&\CURPINTERNO\\
+RFC:&\RFCINTERNO\\
+Extensión:&\EXTINTERNO\\
+Ciudad:&\CIUDADINTERNO\\
+Estado:&\ESTADOINTERNO\\
+Código Postal:&\CPINTERNO\\
+Dirección:&\DIRINTERNO
 \end{longtblr}}
 
 %%--DATOS ADICIONALES--
@@ -252,8 +250,8 @@ Dirección:&DIRINTERNO
 		vlines,
 	}
 \textbf{Datos adicionales} &   \\
-Inicio de actividades: &   INICIOACTIVIDADES  \\
-Nombre de la cuenta de servicio:           & NOMBRECUENTA
+Inicio de actividades: &   \INICIOACTIVIDADES  \\
+Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 \end{longtblr}}{
 %---DATOS ADICIONALES EN CAMBIO---
 \vspace{-25pt}
@@ -272,7 +270,7 @@ Nombre de la cuenta de servicio:           & NOMBRECUENTA
 		vlines,
 	}
 \textbf{Datos adicionales} &   \\
-Nombre de la cuenta de servicio:           & NOMBRECUENTA
+Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 \end{longtblr}
 }}
 
@@ -305,12 +303,12 @@ Nombre de la cuenta de servicio:           & NOMBRECUENTA
 			vlines,
 		}
 		Nombres Cargos y Firmas                      &                                                                                                       \\
-		{Usuario(a) que acepta
-                      \\[0.7cm] \rule{5cm}{0.5mm}\\NOMBREUSUARIO\\PUESTOUSUARIO} & 
-                      {Responsable de la aplicación
-                      \\[0.7cm] \rule{5cm}{0.5mm}\\NOMBRERESPONSABLE\\PUESTORESPONSABLE} &
-		{Aprobación del servicio
-		\\[0.7cm] \rule{5cm}{0.5mm}\\NOMBREAPROBA\\PUESTOAPROBA} 
+		{Usuario del servicio
+                      \\[1cm] \rule{5cm}{0.2mm}\\\NOMBREUSUARIO\\\PUESTOUSUARIO} & 
+                      {Solicitante
+                      \\[1cm] \rule{5cm}{0.2mm}\\\NOMBRESOLI\\\PUESTOSOLI} &
+		{Autorizó
+		\\[1cm] \rule{5cm}{0.2mm}\\\NOMBREAUTORIZA\\\PUESTOAUTORIZA} 
 \end{longtblr}
 
 
@@ -318,6 +316,75 @@ Nombre de la cuenta de servicio:           & NOMBRECUENTA
 
 \clearpage
 \vspace{-25pt}
+%\begin{longtblr}[
+%	label = none,
+%	entry = none,
+%	]{
+%		width = \linewidth,
+%		colspec = {Q[935]},
+%		cells = {c},
+%		row{2} = {l},
+%		hlines,
+%		vlines,
+%	}
+%	\textbf{Responsiva de uso para cuenta y equipo de cómputo de red de la CONAGUA} \\ \small{
+%Con fundamento en lo dispuesto en el artículo 21 fracciones IV y XIV del Reglamento Interior de la Comisión Nacional del Agua, en vinculación con el contenido del Acuerdo por el que se expide el 
+%Marco de Gestión de Seguridad de la Información, publicado en el Diario Oficial de la Federación el 09 de septiembre del 2021, la Gerencia de Tecnología de la Información y Comunicaciones, hace 
+%del conocimiento que las y los usuarios de la Comisión Nacional del Agua que soliciten o tengan una cuenta, la cual incluye el usuario y contraseña, para uso de los servicios y sistemas institucionales 
+%solicitados en el formato "FORMATO SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS)" deben observar los siguientes términos de uso:
+%}
+%\end{longtblr}
+
+
+{\centering \textbf{\small Responsiva de uso para cuenta y equipo de cómputo de red de la CONAGUA:}\par}
+%\textbf{\small Responsiva de uso para cuenta y equipo de cómputo de red de la CONAGUA:\\}
+ { \small
+ Con fundamento en lo dispuesto en el artículo 21 fracciones IV y XIV del Reglamento Interior de la Comisión Nacional del Agua, en vinculación con el contenido del Acuerdo por el que se expide el 
+Marco de Gestión de Seguridad de la Información, publicado en el Diario Oficial de la Federación el 09 de septiembre del 2021, la Gerencia de Tecnología de la Información y Comunicaciones, hace 
+del conocimiento que las y los usuarios de la Comisión Nacional del Agua que soliciten o tengan una cuenta, la cual incluye el usuario y contraseña, para uso de los servicios y sistemas institucionales 
+solicitados en el formato "FORMATO SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS)" deben observar los siguientes términos de uso:
+
+\begin{enumerate}
+\item  De conformidad con el artículo 21, fracción V del Reglamento Interno de la Comisión Nacional del Agua, se otorgarán cuentas de correo electrónico institucional al personal de la CONAGUA. No 
+obstante lo anterior y con la intención de dar cumplimiento a los objetivos de la Comisión y contando con la debida justificación, se otorgarán excepcionalmente cuentas de servicio genéricas de 
+correo electrónico al personal externo
+\item  Las cuentas de usuario asignadas son personales e intransferibles. Las consecuencias jurídicas y/o administrativas de los actos ejecutados, así como del mal uso de las mismas son responsabilidad 
+del usuario(a) a quien se le haya asignado el manejo de la cuenta.
+\item La persona usuaria debe cambiar su contraseña una vez al mes, la cual debe constar con al menos 12 caracteres alfanuméricos de los cuales, uno de ellos debe ser una letra mayúscula.
+\item La persona usuaria debe evitar la repetición de contraseñas al efectuar los cambios periódicos de las mismas. La persona usuaria debe evitar exponer o difundir su contraseña, 
+independientemente del medio en el cual sea almacenada.
+\item En caso de utilizar hardware de seguridad, tales como generadores de contraseñas o tarjeta inteligente, la persona usuaria debe traerlos consigo.
+\item Se bloqueará el acceso a la red después de tres intentos consecutivos fallidos.
+\item. Se bloqueará la cuenta de usuario que no se haya firmado en la red después de 30 días.
+\item La persona usuaria debe verificar que su equipo de cómputo tenga configurado el protector de pantalla con contraseña, con la finalidad de evitar el acceso no autorizado a su información en caso 
+de retiro temporal.
+\item La persona usuaria del equipo de cómputo de escritorio debe asegurarse de que las chapas de seguridad de sus equipos se encuentren cerradas. Los usuarios de equipos portátiles deben 
+asegurarse de colocar el cable y candado de seguridad correspondiente.
+\item La persona usuaria no instalará software sin licencia, ni software libre. Sólo en caso de que requiera este último para el ejercicio de sus actividades se deberá solicitar la autorización a la Gerencia 
+de Tecnología de la Información y Comunicaciones
+\item La persona usuaria de forma periódica (semestral, mensual, quincenal) deberá realizar copias de seguridad de la información crítica que almacene en su equipo.
+\item La persona usuaria debe hacer uso de su cuenta para el exclusivo ejercicio de sus atribuciones, actividades y desempeño de las funciones que realiza.
+\item La persona usuaria deberá observar en todo momento las disposiciones jurídicas vigentes en materia de clasificación de la información que genera y maneja en el ejercicio de sus atribuciones, 
+actividades y desempeño de las funciones que realiza, incluyendo las relativas a correos electrónicos. 
+\item La persona usuaria no deberá utilizar la información a la que tenga acceso para objetivos personales, ni suministrar dicha información a terceros sin observar las disposiciones jurídicas aplicables, 
+ni obtener, en su caso, la autorización por escrito del servidor público de la institución que haya sido designado propietario de la información. 
+\item Al término de la relación laboral o contrato con la Comisión, la persona usuaria conviene en devolver toda la información a la cual haya tenido acceso para cumplir con las funciones 
+encomendadas.
+\item La persona usuaria dará cumplimiento a las demás disposiciones que le sean comunicadas por la Gerencia de Tecnología de la Información y Comunicaciones, relacionadas con el uso de las 
+soluciones tecnológicas, los servicios de la información, así como de los equipos de cómputo.
+\item Para el caso de prestación de servicios por terceros, los responsables de proyectos por parte de la Comisión Nacional del Agua, que habiliten cuentas a proveedores, deberán firmar la presente 
+responsiva de manera conjunta con los proveedores a los que se les asigne una cuenta.
+\item En caso de incumplimiento de las presentes disposiciones, y demás instrumentos que en su caso se emitan, dará lugar a la suspensión de manera inmediata de la cuenta, con independencia de 
+las sanciones administrativas, civiles o penales en que se pueda incurrir por violación a la normatividad jurídica.
+\item Para el uso y manejo de la información a la que tengan acceso las personas usuarias, se deberá observar en todo momento lo dispuesto por la Ley General de Transparencia y Acceso a la 
+Información Pública y su Reglamento, la Ley General de Responsabilidades Administrativas, el Manual Administrativo de Aplicación General en las materias de Tecnologías de la Información y 
+Comunicaciones, y en la de Seguridad de la Información, los Lineamientos de Protección de Datos Personales, las recomendaciones para la organización y conservación de correos electrónicos 
+institucionales de las dependencias y entidades de la Administración y demás ordenamientos jurídicos aplicables.
+\item En el caso de baja del personal de CONAGUA o del término de contrato para el personal externo, será responsabilidad de la persona usuaria (para el caso de usuarios de CONAGUA) o del 
+responsable de CONAGUA (para el caso del personal externo) y de la persona que autoriza el alta, solicitar la baja o cancelación de la cuenta asignada a la persona usuaria que causa baja mediante el 
+uso del Formato de Solicitud de movimientos de la persona usuaria de la red o el mecanismo que aplique, por lo que, en caso de omisión de este trámite, será plena responsabilidad de la persona 
+usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias que de esto se deriven.
+\end{enumerate}}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -329,19 +396,16 @@ Nombre de la cuenta de servicio:           & NOMBRECUENTA
 		hlines,
 		vlines,
 	}
-	\textbf{Responsiva de uso para cuenta y equipo de cómputo de red de la CONAGUA} \\ \small{
-
-Con fundamento en lo dispuesto en el artículo 21 fracciones IV y XIV del Reglamento Interior de la Comisión Nacional del Agua, en vinculación con el contenido del Acuerdo por el que se expide el 
-Marco de Gestión de Seguridad de la Información, publicado en el Diario Oficial de la Federación el 09 de septiembre del 2021, la Gerencia de Tecnología de la Información y Comunicaciones, hace 
-del conocimiento que las y los usuarios de la Comisión Nacional del Agua que soliciten o tengan una cuenta, la cual incluye el usuario y contraseña, para uso de los servicios y sistemas institucionales 
-solicitados en el formato "FORMATO SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS)" deben observar los siguientes términos de uso:
-}
-
+	{Usuario(a) del servicio.
+	He leído y acepto la normativa vigente.
+	\\[1cm] \rule{5cm}{0.2mm}\\
+	\NOMBREUSUARIO\\~\\
+	\PUESTOUSUARIO}
 
 \end{longtblr}
-%\textbf{\small Políticas y lineamientos:}
-%{  \small\begin{enumerate}
-%\item El formato deberá estar debidamente llenado y contener toda la información requerida facilitando la aplicación expedida de las configuraciones solicitadas.
-%
-%\end{enumerate}}
+
+
+
+
+
 \end{document}

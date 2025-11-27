@@ -1383,6 +1383,9 @@ class FileGeneratorRoute(Blueprint):
                 movbaja = "true" if datosRegistro.get('solicitud', '~')== "Baja de cuenta de servicio"  else "false"
                 movalta = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de servicio"  else "false"
 
+                nombreUsuario =  datosRegistro.get('nombreInterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
+                puestoUsuario =  datosRegistro.get('puestoInterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('puestoResponsable', '')
+
             # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
 
@@ -1393,6 +1396,45 @@ class FileGeneratorRoute(Blueprint):
                     #Booleanos
                     file.write("\\newcommand{\\MOVBAJA}{" + movbaja + "}" + os.linesep) 
                     file.write("\\newcommand{\\MOVALTA}{" + movalta + "}" + os.linesep)  
+
+                    file.write("\\newcommand{\\TIPOSOLICITUD}{" + datosRegistro.get('solicitud', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\REPORTEMESA}{" + datosRegistro.get('reporteMesa', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBREREQUISITANTE}{" + datosRegistro.get('nombreRequisitante', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTREQUISITANTE}{" + datosRegistro.get('extensionRequisitante', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBRESOLI}{" + datosRegistro.get('nombreSolicitante', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOSOLI}{" + datosRegistro.get('puestoSolicitante', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREAUTORIZA}{" + datosRegistro.get('nombreAutoriza', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOAUTORIZA}{" + datosRegistro.get('puestoAutoriza', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\NOMBREINTERNO}{" + datosRegistro.get('nombreInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\APELLIDOINTERNO}{" + datosRegistro.get('apellidoInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOINTERNO}{" + datosRegistro.get('puestoInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\UAINTERNO}{" + datosRegistro.get('unidadInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAINTERNO}{" + datosRegistro.get('areaInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CURPINTERNO}{" + datosRegistro.get('CURPInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\RFCINTERNO}{" + datosRegistro.get('RFCInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTINTERNO}{" + datosRegistro.get('extensionInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CIUDADINTERNO}{" + datosRegistro.get('ciudadInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\ESTADOINTERNO}{" + datosRegistro.get('estadoInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CPINTERNO}{" + datosRegistro.get('cpInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIRINTERNO}{" + datosRegistro.get('direccionInterno', '') + "}"+ os.linesep)
+
+
+                    file.write("\\newcommand{\\NOMBRERESPONSABLE}{" + datosRegistro.get('nombreResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTORESPONSABLE}{" + datosRegistro.get('puestoResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CIUDADRESPONSABLE}{" + datosRegistro.get('ciudadResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\ESTADORESPONSABLE}{" + datosRegistro.get('estadoResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CPRESPONSABLE}{" + datosRegistro.get('cpResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIRECCIONRESPONSABLE}{" + datosRegistro.get('direccionResponsable', '') + "}"+ os.linesep)
+
+                    file.write("\\newcommand{\\INICIOACTIVIDADES}{" + datosRegistro.get('inicioActividades', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\NOMBRECUENTA}{" + datosRegistro.get('nombreCuenta', '') + "}"+ os.linesep)
+
+                    #NOMBRE DE USUARIO PARA FIRMA
+                    file.write("\\newcommand{\\NOMBREUSUARIO}{" + nombreUsuario + "}" + os.linesep)
+                    file.write("\\newcommand{\\PUESTOUSUARIO}{" + puestoUsuario + "}" + os.linesep)
 
                     file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justificacion', '') + "}"+ os.linesep)  
                    
