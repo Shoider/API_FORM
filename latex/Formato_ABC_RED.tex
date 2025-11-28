@@ -82,25 +82,6 @@ headheight = 22mm
 \begin{document}
 \sloppy
 
-%\begin{longtblr}[
-%	label = none,
-%	entry = none,          
-%	]{
-%		width = \linewidth,
-%		colspec = {Q[203]Q[200]Q[200]Q[200]},
-%		column{2} = {c},
-%                     column{4} = {c},
-%                     cell{3}{2}={c},
-%                     cell{3}{4}={c},
-%                     cell{4}{4}={c},
-%                     cell{2}{3} = {c},
-%		cell{2}{4} = {c},
-%	}
-%	~  &~         & Fecha de la solicitud:   & \FECHASOLICITUD       \\
-%	Tipo de Movimiento: & Alta (\ALTA) & Baja (\BAJA) & Cambio (\CAMBIO) 
-%\end{longtblr}
-
-
 %-----DATOS DE LA SOLICITUD---
 \vspace{-25pt}
 \begin{longtblr}[
@@ -165,8 +146,21 @@ Nombre: &   \NOMBREAUTORIZA \\
 Puesto:           &\PUESTOAUTORIZA
 \end{longtblr}
 
+%%% CAMBIA DEPENDIENDO SI ES SERVICIO, USUARIO INTERNO O USUARIO EXTERNO
+\newboolean{servicio}
+\setboolean{servicio}{\SERVICIO}
+
+%\newboolean{usuariointerno}
+%\setboolean{usuariointerno}{\USUARIOINTERNO}
+
+\newboolean{usuarioexterno}
+\setboolean{usuarioexterno}{\USUARIOEXTERNO}
+
 \newboolean{movbaja}
 \setboolean{movbaja}{\MOVBAJA}
+
+\ifthenelse{\boolean{servicio}}%%IF DE SERVICIO
+{
 \ifthenelse{\boolean{movbaja}}
 {
 %---DATOS DE LA CUENTA DE SERVICIO----
@@ -227,9 +221,8 @@ Código Postal:&\CPINTERNO\\
 Dirección:&\DIRINTERNO
 \end{longtblr}}
 
-%%--DATOS ADICIONALES--
+%%--DATOS ADICIONALES ABC SERVICIOS--
 \ifthenelse{\boolean{movbaja}}{}{
-
 \newboolean{movalta}
 \setboolean{movalta}{\MOVALTA}
 \ifthenelse{\boolean{movalta}}{
@@ -273,6 +266,131 @@ Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 \end{longtblr}
 }}
+
+}%--FIN DE IF DE SERVICIO
+
+
+\ifthenelse{\boolean{usuarioexterno}} %--INICIO DE IF USUARIO EXTERNO
+{
+%--DATOS DE LA CUENTA GENÉRICA
+\newboolean{movbajaexterno}
+\setboolean{movbajaexterno}{\MOVBAJAEXTERNO}
+
+\ifthenelse{\boolean{movbajaexterno}}
+{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos de la cuenta genérica} &   \\
+Nombre de la cuenta genérica: & \NOMBRECUENTA\\
+Nombre del usuario externo: &   \NOMBREEXTERNO, \APELLIDOEXTERNO  \\
+Puesto del usuario externo:           & \PUESTOEXTERNO\\
+Nombre del responsable de la CONAGUA: & \NOMBRERESPONSABLE\\
+Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE\\
+Ciudad:&\CIUDADEXTERNO\\
+Estado:&\ESTADOEXTERNO\\
+Código Postal:&\CPEXTERNO\\
+Dirección:&\DIREXTERNO
+\end{longtblr}
+}{
+%%DATOS DEL USUARIO EXTERNO ALTA/CAMBIO
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos del usario externo} &   \\
+Nombre Completo: &   \NOMBREEXTERNO, \APELLIDOEXTERNO  \\
+%Apellidos: & \APELLIDOINTERNO\\
+Puesto:           & \PUESTOEXTERNO\\
+Unidad Administrativa: &\UAEXTERNO\\
+Área: &\AREAEXTERNO\\
+CURP:&\CURPEXTERNO\\
+RFC:&\RFCEXTERNO\\
+Extensión:&\EXTEXTERNO\\
+Ciudad:&\CIUDADEXTERNO\\
+Estado:&\ESTADOEXTERNO\\
+Código Postal:&\CPEXTERNO\\
+Dirección:&\DIREXTERNO
+\end{longtblr}}
+
+%--DATOS ADICIONALES ABC USUARIOS EXTERNOS---
+\newboolean{movaltaexterno}
+\setboolean{movaltaexterno}{\MOVALTAEXTERNO}
+\ifthenelse{\boolean{movaltaexterno}}
+{
+%%-DATOS ADICIONALES ALTA
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos adicionales} &   \\
+Inicio de actividades: & \INICIOACTIVIDADES\\
+Fin de actividades: &   \FINACTIVIDADES  \\
+Nombre de la cuenta genérica:           & \NOMBRECUENTA\\
+Nombre del responsable de la CONAGUA: & \NOMBRERESPONSABLE\\
+Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
+\end{longtblr}
+}{
+
+\ifthenelse{\boolean{movbajaexterno}}{}
+{
+%%-DATOS ADICIONALES CAMBIO
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos adicionales} &   \\
+Fin de actividades: &   FINACTIVIDADES  \\
+Nombre de la cuenta genérica:           & \NOMBRECUENTA\\
+Nombre del responsable de la CONAGUA: & \NOMBRERESPONSABLE\\
+Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
+\end{longtblr}
+}}
+}%%--FIN DE USUARIO EXTERNO
+
 
 \vspace{-25pt}
 \begin{longtblr}[
@@ -385,6 +503,31 @@ responsable de CONAGUA (para el caso del personal externo) y de la persona que a
 uso del Formato de Solicitud de movimientos de la persona usuaria de la red o el mecanismo que aplique, por lo que, en caso de omisión de este trámite, será plena responsabilidad de la persona 
 usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias que de esto se deriven.
 \end{enumerate}}
+
+\ifthenelse{\boolean{usuarioexterno}}
+{
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[50]Q[50]},
+		cells = {c},
+		row{2} = {l},
+		hlines,
+		vlines,
+	}
+	{Usuario(a) del servicio.
+	He leído y acepto la normativa vigente.
+	\\[1cm] \rule{5cm}{0.2mm}\\
+	\NOMBREUSUARIO\\~\\
+	\PUESTOUSUARIO}&
+	{Empleado(a) responsable de la CONAGUA.
+	\\[1cm] \rule{5cm}{0.2mm}\\
+	NOMBRERESPONSABLE\\~\\
+	PUESTORESPONSABLE}
+\end{longtblr}
+}{
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -401,8 +544,8 @@ usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias q
 	\\[1cm] \rule{5cm}{0.2mm}\\
 	\NOMBREUSUARIO\\~\\
 	\PUESTOUSUARIO}
-
 \end{longtblr}
+}
 
 
 

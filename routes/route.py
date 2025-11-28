@@ -1383,8 +1383,28 @@ class FileGeneratorRoute(Blueprint):
                 movbaja = "true" if datosRegistro.get('solicitud', '~')== "Baja de cuenta de servicio"  else "false"
                 movalta = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de servicio"  else "false"
 
-                nombreUsuario =  datosRegistro.get('nombreInterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
-                puestoUsuario =  datosRegistro.get('puestoInterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('puestoResponsable', '')
+                movbajaexterno = "true" if datosRegistro.get('solicitud', '~')== "Baja de cuenta de usuario externo"  else "false"
+                movaltaexterno = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de usuario externo"  else "false"               
+
+                tipo_solicitud = datosRegistro.get('solicitud', '')
+                usuario_vals = {
+                    "Alta de cuenta de usuario externo",
+                    "Baja de cuenta de usuario externo",
+                    "Cambio de cuenta de usuario externo",
+                }
+                servicio_vals = {
+                    "Alta de cuenta de servicio",
+                    "Baja de cuenta de servicio",
+                    "Cambio de cuenta de servicio",
+                }
+                usuarioexterno = "true" if tipo_solicitud in usuario_vals else "false"
+                servicio = "true" if tipo_solicitud in servicio_vals else "false"
+                #usuarioexterno = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de usuario externo"  or "Baja de cuenta de usuario externo" or "Cambio de cuenta de usuario externo" else "false"
+                #servicio = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de servicio" or "Baja de cuenta de servicio" or "Cambio de cuenta de servicio" else "false"
+
+
+                nombreUsuario =  datosRegistro.get('nombreInterno', '') or datosRegistro.get('nombreExterno', '')  if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
+                puestoUsuario =  datosRegistro.get('puestoInterno', '') or datosRegistro.get('puestoExterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('puestoResponsable', '')
 
             # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
@@ -1396,6 +1416,12 @@ class FileGeneratorRoute(Blueprint):
                     #Booleanos
                     file.write("\\newcommand{\\MOVBAJA}{" + movbaja + "}" + os.linesep) 
                     file.write("\\newcommand{\\MOVALTA}{" + movalta + "}" + os.linesep)  
+
+                    file.write("\\newcommand{\\MOVBAJAEXTERNO}{" + movbajaexterno + "}" + os.linesep) 
+                    file.write("\\newcommand{\\MOVALTAEXTERNO}{" + movaltaexterno + "}" + os.linesep)  
+
+                    file.write("\\newcommand{\\SERVICIO}{" + servicio + "}" + os.linesep) 
+                    file.write("\\newcommand{\\USUARIOEXTERNO}{" + usuarioexterno + "}" + os.linesep)  
 
                     file.write("\\newcommand{\\TIPOSOLICITUD}{" + datosRegistro.get('solicitud', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\REPORTEMESA}{" + datosRegistro.get('reporteMesa', '') + "}"+ os.linesep)
@@ -1421,6 +1447,19 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\CPINTERNO}{" + datosRegistro.get('cpInterno', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\DIRINTERNO}{" + datosRegistro.get('direccionInterno', '') + "}"+ os.linesep)
 
+                    file.write("\\newcommand{\\NOMBREEXTERNO}{" + datosRegistro.get('nombreExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\APELLIDOEXTERNO}{" + datosRegistro.get('apellidoExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\PUESTOEXTERNO}{" + datosRegistro.get('puestoExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\UAEXTERNO}{" + datosRegistro.get('unidadExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\AREAEXTERNO}{" + datosRegistro.get('areaExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CURPEXTERNO}{" + datosRegistro.get('CURPExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\RFCEXTERNO}{" + datosRegistro.get('RFCExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\EXTEXTERNO}{" + datosRegistro.get('extensionExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CIUDADEXTERNO}{" + datosRegistro.get('ciudadExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\ESTADOEXTERNO}{" + datosRegistro.get('estadoExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\CPEXTERNO}{" + datosRegistro.get('cpExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIREXTERNO}{" + datosRegistro.get('direccionExterno', '') + "}"+ os.linesep)
+
 
                     file.write("\\newcommand{\\NOMBRERESPONSABLE}{" + datosRegistro.get('nombreResponsable', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTORESPONSABLE}{" + datosRegistro.get('puestoResponsable', '') + "}"+ os.linesep)
@@ -1430,6 +1469,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\DIRECCIONRESPONSABLE}{" + datosRegistro.get('direccionResponsable', '') + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\INICIOACTIVIDADES}{" + datosRegistro.get('inicioActividades', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\FINACTIVIDADES}{" + datosRegistro.get('finActividades', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\NOMBRECUENTA}{" + datosRegistro.get('nombreCuenta', '') + "}"+ os.linesep)
 
                     #NOMBRE DE USUARIO PARA FIRMA
