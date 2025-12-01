@@ -1386,19 +1386,34 @@ class FileGeneratorRoute(Blueprint):
                 movbajaexterno = "true" if datosRegistro.get('solicitud', '~')== "Baja de cuenta de usuario externo"  else "false"
                 movaltaexterno = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de usuario externo"  else "false"               
 
+                movaltainterno = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de usuario interno"  else "false"               
+
                 tipo_solicitud = datosRegistro.get('solicitud', '')
                 usuario_vals = {
                     "Alta de cuenta de usuario externo",
                     "Baja de cuenta de usuario externo",
                     "Cambio de cuenta de usuario externo",
                 }
+                usuario_interno_vals = {
+                    "Alta de cuenta de usuario interno",
+                    "Baja de cuenta de usuario interno",
+                    "Cambio de cuenta de usuario interno",
+                }
                 servicio_vals = {
                     "Alta de cuenta de servicio",
                     "Baja de cuenta de servicio",
                     "Cambio de cuenta de servicio",
                 }
+
+                firma_vals = {
+                    "Alta de cuenta de usuario externo",
+                    "Baja de cuenta de usuario externo",
+                    "Cambio de cuenta de usuario externo",
+                }
                 usuarioexterno = "true" if tipo_solicitud in usuario_vals else "false"
+                usuariointerno = "true" if tipo_solicitud in usuario_interno_vals else "false"
                 servicio = "true" if tipo_solicitud in servicio_vals else "false"
+                fima_externo = "true" if tipo_solicitud in firma_vals else "false"
                 #usuarioexterno = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de usuario externo"  or "Baja de cuenta de usuario externo" or "Cambio de cuenta de usuario externo" else "false"
                 #servicio = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de servicio" or "Baja de cuenta de servicio" or "Cambio de cuenta de servicio" else "false"
 
@@ -1420,8 +1435,13 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\MOVBAJAEXTERNO}{" + movbajaexterno + "}" + os.linesep) 
                     file.write("\\newcommand{\\MOVALTAEXTERNO}{" + movaltaexterno + "}" + os.linesep)  
 
+                    file.write("\\newcommand{\\MOVALTAINTERNO}{" + movaltainterno + "}" + os.linesep)  
+
                     file.write("\\newcommand{\\SERVICIO}{" + servicio + "}" + os.linesep) 
                     file.write("\\newcommand{\\USUARIOEXTERNO}{" + usuarioexterno + "}" + os.linesep)  
+                    file.write("\\newcommand{\\USUARIOINTERNO}{" + usuariointerno + "}" + os.linesep) 
+
+                    file.write("\\newcommand{\\FIRMAEXTERNO}{" + fima_externo + "}" + os.linesep) 
 
                     file.write("\\newcommand{\\TIPOSOLICITUD}{" + datosRegistro.get('solicitud', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\REPORTEMESA}{" + datosRegistro.get('reporteMesa', '') + "}"+ os.linesep)

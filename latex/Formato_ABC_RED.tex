@@ -150,14 +150,70 @@ Puesto:           &\PUESTOAUTORIZA
 \newboolean{servicio}
 \setboolean{servicio}{\SERVICIO}
 
-%\newboolean{usuariointerno}
-%\setboolean{usuariointerno}{\USUARIOINTERNO}
+\newboolean{usuariointerno}
+\setboolean{usuariointerno}{\USUARIOINTERNO}
 
 \newboolean{usuarioexterno}
 \setboolean{usuarioexterno}{\USUARIOEXTERNO}
 
 \newboolean{movbaja}
 \setboolean{movbaja}{\MOVBAJA}
+
+\ifthenelse{\boolean{usuariointerno}}%%IF DE USUARIOINTERNO
+{%%ALTA USUARIO INTERNO
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos del usario interno} &   \\
+Nombre Completo: &   \NOMBREINTERNO, \APELLIDOINTERNO  \\
+%Apellidos: & \APELLIDOINTERNO\\
+Puesto:           & \PUESTOINTERNO\\
+Unidad Administrativa: &\UAINTERNO\\
+Área: &\AREAINTERNO\\
+CURP:&\CURPINTERNO\\
+RFC:&\RFCINTERNO\\
+Extensión:&\EXTINTERNO\\
+Ciudad:&\CIUDADINTERNO\\
+Estado:&\ESTADOINTERNO\\
+Código Postal:&\CPINTERNO\\
+Dirección:&\DIRINTERNO
+\end{longtblr}
+
+\newboolean{movaltainterno}
+\setboolean{movaltainterno}{\MOVALTAINTERNO}
+\ifthenelse{\boolean{movaltainterno}}%%IF DE SERVICIO
+{
+\vspace{-25pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[35]Q[70]},
+                     %row{1}={dorado},   
+		column{1}={r},
+		column{2}={l},    
+		row{1} = {c},             
+		cell{1}{1} = {c=2}{0.874\linewidth},		
+		hlines,
+		vlines,
+	}
+\textbf{Datos adicionales} &   \\
+Inicio de actividades: &   \INICIOACTIVIDADES 
+\end{longtblr}}{}
+}
 
 \ifthenelse{\boolean{servicio}}%%IF DE SERVICIO
 {
@@ -504,7 +560,10 @@ uso del Formato de Solicitud de movimientos de la persona usuaria de la red o el
 usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias que de esto se deriven.
 \end{enumerate}}
 
-\ifthenelse{\boolean{usuarioexterno}}
+\newboolean{firmaexterno}
+\setboolean{firmaexterno}{\FIRMAEXTERNO}
+
+\ifthenelse{\boolean{firmaexterno}}
 {
 \begin{longtblr}[
 	label = none,
@@ -546,9 +605,4 @@ usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias q
 	\PUESTOUSUARIO}
 \end{longtblr}
 }
-
-
-
-
-
 \end{document}
