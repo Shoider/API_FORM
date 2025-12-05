@@ -1417,8 +1417,10 @@ class FileGeneratorRoute(Blueprint):
                 #usuarioexterno = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de usuario externo"  or "Baja de cuenta de usuario externo" or "Cambio de cuenta de usuario externo" else "false"
                 #servicio = "true" if datosRegistro.get('solicitud', '~')== "Alta de cuenta de servicio" or "Baja de cuenta de servicio" or "Cambio de cuenta de servicio" else "false"
 
-
-                nombreUsuario =  datosRegistro.get('nombreInterno', '') or datosRegistro.get('nombreExterno', '')  if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
+                nombreUnicoUsuario= datosRegistro.get('nombreInterno', '')   or datosRegistro.get('nombreExterno', '')
+                apellidoUsuario = datosRegistro.get('apellidoInterno', '')   or datosRegistro.get('apellidoExterno', '')
+                nombreUsuario =  nombreUnicoUsuario + " "+apellidoUsuario if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
+                #nombreUsuario =  datosRegistro.get('nombreInterno', '')   or datosRegistro.get('nombreExterno', '')  if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
                 puestoUsuario =  datosRegistro.get('puestoInterno', '') or datosRegistro.get('puestoExterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('puestoResponsable', '')
 
             # Crear Datos.txt en el directorio temporal
