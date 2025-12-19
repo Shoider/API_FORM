@@ -1499,6 +1499,7 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\PUESTOUSUARIO}{" + puestoUsuario + "}" + os.linesep)
 
                     file.write("\\newcommand{\\JUSTIFICACION}{" + datosRegistro.get('justificacion', '') + "}"+ os.linesep)  
+                    file.write("\\newcommand{\\DATOSADICIONALES}{" + datosRegistro.get('datosAdicionales', '') + "}"+ os.linesep)  
                    
 
             # Preparar archivos en el directorio temporal

@@ -1,7 +1,11 @@
 %\textbf{\emph{ejemplo}}
 \input{Datos.txt}
-\documentclass[letterpaper,9pt]{article}
+\documentclass[9pt]{extarticle}
+
 \usepackage{ifthen}
+
+\usepackage{anyfontsize}
+\fontsize{7}{8}\selectfont
 
 % *** Fuente ***
 \usepackage{fontspec}
@@ -14,7 +18,7 @@ left = 15mm,
 right = 15mm,
 top = 35mm,
 bottom = 5mm,
-headheight = 22mm
+headheight = 16mm
 }
 
 % *** Imagenes ***
@@ -51,24 +55,30 @@ headheight = 22mm
 		\begin{tblr}{
 		width = \linewidth,
 		colspec = {Q[120]Q[507]Q[70]Q[70]},
+		row{1} = {c},
 		row{2} = {c},
 		row{3} = {c},
-        row{4} = {c},
+        		row{4} = {c},
 		column{2} = {c},
-        cell{4}{2} = {h},
 		cell{1}{1} = {r=4}{c},
 		cell{1}{2} = {r=3}{},
-		cell{1}{3} = {c},
-		cell{1}{4} = {c},
-		vlines,
+		cell{4}{2} = {c=3}{},
 		hline{1,5} = {-}{},
-		hline{2-3} = {3-4}{},
-		hline{4} = {2-4}{},
+                     hline{4} = {2-4}{},
+		%hlines,
+		vlines
 	}
-	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} & {\textbf{ \footnotesize{COMISIÓN NACIONAL DEL AGUA}}\\{\footnotesize SUBDIRECCIÓN GENERAL DE ADMINISTRACIÓN}\\{\footnotesize Gerencia de Tecnología de Información y Comunicaciones} \\{\footnotesize Subgerencia de Internet  e Intranet.}} & \tiny Página    & {\tiny \thepage\ de \pageref{LastPage}} \\
-	&                                                                                       & \tiny Versión  & \tiny XXXX \\
-	&                                                                                       & \tiny Fecha de Formato & {\tiny 2025 }    \\
-	& { \textbf {\footnotesize {FORMATO DE "SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS".} }        }                              &  \tiny No. Formato & {\tiny \NOFORMATO }
+	\includegraphics[width=0.15\textwidth]{imagenes/Logo_de_la_Conagua} 
+	& {{\footnotesize SUBDIRECCIÓN GENERAL DE ADMINISTRACIÓN}\\{\footnotesize Gerencia de Tecnología de Información y Comunicaciones} \\{\footnotesize Subgerencia de Internet  e Intranet.}} 
+	&\footnotesize  PÁGINA    
+	& \footnotesize {\thepage\ de \pageref{LastPage}} \\
+	&                                                                                       
+	&\footnotesize VERSIÓN  
+	&\footnotesize1.0 \\
+	&                                                                                       
+	&\footnotesize FECHA &
+	 {\footnotesize 2025 }    \\
+	& { \textbf {\footnotesize {FORMATO DE "SOLICITUD DE MOVIMIENTOS DE LA PERSONA USUARIA DE LA RED (ALTAS, BAJAS Y CAMBIOS".} }      }                              
 \end{tblr}
 }
 
@@ -83,7 +93,7 @@ headheight = 22mm
 \sloppy
 
 %-----DATOS DE LA SOLICITUD---
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -91,12 +101,14 @@ headheight = 22mm
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,7} = {-}{},
+		vline{1-3} = {2-6}{},	
+		%hlines,
+		%vlines,
 	}
 \textbf{Datos de la solicitud} &   \\
 Fecha de la solicitud: & \FECHASOLICITUD \\
@@ -106,7 +118,7 @@ Nombre del requisitante: &   \NOMBREREQUISITANTE  \\
 Extensión del requisitante:           & \EXTREQUISITANTE
 \end{longtblr}
 % --DATOS DEL SOLICITANTE---
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -114,19 +126,19 @@ Extensión del requisitante:           & \EXTREQUISITANTE
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,4} = {-}{},
+		vline{1-3} = {2-4}{},	
 	}
 \textbf{Datos del solicitante} &   \\
 Nombre: &   \NOMBRESOLI  \\
 Puesto:           &\PUESTOSOLI
 \end{longtblr}
 %---DATOS DE AUTORIZACIÓN
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -134,12 +146,12 @@ Puesto:           &\PUESTOSOLI
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,4} = {-}{},
+		vline{1-3} = {2-4}{},	
 	}
 \textbf{Datos de autorización} &   \\
 Nombre: &   \NOMBREAUTORIZA \\
@@ -161,7 +173,7 @@ Puesto:           &\PUESTOAUTORIZA
 
 \ifthenelse{\boolean{usuariointerno}}%%IF DE USUARIOINTERNO
 {%%ALTA USUARIO INTERNO
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -169,16 +181,16 @@ Puesto:           &\PUESTOAUTORIZA
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,14} = {-}{},
+		vline{1-3} = {2-14}{},	
 	}
-\textbf{Datos del usario interno} &   \\
-Nombre Completo: &   \NOMBREINTERNO~ \APELLIDOINTERNO  \\
-%Apellidos: & \APELLIDOINTERNO\\
+\textbf{Datos del usuario interno} &   \\
+Nombre(s): &   \NOMBREINTERNO  \\
+Apellidos: & \APELLIDOINTERNO\\
 Puesto:           & \PUESTOINTERNO\\
 Unidad Administrativa: &\UAINTERNO\\
 Área: &\AREAINTERNO\\
@@ -190,12 +202,27 @@ Estado:&\ESTADOINTERNO\\
 Código Postal:&\CPINTERNO\\
 Dirección:&\DIRINTERNO
 \end{longtblr}
+\vspace{-34pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+		row{2} = {l},
+		hline{2,3} = {-}{},
+		vline{1-3} = {2-3}{},	
+	}
+	\textbf{Datos adicionales} \\ \DATOSADICIONALES
+\end{longtblr}
+
 
 \newboolean{movaltainterno}
 \setboolean{movaltainterno}{\MOVALTAINTERNO}
 \ifthenelse{\boolean{movaltainterno}}%%IF DE SERVICIO
 {
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -203,12 +230,12 @@ Dirección:&\DIRINTERNO
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,3} = {-}{},
+		vline{1-3} = {2-3}{},	
 	}
 \textbf{Datos adicionales} &   \\
 Inicio de actividades: &   \INICIOACTIVIDADES 
@@ -220,7 +247,7 @@ Inicio de actividades: &   \INICIOACTIVIDADES
 \ifthenelse{\boolean{movbaja}}
 {
 %---DATOS DE LA CUENTA DE SERVICIO----
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -228,12 +255,12 @@ Inicio de actividades: &   \INICIOACTIVIDADES
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,9} = {-}{},
+		vline{1-3} = {2-9}{},	
 	}
 \textbf{Datos de la cuenta de servicio} &   \\
 Nombre de la cuenta de servicio: &   \NOMBRECUENTA  \\
@@ -244,10 +271,26 @@ Estado: &\ESTADORESPONSABLE\\
 Código Postal:&\CPRESPONSABLE\\
 Dirección:&\DIRECCIONRESPONSABLE\\
 
-\end{longtblr}}
+\end{longtblr}
+\vspace{-34pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+		row{2} = {l},
+		hline{2,3} = {-}{},
+		vline{1-3} = {2-3}{},	
+	}
+	\textbf{Datos adicionales} \\ \DATOSADICIONALES
+\end{longtblr}
+
+}
 {
 %---DATOS DEL USUARIO INTERNO----
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -255,16 +298,16 @@ Dirección:&\DIRECCIONRESPONSABLE\\
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,14} = {-}{},
+		vline{1-3} = {2-14}{},	
 	}
-\textbf{Datos del usario interno} &   \\
-Nombre Completo: &   \NOMBREINTERNO~ \APELLIDOINTERNO  \\
-%Apellidos: & \APELLIDOINTERNO\\
+\textbf{Datos del usuario interno} &   \\
+Nombre(s): &   \NOMBREINTERNO  \\
+Apellidos: & \APELLIDOINTERNO\\
 Puesto:           & \PUESTOINTERNO\\
 Unidad Administrativa: &\UAINTERNO\\
 Área: &\AREAINTERNO\\
@@ -283,7 +326,7 @@ Dirección:&\DIRINTERNO
 \setboolean{movalta}{\MOVALTA}
 \ifthenelse{\boolean{movalta}}{
 %%--DATOS ADICIONALES EN ALTA---
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -291,19 +334,19 @@ Dirección:&\DIRINTERNO
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,4} = {-}{},
+		vline{1-3} = {2-4}{},	
 	}
 \textbf{Datos adicionales} &   \\
 Inicio de actividades: &   \INICIOACTIVIDADES  \\
 Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 \end{longtblr}}{
 %---DATOS ADICIONALES EN CAMBIO---
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -311,12 +354,12 @@ Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,3} = {-}{},
+		vline{1-3} = {2-3}{},	
 	}
 \textbf{Datos adicionales} &   \\
 Nombre de la cuenta de servicio:           & \NOMBRECUENTA
@@ -334,7 +377,7 @@ Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 
 \ifthenelse{\boolean{movbajaexterno}}
 {
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -342,16 +385,16 @@ Nombre de la cuenta de servicio:           & \NOMBRECUENTA
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,11} = {-}{},
+		vline{1-3} = {2-11}{},	
 	}
 \textbf{Datos de la cuenta genérica} &   \\
 Nombre de la cuenta genérica: & \NOMBRECUENTA\\
-Nombre del usuario externo: &   \NOMBREEXTERNO ~\APELLIDOEXTERNO  \\
+Nombre del usuario externo: &   \NOMBREEXTERNO \APELLIDOEXTERNO  \\
 Puesto del usuario externo:           & \PUESTOEXTERNO\\
 Nombre del responsable de la CONAGUA: & \NOMBRERESPONSABLE\\
 Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE\\
@@ -360,9 +403,23 @@ Estado:&\ESTADOEXTERNO\\
 Código Postal:&\CPEXTERNO\\
 Dirección:&\DIREXTERNO
 \end{longtblr}
+\vspace{-34pt}
+\begin{longtblr}[
+	label = none,
+	entry = none,
+	]{
+		width = \linewidth,
+		colspec = {Q[935]},
+		cells = {c},
+		row{2} = {l},
+		hline{2,3} = {-}{},
+		vline{1-3} = {2-3}{},	
+	}
+	\textbf{Datos adicionales} \\ \DATOSADICIONALES
+\end{longtblr}
 }{
 %%DATOS DEL USUARIO EXTERNO ALTA/CAMBIO
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -370,16 +427,16 @@ Dirección:&\DIREXTERNO
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
                      %row{1}={dorado},   
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,14} = {-}{},
+		vline{1-3} = {2-14}{},	
 	}
-\textbf{Datos del usario externo} &   \\
-Nombre Completo: &   \NOMBREEXTERNO~\APELLIDOEXTERNO  \\
-%Apellidos: & \APELLIDOINTERNO\\
+\textbf{Datos del usuario externo} &   \\
+Nombre(s): &   \NOMBREEXTERNO  \\
+Apellidos: & \APELLIDOINTERNO\\
 Puesto:           & \PUESTOEXTERNO\\
 Unidad Administrativa: &\UAEXTERNO\\
 Área: &\AREAEXTERNO\\
@@ -398,19 +455,19 @@ Dirección:&\DIREXTERNO
 \ifthenelse{\boolean{movaltaexterno}}
 {
 %%-DATOS ADICIONALES ALTA
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,7} = {-}{},
+		vline{1-3} = {2-7}{},	
 	}
 \textbf{Datos adicionales} &   \\
 Inicio de actividades: & \INICIOACTIVIDADES\\
@@ -424,19 +481,19 @@ Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
 \ifthenelse{\boolean{movbajaexterno}}{}
 {
 %%-DATOS ADICIONALES CAMBIO
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
 	]{
 		width = \linewidth,
 		colspec = {Q[40]Q[60]},
-		column{1}={r},
+		column{1}={l},
 		column{2}={l},    
 		row{1} = {c},             
 		cell{1}{1} = {c=2}{0.874\linewidth},		
-		hlines,
-		vlines,
+		hline{2,6} = {-}{},
+		vline{1-3} = {2-6}{},	
 	}
 \textbf{Datos adicionales} &   \\
 Fin de actividades: &   \FINACTIVIDADES  \\
@@ -448,7 +505,7 @@ Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
 }%%--FIN DE USUARIO EXTERNO
 
 
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -456,14 +513,14 @@ Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
 		width = \linewidth,
 		colspec = {Q[935]},
 		cells = {c},
-		row{2} = {},
-		hlines,
-		vlines,
+		row{2} = {l},
+		hline{2,3} = {-}{},
+		vline{1-3} = {2-3}{},	
 	}
-	\textbf{Justificación del servicio solicitado} \\ \JUSTIFICACION
+	\textbf{Justificación} \\ \JUSTIFICACION
 \end{longtblr}
 
-\vspace{-30pt}
+\vspace{-34pt}
 \begin{longtblr}[
 	label = none,
 	entry = none,
@@ -473,10 +530,10 @@ Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
 			row{1} = {c},
 			cells = {c},
 			cell{1}{1} = {c=3}{0.874\linewidth},
-			hlines,
-			vlines,
+			hline{2,3} = {-}{},
+		           vline{1-4} = {2-4}{},	
 		}
-		Nombres Cargos y Firmas                      &                                                                                                       \\
+		\textbf {Nombres, Cargos y Firmas}                      &                                                                                                       \\
 		{Usuario del servicio
                       \\[0.7cm] \rule{5cm}{0.2mm}\\\NOMBREUSUARIO\\\PUESTOUSUARIO} & 
                       {Solicitante
@@ -489,7 +546,7 @@ Puesto del responsable de la CONAGUA:& \PUESTORESPONSABLE
 
 
 \clearpage
-\vspace{-30pt}
+\vspace{-34pt}
 {\centering \textbf{ \normalsize Responsiva de uso para cuenta y equipo de cómputo de red de la CONAGUA:}\par}
 
  {\scriptsize
@@ -558,7 +615,7 @@ usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias q
 		vlines,
 	}
 	{Usuario(a) del servicio.
-	He leído y acepto la normativa vigente.
+	\\He leído y acepto la normativa vigente.
 	\\[1cm] \rule{5cm}{0.2mm}\\
 	\NOMBREUSUARIO\\
 	\PUESTOUSUARIO}&
@@ -580,7 +637,7 @@ usuaria y/o del responsable CONAGUA el mal uso de la misma y las consecuencias q
 		vlines,
 	}
 	{Usuario(a) del servicio.
-	He leído y acepto la normativa vigente.
+	\\He leído y acepto la normativa vigente.
 	\\[1cm] \rule{4cm}{0.2mm}\\
 	\NOMBREUSUARIO\\
 	\PUESTOUSUARIO}
