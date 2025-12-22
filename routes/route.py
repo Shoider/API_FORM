@@ -1423,6 +1423,12 @@ class FileGeneratorRoute(Blueprint):
                 #nombreUsuario =  datosRegistro.get('nombreInterno', '')   or datosRegistro.get('nombreExterno', '')  if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('nombreResponsable', '')
                 puestoUsuario =  datosRegistro.get('puestoInterno', '') or datosRegistro.get('puestoExterno', '') if  datosRegistro.get('solicitud', '~') != "Baja de cuenta de servicio" else datosRegistro.get('puestoResponsable', '')
 
+
+                # Direcciones
+                direcionDeResponsable = datosRegistro.get('direccionResponsable', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
+                direcionDeInterno = datosRegistro.get('direccionInterno', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
+                direcionDeExterno= datosRegistro.get('direccionExterno', ' ') + ", " + datosRegistro.get('piso', ' ') + ", " + datosRegistro.get('ala', ' ')
+
             # Crear Datos.txt en el directorio temporal
                 datos_txt_path = os.path.join(temp_dir, "Datos.txt")
 
@@ -1467,7 +1473,8 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\CIUDADINTERNO}{" + datosRegistro.get('ciudadInterno', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\ESTADOINTERNO}{" + datosRegistro.get('estadoInterno', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\CPINTERNO}{" + datosRegistro.get('cpInterno', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\DIRINTERNO}{" + datosRegistro.get('direccionInterno', '') + "}"+ os.linesep)
+                    #file.write("\\newcommand{\\DIRINTERNO}{" + datosRegistro.get('direccionInterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIRINTERNO}{" + direcionDeInterno + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\NOMBREEXTERNO}{" + datosRegistro.get('nombreExterno', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\APELLIDOEXTERNO}{" + datosRegistro.get('apellidoExterno', '') + "}"+ os.linesep)
@@ -1480,15 +1487,16 @@ class FileGeneratorRoute(Blueprint):
                     file.write("\\newcommand{\\CIUDADEXTERNO}{" + datosRegistro.get('ciudadExterno', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\ESTADOEXTERNO}{" + datosRegistro.get('estadoExterno', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\CPEXTERNO}{" + datosRegistro.get('cpExterno', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\DIREXTERNO}{" + datosRegistro.get('direccionExterno', '') + "}"+ os.linesep)
-
+                    #file.write("\\newcommand{\\DIREXTERNO}{" + datosRegistro.get('direccionExterno', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIREXTERNO}{" + direcionDeExterno + "}"+ os.linesep)   
 
                     file.write("\\newcommand{\\NOMBRERESPONSABLE}{" + datosRegistro.get('nombreResponsable', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\PUESTORESPONSABLE}{" + datosRegistro.get('puestoResponsable', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\CIUDADRESPONSABLE}{" + datosRegistro.get('ciudadResponsable', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\ESTADORESPONSABLE}{" + datosRegistro.get('estadoResponsable', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\CPRESPONSABLE}{" + datosRegistro.get('cpResponsable', '') + "}"+ os.linesep)
-                    file.write("\\newcommand{\\DIRECCIONRESPONSABLE}{" + datosRegistro.get('direccionResponsable', '') + "}"+ os.linesep)
+                    #file.write("\\newcommand{\\DIRECCIONRESPONSABLE}{" + datosRegistro.get('direccionResponsable', '') + "}"+ os.linesep)
+                    file.write("\\newcommand{\\DIRECCIONRESPONSABLE}{" + direcionDeResponsable + "}"+ os.linesep)
 
                     file.write("\\newcommand{\\INICIOACTIVIDADES}{" + datosRegistro.get('inicioActividades', '') + "}"+ os.linesep)
                     file.write("\\newcommand{\\FINACTIVIDADES}{" + datosRegistro.get('finActividades', '') + "}"+ os.linesep)
